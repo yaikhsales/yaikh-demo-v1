@@ -1,16 +1,16 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation, useParams, Outlet } from 'react-router-dom';
-import { tuktuk } from '@lucide/lab';
+import { Scan, tuktuk } from '@lucide/lab';
 
 
 import {
   Users, Calculator, Layout, Briefcase, Ticket, FileText, ShoppingBag, 
   User, CheckSquare, Zap, Wind, Droplet, Globe, Mic, Trash2, 
   Truck, AlertTriangle, Video, Factory, Box, Settings, Layers, 
-  Clock, Tag, ShoppingCart, Search, Bell, Menu, Home, Mail, Calendar,
+  Clock, Tag, ShoppingCart, Search, Bell, Menu, Home, Mail, Calendar, Flame, Fan, ToggleRight, ArrowDownToLine, ArrowUpFromLine,
   MessageSquare, ChevronDown, QrCode, GraduationCap, UserCog, 
   Receipt, FlaskConical, MonitorPlay, ClipboardCheck, ArrowLeft, Building,
-  CheckCircle, FileCheck, Banknote, BarChart2, PieChart, MapPin, Ticket as TicketIcon, Package, Scissors, Warehouse, Cpu, HardHat, Hand, Shirt, Feather, PackageCheck, WashingMachine, Wrench, BrainCircuit, TestTube, Shield, LayoutDashboard, Settings2, GaugeCircle, Sun, Activity, Power, Car, Bike, Bus, Rocket, BarChartBig, UsersRound, Download,
+  CheckCircle, FileCheck, Banknote, BarChart2, PieChart, MapPin, Ticket as TicketIcon, Package, Scissors, Warehouse, Cpu, HardHat, Hand, Shirt, Feather, PackageCheck, WashingMachine, Wrench, BrainCircuit, TestTube, Shield, LayoutDashboard, Settings2, GaugeCircle, Sun, Activity, Power, Car, Bike, Bus, Rocket, BarChartBig, UsersRound, Download, X,
 
   Image as ImageIcon, Plus, Filter, MoreHorizontal, Thermometer, Droplets,
   BookOpen, Video as VideoIcon, PenTool, Coffee, Clock as ClockIcon
@@ -49,10 +49,12 @@ const iconMap = {
     Mail,
     Layout,
     UserCog,
+    FileText,
     BarChart2,
     Settings,
     CheckSquare,
     MonitorPlay,
+    Layers,
     Briefcase,
     Plus,
     BookOpen,
@@ -84,7 +86,14 @@ const iconMap = {
     Rocket,
     BarChartBig,
     UsersRound,
+   
     Download,
+    Flame,
+    Fan,
+    ToggleRight,
+    ArrowDownToLine,
+    ArrowUpFromLine,
+    X,
     
 };
 
@@ -206,7 +215,7 @@ const SubMenuView = () => {
     const navigate = useNavigate();
     const { moduleId } = useParams();
     const { state } = useLocation(); // Get title from navigation state
-    const { title, cards } = state;
+    const { title = 'Submenu', cards = [] } = state || {};
 
     return (
         <div className="flex flex-col items-center justify-center h-full min-h-[500px] animate-in fade-in zoom-in duration-300">
@@ -221,7 +230,8 @@ const SubMenuView = () => {
             {cards.map((card, idx) => (
                  <button 
                     key={idx}
-                    onClick={() => card.action ? navigate(card.action) : (card.image ? navigate(`/image/${card.image}`) : navigate(`/${moduleId}`))}
+                    onClick={() => card.action ? navigate(card.action) : (card.image ? navigate(`/image/${card.image}`) : navigate(`/submenu/${moduleId}`))}
+
                     className={`w-48 h-40 rounded-xl shadow-xl hover:scale-105 transition transform flex flex-col items-center justify-center gap-4 border-b-4 border-black/20 ${card.color || 'bg-white text-slate-800'}`}
                  >
                     <div className="bg-black/5 p-4 rounded-full"><IconRenderer iconName={card.icon} size={40} /></div>
@@ -597,16 +607,18 @@ const ShopGridView = ({ onBack }) => (
 
 // NEW: Generic Image View
 const ImageView = ({ onBack }) => {
-    const { imageName } = useParams();
-    const imageUrl = `/assets/${imageName}`;
+    const params = useParams();
+    const imagePath = params['*']; // Use the wildcard parameter
+    const imageUrl = `/assets/${imagePath}`;
+    const altText = imagePath ? imagePath.split('/').pop().split('.')[0] : 'Displayed image';
 
     return (
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl shadow-2xl h-[600px] m-4 animate-in fade-in duration-500 flex flex-col overflow-hidden">
             <div className="p-4 flex items-center gap-4">
                 <button onClick={onBack} className="p-2 hover:bg-white/20 rounded-full text-white"><ArrowLeft size={20} /></button>
             </div>
-            <div className="flex-1 p-4 flex items-center justify-center">
-                <img src={imageUrl} alt={imageName.split('.')[0]} className="max-w-full max-h-full object-contain rounded-lg shadow-2xl" />
+            <div className="flex-1 p-8 flex items-center justify-center">
+                <img src={imageUrl} alt={altText} className="max-w-full max-h-full object-contain rounded-lg shadow-2xl" />
             </div>
         </div>
     );
@@ -617,11 +629,25 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [currentTime, setCurrentTime] = useState('');
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date().toLocaleTimeString('en-US', {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+            }));
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+//Handle all image display
     const handleModuleClick = (module) => {
         if (module.demoType) {
             const { demoType, id, title } = module;
-            if (demoType.startsWith('SUBMENU')) {
+            if (demoType === 'IMAGE_VIEW') navigate(`/image/${module.image}`);
+            else if (demoType === 'VIEW_SYSTEM_ANALYSIS') navigate(`/${id}`);
+            else if (demoType?.startsWith('SUBMENU')) {
                  const cards = id === 'digital-audit' ? [
                     { title: 'Checklist 6s', icon: 'CheckSquare', color: 'bg-cyan-500 text-white' },
                     { title: 'Digital Audit', icon: 'MonitorPlay', color: 'bg-blue-500 text-white' },
@@ -631,15 +657,15 @@ const Dashboard = () => {
                     { title: 'Checklist Attendant', icon: 'CheckSquare', color: 'bg-sky-400 text-white' },
                     { title: 'My Attendant', icon: 'UserCog', color: 'bg-teal-500 text-white' }
                 ] : id === 'pr-admin' ? [
-                    { title: 'Show Lists Request', icon: 'Layout', color: 'bg-blue-500 text-white' },
-                    { title: 'Master List', icon: 'FileCheck', color: 'bg-cyan-500 text-white' },
+                    { title: 'Show Lists Request', icon: 'Layout', color: 'bg-blue-500 text-white', image: 'modules-image/show-list-request.png' },
+                    { title: 'Master List', icon: 'FileCheck', color: 'bg-blue-500 text-white', image: 'modules-image/Master-list-pr.png' },
                     { title: 'Purchaser Workspace', icon: 'Briefcase', color: 'bg-indigo-500 text-white' },
                     { title: 'My Confirm Received', icon: 'CheckCircle', color: 'bg-emerald-500 text-white' },
                     { title: 'Documents Joiner', icon: 'Plus', color: 'bg-orange-500 text-white' }
                 ] : demoType === 'SUBMENU_PR' ? [
-                    { title: 'Verify PR', icon: 'CheckCircle', color: 'bg-yellow-400', image: 'Verify-pr.jpg' },
-                    { title: 'Approval PR', icon: 'FileCheck', color: 'bg-green-500 text-white', image: 'approval-pr.jpg' },
-                    { title: 'Pay PR', icon: 'Banknote', color: 'bg-orange-500 text-white', image: 'pay-pr.jpg' }
+                    { title: 'Verify PR', icon: 'CheckCircle', color: 'bg-yellow-400', image: 'modules-image/Verify-pr.png' },//image path display 
+                    { title: 'Approval PR', icon: 'FileCheck', color: 'bg-green-500 text-white', image: 'modules-image/Approval-pr.png' },
+                    { title: 'Pay PR', icon: 'Banknote', color: 'bg-orange-500 text-white', image: 'modules-image/Pay-pr.png' }
                 ] : id === 'gatepass' ? [
                     { title: 'Gate Pass', icon: 'Ticket', color: 'bg-blue-500 text-white' },
                     { title: 'Gate In/Out Records', icon: 'BookOpen', color: 'bg-sky-500 text-white' },
@@ -653,11 +679,32 @@ const Dashboard = () => {
                     { title: 'Master Organization Chart', icon: 'LayoutDashboard', color: 'bg-purple-500 text-white', action: '/org-chart-master' },
                     { title: 'Custom Organization Chart', icon: 'Settings2', color: 'bg-indigo-500 text-white', action: '/org-chart-master' },
                     { title: 'Leader/Worker Sections', icon: 'Users', color: 'bg-sky-500 text-white', action: '/org-chart-master' }
+                ] : id === 'cctv' ? [
+                    { title: 'Face Scan Logs', icon: 'BookOpen', color: 'bg-sky-500 text-white',image: 'modules-image/face-scan-logs.png' },
+                    { title: 'My Face Scan', icon: 'Scan', color: 'bg-teal-500 text-white' }
+                
                 ] : demoType === 'SUBMENU_ENERGY' ? [
                     { title: 'Meters', icon: 'GaugeCircle', color: 'bg-orange-500 text-white', action: '/energy/meters' },
                     { title: 'Solar Dashboard', icon: 'Sun', color: 'bg-yellow-500 text-white', action: '/energy/meters' },
                     { title: 'Switch Board Ampere Load Monitoring', icon: 'Activity', color: 'bg-red-500 text-white', action: '/energy/meters' },
                     { title: 'Energy Source', icon: 'Power', color: 'bg-green-500 text-white', action: '/energy/meters' }
+                ] : demoType === 'SUBMENU_WASTE' ? [
+                    { title: 'Waste', icon: 'Trash2', color: 'bg-purple-500 text-white', action: '/waste' },
+                    { title: 'Boiler', icon: 'Flame', color: 'bg-orange-500 text-white' }
+                ] : demoType === 'SUBMENU_AIR' ? [
+                    { title: 'Temperature Humidity Sensor', icon: 'Thermometer', color: 'bg-red-500 text-white', action: '/sensors' },
+                    { title: 'Switch (Fan & Pump)', icon: 'ToggleRight', color: 'bg-slate-500 text-white' },
+                    { title: 'Air Quality Detector', icon: 'Wind', color: 'bg-sky-500 text-white', action: '/sensors' }
+                ] : demoType === 'SUBMENU_WATER' ? [
+                    { title: 'In', icon: 'ArrowDownToLine', color: 'bg-sky-500 text-white' },
+                    { title: 'Out', icon: 'ArrowUpFromLine', color: 'bg-orange-500 text-white' }
+                ] : demoType === 'SUBMENU_TEMP_WORKER' ? [
+                    { title: 'Request Worker Form', icon: 'FileText', color: 'bg-blue-500 text-white' },
+                    { title: 'Request Worker List', icon: 'Layout', color: 'bg-green-500 text-white' }
+                ] : demoType === 'SUBMENU_E_INVOICING' ? [
+                    { title: 'Cambodia E Invoice', icon: 'Banknote', color: 'bg-emerald-500 text-white' },
+                    { title: 'Supplier Management', icon: 'Briefcase', color: 'bg-sky-500 text-white' },
+                    { title: 'IEWS', icon: 'Layers', color: 'bg-indigo-500 text-white' }
                 ] : demoType === 'SUBMENU_DEPARTMENTS' ? [
                     { title: 'Online Training', icon: 'MonitorPlay', color: 'bg-blue-500 text-white' }, // Correct
                     { title: 'YAI', icon: 'Building', color: 'bg-slate-500 text-white' }, // Correct
@@ -693,11 +740,7 @@ const Dashboard = () => {
                     { title: 'Settings', icon: 'Settings', color: 'bg-gray-200' }
                 ];
                 navigate(`/submenu/${id}`, { state: { title, cards } });
-            } else if (id === 'training') {
-                navigate('/image/training.png');
-            } else if (demoType === 'GRID_TRAINING') navigate('/training');
-            else if (demoType === 'GRID_SENSORS') navigate('/sensors');
-            else if (demoType === 'VIEW_SYSTEM_ANALYSIS') navigate(`/${id}`);
+            }  else if (demoType === 'GRID_TRAINING') navigate('/training');
             else if (demoType === 'VIEW_TICKET_CUSTOM') navigate('/ticket');
             else if (demoType === 'DASH_WASTE') navigate('/waste');
             else if (demoType === 'TIMELINE_MEETING') navigate('/meeting');
@@ -732,7 +775,7 @@ const Dashboard = () => {
             </div>
             <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 text-white text-[10px] py-1 px-4 flex justify-between items-center z-50 border-t border-slate-700">
                 <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div><span className="font-mono text-cyan-400">SYSTEM ONLINE</span></div>
-                <div className="flex gap-4 opacity-70"><span>Light rain</span><span>32°C</span><span>1:45 PM</span></div>
+                <div className="flex gap-4 opacity-70 font-mono"><span>{currentTime}</span></div>
             </div>
         </>
     );
@@ -777,7 +820,7 @@ export default function App() {
                 <Route path="meeting" element={<TimelineView onBack={handleBack} onAdd={() => {}} />} />
                 <Route path="ticket" element={<SupportTicketView onBack={handleBack} />} />
                 <Route path="submenu/:moduleId" element={<SubMenuView />} />
-                <Route path="image/:imageName" element={<ImageView onBack={handleBack} />} />
+                <Route path="image/*" element={<ImageView onBack={handleBack} />} />
                 <Route path="org-chart-master" element={<OrgChartView onBack={handleBack} />} />
                 <Route path="energy/meters" element={<MeterDeviceListView onBack={handleBack} />} />
                 <Route path="system-analysis" element={<SystemAnalysisView onBack={handleBack} />} />

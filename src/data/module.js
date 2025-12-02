@@ -18,7 +18,7 @@ export const DASHBOARD_DATA = [
         modules: [
           // Added 'id' to identify this specific module for the click action
           { id: 'pr-module', title: 'Purchase Request', icon: FileText, status: 'active', color: 'text-green-600', demoType: 'SUBMENU_PR' },
-          { title: 'E-Invoicing', icon: Receipt, status: 'active', logo: true, color: 'text-green-500' },
+          { id: 'e-invoicing', title: 'E-Invoicing', icon: Receipt, status: 'active', logo: true, color: 'text-green-500', demoType: 'SUBMENU_E_INVOICING' },
         ]
       },
       {
@@ -28,8 +28,8 @@ export const DASHBOARD_DATA = [
           { id: 'yhr', title: 'YHR', icon: Users, status: 'active', color: 'text-blue-500', demoType: 'SUBMENU_YHR' },
           { title: 'Salary Bill', icon: Calculator, status: 'coming-soon' },
           { id: 'org', title: 'Org Chart', icon: Layout, status: 'active', demoType: 'SUBMENU_ORG' },
-          { id: 'training', title: 'Training', icon: Briefcase, status: 'active', demoType: 'SUBMENU_DEPARTMENTS' },
-          { title: 'Temp Work Request', icon: UserCog, status: 'active' }, // New Module
+          { id: 'training', title: 'Training', icon: Briefcase, status: 'active', demoType: 'SUBMENU_DEPARTMENTS' }, // Corrected ID
+          { id: 'temp-work-request', title: 'Temp Work Request', icon: UserCog, status: 'active', demoType: 'SUBMENU_TEMP_WORKER' }, // New Module
           { title: 'Speak Up', icon: Mic, status: 'active', logo: true },
         ]
       },
@@ -38,14 +38,14 @@ export const DASHBOARD_DATA = [
         title: 'Admin',
         modules: [
           { id: 'ticket', title: 'Support Ticket', icon: Ticket, status: 'active', demoType: 'VIEW_TICKET_CUSTOM' },
-          { id: 'pr-admin', title: 'Purchase Request', icon: FileText, status: 'active', demoType: 'SUBMENU_PR_ADMIN' }, // Note: duplicate name, different column
+          { id: 'pr-admin', title: 'Purchase Request', icon: FileText, status: 'active', demoType: 'SUBMENU_PR_ADMIN' },
           { id: 'shop', title: 'Y Shop', icon: ShoppingBag, status: 'active', sub: 'Stationery', demoType: 'GRID_SHOP' },
           { title: 'Bill Verify', icon: Receipt, status: 'active' }, // New Module
           { id: 'gatepass', title: 'Gate Pass', icon: User, status: 'active', demoType: 'SUBMENU_VISITOR' },
-          { id: 'meeting', title: 'Meeting Room', icon: Users, status: 'active', demoType: 'TIMELINE_MEETING' },
-          { id: 'car', title: 'My Car Booking', icon: Truck, status: 'active', demoType: 'TABLE_CAR' },
+          { id: 'meeting', title: 'Meeting Room', icon: Users, status: 'active', demoType: 'IMAGE_VIEW', image: 'modules-image/meeting-room.png' },
+          { id: 'car', title: 'My Car Booking', icon: Truck, status: 'active', demoType: 'IMAGE_VIEW', image: 'modules-image/Car-booking.png' },
           { title: 'Fire Alarm', icon: AlertTriangle, status: 'coming-soon' },
-          { title: 'CCTV', icon: Video, status: 'active', highlight: true },
+          { id: 'cctv', title: 'CCTV', icon: Video, status: 'active', highlight: true, demoType: 'SUBMENU_CCTV' },
         ]
       },
       {
@@ -54,9 +54,9 @@ export const DASHBOARD_DATA = [
         modules: [
           { id: 'digital-audit', title: 'Digital Audit', icon: CheckSquare, status: 'active', demoType: 'SUBMENU_DIGITAL_AUDIT' },
           { id: 'energy', title: 'Energy', icon: Zap, status: 'active', demoType: 'SUBMENU_ENERGY' },
-          { id: 'air', title: 'Air', icon: Wind, status: 'active', demoType: 'GRID_SENSORS' },
-          { title: 'Water', icon: Droplet, status: 'active' },
-          { id: 'waste', title: 'Waste', icon: Trash2, status: 'active', demoType: 'DASH_WASTE' },
+          { id: 'air', title: 'Air', icon: Wind, status: 'active', demoType: 'SUBMENU_AIR' },
+          { id: 'water', title: 'Water', icon: Droplet, status: 'active', demoType: 'SUBMENU_WATER' },
+          { id: 'waste', title: 'Waste', icon: Trash2, status: 'active', demoType: 'SUBMENU_WASTE' },
           { title: 'Chemical', icon: FlaskConical, status: 'coming-soon' }, // New Module
         ]
       },
@@ -79,7 +79,7 @@ export const DASHBOARD_DATA = [
             id: 'mgmt-main',
             title: '', // No sub-label needed for this single column
             modules: [
-                { id: 'system-analysis', title: 'System Analysis', icon: MonitorPlay, status: 'active', demoType: 'VIEW_SYSTEM_ANALYSIS' } // New Module
+                { id: 'system-analysis', title: 'System Analysis', icon: MonitorPlay, status: 'active', demoType: 'IMAGE_VIEW', image: 'modules-image/System-analysis.png' } // New Module
             ]
         }
     ]
