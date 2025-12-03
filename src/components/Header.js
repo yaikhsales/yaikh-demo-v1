@@ -13,7 +13,7 @@ const Header = () => (
       <div className="h-8 w-[1px] bg-gray-300"></div>
       <div className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 p-1 rounded transition">
         <div className="w-10 h-10 rounded-full bg-blue-100 overflow-hidden border border-gray-200">
-           <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" className="w-full h-full object-cover"/>
+           <img src="https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg" alt="User" className="w-full h-full object-cover"/>
         </div>
         <div className="hidden md:block">
           <div className="flex items-center gap-1">

@@ -1,7 +1,7 @@
 import React from 'react';
 import ModuleCard from './ModuleCard';
 
-const ColumnGroup = ({ group, onModuleClick }) => {
+const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModuleClick }) => {
   return (
     <div className="flex flex-col min-w-[100px] flex-1">
       {/* Sub Label (Only show if title exists) */}
@@ -16,7 +16,13 @@ const ColumnGroup = ({ group, onModuleClick }) => {
       {/* Vertical Stack of Modules */}
       <div className="flex flex-col gap-1">
         {group.modules.map((mod, idx) => (
-          <ModuleCard key={idx} data={mod} onClick={onModuleClick} />
+          <ModuleCard
+            key={idx}
+            data={mod}
+            onClick={onModuleClick}
+            botVersion={botVersion}
+            onBotClick={onBotModuleClick}
+          />
         ))}
       </div>
     </div>

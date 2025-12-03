@@ -1,11 +1,49 @@
 import React from "react";
 
-const ModuleCard = ({ data, onClick }) => {
+const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick }) => {
   const isComingSoon = data.status === "coming-soon";
+
+  const handleCardClick = () => {
+    if (isComingSoon) return;
+    if (botVersion === 'bot-v1' && onBotClick) {
+      onBotClick(data);
+      return;
+    }
+    if (onClick) onClick(data);
+  };
+
+  const renderIcon = () => {
+    if (data.logo) {
+      return (
+        <div
+          className={`text-3xl font-black italic ${
+            data.color || "text-green-500"
+          }`}
+        >
+          {data.title === "E-Invoicing"
+            ? "Ei"
+            : data.title === "YQMS"
+            ? "Q"
+            : "S"}
+        </div>
+      );
+    }
+    const IconComponent = data.icon;
+    return (
+      <IconComponent
+        size={32}
+        className={`${
+          isComingSoon
+            ? "text-black"
+            : data.color || "text-slate-800"
+        }`}
+      />
+    );
+  };
 
   return (
     <div
-      onClick={() => !isComingSoon && onClick && onClick(data)}
+      onClick={handleCardClick}
       className={`
             relative group flex flex-col items-center justify-center 
             h-28 w-full rounded-xl transition-all duration-300 cursor-pointer
@@ -24,30 +62,7 @@ const ModuleCard = ({ data, onClick }) => {
           isComingSoon ? "opacity-40 grayscale" : "opacity-100"
         }`}
       >
-        {data.logo ? (
-          <div
-            className={`text-3xl font-black italic ${
-              data.color || "text-green-500"
-            }`}
-          >
-            {data.title === "E-Invoicing"
-              ? "Ei"
-              : data.title === "YQMS"
-              ? "Q"
-              : "S"}
-          </div>
-        ) : (
-          <data.icon
-            size={32}
-            className={`
-                        ${
-                          isComingSoon
-                            ? "text-black"
-                            : data.color || "text-slate-800"
-                        }
-                    `}
-          />
-        )}
+        {renderIcon()}
 
         <span className="text-center font-bold text-slate-800 text-xs px-1 leading-tight line-clamp-2">
           {data.title}

@@ -1,0 +1,281 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { X, Bell, Mic, MessageSquare, Layers, Database, Sparkles, Send } from 'lucide-react';
+
+const GMChat = ({ onClose }) => {
+    const [newMessage, setNewMessage] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [isTyping, setIsTyping] = useState(false);
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
+    const generateBotResponse = (userMessage) => {
+        const lowerMessage = userMessage.toLowerCase();
+        
+        // Simple response logic
+        if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+            return "Hello! How can I assist you today? I'm here to help with tasks, modules, and data collection.";
+        } else if (lowerMessage.includes('module')) {
+            return "I can help you navigate through all available modules. Would you like to see a list of modules or search for a specific one?";
+        } else if (lowerMessage.includes('data') || lowerMessage.includes('collection')) {
+            return "I can assist with data collection tasks. What kind of data are you looking to collect or manage?";
+        } else if (lowerMessage.includes('help')) {
+            return "I'm here to help! You can ask me about modules, data collection, or use the action buttons above. What would you like to know?";
+        } else if (lowerMessage.includes('thank')) {
+            return "You're welcome! Is there anything else I can help you with?";
+        } else {
+            return `I understand you're asking about "${userMessage}". Let me help you with that. Could you provide more details?`;
+        }
+    };
+
+    const handleSendMessage = (e) => {
+        e.preventDefault();
+        if (newMessage.trim() === '') return;
+
+        // Add user message
+        const userMsg = { id: Date.now(), text: newMessage, sender: 'user' };
+        setMessages(prev => [...prev, userMsg]);
+        setNewMessage('');
+        setIsTyping(true);
+
+        // Simulate bot thinking and response
+        setTimeout(() => {
+            const botResponse = generateBotResponse(newMessage);
+            const botMsg = { id: Date.now() + 1, text: botResponse, sender: 'bot' };
+            setMessages(prev => [...prev, botMsg]);
+            setIsTyping(false);
+        }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+    };
+
+    const handleActionClick = (action) => {
+        // Handle action clicks (Speak, Chat, All modules, Data Collection)
+        let actionMessage = '';
+        switch(action) {
+            case 'speak':
+                actionMessage = "I'd like to speak with AI";
+                break;
+            case 'chat':
+                actionMessage = "I want to chat with AI";
+                break;
+            case 'modules':
+                actionMessage = "Show me all modules";
+                break;
+            case 'data':
+                actionMessage = "I need help with data collection";
+                break;
+            default:
+                return;
+        }
+        
+        // Add user message
+        const userMsg = { id: Date.now(), text: actionMessage, sender: 'user' };
+        setMessages(prev => [...prev, userMsg]);
+        setIsTyping(true);
+
+        // Generate bot response
+        setTimeout(() => {
+            const botResponse = generateBotResponse(actionMessage);
+            const botMsg = { id: Date.now() + 1, text: botResponse, sender: 'bot' };
+            setMessages(prev => [...prev, botMsg]);
+            setIsTyping(false);
+        }, 1000);
+    };
+
+    const showInitialView = messages.length === 0;
+    
+    return (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-[100] flex items-center justify-center animate-in fade-in duration-500">
+            {/* Main UI Frame - Full Screen Responsive Design */}
+            <div className="relative bg-black border border-white/10 md:rounded-3xl shadow-2xl w-full h-full md:h-[95vh] md:max-h-[900px] md:w-[95vw] md:max-w-[1400px] overflow-hidden flex flex-col text-white font-sans">
+
+                {/* Close Button */}
+                <button onClick={onClose} className="absolute top-4 right-4 md:top-6 md:right-6 p-2 text-white/50 hover:bg-white/10 hover:text-white rounded-full transition-colors z-10">
+                    <X size={24} className="md:w-6 md:h-6" />
+                </button>
+
+                {/* 1. Header Section */}
+                <header className="p-3 md:p-6 pt-10 md:pt-16 pb-3 md:pb-6 flex-shrink-0">
+                    <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+                        {/* User Avatar */}
+                        <img 
+                            src="/assets/modules-image/top-bot.png" 
+                            alt="User Avatar" 
+                            className="w-9 h-9 md:w-12 md:h-12 rounded-full object-cover border-2 border-white/20 shadow-lg flex-shrink-0"
+                        />
+                        <div className="flex-1 min-w-0">
+                            <h1 className="text-base md:text-xl lg:text-2xl font-bold text-white truncate">Hi, Sin Khun</h1>
+                        </div>
+                        {/* Bell Icon */}
+                        <div className="relative flex-shrink-0">
+                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-800/80 flex items-center justify-center">
+                                <Bell size={16} className="md:w-5 md:h-5 text-white/80" />
+                            </div>
+                        </div>
+                    </div>
+                    <p className="text-[10px] xs:text-xs md:text-sm lg:text-base text-white/70 mt-1 md:mt-2 leading-relaxed line-clamp-2">
+                        Control tasks effortlessly, from creating visuals to organizing your calendar.
+                    </p>
+                </header>
+
+                {/* 2. Content Area - Shows either initial view or chat messages */}
+                <div className="flex-1 flex flex-col px-4 md:px-6 lg:px-8 py-4 md:py-6 relative overflow-y-auto min-h-0">
+                    {showInitialView ? (
+                        <>
+                            {/* Central Glowing Orb */}
+                            <div className="flex flex-col items-center justify-start py-4 md:py-8 relative min-h-full">
+                                {/* Glowing Orb - Responsive sizing - Smaller on mobile to fit all content */}
+                                <div className="relative w-40 h-40 xs:w-44 xs:h-44 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mb-6 md:mb-8 lg:mb-12 flex-shrink-0">
+                                    {/* Outer Glow Ring */}
+                                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400/30 via-pink-400/30 via-yellow-300/30 to-blue-300/30 blur-2xl animate-pulse"></div>
+                                    
+                                    {/* Main Orb */}
+                                    <div className="absolute inset-2 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 via-yellow-400 to-blue-400 shadow-[0_0_80px_rgba(139,92,246,0.8),0_0_120px_rgba(236,72,153,0.6),0_0_160px_rgba(250,204,21,0.4),inset_0_0_40px_rgba(255,255,255,0.1)] animate-pulse"></div>
+                                    
+                                    {/* Inner Highlight */}
+                                    <div className="absolute top-3 left-3 md:top-4 md:left-4 w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-white/20 blur-xl"></div>
+                                    
+                                    {/* Sparkle Icons on Orb */}
+                                    <div className="absolute top-6 left-8 md:top-8 md:left-12 lg:top-10 lg:left-14 z-10">
+                                        <Sparkles size={18} className="md:w-5 md:h-5 lg:w-6 lg:h-6 text-white drop-shadow-2xl animate-pulse" />
+                                    </div>
+                                    <div className="absolute bottom-8 right-10 md:bottom-10 md:right-14 lg:bottom-12 lg:right-16 z-10">
+                                        <Sparkles size={14} className="md:w-4 md:h-4 lg:w-5 lg:h-5 text-white drop-shadow-2xl animate-pulse" style={{ animationDelay: '0.5s' }} />
+                                    </div>
+                                    
+                                    {/* Purple Glow Below - Elongated */}
+                                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-28 h-20 md:w-32 md:h-24 lg:w-40 lg:h-32 bg-gradient-to-b from-purple-500/50 via-purple-400/30 to-transparent blur-3xl"></div>
+                                </div>
+
+                                {/* Interaction Cards Grid - Responsive - Ensure all visible */}
+                                <div className="grid grid-cols-2 gap-2.5 xs:gap-3 sm:gap-3 md:gap-4 w-full max-w-xs xs:max-w-sm sm:max-w-md md:max-w-md lg:max-w-lg pb-4 flex-shrink-0">
+                                    {/* Speak with AI */}
+                                    <button 
+                                        onClick={() => handleActionClick('speak')}
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                    >
+                                        <Mic size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">Speak with AI</span>
+                                    </button>
+
+                                    {/* Chat with AI */}
+                                    <button 
+                                        onClick={() => handleActionClick('chat')}
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                    >
+                                        <MessageSquare size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">Chat with AI</span>
+                                    </button>
+
+                                    {/* All modules */}
+                                    <button 
+                                        onClick={() => handleActionClick('modules')}
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                    >
+                                        <Layers size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">All modules</span>
+                                    </button>
+
+                                    {/* Data Collection */}
+                                    <button 
+                                        onClick={() => handleActionClick('data')}
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                    >
+                                        <Database size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">Data Collection</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            {/* Chat Messages Area */}
+                            <div className="flex-1 overflow-y-auto mb-4 space-y-3 md:space-y-4 pr-2">
+                                {messages.map((message) => (
+                                    <div
+                                        key={message.id}
+                                        className={`flex items-start gap-2 md:gap-3 ${
+                                            message.sender === 'user' ? 'justify-end' : 'justify-start'
+                                        }`}
+                                    >
+                                        {message.sender === 'bot' && (
+                                            <img 
+                                                src="/assets/modules-image/top-bot.png" 
+                                                alt="Bot" 
+                                                className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full object-cover border-2 border-purple-400/50 flex-shrink-0" 
+                                            />
+                                        )}
+                                        <div
+                                            className={`max-w-[75%] md:max-w-[70%] lg:max-w-[65%] rounded-2xl px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm lg:text-base ${
+                                                message.sender === 'user'
+                                                    ? 'bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-br-none'
+                                                    : 'bg-slate-800/80 text-white/90 rounded-bl-none border border-white/10'
+                                            }`}
+                                        >
+                                            {message.text}
+                                        </div>
+                                        {message.sender === 'user' && (
+                                            <div className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+                                                <span className="text-white text-xs md:text-sm font-bold">SK</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                                
+                                {/* Typing Indicator */}
+                                {isTyping && (
+                                    <div className="flex items-start gap-2 md:gap-3">
+                                        <img 
+                                            src="/assets/modules-image/top-bot.png" 
+                                            alt="Bot" 
+                                            className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full object-cover border-2 border-purple-400/50 flex-shrink-0" 
+                                        />
+                                        <div className="bg-slate-800/80 rounded-2xl rounded-bl-none px-3 py-2 md:px-4 md:py-3 border border-white/10">
+                                            <div className="flex gap-1">
+                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                <div ref={messagesEndRef} />
+                            </div>
+                        </>
+                    )}
+                </div>
+
+                {/* 4. Bottom Input Field */}
+                <footer className="p-4 md:p-6 pt-4 pb-4 md:pb-6">
+                    <form onSubmit={handleSendMessage} className="relative bg-slate-900/50 border border-white/10 backdrop-blur-xl rounded-xl md:rounded-2xl flex items-center p-2 md:p-3 gap-2 md:gap-3">
+                        <input 
+                            type="text"
+                            placeholder="Ask anything"
+                            className="flex-1 bg-transparent text-xs md:text-sm lg:text-base placeholder:text-white/40 outline-none text-white"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                        />
+                        <button 
+                            type="submit" 
+                            className="w-9 h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity flex-shrink-0"
+                        >
+                            {newMessage.trim() ? (
+                                <Send size={16} className="md:w-4 md:h-4 lg:w-5 lg:h-5 text-white" />
+                            ) : (
+                                <Sparkles size={16} className="md:w-4 md:h-4 lg:w-5 lg:h-5 text-white" />
+                            )}
+                        </button>
+                    </form>
+                </footer>
+
+            </div>
+        </div>
+    );
+};
+
+export default GMChat;

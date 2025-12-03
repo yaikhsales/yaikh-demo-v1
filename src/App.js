@@ -1,14 +1,15 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation, useParams, Outlet } from 'react-router-dom';
 import { Scan, tuktuk } from '@lucide/lab';
-
-
+import Chatbot from './chatbot/bot';
+import BotVersion2 from './chatbot/bot-version2';
+import GMChat from './chatbot/GMChat';
 import {
   Users, Calculator, Layout, Briefcase, Ticket, FileText, ShoppingBag, 
   User, CheckSquare, Zap, Wind, Droplet, Globe, Mic, Trash2, 
   Truck, AlertTriangle, Video, Factory, Box, Settings, Layers, 
   Clock, Tag, ShoppingCart, Search, Bell, Menu, Home, Mail, Calendar, Flame, Fan, ToggleRight, ArrowDownToLine, ArrowUpFromLine,
-  MessageSquare, ChevronDown, QrCode, GraduationCap, UserCog, 
+  MessageSquare, ChevronDown, QrCode, GraduationCap, UserCog, Sparkles, Database, GitBranch, ChevronRight,
   Receipt, FlaskConical, MonitorPlay, ClipboardCheck, ArrowLeft, Building,
   CheckCircle, FileCheck, Banknote, BarChart2, PieChart, MapPin, Ticket as TicketIcon, Package, Scissors, Warehouse, Cpu, HardHat, Hand, Shirt, Feather, PackageCheck, WashingMachine, Wrench, BrainCircuit, TestTube, Shield, LayoutDashboard, Settings2, GaugeCircle, Sun, Activity, Power, Car, Bike, Bus, Rocket, BarChartBig, UsersRound, Download, X,
 
@@ -624,10 +625,17 @@ const ImageView = ({ onBack }) => {
     );
 };
 
-// Main Dashboard Component
-const Dashboard = () => {
+// A new layout component to hold the shared UI (Header, Background)
+const AppLayout = () => {
+    const location = useLocation();
     const navigate = useNavigate();
-    const [showModal, setShowModal] = useState(false);
+    const [isChatbotOpen, setChatbotOpen] = useState(false);
+    const [isGMChatOpen, setGMChatOpen] = useState(false);
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
+    const [isVersionMenuOpen, setVersionMenuOpen] = useState(false);
+    const [botVersion, setBotVersion] = useState('default');
+    const [activeBotUI, setActiveBotUI] = useState('legacy');
+    const [botModuleContext, setBotModuleContext] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentTime, setCurrentTime] = useState('');
 
@@ -641,8 +649,18 @@ const Dashboard = () => {
         }, 1000);
         return () => clearInterval(timer);
     }, []);
-//Handle all image display
+
+    const openBotForModule = (module) => {
+        setBotModuleContext(module);
+        setActiveBotUI(botVersion === 'bot-v1' ? 'chatgpt' : 'legacy');
+        setChatbotOpen(true);
+    };
+
     const handleModuleClick = (module) => {
+        if (botVersion === 'bot-v1') {
+            openBotForModule(module);
+            return;
+        }
         if (module.demoType) {
             const { demoType, id, title } = module;
             if (demoType === 'IMAGE_VIEW') navigate(`/image/${module.image}`);
@@ -752,41 +770,73 @@ const Dashboard = () => {
         }
     };
 
-    return (
-        <>
-            <div className="relative z-10 min-w-[1200px] max-w-[1800px] mx-auto flex flex-col gap-6 animate-in fade-in duration-500">
-                <div className="w-full flex justify-end mb-4">
-                    <div className="bg-white/10 backdrop-blur-md border border-white/20 flex items-center px-3 py-2 rounded-lg w-64 text-white">
-                        <Search className="w-4 h-4 text-cyan-300 mr-2" />
-                        <input
-                            type="text"
-                            placeholder="Search modules..."
-                            className="bg-transparent border-none outline-none placeholder-cyan-100/50 w-full text-xs"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div className="flex justify-center items-start gap-4">
-                    <SectionContainer section={DASHBOARD_DATA[0]} onModuleClick={handleModuleClick} />
-                    <SectionContainer section={DASHBOARD_DATA[1]} onModuleClick={handleModuleClick} />
-                    <SectionContainer section={DASHBOARD_DATA[2]} onModuleClick={handleModuleClick} />
-                </div>
-            </div>
-            <div className="fixed bottom-0 left-0 right-0 bg-slate-900/95 text-white text-[10px] py-1 px-4 flex justify-between items-center z-50 border-t border-slate-700">
-                <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div><span className="font-mono text-cyan-400">SYSTEM ONLINE</span></div>
-                <div className="flex gap-4 opacity-70 font-mono"><span>{currentTime}</span></div>
-            </div>
-        </>
-    );
-}
+    const handleBotVersionSelect = (version) => {
+        setBotVersion(version);
+        if (version !== 'bot-v1') {
+            setBotModuleContext(null);
+        }
+        setVersionMenuOpen(false);
+        setDropdownOpen(false);
+    };
 
-// A new layout component to hold the shared UI (Header, Background)
-const AppLayout = () => {
-    const location = useLocation();
+    const handleChatbotClose = () => {
+        setChatbotOpen(false);
+        setBotModuleContext(null);
+        setActiveBotUI('legacy');
+    };
+
     return (
-        <div className="flex flex-col min-h-screen font-sans bg-slate-900 overflow-x-hidden">
+        <div className="flex flex-col min-h-screen font-sans bg-slate-900 overflow-x-hidden" style={{ zIndex: 1 }}>
             <Header />
+
+            {/* Chatbot Icon & Dropdown */}
+            <div className="fixed top-20 left-6 z-[60] text-white">
+                <button onClick={() => setDropdownOpen(prev => !prev)} className="rounded-full shadow-lg hover:scale-110 transition-transform duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900" aria-label="Open AI Assistant">
+                    <img src="assets/modules-image/chatbot.png" alt="AI Assistant" className="w-12 h-12 rounded-full object-cover animate-pulse" />
+                </button>
+
+                {isDropdownOpen && (
+                    <div className="absolute top-full mt-2 w-56 bg-slate-800/80 backdrop-blur-lg border border-white/10 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                        <ul className="p-1 text-sm font-medium">
+                            <li 
+                                onClick={() => setVersionMenuOpen(prev => !prev)}
+                                className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-white/10 cursor-pointer"
+                            >
+                                <div className="flex items-center gap-3"><Database size={16} /> Default</div>
+                                <ChevronRight size={16} />
+                                {isVersionMenuOpen && (
+                                    <div className="absolute left-full top-0 ml-1 w-48 bg-slate-800/80 backdrop-blur-lg border border-white/10 rounded-lg shadow-2xl p-1">
+                                        {[
+                                            { id: 'default', label: 'Bot Version 1' },
+                                            { id: 'bot-v1', label: 'Bot Version 2' }
+                                        ].map(option => (
+                                            <button
+                                                key={option.id}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleBotVersionSelect(option.id);
+                                                }}
+                                                className={`w-full text-left px-3 py-2 rounded-md hover:bg-white/10 transition ${botVersion === option.id ? 'bg-white/10 text-cyan-300' : ''}`}
+                                            >
+                                                {option.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </li>
+                        </ul>
+                    </div>
+                )}
+            </div>
+
+            {isChatbotOpen && (
+                activeBotUI === 'chatgpt' ? (
+                    <BotVersion2 onClose={handleChatbotClose} moduleContext={botModuleContext} />
+                ) : (
+                    <Chatbot onClose={handleChatbotClose} moduleContext={botModuleContext} />
+                )
+            )}
+            {isGMChatOpen && <GMChat onClose={() => setGMChatOpen(false)} />}
             <main className="flex-1 relative p-4 md:p-6 overflow-x-auto">
                 {/* === BACKGROUND LAYERS === */}
                 <div className="fixed inset-0 z-0 pointer-events-none">
@@ -799,7 +849,47 @@ const AppLayout = () => {
                     <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[120px] animate-pulse"></div>
                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
                 </div>
-                <Outlet /> {/* This will render the matched child route */}
+                
+                {/* Conditionally render dashboard content or other views */}
+                {location.pathname === '/' ? (
+                    <>
+                        <div className="relative z-10 min-w-[1200px] max-w-[1800px] mx-auto flex flex-col gap-6 animate-in fade-in duration-500">
+                            <div className="w-full flex justify-end mb-4">
+                                <div className="bg-white/10 backdrop-blur-md border border-white/20 flex items-center px-3 py-2 rounded-lg w-64 text-white">
+                                    <Search className="w-4 h-4 text-cyan-300 mr-2" />
+                                    <input
+                                        type="text"
+                                        placeholder="Search modules..."
+                                        className="bg-transparent border-none outline-none placeholder-cyan-100/50 w-full text-xs"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex justify-center items-start gap-4">
+                                <SectionContainer
+                                    section={DASHBOARD_DATA[0]}
+                                    onModuleClick={handleModuleClick}
+                                    botVersion={botVersion}
+                                    onBotModuleClick={openBotForModule}
+                                />
+                                <SectionContainer
+                                    section={DASHBOARD_DATA[1]}
+                                    onModuleClick={handleModuleClick}
+                                    onGMChatClick={() => setGMChatOpen(true)}
+                                    botVersion={botVersion}
+                                    onBotModuleClick={openBotForModule}
+                                />
+                                <SectionContainer
+                                    section={DASHBOARD_DATA[2]}
+                                    onModuleClick={handleModuleClick}
+                                    botVersion={botVersion}
+                                    onBotModuleClick={openBotForModule}
+                                />
+                            </div>
+                        </div>
+                    </>
+                ) : <Outlet />}
             </main>
         </div>
     );
@@ -812,7 +902,7 @@ export default function App() {
     return (
         <Routes>
             <Route path="/" element={<AppLayout />}>
-                <Route index element={<Dashboard />} /> 
+                <Route index element={<div />} /> {/* Index route is now handled inside AppLayout */}
                 <Route path="training" element={<TrainingGridView onBack={handleBack} />} />
                 <Route path="sensors" element={<SensorGridView onBack={handleBack} />} />
                 <Route path="waste" element={<WasteDashboardView onBack={handleBack} />} />
