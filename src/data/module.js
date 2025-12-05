@@ -42,8 +42,8 @@ export const DASHBOARD_DATA = [
           { id: 'shop', title: 'Y Shop', icon: ShoppingBag, status: 'active', sub: 'Stationery', demoType: 'GRID_SHOP' },
           { title: 'Bill Verify', icon: Receipt, status: 'active' }, // New Module
           { id: 'gatepass', title: 'Gate Pass', icon: User, status: 'active', demoType: 'SUBMENU_VISITOR' },
-          { id: 'meeting', title: 'Meeting Room', icon: Users, status: 'active', demoType: 'IMAGE_VIEW', image: 'modules-image/meeting-room.png' },
-          { id: 'car', title: 'My Car Booking', icon: Truck, status: 'active', demoType: 'IMAGE_VIEW', image: 'modules-image/Car-booking.png' },
+          { id: 'meeting', title: 'Meeting Room', icon: Users, status: 'active', demoType: 'IMAGE_VIEW', image: 'assets/modules-image/meeting-room.png' },
+          { id: 'car', title: 'My Car Booking', icon: Truck, status: 'active', demoType: 'IMAGE_VIEW', image: 'assets/modules-image/Car-booking.png' },
           { title: 'Fire Alarm', icon: AlertTriangle, status: 'coming-soon' },
           { id: 'cctv', title: 'CCTV', icon: Video, status: 'active', highlight: true, demoType: 'SUBMENU_CCTV' },
         ]
@@ -79,7 +79,7 @@ export const DASHBOARD_DATA = [
             id: 'mgmt-main',
             title: '', // No sub-label needed for this single column
             modules: [
-                { id: 'system-analysis', title: 'System Analysis', icon: MonitorPlay, status: 'active', demoType: 'IMAGE_VIEW', image: 'modules-image/System-analysis.png' } // New Module
+                { id: 'system-analysis', title: 'System Analysis', icon: MonitorPlay, status: 'active', demoType: 'IMAGE_VIEW', image: 'assets/modules-image/System-analysis.png' } // New Module
             ]
         }
     ]
