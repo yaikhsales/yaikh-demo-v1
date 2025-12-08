@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick }) => {
+const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropdownOpen = false, isLightOn = false }) => {
   const isComingSoon = data.status === "coming-soon";
 
   const handleCardClick = () => {
@@ -46,25 +46,40 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick }) => {
       onClick={handleCardClick}
       className={`
             relative group flex flex-col items-center justify-center 
-            h-28 w-full rounded-xl transition-all duration-300 cursor-pointer
-            ${isComingSoon ? "bg-white/90" : "bg-white hover:bg-blue-50"}
+            h-28 w-full transition-all duration-300 cursor-pointer mb-3 overflow-hidden light-effect
+            ${isDropdownOpen ? 'rounded-xl' : 'rounded-2xl apple-card'}
+            ${isComingSoon 
+              ? isDropdownOpen ? "bg-white/90" : "glass-effect"
+              : isDropdownOpen ? "bg-white hover:bg-blue-50" : "glass-effect-strong hover:bg-white/20"
+            }
             ${
               data.highlight
-                ? "border-2 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.4)]"
-                : "border border-transparent hover:border-cyan-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                ? isDropdownOpen 
+                  ? "border-2 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.4)]"
+                  : "border-2 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.5)] hover:shadow-[0_0_30px_rgba(34,211,238,0.7)]"
+                : isDropdownOpen
+                  ? "border border-transparent hover:border-cyan-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                  : "border border-white/20 hover:border-cyan-300/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
             }
-            mb-3
+            ${isLightOn ? 'brightness-110' : ''}
         `}
     >
+      {/* Gradient Overlay on Hover - Only when dropdown is closed */}
+      {!isDropdownOpen && (
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:via-blue-500/10 group-hover:to-purple-500/10 transition-all duration-500 rounded-2xl"></div>
+      )}
+      
       {/* Inner Content */}
       <div
-        className={`flex flex-col items-center gap-1 ${
-          isComingSoon ? "opacity-40 grayscale" : "opacity-100"
+        className={`relative z-10 flex flex-col items-center gap-1 transition-all duration-300 ${
+          isComingSoon ? "opacity-40 grayscale" : isDropdownOpen ? "opacity-100" : "opacity-100 group-hover:scale-105"
         }`}
       >
-        {renderIcon()}
+        <div className={isDropdownOpen ? "" : "transition-transform duration-300 group-hover:scale-110"}>
+          {renderIcon()}
+        </div>
 
-        <span className="text-center font-bold text-slate-800 text-xs px-1 leading-tight line-clamp-2">
+        <span className={`text-center font-bold text-xs px-1 leading-tight line-clamp-2 ${isDropdownOpen ? 'text-slate-800' : 'text-white drop-shadow-lg'}`}>
           {data.title}
         </span>
       </div>
@@ -83,8 +98,15 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick }) => {
       )}
 
       {/* Active Glow for highlight items */}
-      {data.highlight && (
-        <div className="absolute inset-0 rounded-xl bg-cyan-400/10 animate-pulse pointer-events-none"></div>
+      {data.highlight && !isDropdownOpen && (
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/20 via-blue-400/20 to-purple-400/20 animate-pulse pointer-events-none"></div>
+      )}
+      
+      {/* Shimmer Effect on Hover - Only when dropdown is closed */}
+      {!isComingSoon && !isDropdownOpen && (
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" style={{ backgroundSize: '200% 100%' }}></div>
+        </div>
       )}
     </div>
   );

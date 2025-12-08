@@ -1,13 +1,13 @@
 import React from 'react';
 import ModuleCard from './ModuleCard';
 
-const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModuleClick }) => {
+const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModuleClick, isDropdownOpen = false, isLightOn = false }) => {
   return (
     <div className="flex flex-col min-w-[100px] flex-1">
       {/* Sub Label (Only show if title exists) */}
       {group.title && (
           <div className="mb-3 flex justify-center">
-            <div className="bg-slate-700/60 backdrop-blur-sm text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border border-slate-500 shadow-lg text-center w-full max-w-[120px]">
+            <div className={`text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-center w-full max-w-[120px] transition-all duration-300 ${isDropdownOpen ? 'bg-slate-700/60 backdrop-blur-sm border border-slate-500 shadow-lg' : 'glass-effect shadow-lg hover:shadow-xl'}`}>
                 {group.title}
             </div>
           </div>
@@ -16,13 +16,23 @@ const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModule
       {/* Vertical Stack of Modules */}
       <div className="flex flex-col gap-1">
         {group.modules.map((mod, idx) => (
-          <ModuleCard
+          <div 
             key={idx}
-            data={mod}
-            onClick={onModuleClick}
-            botVersion={botVersion}
-            onBotClick={onBotModuleClick}
-          />
+            className={isDropdownOpen ? '' : 'apple-fade-in-delay'}
+            style={isDropdownOpen ? {} : { 
+              animationDelay: `${0.6 + idx * 0.1}s`,
+              opacity: 0 
+            }}
+          >
+            <ModuleCard
+              data={mod}
+              onClick={onModuleClick}
+              botVersion={botVersion}
+              onBotClick={onBotModuleClick}
+              isDropdownOpen={isDropdownOpen}
+              isLightOn={isLightOn}
+            />
+          </div>
         ))}
       </div>
     </div>

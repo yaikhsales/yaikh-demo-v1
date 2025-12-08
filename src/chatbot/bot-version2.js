@@ -214,13 +214,204 @@ const BotVersion2 = ({ onClose, moduleContext }) => {
 
     const hasMessages = messages.length > 0;
 
+    // Prevent body scroll when this component is mounted
+    useEffect(() => {
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+        const originalBodyHeight = document.body.style.height;
+        const originalHtmlHeight = document.documentElement.style.height;
+        
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.height = '100vh';
+        document.documentElement.style.height = '100vh';
+        
+        return () => {
+            document.body.style.overflow = originalBodyOverflow;
+            document.documentElement.style.overflow = originalHtmlOverflow;
+            document.body.style.height = originalBodyHeight;
+            document.documentElement.style.height = originalHtmlHeight;
+        };
+    }, []);
+
     return (
-        <div className="fixed inset-0 z-[200] flex overflow-hidden bg-[#050505] text-white">
+        <div 
+            className="fixed inset-0 z-[200] flex overflow-hidden bg-[#050505] text-white" 
+            style={{ 
+                top: 0, 
+                left: 0, 
+                right: 0, 
+                bottom: 0, 
+                width: '100vw', 
+                height: '100vh',
+                position: 'fixed',
+                zIndex: 200
+            }}
+        >
+            {/* Solar System Animation - Beautiful & Professional */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden w-full h-full z-10">
+                <style>{`
+                    @keyframes orbitMercury {
+                        from { transform: rotate(0deg) translateX(80px) rotate(0deg); }
+                        to { transform: rotate(360deg) translateX(80px) rotate(-360deg); }
+                    }
+                    @keyframes orbitVenus {
+                        from { transform: rotate(0deg) translateX(120px) rotate(0deg); }
+                        to { transform: rotate(360deg) translateX(120px) rotate(-360deg); }
+                    }
+                    @keyframes orbitEarth {
+                        from { transform: rotate(0deg) translateX(160px) rotate(0deg); }
+                        to { transform: rotate(360deg) translateX(160px) rotate(-360deg); }
+                    }
+                    @keyframes orbitMars {
+                        from { transform: rotate(0deg) translateX(200px) rotate(0deg); }
+                        to { transform: rotate(360deg) translateX(200px) rotate(-360deg); }
+                    }
+                    @keyframes orbitJupiter {
+                        from { transform: rotate(0deg) translateX(260px) rotate(0deg); }
+                        to { transform: rotate(360deg) translateX(260px) rotate(-360deg); }
+                    }
+                    @keyframes orbitSaturn {
+                        from { transform: rotate(0deg) translateX(320px) rotate(0deg); }
+                        to { transform: rotate(360deg) translateX(320px) rotate(-360deg); }
+                    }
+                    @keyframes orbitMoon {
+                        from { transform: rotate(0deg) translateX(12px) rotate(0deg); }
+                        to { transform: rotate(360deg) translateX(12px) rotate(-360deg); }
+                    }
+                    @keyframes sunPulse {
+                        0%, 100% { opacity: 0.6; transform: scale(1); }
+                        50% { opacity: 0.9; transform: scale(1.05); }
+                    }
+                    @keyframes starTwinkle {
+                        0%, 100% { opacity: 0.6; transform: scale(1); }
+                        50% { opacity: 1; transform: scale(1.3); }
+                    }
+                    @keyframes planetRotate {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                    .orbit-mercury { animation: orbitMercury 8s linear infinite; }
+                    .orbit-venus { animation: orbitVenus 12s linear infinite; }
+                    .orbit-earth { animation: orbitEarth 16s linear infinite; }
+                    .orbit-mars { animation: orbitMars 20s linear infinite; }
+                    .orbit-jupiter { animation: orbitJupiter 30s linear infinite; }
+                    .orbit-saturn { animation: orbitSaturn 40s linear infinite; }
+                    .orbit-moon { animation: orbitMoon 2s linear infinite; }
+                    .sun-pulse { animation: sunPulse 4s ease-in-out infinite; }
+                    .star-twinkle { animation: starTwinkle 3s ease-in-out infinite; }
+                    .planet-rotate { animation: planetRotate 10s linear infinite; }
+                `}</style>
+                
+                {/* Background Stars */}
+                <div className="absolute inset-0 w-full h-full">
+                    {[...Array(40)].map((_, i) => (
+                        <div
+                            key={`star-${i}`}
+                            className="absolute w-1.5 h-1.5 bg-white rounded-full star-twinkle"
+                            style={{
+                                top: `${Math.random() * 100}%`,
+                                left: `${Math.random() * 100}%`,
+                                animationDelay: `${Math.random() * 3}s`,
+                                animationDuration: `${2 + Math.random() * 2}s`
+                            }}
+                        />
+                    ))}
+                </div>
+                
+                {/* Solar System Container */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full flex items-center justify-center">
+                    
+                    {/* Central Sun */}
+                    <div className="relative z-10">
+                        {/* Sun Glow Layers */}
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-400/70 via-orange-400/60 to-red-400/50 blur-3xl sun-pulse"></div>
+                        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300/60 via-orange-300/50 to-red-300/40 blur-2xl"></div>
+                        {/* Sun Core */}
+                        <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-yellow-300 via-orange-300 to-yellow-400 shadow-[0_0_40px_rgba(251,191,36,1)] border-2 border-yellow-200/80">
+                            {/* Sun Surface Texture */}
+                            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-yellow-300/50 to-orange-400/30"></div>
+                            <div className="absolute top-2 left-3 w-1 h-1 bg-yellow-200 rounded-full"></div>
+                            <div className="absolute bottom-3 right-2 w-1 h-1 bg-orange-300 rounded-full"></div>
+                            <div className="absolute top-1/2 left-1 w-0.5 h-0.5 bg-yellow-100 rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    {/* Mercury - Closest Planet */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 orbit-mercury">
+                        <div className="w-4 h-4 rounded-full bg-gradient-to-br from-gray-300 to-gray-500 shadow-[0_0_15px_rgba(156,163,175,0.9)] border border-gray-400/70"></div>
+                    </div>
+                    
+                    {/* Venus */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 orbit-venus">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-yellow-100 to-orange-200 shadow-[0_0_18px_rgba(251,191,36,0.8)] border border-yellow-200/70"></div>
+                    </div>
+                    
+                    {/* Earth with Moon */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 orbit-earth">
+                        <div className="relative">
+                            {/* Earth */}
+                            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-blue-300 via-green-300 to-blue-400 shadow-[0_0_20px_rgba(59,130,246,0.9)] border border-blue-200/70 relative overflow-hidden">
+                                {/* Earth Continents */}
+                                <div className="absolute top-1 left-1 w-2 h-1.5 bg-green-400 rounded-full"></div>
+                                <div className="absolute bottom-1 right-1 w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+                            </div>
+                            {/* Moon Orbiting Earth */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 orbit-moon">
+                                <div className="w-2 h-2 rounded-full bg-gray-200 shadow-[0_0_8px_rgba(209,213,219,1)]"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Mars */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 orbit-mars">
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-red-300 to-orange-400 shadow-[0_0_18px_rgba(239,68,68,0.9)] border border-red-200/70"></div>
+                    </div>
+                    
+                    {/* Jupiter - Gas Giant */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 orbit-jupiter">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-200 via-yellow-200 to-orange-300 shadow-[0_0_25px_rgba(251,191,36,0.8)] border-2 border-orange-100/60 relative overflow-hidden">
+                            {/* Jupiter Bands */}
+                            <div className="absolute top-1 left-0 right-0 h-0.5 bg-orange-300/80"></div>
+                            <div className="absolute top-3 left-0 right-0 h-0.5 bg-yellow-200/80"></div>
+                            <div className="absolute bottom-3 left-0 right-0 h-0.5 bg-orange-300/80"></div>
+                            {/* Great Red Spot */}
+                            <div className="absolute top-2 right-1 w-2 h-1.5 rounded-full bg-red-400/90"></div>
+                        </div>
+                    </div>
+                    
+                    {/* Saturn with Rings */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 orbit-saturn">
+                        <div className="relative">
+                            {/* Saturn Planet */}
+                            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-100 via-orange-100 to-yellow-200 shadow-[0_0_20px_rgba(251,191,36,0.8)] border border-yellow-100/70 relative z-10">
+                                {/* Saturn Bands */}
+                                <div className="absolute top-1 left-0 right-0 h-0.5 bg-yellow-200/80"></div>
+                                <div className="absolute bottom-1 left-0 right-0 h-0.5 bg-orange-200/80"></div>
+                            </div>
+                            {/* Saturn Rings */}
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-2 rounded-full bg-gradient-to-r from-transparent via-yellow-100/60 to-transparent border border-yellow-200/50 shadow-[0_0_12px_rgba(251,191,36,0.5)]"></div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-1 rounded-full bg-gradient-to-r from-transparent via-yellow-200/50 to-transparent"></div>
+                        </div>
+                    </div>
+                    
+                    {/* Orbital Paths - More Visible */}
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[160px] h-[160px] border border-white/15 rounded-full"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[240px] h-[240px] border border-white/15 rounded-full"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[320px] h-[320px] border border-white/15 rounded-full"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] border border-white/15 rounded-full"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] border border-white/15 rounded-full"></div>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[640px] h-[640px] border border-white/15 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+            
             {/* Sidebar - Chat History */}
-            <div className={`fixed inset-y-0 left-0 z-50 w-80 bg-[#050505] border-r border-white/10 transform transition-transform duration-300 ease-in-out ${
+            <div className={`fixed inset-y-0 left-0 z-50 w-80 h-screen bg-[#050505] border-r border-white/10 transform transition-transform duration-300 ease-in-out ${
                 isHistoryOpen ? 'translate-x-0' : '-translate-x-full'
             }`}>
-                <div className="flex flex-col h-full">
+                <div className="flex flex-col h-full w-full">
                     {/* Sidebar Header */}
                     <div className="flex items-center justify-between p-4 border-b border-white/10">
                         <h2 className="text-lg font-semibold">Chat History</h2>
@@ -288,9 +479,9 @@ const BotVersion2 = ({ onClose, moduleContext }) => {
             )}
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 flex flex-col overflow-hidden w-full h-full min-h-0 flex-shrink relative z-20">
                 {/* Header with Bot Name and Avatar */}
-                <div className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-[#050505]">
+                <div className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-sm w-full h-auto relative z-30">
                     <div className="flex items-center gap-3">
                         <button 
                             onClick={() => setIsHistoryOpen(true)}
@@ -330,10 +521,10 @@ const BotVersion2 = ({ onClose, moduleContext }) => {
                 </div>
 
                 {/* Content Area */}
-                <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-8 bg-[#050505]">
+                <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 sm:px-6 py-8 bg-[#050505]/60 backdrop-blur-sm relative z-20 min-h-0 w-full flex-shrink">
                     {!hasMessages ? (
                         // Welcome Screen
-                        <div className="space-y-6 pt-8 max-w-3xl mx-auto">
+                        <div className="space-y-6 pt-8 max-w-3xl mx-auto relative z-20">
                             <div>
                                 <p className="text-sm text-white/70 mb-2">Hi {GREETING_NAME}</p>
                                 <h2 className="text-3xl font-light leading-tight text-white">Where should we start?</h2>
@@ -353,7 +544,7 @@ const BotVersion2 = ({ onClose, moduleContext }) => {
                         </div>
                     ) : (
                         // Messages Display
-                        <div className="space-y-4 max-w-3xl mx-auto">
+                        <div className="space-y-4 max-w-3xl mx-auto relative z-20">
                             {messages.map((msg, idx) => (
                                 <div
                                     key={idx}
@@ -438,7 +629,7 @@ const BotVersion2 = ({ onClose, moduleContext }) => {
                 </div>
 
                 {/* Input Field with Thinking Status */}
-                <div className="flex-shrink-0 px-4 sm:px-6 py-4 border-t border-white/10 bg-[#050505]">
+                <div className="flex-shrink-0 px-4 sm:px-6 py-4 border-t border-white/10 bg-[#050505] w-full">
                     <form onSubmit={handleSend} className="relative max-w-3xl mx-auto">
                         <div className="flex items-center px-4 py-3 rounded-full border border-white/15 bg-white/5 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all">
                             <button
