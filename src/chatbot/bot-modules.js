@@ -1341,41 +1341,41 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     
                     {/* Dropdown Menu */}
                     {isDropdownOpen && onVersionChange && (
-                        <div className="absolute top-full mt-2 left-0 w-56 bg-white/90 backdrop-blur-lg border border-white/20 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-[60] pointer-events-auto">
-                            <ul className="p-1 text-sm font-medium">
+                        <div className="absolute top-full mt-2 left-0 w-72 bg-white/90 backdrop-blur-lg border border-white/20 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-[60] pointer-events-auto">
+                            <ul className="p-2">
                                 <li 
                                     onClick={() => {
                                         onVersionChange('yai1');
                                         setDropdownOpen(false);
                                     }}
-                                    className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-orange-500/10 cursor-pointer group transition-all border border-transparent hover:border-orange-500/30"
+                                    className="relative flex items-center justify-between gap-4 px-4 py-3 rounded-md hover:bg-orange-500/10 cursor-pointer group transition-all border border-transparent hover:border-orange-500/30"
                                 >
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-4">
                                         <img 
                                             src="assets/modules-image/yai1.png" 
                                             alt="Yai 1" 
-                                            className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]" 
+                                            className="w-14 h-14 rounded-full object-cover border-2 border-orange-400/50 drop-shadow-[0_0_8px_rgba(251,146,60,0.6)] flex-shrink-0" 
                                         />
-                                        <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(251,146,60,0.4)]">Yai 1</span>
+                                        <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent font-bold text-lg drop-shadow-[0_0_4px_rgba(251,146,60,0.4)] whitespace-nowrap">Yai 1</span>
                                     </div>
-                                    <ChevronRight size={16} className="text-orange-400/70 group-hover:text-orange-300 transition-colors" />
+                                    <ChevronRight size={20} className="text-orange-400/70 group-hover:text-orange-300 transition-colors flex-shrink-0" />
                                 </li>
                                 <li 
                                     onClick={() => {
                                         onVersionChange('yai2');
                                         setDropdownOpen(false);
                                     }}
-                                    className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-gray-500/10 cursor-pointer group transition-all border border-transparent hover:border-gray-500/30"
+                                    className="relative flex items-center justify-between gap-4 px-4 py-3 rounded-md hover:bg-gray-500/10 cursor-pointer group transition-all border border-transparent hover:border-gray-500/30"
                                 >
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-4">
                                         <img 
                                             src="assets/modules-image/yai2.png" 
                                             alt="Yai 2" 
-                                            className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(156,163,175,0.6)]" 
+                                            className="w-14 h-14 rounded-full object-cover border-2 border-gray-400/50 drop-shadow-[0_0_8px_rgba(156,163,175,0.6)] flex-shrink-0" 
                                         />
-                                        <span className="bg-gradient-to-r from-gray-400 via-slate-400 to-gray-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(156,163,175,0.4)]">Yai 2</span>
+                                        <span className="bg-gradient-to-r from-gray-400 via-slate-400 to-gray-500 bg-clip-text text-transparent font-bold text-lg drop-shadow-[0_0_4px_rgba(156,163,175,0.4)] whitespace-nowrap">Yai 2</span>
                                     </div>
-                                    <ChevronRight size={16} className="text-gray-400/70 group-hover:text-gray-300 transition-colors" />
+                                    <ChevronRight size={20} className="text-gray-400/70 group-hover:text-gray-300 transition-colors flex-shrink-0" />
                                 </li>
                             </ul>
                         </div>
