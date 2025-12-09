@@ -4,7 +4,7 @@ import {
     Wallet, UserCog, HeartHandshake, Megaphone, Factory,
     BarChart3, Lightbulb, Handshake, ClipboardCheck, MessageCircle,
     Copy, Edit2, RefreshCw, ThumbsUp, ThumbsDown, MoreVertical,
-    Menu, Trash2
+    Menu, Trash2, ChevronRight
 } from 'lucide-react';
 
 // Predefined 10 bots for each moduleContext
@@ -20,11 +20,11 @@ const PREDEFINED_BOTS = [
         textColor: 'text-green-800',
         borderColor: 'border-green-200',
         suggestedActions: [
-            { text: 'Analyze budget report', highlight: true },
-            { text: 'Create financial forecast' },
-            { text: 'Review expenses' },
-            { text: 'Generate invoice' },
-            { text: 'Calculate ROI' }
+            { text: 'Purchase Request appr', highlight: true },
+            { text: 'Supp Payment Request' },
+            { text: 'E-invoice' },
+            { text: 'Generate Invoice' },
+            { text: 'Data' }
         ]
     },
     {
@@ -205,7 +205,9 @@ const PhoneFrame = ({
     chatHistory,
     onLoadChat,
     onDeleteChat,
-    currentChatId
+    currentChatId,
+    botId,
+    onShowInvoice
 }) => {
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
@@ -342,12 +344,10 @@ const PhoneFrame = ({
                                         setInputValue('');
                                         if (onNewChat) onNewChat();
                                     }}
-                                    className={`p-2 rounded-full hover:bg-black/5 transition`}
-                                    title="New chat"
+                                    className={`px-3 py-1.5 rounded-full hover:bg-black/5 transition text-xs font-medium ${bot.textColor || 'text-gray-600'}`}
+                                    title="Menu"
                                 >
-                                    <svg className={`w-5 h-5 ${bot.textColor || 'text-gray-600'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                    </svg>
+                                    Menu
                                 </button>
                             </div>
                             {/* Bot Name - Centered */}
@@ -404,6 +404,79 @@ const PhoneFrame = ({
                                                         }`}
                                                 >
                                                     {msg.text}
+                                                    {msg.type === 'button' && msg.buttonText && (
+                                                        <button
+                                                            onClick={() => {
+                                                                // Handle pay button click
+                                                                onSendMessage(`Pay for ${msg.text}`);
+                                                            }}
+                                                            className={`mt-2 px-4 py-2 rounded-lg bg-gradient-to-r ${bot.bgGradient} text-white text-xs font-semibold hover:opacity-90 transition-opacity shadow-md`}
+                                                        >
+                                                            {msg.buttonText}
+                                                        </button>
+                                                    )}
+                                                    {msg.type === 'dropdown' && msg.dropdownItems && (
+                                                        <div className="mt-2 space-y-2">
+                                                            {msg.dropdownItems.map((item) => (
+                                                                <button
+                                                                    key={item.id}
+                                                                    onClick={() => {
+                                                                        onSendMessage(`Generate ${item.text}`);
+                                                                    }}
+                                                                    className={`w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r ${bot.lightAccent || 'from-gray-100 to-gray-200'} border ${bot.borderColor || 'border-gray-200'} ${bot.textColor || 'text-gray-800'} text-xs hover:opacity-80 transition-opacity`}
+                                                                >
+                                                                    {item.text}
+                                                                </button>
+                                                            ))}
+                                                            <button
+                                                                onClick={() => {
+                                                                    onSendMessage('Generate');
+                                                                }}
+                                                                className={`w-full px-3 py-2 rounded-lg bg-gradient-to-r ${bot.bgGradient} text-white text-xs font-semibold hover:opacity-90 transition-opacity shadow-md`}
+                                                            >
+                                                                Generate
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                    {msg.type === 'invoice-list' && msg.dropdownItems && (
+                                                        <div className="mt-2 space-y-2">
+                                                            {msg.dropdownItems.map((item) => (
+                                                                <button
+                                                                    key={item.id}
+                                                                    onClick={() => {
+                                                                        // Show invoice image directly when clicked
+                                                                        if (onShowInvoice) {
+                                                                            onShowInvoice(item);
+                                                                        } else {
+                                                                            // Fallback: send message
+                                                                            onSendMessage(`Show invoice: ${item.text}`);
+                                                                        }
+                                                                    }}
+                                                                    className={`w-full text-left px-3 py-2 rounded-lg bg-gradient-to-r ${bot.lightAccent || 'from-gray-100 to-gray-200'} border ${bot.borderColor || 'border-gray-200'} ${bot.textColor || 'text-gray-800'} text-xs hover:opacity-80 transition-opacity hover:shadow-md`}
+                                                                >
+                                                                    {item.text}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                    {msg.type === 'invoice-image' && msg.imageUrl && (
+                                                        <div className="mt-2">
+                                                            <div className="text-xs font-semibold mb-2 text-gray-700">{msg.invoiceName}</div>
+                                                            <img 
+                                                                src={msg.imageUrl} 
+                                                                alt={msg.invoiceName || 'Invoice'} 
+                                                                className="w-full rounded-lg border-2 border-gray-200 shadow-lg max-h-96 object-contain bg-white"
+                                                                onError={(e) => {
+                                                                    e.target.style.display = 'none';
+                                                                    const fallback = e.target.nextSibling;
+                                                                    if (fallback) fallback.style.display = 'block';
+                                                                }}
+                                                            />
+                                                            <div className="hidden text-xs text-gray-500 mt-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                Invoice preview: {msg.invoiceName}
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 {msg.from === 'bot' && (
                                                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity px-1">
@@ -532,7 +605,8 @@ const PhoneFrame = ({
     );
 };
 
-const BotModules = ({ onClose, moduleContext }) => {
+const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 'yai1' }) => {
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const scrollContainerRef = useRef(null);
     const scrollbarTrackRef = useRef(null);
@@ -725,11 +799,201 @@ const BotModules = ({ onClose, moduleContext }) => {
 
         setTimeout(() => {
             const bot = PREDEFINED_BOTS.find(b => b.id === botId);
-            const botResponse = `Hello! I'm ${bot.name}. You asked: "${message}". ${bot.description}. How can I help you today?`;
+            let botResponse = `Hello! I'm ${bot.name}. You asked: "${message}". ${bot.description}. How can I help you today?`;
+            let responseType = 'text'; // 'text', 'button', 'dropdown'
+            let buttonText = null;
+            let dropdownItems = null;
+
+            // Finance PA specific responses
+            if (botId === 'finance-bot') {
+                const messageLower = message.toLowerCase().trim();
+                
+                // 1. Purchase Request appr
+                if (messageLower.includes('purchase request appr') || messageLower === 'purchase request appr') {
+                    botResponse = 'PA: 776 waiting for payment';
+                    buttonText = 'Pay';
+                    responseType = 'button';
+                    
+                    // Add first response immediately
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const messageObj = { from: 'bot', text: botResponse, type: responseType, buttonText };
+                        const updatedMessages = [...botState.messages, messageObj];
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+
+                    // Second message after 3 seconds
+                    setTimeout(() => {
+                        setBotStates(prev => {
+                            const botState = prev[botId];
+                            if (!botState) return prev;
+                            const updatedMessages = [...botState.messages, { from: 'bot', text: 'PA: ES packing payment 6500$ IMV 00078 pay data.' }];
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                            ) : botState.chatHistory;
+                            
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    messages: updatedMessages,
+                                    chatHistory: updatedHistory
+                                }
+                            };
+                        });
+                    }, 3000);
+
+                    // Third message after 3 more seconds (6 seconds total)
+                    setTimeout(() => {
+                        setBotStates(prev => {
+                            const botState = prev[botId];
+                            if (!botState) return prev;
+                            const updatedMessages = [...botState.messages, { from: 'bot', text: 'Payment processed successfully. Transaction ID: TXN-776-001' }];
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                            ) : botState.chatHistory;
+                            
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    messages: updatedMessages,
+                                    chatHistory: updatedHistory
+                                }
+                            };
+                        });
+                    }, 6000);
+                    return; // Exit early, don't process default response
+                }
+                
+                // 2. Supp Payment Request
+                if (messageLower.includes('supp payment request') || messageLower === 'supp payment request') {
+                    botResponse = 'PA: ES packing payment 6500$ IMV 00078';
+                    buttonText = 'Pay';
+                    responseType = 'button';
+                    
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const messageObj = { from: 'bot', text: botResponse, type: responseType, buttonText };
+                        const updatedMessages = [...botState.messages, messageObj];
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+
+                    // Second message after 3 seconds
+                    setTimeout(() => {
+                        setBotStates(prev => {
+                            const botState = prev[botId];
+                            if (!botState) return prev;
+                            const updatedMessages = [...botState.messages, { from: 'bot', text: 'PA: ABC COL LLDT 2500$ ....' }];
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                            ) : botState.chatHistory;
+                            
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    messages: updatedMessages,
+                                    chatHistory: updatedHistory
+                                }
+                            };
+                        });
+                    }, 3000);
+                    return; // Exit early
+                }
+                
+                // 3. E-invoice
+                if (messageLower.includes('e-invoice') || messageLower === 'e-invoice' || messageLower === 'einvoice') {
+                    botResponse = 'E-invoice received.';
+                }
+                // 4. Generate Invoice
+                else if (messageLower.includes('generate invoice') || messageLower === 'generate invoice') {
+                    botResponse = 'Select invoice to generate:';
+                    responseType = 'invoice-list';
+                    dropdownItems = [
+                        { 
+                            id: 'inv-pr-001', 
+                            text: 'Invoice from Purchase Request appr',
+                            source: 'purchase-request',
+                            image: 'assets/modules-image/Verify-pr.png'
+                        },
+                        { 
+                            id: 'inv-spp-001', 
+                            text: 'Invoice from Supp Payment Request',
+                            source: 'supp-payment',
+                            image: 'assets/modules-image/Approval-pr.png'
+                        }
+                    ];
+                }
+                // Handle invoice display when user clicks on invoice name
+                else if (messageLower.includes('show invoice:')) {
+                    const invoiceText = message.substring(message.indexOf(':') + 1).trim();
+                    if (invoiceText.includes('Purchase Request')) {
+                        botResponse = `Invoice: ${invoiceText}`;
+                        responseType = 'invoice-image';
+                        dropdownItems = [{
+                            id: 'inv-pr-img',
+                            text: invoiceText,
+                            image: 'assets/modules-image/Verify-pr.png'
+                        }];
+                    } else if (invoiceText.includes('Supp Payment')) {
+                        botResponse = `Invoice: ${invoiceText}`;
+                        responseType = 'invoice-image';
+                        dropdownItems = [{
+                            id: 'inv-spp-img',
+                            text: invoiceText,
+                            image: 'assets/modules-image/Approval-pr.png'
+                        }];
+                    }
+                }
+                // 5. Data
+                else if (messageLower === 'data' || messageLower.includes('data')) {
+                    botResponse = 'Monthly declaration';
+                }
+            }
 
             setBotStates(prev => {
                 const botState = prev[botId];
-                const updatedMessages = [...botState.messages, { from: 'bot', text: botResponse }];
+                const messageObj = { from: 'bot', text: botResponse };
+                if (responseType === 'button' && buttonText) {
+                    messageObj.type = 'button';
+                    messageObj.buttonText = buttonText;
+                } else if (responseType === 'dropdown' && dropdownItems) {
+                    messageObj.type = 'dropdown';
+                    messageObj.dropdownItems = dropdownItems;
+                } else if (responseType === 'invoice-list' && dropdownItems) {
+                    messageObj.type = 'invoice-list';
+                    messageObj.dropdownItems = dropdownItems;
+                } else if (responseType === 'invoice-image' && dropdownItems && dropdownItems[0]) {
+                    messageObj.type = 'invoice-image';
+                    messageObj.imageUrl = dropdownItems[0].image;
+                    messageObj.invoiceName = dropdownItems[0].text;
+                }
+                const updatedMessages = [...botState.messages, messageObj];
 
                 // Update chat in history if currentChatId exists
                 if (botState.currentChatId) {
@@ -964,19 +1228,174 @@ const BotModules = ({ onClose, moduleContext }) => {
             {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 transition-colors duration-300"></div>
 
-            {/* Close button - floating */}
-            <button
-                onClick={handleClose}
-                className="absolute top-4 right-4 z-50 p-2 text-gray-600 dark:text-white/70 hover:text-gray-900 dark:hover:text-white hover:bg-white/20 dark:hover:bg-white/10 rounded-full transition-all bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm"
-            >
-                <X size={24} />
-            </button>
+            {/* Yai Data Header with Dropdown - Top Left */}
+            <div className="absolute top-4 left-4 z-50 pointer-events-none">
+                <style>{`
+                    @keyframes float {
+                        0%, 100% { transform: translateY(0px) rotate(0deg); }
+                        50% { transform: translateY(-10px) rotate(5deg); }
+                    }
+                    @keyframes pulse-glow {
+                        0%, 100% { 
+                            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
+                                       0 0 40px rgba(139, 92, 246, 0.3),
+                                       0 0 60px rgba(59, 130, 246, 0.2);
+                        }
+                        50% { 
+                            box-shadow: 0 0 30px rgba(59, 130, 246, 0.8),
+                                       0 0 60px rgba(139, 92, 246, 0.5),
+                                       0 0 90px rgba(59, 130, 246, 0.3);
+                        }
+                    }
+                    @keyframes rotate-ring {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                    @keyframes sparkle {
+                        0%, 100% { opacity: 0; transform: scale(0); }
+                        50% { opacity: 1; transform: scale(1); }
+                    }
+                    .bot-icon-container-modules {
+                        position: relative;
+                        animation: float 3s ease-in-out infinite;
+                    }
+                    .bot-icon-glow-modules {
+                        animation: pulse-glow 2s ease-in-out infinite;
+                    }
+                    .rotating-ring-modules {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 72px;
+                        height: 72px;
+                        border: 2px solid transparent;
+                        border-top-color: rgba(59, 130, 246, 0.6);
+                        border-right-color: rgba(139, 92, 246, 0.6);
+                        border-radius: 50%;
+                        animation: rotate-ring 3s linear infinite;
+                        pointer-events: none;
+                    }
+                    .rotating-ring-2-modules {
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        width: 80px;
+                        height: 80px;
+                        border: 2px solid transparent;
+                        border-bottom-color: rgba(139, 92, 246, 0.4);
+                        border-left-color: rgba(59, 130, 246, 0.4);
+                        border-radius: 50%;
+                        animation: rotate-ring 4s linear infinite reverse;
+                        pointer-events: none;
+                    }
+                    .sparkle-modules {
+                        position: absolute;
+                        width: 4px;
+                        height: 4px;
+                        background: white;
+                        border-radius: 50%;
+                        animation: sparkle 2s ease-in-out infinite;
+                    }
+                    .sparkle-1-modules { top: 10%; left: 20%; animation-delay: 0s; }
+                    .sparkle-2-modules { top: 20%; right: 15%; animation-delay: 0.5s; }
+                    .sparkle-3-modules { bottom: 15%; left: 25%; animation-delay: 1s; }
+                    .sparkle-4-modules { bottom: 10%; right: 20%; animation-delay: 1.5s; }
+                `}</style>
+                <div className="flex items-center gap-4 pointer-events-auto">
+                    <div className={`relative ${isDropdownOpen ? '' : 'bot-icon-container-modules'}`}>
+                        {/* Rotating Rings - Only show when dropdown is closed */}
+                        {!isDropdownOpen && (
+                            <>
+                                <div className="rotating-ring-modules"></div>
+                                <div className="rotating-ring-2-modules"></div>
+                                
+                                {/* Sparkles - Only show when dropdown is closed */}
+                                <div className="sparkle-modules sparkle-1-modules"></div>
+                                <div className="sparkle-modules sparkle-2-modules"></div>
+                                <div className="sparkle-modules sparkle-3-modules"></div>
+                                <div className="sparkle-modules sparkle-4-modules"></div>
+                            </>
+                        )}
+                        
+                        <button
+                            onClick={() => setDropdownOpen(prev => !prev)}
+                            className={`relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 z-10 pointer-events-auto ${isDropdownOpen ? '' : 'bot-icon-glow-modules'}`}
+                            aria-label="Yai Data"
+                        >
+                            <img 
+                                src="/assets/modules-image/chatbot.png" 
+                                alt="Yai Data" 
+                                className="w-16 h-16 rounded-full object-cover border-2 border-cyan-400/50 relative z-10" 
+                            />
+                            {/* Gradient Overlay - Only show when dropdown is closed */}
+                            {!isDropdownOpen && (
+                                <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-400/20 via-blue-500/20 to-purple-500/20 mix-blend-screen pointer-events-none"></div>
+                            )}
+                        </button>
+                    </div>
+                    <span className={`text-white font-bold text-lg tracking-wide drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent pointer-events-auto ${isDropdownOpen ? '' : 'animate-pulse'}`}>
+                        Yai Data
+                    </span>
+                    
+                    {/* Dropdown Menu */}
+                    {isDropdownOpen && onVersionChange && (
+                        <div className="absolute top-full mt-2 left-0 w-56 bg-white/90 backdrop-blur-lg border border-white/20 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-[60] pointer-events-auto">
+                            <ul className="p-1 text-sm font-medium">
+                                <li 
+                                    onClick={() => {
+                                        onVersionChange('yai1');
+                                        setDropdownOpen(false);
+                                    }}
+                                    className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-orange-500/10 cursor-pointer group transition-all border border-transparent hover:border-orange-500/30"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <img 
+                                            src="assets/modules-image/yai1.png" 
+                                            alt="Yai 1" 
+                                            className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]" 
+                                        />
+                                        <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(251,146,60,0.4)]">Yai 1</span>
+                                    </div>
+                                    <ChevronRight size={16} className="text-orange-400/70 group-hover:text-orange-300 transition-colors" />
+                                </li>
+                                <li 
+                                    onClick={() => {
+                                        onVersionChange('yai2');
+                                        setDropdownOpen(false);
+                                    }}
+                                    className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-gray-500/10 cursor-pointer group transition-all border border-transparent hover:border-gray-500/30"
+                                >
+                                    <div className="flex items-center gap-3">
+                                        <img 
+                                            src="assets/modules-image/yai2.png" 
+                                            alt="Yai 2" 
+                                            className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(156,163,175,0.6)]" 
+                                        />
+                                        <span className="bg-gradient-to-r from-gray-400 via-slate-400 to-gray-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(156,163,175,0.4)]">Yai 2</span>
+                                    </div>
+                                    <ChevronRight size={16} className="text-gray-400/70 group-hover:text-gray-300 transition-colors" />
+                                </li>
+                            </ul>
+                        </div>
+                    )}
+                </div>
+                                        </div>
+            
+            {/* Overlay to close dropdown when clicking outside */}
+            {isDropdownOpen && (
+                <div 
+                    className="fixed inset-0 z-40" 
+                    onClick={() => setDropdownOpen(false)}
+                />
+            )}
 
             {/* Horizontal Scrollable Phone Interfaces */}
             <div className="flex-1 flex flex-col overflow-hidden min-h-0">
                 <div
                     ref={scrollContainerRef}
-                    className="flex-1 overflow-x-scroll overflow-y-hidden scroll-smooth px-2 sm:px-4 pt-12 sm:pt-16 custom-scrollbar"
+                    className="flex-1 overflow-x-scroll overflow-y-hidden scroll-smooth px-2 sm:px-4 pt-20 sm:pt-24 custom-scrollbar"
                     style={{
                         scrollbarGutter: 'stable',
                         WebkitOverflowScrolling: 'touch',
@@ -1091,6 +1510,35 @@ const BotModules = ({ onClose, moduleContext }) => {
                                         onLoadChat={(chatId) => loadChat(bot.id, chatId)}
                                         onDeleteChat={(chatId) => deleteChat(bot.id, chatId)}
                                         currentChatId={botState.currentChatId}
+                                        botId={bot.id}
+                                        onShowInvoice={(item) => {
+                                            // Directly add invoice image message
+                                            setBotStates(prev => {
+                                                const botState = prev[bot.id];
+                                                if (!botState) return prev;
+                                                
+                                                const invoiceMessage = {
+                                                    from: 'bot',
+                                                    text: `Invoice: ${item.text}`,
+                                                    type: 'invoice-image',
+                                                    imageUrl: item.image,
+                                                    invoiceName: item.text
+                                                };
+                                                const updatedMessages = [...botState.messages, invoiceMessage];
+                                                const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                                                    chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                                                ) : botState.chatHistory;
+                                                
+                                                return {
+                                                    ...prev,
+                                                    [bot.id]: {
+                                                        ...prev[bot.id],
+                                                        messages: updatedMessages,
+                                                        chatHistory: updatedHistory
+                                                    }
+                                                };
+                                            });
+                                        }}
                                     />
                                 </div>
                                 {/* Bot Name Label */}
@@ -1103,8 +1551,8 @@ const BotModules = ({ onClose, moduleContext }) => {
                         );
                     }                    )}
                 </div>
-                </div>
-                
+            </div>
+
                 {/* Custom Footer Scrollbar */}
                 <div className="flex-shrink-0 px-4 sm:px-8 py-2 bg-white/50 backdrop-blur-sm border-t border-gray-200">
                     <div 

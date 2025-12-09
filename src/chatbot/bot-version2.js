@@ -14,12 +14,14 @@ import {
     Menu,
     Clock,
     Trash2,
-    Search
+    Search,
+    ChevronRight
 } from 'lucide-react';
 
 const GREETING_NAME = 'Mr. Khun';
 
-const BotVersion2 = ({ onClose, moduleContext }) => {
+const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion = 'yai2' }) => {
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -408,9 +410,9 @@ const BotVersion2 = ({ onClose, moduleContext }) => {
             </div>
             
             {/* Sidebar - Chat History */}
-            <div className={`fixed inset-y-0 left-0 z-50 w-80 h-screen bg-[#050505] border-r border-white/10 transform transition-transform duration-300 ease-in-out ${
+            <div className={`fixed left-0 z-50 w-80 bg-[#050505] border-r border-white/10 transform transition-transform duration-300 ease-in-out ${
                 isHistoryOpen ? 'translate-x-0' : '-translate-x-full'
-            }`}>
+            }`} style={{ top: '120px', bottom: '0', height: 'calc(100vh - 120px)' }}>
                 <div className="flex flex-col h-full w-full">
                     {/* Sidebar Header */}
                     <div className="flex items-center justify-between p-4 border-b border-white/10">
@@ -479,45 +481,200 @@ const BotVersion2 = ({ onClose, moduleContext }) => {
             )}
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col overflow-hidden w-full h-full min-h-0 flex-shrink relative z-20">
+            <div className="flex-1 flex flex-col overflow-hidden w-full h-full min-h-0 flex-shrink relative z-20 pt-4">
                 {/* Header with Bot Name and Avatar */}
-                <div className="flex-shrink-0 flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-sm w-full h-auto relative z-30">
-                    <div className="flex items-center gap-3">
-                        <button 
-                            onClick={() => setIsHistoryOpen(true)}
-                            className="p-2 rounded-full hover:bg-white/10 transition"
-                            title="Chat history"
-                        >
-                            <Menu size={20} className="text-white/70" />
-                        </button>
-                        <button 
-                            onClick={handleNewChat}
-                            className="p-2 rounded-full hover:bg-white/10 transition"
-                            title="New chat"
-                        >
-                            <svg className="w-5 h-5 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                            </svg>
-                        </button>
-                    </div>
-                    {/* Bot Avatar and Name */}
-                    <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-sky-500 flex items-center justify-center border-2 border-white/20 shadow-md">
-                            <Database size={18} className="text-white" />
+                <div className="flex-shrink-0 flex flex-col px-4 sm:px-6 py-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-sm w-full h-auto relative z-30">
+                    <style>{`
+                        @keyframes float {
+                            0%, 100% { transform: translateY(0px) rotate(0deg); }
+                            50% { transform: translateY(-10px) rotate(5deg); }
+                        }
+                        @keyframes pulse-glow {
+                            0%, 100% { 
+                                box-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
+                                           0 0 40px rgba(139, 92, 246, 0.3),
+                                           0 0 60px rgba(59, 130, 246, 0.2);
+                            }
+                            50% { 
+                                box-shadow: 0 0 30px rgba(59, 130, 246, 0.8),
+                                           0 0 60px rgba(139, 92, 246, 0.5),
+                                           0 0 90px rgba(59, 130, 246, 0.3);
+                            }
+                        }
+                        @keyframes rotate-ring {
+                            from { transform: rotate(0deg); }
+                            to { transform: rotate(360deg); }
+                        }
+                        @keyframes sparkle {
+                            0%, 100% { opacity: 0; transform: scale(0); }
+                            50% { opacity: 1; transform: scale(1); }
+                        }
+                        .bot-icon-container-v2 {
+                            position: relative;
+                            animation: float 3s ease-in-out infinite;
+                        }
+                        .bot-icon-glow-v2 {
+                            animation: pulse-glow 2s ease-in-out infinite;
+                        }
+                        .rotating-ring-v2 {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            width: 72px;
+                            height: 72px;
+                            border: 2px solid transparent;
+                            border-top-color: rgba(59, 130, 246, 0.6);
+                            border-right-color: rgba(139, 92, 246, 0.6);
+                            border-radius: 50%;
+                            animation: rotate-ring 3s linear infinite;
+                            pointer-events: none;
+                        }
+                        .rotating-ring-2-v2 {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            width: 80px;
+                            height: 80px;
+                            border: 2px solid transparent;
+                            border-bottom-color: rgba(139, 92, 246, 0.4);
+                            border-left-color: rgba(59, 130, 246, 0.4);
+                            border-radius: 50%;
+                            animation: rotate-ring 4s linear infinite reverse;
+                            pointer-events: none;
+                        }
+                        .sparkle-v2 {
+                            position: absolute;
+                            width: 4px;
+                            height: 4px;
+                            background: white;
+                            border-radius: 50%;
+                            animation: sparkle 2s ease-in-out infinite;
+                        }
+                        .sparkle-1-v2 { top: 10%; left: 20%; animation-delay: 0s; }
+                        .sparkle-2-v2 { top: 20%; right: 15%; animation-delay: 0.5s; }
+                        .sparkle-3-v2 { bottom: 15%; left: 25%; animation-delay: 1s; }
+                        .sparkle-4-v2 { bottom: 10%; right: 20%; animation-delay: 1.5s; }
+                    `}</style>
+                    
+                    {/* Yai Data with Dropdown - First Row */}
+                    <div className="flex items-center gap-4 mb-3 pointer-events-none relative">
+                        <div className={`relative ${isDropdownOpen ? '' : 'bot-icon-container-v2'} pointer-events-auto`}>
+                            {/* Rotating Rings - Only show when dropdown is closed */}
+                            {!isDropdownOpen && (
+                                <>
+                                    <div className="rotating-ring-v2"></div>
+                                    <div className="rotating-ring-2-v2"></div>
+                                    
+                                    {/* Sparkles - Only show when dropdown is closed */}
+                                    <div className="sparkle-v2 sparkle-1-v2"></div>
+                                    <div className="sparkle-v2 sparkle-2-v2"></div>
+                                    <div className="sparkle-v2 sparkle-3-v2"></div>
+                                    <div className="sparkle-v2 sparkle-4-v2"></div>
+                                </>
+                            )}
+                            
+                            <button
+                                onClick={() => setDropdownOpen(prev => !prev)}
+                                className={`relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 z-10 pointer-events-auto ${isDropdownOpen ? '' : 'bot-icon-glow-v2'}`}
+                                aria-label="Yai Data"
+                            >
+                                <img 
+                                    src="/assets/modules-image/chatbot.png" 
+                                    alt="Yai Data" 
+                                    className="w-16 h-16 rounded-full object-cover border-2 border-cyan-400/50 relative z-10" 
+                                />
+                                {/* Gradient Overlay - Only show when dropdown is closed */}
+                                {!isDropdownOpen && (
+                                    <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-cyan-400/20 via-blue-500/20 to-purple-500/20 mix-blend-screen pointer-events-none"></div>
+                                )}
+                            </button>
                         </div>
-                        <div className="flex flex-col">
-                            <span className="text-sm font-medium text-white/90">Yai 2</span>
-                            <span className="text-xs text-white/60 hidden sm:block">Website Assistant</span>
+                        <span className={`text-white font-bold text-lg tracking-wide drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent pointer-events-auto ${isDropdownOpen ? '' : 'animate-pulse'}`}>
+                            Yai Data
+                        </span>
+                        
+                        {/* Dropdown Menu */}
+                        {isDropdownOpen && onVersionChange && (
+                            <div className="absolute top-full mt-2 left-0 w-56 bg-slate-800/90 backdrop-blur-lg border border-white/10 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-[60] pointer-events-auto">
+                                <ul className="p-1 text-sm font-medium">
+                                    <li 
+                                        onClick={() => {
+                                            onVersionChange('yai1');
+                                            setDropdownOpen(false);
+                                        }}
+                                        className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-orange-500/10 cursor-pointer group transition-all border border-transparent hover:border-orange-500/30"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <img 
+                                                src="assets/modules-image/yai1.png" 
+                                                alt="Yai 1" 
+                                                className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]" 
+                                            />
+                                            <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(251,146,60,0.4)]">Yai 1</span>
+                                        </div>
+                                        <ChevronRight size={16} className="text-orange-400/70 group-hover:text-orange-300 transition-colors" />
+                                    </li>
+                                    <li 
+                                        onClick={() => {
+                                            onVersionChange('yai2');
+                                            setDropdownOpen(false);
+                                        }}
+                                        className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-gray-500/10 cursor-pointer group transition-all border border-transparent hover:border-gray-500/30"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <img 
+                                                src="assets/modules-image/yai2.png" 
+                                                alt="Yai 2" 
+                                                className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(156,163,175,0.6)]" 
+                                            />
+                                            <span className="bg-gradient-to-r from-gray-400 via-slate-400 to-gray-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(156,163,175,0.4)]">Yai 2</span>
+                                        </div>
+                                        <ChevronRight size={16} className="text-gray-400/70 group-hover:text-gray-300 transition-colors" />
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                    
+                    {/* Overlay to close dropdown when clicking outside */}
+                    {isDropdownOpen && (
+                        <div 
+                            className="fixed inset-0 z-40" 
+                            onClick={() => setDropdownOpen(false)}
+                        />
+                    )}
+                    
+                    {/* Second Row: Menu buttons and Bot Info */}
+                    <div className="flex items-center justify-between relative">
+                        <div className="flex items-center gap-3">
+                            <button 
+                                onClick={() => setIsHistoryOpen(true)}
+                                className="p-2 rounded-full hover:bg-white/10 transition"
+                                title="Chat history"
+                            >
+                                <Menu size={20} className="text-white/70" />
+                            </button>
+                            <button 
+                                onClick={handleNewChat}
+                                className="px-3 py-1.5 rounded-full hover:bg-white/10 transition text-xs font-medium text-white/70"
+                                title="Menu"
+                            >
+                                Menu
+                            </button>
+                        </div>
+                        {/* Bot Avatar and Name - Centered */}
+                        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-sky-500 flex items-center justify-center border-2 border-white/20 shadow-md">
+                                <Database size={18} className="text-white" />
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="text-sm font-medium text-white/90">Yai 2</span>
+                                <span className="text-xs text-white/60 hidden sm:block">Website Assistant</span>
+                            </div>
                         </div>
                     </div>
-                    {/* Close Button */}
-                    <button
-                        onClick={onClose}
-                        className="p-2 rounded-full hover:bg-white/10 transition"
-                        title="Close"
-                    >
-                        <X size={20} className="text-white/70" />
-                    </button>
                 </div>
 
                 {/* Content Area */}

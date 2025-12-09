@@ -431,7 +431,11 @@ const AppLayout = () => {
                                 className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-orange-500/10 cursor-pointer group transition-all border border-transparent hover:border-orange-500/30"
                             >
                                 <div className="flex items-center gap-3">
-                                    <Database size={16} className="text-orange-400 group-hover:text-orange-300 transition-colors drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]" />
+                                    <img 
+                                        src="assets/modules-image/yai1.png" 
+                                        alt="Yai 1" 
+                                        className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]" 
+                                    />
                                     <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(251,146,60,0.4)]">Yai 1</span>
                                 </div>
                                 <ChevronRight size={16} className="text-orange-400/70 group-hover:text-orange-300 transition-colors" />
@@ -445,7 +449,11 @@ const AppLayout = () => {
                                 className="relative flex items-center justify-between gap-3 px-3 py-2 rounded-md hover:bg-gray-500/10 cursor-pointer group transition-all border border-transparent hover:border-gray-500/30"
                             >
                                 <div className="flex items-center gap-3">
-                                    <Database size={16} className="text-gray-400 group-hover:text-gray-300 transition-colors drop-shadow-[0_0_8px_rgba(156,163,175,0.6)]" />
+                                    <img 
+                                        src="assets/modules-image/yai2.png" 
+                                        alt="Yai 2" 
+                                        className="w-5 h-5 object-contain drop-shadow-[0_0_8px_rgba(156,163,175,0.6)]" 
+                                    />
                                     <span className="bg-gradient-to-r from-gray-400 via-slate-400 to-gray-500 bg-clip-text text-transparent font-semibold drop-shadow-[0_0_4px_rgba(156,163,175,0.4)]">Yai 2</span>
                                 </div>
                                 <ChevronRight size={16} className="text-gray-400/70 group-hover:text-gray-300 transition-colors" />
@@ -456,7 +464,7 @@ const AppLayout = () => {
                 </div>
             )}
 
-            {isYaiDataBotOpen && <YaiDataBot moduleContext={botModuleContext} version={yaiVersion} onClose={() => setYaiDataBotOpen(false)} />}
+            {isYaiDataBotOpen && <YaiDataBot moduleContext={botModuleContext} version={yaiVersion} onVersionChange={setYaiVersion} onClose={() => setYaiDataBotOpen(false)} />}
             {isGMChatOpen && <GMChat onClose={() => setGMChatOpen(false)} />}
             <main className="flex-1 relative p-4 md:p-6 overflow-x-auto">
                 {/* === BACKGROUND LAYERS === */}
