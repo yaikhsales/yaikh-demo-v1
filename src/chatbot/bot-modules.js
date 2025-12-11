@@ -38,11 +38,11 @@ const PREDEFINED_BOTS = [
         textColor: 'text-blue-800',
         borderColor: 'border-blue-200',
         suggestedActions: [
-            { text: 'Schedule meeting', highlight: true },
-            { text: 'Manage tasks' },
-            { text: 'Generate report' },
-            { text: 'Update policies' },
-            { text: 'Organize documents' }
+            { text: 'Create Support Ticket', highlight: true },
+            { text: 'Food Menu' },
+            { text: 'Car fuel' },
+            { text: 'Security Issue' },
+            { text: '2 Applications Received for IE Job Post' }
         ]
     },
     {
@@ -244,7 +244,7 @@ const PhoneFrame = ({
         <div className="relative w-full h-full flex items-stretch justify-center">
             {/* Phone Frame */}
             <div className="relative mx-auto bg-gray-900 rounded-[3rem] p-2 shadow-2xl phone-frame flex-shrink-0 w-full h-full">
-                    {/* Phone Screen */}
+                {/* Phone Screen */}
                 <div className={`w-full h-full ${bot.lightBg || 'bg-gradient-to-br from-slate-50 to-gray-50'} rounded-[2.5rem] overflow-hidden relative flex flex-col shadow-2xl border-2 ${bot.borderColor || 'border-gray-200'}`}>
                     {/* Notch */}
                     <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 ${bot.lightBg || 'bg-gradient-to-br from-slate-50 to-gray-50'} rounded-b-2xl z-20`}></div>
@@ -278,7 +278,7 @@ const PhoneFrame = ({
                                         <Plus size={14} className={bot.textColor || 'text-gray-700'} />
                                         <span className={`text-xs font-medium ${bot.textColor || 'text-gray-700'}`}>New Chat</span>
                                     </button>
-            </div>
+                                </div>
 
                                 {/* Chat List */}
                                 <div className="flex-1 overflow-y-auto">
@@ -318,8 +318,8 @@ const PhoneFrame = ({
                                         </div>
                                     )}
                                 </div>
-                </div>
-            </div>
+                            </div>
+                        </div>
 
                         {/* Overlay when sidebar is open */}
                         {isHistoryOpen && (
@@ -399,8 +399,8 @@ const PhoneFrame = ({
                                             <div className="flex flex-col gap-1 max-w-[85%]">
                                                 <div
                                                     className={`rounded-2xl px-4 py-2.5 text-sm ${msg.from === 'user'
-                                                            ? `bg-gradient-to-r ${bot.bgGradient} text-white rounded-br-none shadow-lg`
-                                                            : `bg-white border ${bot.borderColor || 'border-gray-200'} ${bot.textColor || 'text-gray-800'} rounded-bl-none shadow-sm`
+                                                        ? `bg-gradient-to-r ${bot.bgGradient} text-white rounded-br-none shadow-lg`
+                                                        : `bg-white border ${bot.borderColor || 'border-gray-200'} ${bot.textColor || 'text-gray-800'} rounded-bl-none shadow-sm`
                                                         }`}
                                                 >
                                                     {msg.text}
@@ -462,9 +462,9 @@ const PhoneFrame = ({
                                                     {msg.type === 'invoice-image' && msg.imageUrl && (
                                                         <div className="mt-2">
                                                             <div className="text-xs font-semibold mb-2 text-gray-700">{msg.invoiceName}</div>
-                                                            <img 
-                                                                src={msg.imageUrl} 
-                                                                alt={msg.invoiceName || 'Invoice'} 
+                                                            <img
+                                                                src={msg.imageUrl}
+                                                                alt={msg.invoiceName || 'Invoice'}
                                                                 className="w-full rounded-lg border-2 border-gray-200 shadow-lg max-h-96 object-contain bg-white"
                                                                 onError={(e) => {
                                                                     e.target.style.display = 'none';
@@ -537,23 +537,22 @@ const PhoneFrame = ({
                                     <div ref={messagesEndRef} />
                                 </div>
                             )}
-                                            </div>
+                        </div>
 
                         {/* Input Field with Thinking Status */}
                         <div className={`flex-shrink-0 px-4 py-4 border-t ${bot.borderColor || 'border-gray-200'}`}>
                             <form onSubmit={handleSend} className="relative">
-                                <div className={`flex items-center px-4 py-3 rounded-full border ${bot.borderColor || 'border-gray-200'} bg-white shadow-md focus-within:ring-2 focus-within:ring-opacity-30 focus-within:border-transparent transition-all ${
-                                    bot.bgGradient.includes('green') ? 'focus-within:ring-green-400' :
-                                    bot.bgGradient.includes('blue') ? 'focus-within:ring-blue-400' :
-                                    bot.bgGradient.includes('purple') ? 'focus-within:ring-purple-400' :
-                                    bot.bgGradient.includes('orange') ? 'focus-within:ring-orange-400' :
-                                    bot.bgGradient.includes('indigo') ? 'focus-within:ring-indigo-400' :
-                                    bot.bgGradient.includes('teal') ? 'focus-within:ring-teal-400' :
-                                    bot.bgGradient.includes('amber') ? 'focus-within:ring-amber-400' :
-                                    bot.bgGradient.includes('rose') ? 'focus-within:ring-rose-400' :
-                                    bot.bgGradient.includes('violet') ? 'focus-within:ring-violet-400' :
-                                    bot.bgGradient.includes('sky') ? 'focus-within:ring-sky-400' : 'focus-within:ring-blue-400'
-                                }`}
+                                <div className={`flex items-center px-4 py-3 rounded-full border ${bot.borderColor || 'border-gray-200'} bg-white shadow-md focus-within:ring-2 focus-within:ring-opacity-30 focus-within:border-transparent transition-all ${bot.bgGradient.includes('green') ? 'focus-within:ring-green-400' :
+                                        bot.bgGradient.includes('blue') ? 'focus-within:ring-blue-400' :
+                                            bot.bgGradient.includes('purple') ? 'focus-within:ring-purple-400' :
+                                                bot.bgGradient.includes('orange') ? 'focus-within:ring-orange-400' :
+                                                    bot.bgGradient.includes('indigo') ? 'focus-within:ring-indigo-400' :
+                                                        bot.bgGradient.includes('teal') ? 'focus-within:ring-teal-400' :
+                                                            bot.bgGradient.includes('amber') ? 'focus-within:ring-amber-400' :
+                                                                bot.bgGradient.includes('rose') ? 'focus-within:ring-rose-400' :
+                                                                    bot.bgGradient.includes('violet') ? 'focus-within:ring-violet-400' :
+                                                                        bot.bgGradient.includes('sky') ? 'focus-within:ring-sky-400' : 'focus-within:ring-blue-400'
+                                    }`}
                                 >
                                     <button
                                         type="button"
@@ -598,7 +597,7 @@ const PhoneFrame = ({
                                 </div>
                             </form>
                         </div>
-                            </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -807,22 +806,22 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // Finance PA specific responses
             if (botId === 'finance-bot') {
                 const messageLower = message.toLowerCase().trim();
-                
+
                 // 1. Purchase Request appr
                 if (messageLower.includes('purchase request appr') || messageLower === 'purchase request appr') {
                     botResponse = 'PA: 776 waiting for payment';
                     buttonText = 'Pay';
                     responseType = 'button';
-                    
+
                     // Add first response immediately
                     setBotStates(prev => {
                         const botState = prev[botId];
                         const messageObj = { from: 'bot', text: botResponse, type: responseType, buttonText };
                         const updatedMessages = [...botState.messages, messageObj];
-                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                             chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                         ) : botState.chatHistory;
-                        
+
                         return {
                             ...prev,
                             [botId]: {
@@ -840,10 +839,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                             const botState = prev[botId];
                             if (!botState) return prev;
                             const updatedMessages = [...botState.messages, { from: 'bot', text: 'PA: ES packing payment 6500$ IMV 00078 pay data.' }];
-                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                                 chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                             ) : botState.chatHistory;
-                            
+
                             return {
                                 ...prev,
                                 [botId]: {
@@ -861,10 +860,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                             const botState = prev[botId];
                             if (!botState) return prev;
                             const updatedMessages = [...botState.messages, { from: 'bot', text: 'Payment processed successfully. Transaction ID: TXN-776-001' }];
-                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                                 chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                             ) : botState.chatHistory;
-                            
+
                             return {
                                 ...prev,
                                 [botId]: {
@@ -877,21 +876,21 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }, 6000);
                     return; // Exit early, don't process default response
                 }
-                
+
                 // 2. Supp Payment Request
                 if (messageLower.includes('supp payment request') || messageLower === 'supp payment request') {
                     botResponse = 'PA: ES packing payment 6500$ IMV 00078';
                     buttonText = 'Pay';
                     responseType = 'button';
-                    
+
                     setBotStates(prev => {
                         const botState = prev[botId];
                         const messageObj = { from: 'bot', text: botResponse, type: responseType, buttonText };
                         const updatedMessages = [...botState.messages, messageObj];
-                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                             chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                         ) : botState.chatHistory;
-                        
+
                         return {
                             ...prev,
                             [botId]: {
@@ -909,10 +908,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                             const botState = prev[botId];
                             if (!botState) return prev;
                             const updatedMessages = [...botState.messages, { from: 'bot', text: 'PA: ABC COL LLDT 2500$ ....' }];
-                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                                 chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                             ) : botState.chatHistory;
-                            
+
                             return {
                                 ...prev,
                                 [botId]: {
@@ -925,7 +924,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }, 3000);
                     return; // Exit early
                 }
-                
+
                 // 3. E-invoice
                 if (messageLower.includes('e-invoice') || messageLower === 'e-invoice' || messageLower === 'einvoice') {
                     botResponse = 'E-invoice received.';
@@ -935,14 +934,14 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     botResponse = 'Select invoice to generate:';
                     responseType = 'invoice-list';
                     dropdownItems = [
-                        { 
-                            id: 'inv-pr-001', 
+                        {
+                            id: 'inv-pr-001',
                             text: 'Invoice from Purchase Request appr',
                             source: 'purchase-request',
                             image: 'assets/modules-image/Verify-pr.png'
                         },
-                        { 
-                            id: 'inv-spp-001', 
+                        {
+                            id: 'inv-spp-001',
                             text: 'Invoice from Supp Payment Request',
                             source: 'supp-payment',
                             image: 'assets/modules-image/Approval-pr.png'
@@ -973,6 +972,41 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 // 5. Data
                 else if (messageLower === 'data' || messageLower.includes('data')) {
                     botResponse = 'Monthly declaration';
+                }
+            }
+
+            // Admin PA specific responses
+            if (botId === 'admin-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. Create Support Ticket
+                if (messageLower.includes('create support ticket') || messageLower === 'create support ticket') {
+                    botResponse = 'What happened? Is it broken or something new?';
+                }
+                // 2. Food Menu
+                else if (messageLower.includes('food menu') || messageLower === 'food menu') {
+                    botResponse = 'Here is the menu:';
+                    responseType = 'invoice-image';
+                    dropdownItems = [{
+                        id: 'menu-img',
+                        text: 'Food Menu',
+                        image: 'assets/modules-image/menu.png'
+                    }];
+                }
+                // 3. Car fuel
+                else if (messageLower.includes('car fuel') || messageLower === 'car fuel') {
+                    botResponse = 'Car plate 1C-7782: Fuel overconsumption. GPS 167km/week: 1L = 6km [STD: 1L = 10km]';
+                }
+                // 4. Security Issue
+                else if (messageLower.includes('security issue') || messageLower === 'security issue') {
+                    botResponse = 'Security found 3 strangers trying to enter the factory during lunch time.';
+                }
+                // 5. 2 Applications Received for IE Job Post
+                else if (messageLower.includes('2 applications received for ie job post') || 
+                         messageLower.includes('2 applications recieve for ie jobs post') ||
+                         messageLower.includes('applications received') ||
+                         messageLower.includes('applications recieve')) {
+                    botResponse = 'Do you want to review the 2 applications?';
                 }
             }
 
@@ -1057,14 +1091,14 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // Calculate scroll progress (0 to 100)
             const progress = maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0;
             setScrollProgress(Math.min(100, Math.max(0, progress)));
-            
+
             // Calculate thumb width and position for custom scrollbar
             if (scrollbarTrackRef.current && scrollWidth > clientWidth) {
                 const trackWidth = scrollbarTrackRef.current.offsetWidth;
                 const thumbWidthPercent = (clientWidth / scrollWidth) * 100;
                 const maxThumbPosition = trackWidth - (trackWidth * thumbWidthPercent / 100);
                 const thumbPos = (progress / 100) * maxThumbPosition;
-                
+
                 setThumbWidth(Math.max(60, trackWidth * thumbWidthPercent / 100));
                 setThumbPosition(thumbPos);
             } else {
@@ -1114,11 +1148,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
         const trackWidth = track.offsetWidth;
         const { scrollWidth, clientWidth } = scrollContainerRef.current;
         const maxScroll = scrollWidth - clientWidth;
-        
+
         // Calculate scroll position based on click
         const scrollPercent = clickX / trackWidth;
         const targetScroll = scrollPercent * maxScroll;
-        
+
         scrollContainerRef.current.scrollTo({ left: targetScroll, behavior: 'smooth' });
     };
 
@@ -1126,7 +1160,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
         e.preventDefault();
         e.stopPropagation();
         setIsDragging(true);
-        
+
         const startX = e.clientX;
         const startScrollLeft = scrollContainerRef.current?.scrollLeft || 0;
         const track = scrollbarTrackRef.current;
@@ -1143,7 +1177,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             const deltaPercent = (deltaX / maxThumbPosition) * 100;
             const newScrollPercent = (startScrollLeft / maxScroll) * 100 + deltaPercent;
             const targetScroll = Math.max(0, Math.min(maxScroll, (newScrollPercent / 100) * maxScroll));
-            
+
             scrollContainerRef.current.scrollTo({ left: targetScroll, behavior: 'smooth' });
         };
 
@@ -1310,7 +1344,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                             <>
                                 <div className="rotating-ring-modules"></div>
                                 <div className="rotating-ring-2-modules"></div>
-                                
+
                                 {/* Sparkles - Only show when dropdown is closed */}
                                 <div className="sparkle-modules sparkle-1-modules"></div>
                                 <div className="sparkle-modules sparkle-2-modules"></div>
@@ -1318,16 +1352,16 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                                 <div className="sparkle-modules sparkle-4-modules"></div>
                             </>
                         )}
-                        
+
                         <button
                             onClick={() => setDropdownOpen(prev => !prev)}
                             className={`relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 z-10 pointer-events-auto ${isDropdownOpen ? '' : 'bot-icon-glow-modules'}`}
                             aria-label="Yai Data"
                         >
-                            <img 
-                                src="/assets/modules-image/chatbot.png" 
-                                alt="Yai Data" 
-                                className="w-16 h-16 rounded-full object-cover border-2 border-cyan-400/50 relative z-10" 
+                            <img
+                                src="/assets/modules-image/chatbot.png"
+                                alt="Yai Data"
+                                className="w-16 h-16 rounded-full object-cover border-2 border-cyan-400/50 relative z-10"
                             />
                             {/* Gradient Overlay - Only show when dropdown is closed */}
                             {!isDropdownOpen && (
@@ -1338,12 +1372,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     <span className={`text-white font-bold text-lg tracking-wide drop-shadow-[0_0_10px_rgba(59,130,246,0.8)] bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent pointer-events-auto ${isDropdownOpen ? '' : 'animate-pulse'}`}>
                         Yai Data
                     </span>
-                    
+
                     {/* Dropdown Menu */}
                     {isDropdownOpen && onVersionChange && (
                         <div className="absolute top-full mt-2 left-0 w-72 bg-white/90 backdrop-blur-lg border border-white/20 rounded-lg shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-[60] pointer-events-auto">
                             <ul className="p-2">
-                                <li 
+                                <li
                                     onClick={() => {
                                         onVersionChange('yai1');
                                         setDropdownOpen(false);
@@ -1351,16 +1385,16 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                                     className="relative flex items-center justify-between gap-4 px-4 py-3 rounded-md hover:bg-orange-500/10 cursor-pointer group transition-all border border-transparent hover:border-orange-500/30"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <img 
-                                            src="assets/modules-image/yai1.png" 
-                                            alt="Yai 1" 
-                                            className="w-14 h-14 rounded-full object-cover border-2 border-orange-400/50 drop-shadow-[0_0_8px_rgba(251,146,60,0.6)] flex-shrink-0" 
+                                        <img
+                                            src="assets/modules-image/yai1.png"
+                                            alt="Yai 1"
+                                            className="w-14 h-14 rounded-full object-cover border-2 border-orange-400/50 drop-shadow-[0_0_8px_rgba(251,146,60,0.6)] flex-shrink-0"
                                         />
                                         <span className="bg-gradient-to-r from-orange-400 via-amber-400 to-orange-500 bg-clip-text text-transparent font-bold text-lg drop-shadow-[0_0_4px_rgba(251,146,60,0.4)] whitespace-nowrap">Yai 1</span>
                                     </div>
                                     <ChevronRight size={20} className="text-orange-400/70 group-hover:text-orange-300 transition-colors flex-shrink-0" />
                                 </li>
-                                <li 
+                                <li
                                     onClick={() => {
                                         onVersionChange('yai2');
                                         setDropdownOpen(false);
@@ -1368,10 +1402,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                                     className="relative flex items-center justify-between gap-4 px-4 py-3 rounded-md hover:bg-gray-500/10 cursor-pointer group transition-all border border-transparent hover:border-gray-500/30"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <img 
-                                            src="assets/modules-image/yai2.png" 
-                                            alt="Yai 2" 
-                                            className="w-14 h-14 rounded-full object-cover border-2 border-gray-400/50 drop-shadow-[0_0_8px_rgba(156,163,175,0.6)] flex-shrink-0" 
+                                        <img
+                                            src="assets/modules-image/yai2.png"
+                                            alt="Yai 2"
+                                            className="w-14 h-14 rounded-full object-cover border-2 border-gray-400/50 drop-shadow-[0_0_8px_rgba(156,163,175,0.6)] flex-shrink-0"
                                         />
                                         <span className="bg-gradient-to-r from-gray-400 via-slate-400 to-gray-500 bg-clip-text text-transparent font-bold text-lg drop-shadow-[0_0_4px_rgba(156,163,175,0.4)] whitespace-nowrap">Yai 2</span>
                                     </div>
@@ -1381,12 +1415,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                         </div>
                     )}
                 </div>
-                                        </div>
-            
+            </div>
+
             {/* Overlay to close dropdown when clicking outside */}
             {isDropdownOpen && (
-                <div 
-                    className="fixed inset-0 z-40" 
+                <div
+                    className="fixed inset-0 z-40"
                     onClick={() => setDropdownOpen(false)}
                 />
             )}
@@ -1406,7 +1440,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }}
                     onScroll={checkScrollPosition}
                 >
-                <style>{`
+                    <style>{`
                     .phone-frame {
                         width: 100%;
                         height: 100%;
@@ -1488,74 +1522,74 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                         max-height: 100% !important;
                     }
                 `}</style>
-                <div className="flex gap-2 sm:gap-4 md:gap-6 items-stretch justify-start w-max h-full min-h-full flex-1">
-                    {PREDEFINED_BOTS.map((bot) => {
-                        const botState = botStates[bot.id];
-                        return (
-                            <div
-                                key={bot.id}
-                                className="bot-container"
-                            >
-                                {/* Phone Frame Wrapper */}
-                                <div className="phone-frame-wrapper">
-                                    <PhoneFrame
-                                        bot={bot}
-                                        messages={botState.messages}
-                                        onSendMessage={(msg) => handleSendMessage(bot.id, msg)}
-                                        inputValue={botState.input}
-                                        setInputValue={(value) => handleInputChange(bot.id, value)}
-                                        isTyping={botState.isTyping}
-                                        onNewChat={() => handleNewChat(bot.id)}
-                                        chatHistory={botState.chatHistory || []}
-                                        onLoadChat={(chatId) => loadChat(bot.id, chatId)}
-                                        onDeleteChat={(chatId) => deleteChat(bot.id, chatId)}
-                                        currentChatId={botState.currentChatId}
-                                        botId={bot.id}
-                                        onShowInvoice={(item) => {
-                                            // Directly add invoice image message
-                                            setBotStates(prev => {
-                                                const botState = prev[bot.id];
-                                                if (!botState) return prev;
-                                                
-                                                const invoiceMessage = {
-                                                    from: 'bot',
-                                                    text: `Invoice: ${item.text}`,
-                                                    type: 'invoice-image',
-                                                    imageUrl: item.image,
-                                                    invoiceName: item.text
-                                                };
-                                                const updatedMessages = [...botState.messages, invoiceMessage];
-                                                const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat => 
-                                                    chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                                                ) : botState.chatHistory;
-                                                
-                                                return {
-                                                    ...prev,
-                                                    [bot.id]: {
-                                                        ...prev[bot.id],
-                                                        messages: updatedMessages,
-                                                        chatHistory: updatedHistory
-                                                    }
-                                                };
-                                            });
-                                        }}
-                                    />
+                    <div className="flex gap-2 sm:gap-4 md:gap-6 items-stretch justify-start w-max h-full min-h-full flex-1">
+                        {PREDEFINED_BOTS.map((bot) => {
+                            const botState = botStates[bot.id];
+                            return (
+                                <div
+                                    key={bot.id}
+                                    className="bot-container"
+                                >
+                                    {/* Phone Frame Wrapper */}
+                                    <div className="phone-frame-wrapper">
+                                        <PhoneFrame
+                                            bot={bot}
+                                            messages={botState.messages}
+                                            onSendMessage={(msg) => handleSendMessage(bot.id, msg)}
+                                            inputValue={botState.input}
+                                            setInputValue={(value) => handleInputChange(bot.id, value)}
+                                            isTyping={botState.isTyping}
+                                            onNewChat={() => handleNewChat(bot.id)}
+                                            chatHistory={botState.chatHistory || []}
+                                            onLoadChat={(chatId) => loadChat(bot.id, chatId)}
+                                            onDeleteChat={(chatId) => deleteChat(bot.id, chatId)}
+                                            currentChatId={botState.currentChatId}
+                                            botId={bot.id}
+                                            onShowInvoice={(item) => {
+                                                // Directly add invoice image message
+                                                setBotStates(prev => {
+                                                    const botState = prev[bot.id];
+                                                    if (!botState) return prev;
+
+                                                    const invoiceMessage = {
+                                                        from: 'bot',
+                                                        text: `Invoice: ${item.text}`,
+                                                        type: 'invoice-image',
+                                                        imageUrl: item.image,
+                                                        invoiceName: item.text
+                                                    };
+                                                    const updatedMessages = [...botState.messages, invoiceMessage];
+                                                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                                                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                                                    ) : botState.chatHistory;
+
+                                                    return {
+                                                        ...prev,
+                                                        [bot.id]: {
+                                                            ...prev[bot.id],
+                                                            messages: updatedMessages,
+                                                            chatHistory: updatedHistory
+                                                        }
+                                                    };
+                                                });
+                                            }}
+                                        />
+                                    </div>
+                                    {/* Bot Name Label */}
+                                    <div className="flex-shrink-0 text-center w-full px-2 py-1">
+                                        <span className={`inline-block px-3 py-1 sm:px-4 sm:py-1.5 bg-gradient-to-r ${bot.bgGradient} text-white text-xs sm:text-sm font-semibold rounded-lg shadow-lg whitespace-nowrap border-2 border-white/30`}>
+                                            {bot.name}
+                                        </span>
+                                    </div>
                                 </div>
-                                {/* Bot Name Label */}
-                                <div className="flex-shrink-0 text-center w-full px-2 py-1">
-                                    <span className={`inline-block px-3 py-1 sm:px-4 sm:py-1.5 bg-gradient-to-r ${bot.bgGradient} text-white text-xs sm:text-sm font-semibold rounded-lg shadow-lg whitespace-nowrap border-2 border-white/30`}>
-                                        {bot.name}
-                                    </span>
-                                </div>
-                            </div>
-                        );
-                    }                    )}
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
 
                 {/* Custom Footer Scrollbar */}
                 <div className="flex-shrink-0 px-4 sm:px-8 py-2 bg-white/50 backdrop-blur-sm border-t border-gray-200">
-                    <div 
+                    <div
                         ref={scrollbarTrackRef}
                         className="relative w-full h-6 bg-white/80 rounded-full border-2 border-gray-300 shadow-inner cursor-pointer hover:bg-white/90 transition-colors"
                         onClick={handleScrollbarMouseDown}
