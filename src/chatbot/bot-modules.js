@@ -56,11 +56,11 @@ const PREDEFINED_BOTS = [
         textColor: 'text-purple-800',
         borderColor: 'border-purple-200',
         suggestedActions: [
-            { text: 'Plan CSR event', highlight: true },
-            { text: 'Track sustainability goals' },
-            { text: 'Create impact report' },
-            { text: 'Find volunteer opportunities' },
-            { text: 'Measure social impact' }
+            { text: 'Induction Training', highlight: true },
+            { text: 'Monthly 6S Report' },
+            { text: 'Compliance Certificate' },
+            { text: 'Audit Checklist' },
+            { text: 'CSR Equipment Handling' }
         ]
     },
     {
@@ -74,11 +74,12 @@ const PREDEFINED_BOTS = [
         textColor: 'text-orange-800',
         borderColor: 'border-orange-200',
         suggestedActions: [
-            { text: 'Create ad campaign', highlight: true },
-            { text: 'Analyze ad performance' },
-            { text: 'Optimize keywords' },
-            { text: 'Set budget strategy' },
-            { text: 'Generate ad copy' }
+            { text: 'Order Status', highlight: true },
+            { text: 'Delay Alert' },
+            { text: 'Need Your Action' },
+            { text: 'Supplier Alert' },
+            { text: 'Master Plan' },
+            { text: 'Line Plan' }
         ]
     },
     {
@@ -474,6 +475,31 @@ const PhoneFrame = ({
                                                             />
                                                             <div className="hidden text-xs text-gray-500 mt-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
                                                                 Invoice preview: {msg.invoiceName}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {msg.type === 'ppc-image' && msg.imageUrl && (
+                                                        <div className="mt-2">
+                                                            <img
+                                                                src={msg.imageUrl}
+                                                                alt={msg.imageName || 'PPC Image'}
+                                                                className="w-full rounded-lg border-2 border-gray-200 shadow-lg max-h-96 object-contain bg-white"
+                                                                onError={(e) => {
+                                                                    e.target.style.display = 'none';
+                                                                    const fallback = e.target.nextSibling;
+                                                                    if (fallback) fallback.style.display = 'block';
+                                                                }}
+                                                            />
+                                                            <button
+                                                                onClick={() => {
+                                                                    onSendMessage(`See more: ${msg.imageName || 'Details'}`);
+                                                                }}
+                                                                className={`mt-2 w-full px-4 py-2 rounded-lg bg-gradient-to-r ${bot.bgGradient} text-white text-xs font-semibold hover:opacity-90 transition-opacity shadow-md`}
+                                                            >
+                                                                See more
+                                                            </button>
+                                                            <div className="hidden text-xs text-gray-500 mt-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                Image preview: {msg.imageName}
                                                             </div>
                                                         </div>
                                                     )}
@@ -1010,6 +1036,155 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
             }
 
+            // PPC PA specific responses
+            if (botId === 'ppc-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. Order Status
+                if (messageLower.includes('order status') || messageLower === 'order status') {
+                    botResponse = 'Order Status & Planning Gantt Chart';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'order-status-img',
+                        text: 'Order Status',
+                        image: 'assets/modules-image/order-status.png',
+                        name: 'Order Status'
+                    }];
+                }
+                // 2. Delay Alert
+                else if (messageLower.includes('delay alert') || messageLower === 'delay alert') {
+                    botResponse = 'Delay Alert Notification';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'delay-alert-img',
+                        text: 'Delay Alert',
+                        image: 'assets/modules-image/delay-alert.png',
+                        name: 'Delay Alert'
+                    }];
+                }
+                // 3. Need Your Action
+                else if (messageLower.includes('need your action') || messageLower === 'need your action') {
+                    botResponse = 'Action Required Notification';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'need-action-img',
+                        text: 'Need Your Action',
+                        image: 'assets/modules-image/need-action.png',
+                        name: 'Need Your Action'
+                    }];
+                }
+                // 4. Supplier Alert
+                else if (messageLower.includes('supplier alert') || messageLower === 'supplier alert') {
+                    botResponse = 'Supplier Alert Dashboard';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'supplier-alert-img',
+                        text: 'Supplier Alert',
+                        image: 'assets/modules-image/supplier-alert.png',
+                        name: 'Supplier Alert'
+                    }];
+                }
+                // 5. Master Plan
+                else if (messageLower.includes('master plan') || messageLower === 'master plan') {
+                    botResponse = 'Master Plan - Production Planning & Control';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'master-plan-img',
+                        text: 'Master Plan',
+                        image: 'assets/modules-image/master-plan.png',
+                        name: 'Master Plan'
+                    }];
+                }
+                // 6. Line Plan
+                else if (messageLower.includes('line plan') || messageLower === 'line plan') {
+                    botResponse = 'Monthly Line Plan - PPC Department';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'line-plan-img',
+                        text: 'Line Plan',
+                        image: 'assets/modules-image/Line-plan.png',
+                        name: 'Line Plan'
+                    }];
+                }
+            }
+
+            // CSR PA specific responses
+            if (botId === 'csr-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. Induction Training
+                if (messageLower.includes('induction training') || messageLower === 'induction training') {
+                    botResponse = 'Factory Induction: Safety & Rules - Welcome!';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'induction-training-img',
+                        text: 'Induction Training',
+                        image: 'assets/modules-image/induction-training.png',
+                        name: 'Induction Training'
+                    }];
+                }
+                // 2. Monthly 6S Report
+                else if (messageLower.includes('monthly 6s report') || messageLower === 'monthly 6s report' || messageLower.includes('6s report')) {
+                    botResponse = 'Monthly 6S Report';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: '6s-report-img',
+                        text: 'Monthly 6S Report',
+                        image: 'assets/modules-image/6s.png',
+                        name: 'Monthly 6S Report'
+                    }];
+                }
+                // 3. Compliance Certificate
+                else if (messageLower.includes('compliance certificate') || messageLower === 'compliance certificate') {
+                    botResponse = 'Certificate of Compliance';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'certificate-compliance-img',
+                        text: 'Compliance Certificate',
+                        image: 'assets/modules-image/certificate-compliance.png',
+                        name: 'Compliance Certificate'
+                    }];
+                }
+                // 4. Audit Checklist
+                else if (messageLower.includes('audit checklist') || messageLower === 'audit checklist') {
+                    botResponse = 'CSR Audit Checklist';
+                    responseType = 'ppc-image';
+                    dropdownItems = [{
+                        id: 'audit-checklist-img',
+                        text: 'Audit Checklist',
+                        image: 'assets/modules-image/audit-checklist.png',
+                        name: 'Audit Checklist'
+                    }];
+                }
+                // 5. CSR Equipment Handling
+                else if (messageLower.includes('csr equipment handling') || messageLower === 'csr equipment handling' || messageLower.includes('equipment handling')) {
+                    botResponse = 'CSR Equipment Handling:';
+                    responseType = 'dropdown';
+                    dropdownItems = [
+                        {
+                            id: 'equipment-1',
+                            text: 'Smoke Detector and Fire Alarm'
+                        },
+                        {
+                            id: 'equipment-2',
+                            text: 'Fire Hose Reel Systems'
+                        },
+                        {
+                            id: 'equipment-3',
+                            text: 'Emergency Light and Exit'
+                        },
+                        {
+                            id: 'equipment-4',
+                            text: 'Fire Extinguishers'
+                        },
+                        {
+                            id: 'equipment-5',
+                            text: 'Sensor Humidity and Temperature'
+                        }
+                    ];
+                }
+            }
+
             setBotStates(prev => {
                 const botState = prev[botId];
                 const messageObj = { from: 'bot', text: botResponse };
@@ -1026,6 +1201,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     messageObj.type = 'invoice-image';
                     messageObj.imageUrl = dropdownItems[0].image;
                     messageObj.invoiceName = dropdownItems[0].text;
+                } else if (responseType === 'ppc-image' && dropdownItems && dropdownItems[0]) {
+                    messageObj.type = 'ppc-image';
+                    messageObj.imageUrl = dropdownItems[0].image;
+                    messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
                 }
                 const updatedMessages = [...botState.messages, messageObj];
 
