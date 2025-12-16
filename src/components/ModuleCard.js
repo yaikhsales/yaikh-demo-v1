@@ -28,6 +28,30 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
         </div>
       );
     }
+    if (data.image) {
+      return (
+        <div className={`relative flex items-center justify-center ${
+          isDropdownOpen ? 'w-14 h-14' : 'w-20 h-20 group-hover:w-24 group-hover:h-24'
+        } transition-all duration-300`}>
+          <img
+            src={`/${data.image}`}
+            alt={data.title}
+            className={`w-full h-full object-contain transition-all duration-300 ${
+              isDropdownOpen ? 'rounded-2xl' : 'rounded-3xl'
+            }`}
+            style={{
+              mixBlendMode: isDropdownOpen ? 'normal' : 'screen',
+              filter: isDropdownOpen 
+                ? 'none' 
+                : 'brightness(0.4) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
+              WebkitFilter: isDropdownOpen 
+                ? 'none' 
+                : 'brightness(0.4) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
+            }}
+          />
+        </div>
+      );
+    }
     const IconComponent = data.icon;
     return (
       <IconComponent
