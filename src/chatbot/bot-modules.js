@@ -4,7 +4,7 @@ import {
     Wallet, UserCog, HeartHandshake, Megaphone, Factory,
     BarChart3, Lightbulb, Handshake, ClipboardCheck, MessageCircle,
     Copy, Edit2, RefreshCw, ThumbsUp, ThumbsDown, MoreVertical,
-    Menu, Trash2, ChevronRight
+    Menu, Trash2, ChevronRight, ArrowLeft
 } from 'lucide-react';
 
 // Predefined 10 bots for each moduleContext
@@ -97,7 +97,7 @@ const PREDEFINED_BOTS = [
             { text: 'Track inventory levels' },
             { text: 'Optimize workflow' },
             { text: 'Monitor quality metrics' },
-            { text: 'Generate production report' }
+            { text: 'Production Status' }
         ]
     },
     {
@@ -111,11 +111,11 @@ const PREDEFINED_BOTS = [
         textColor: 'text-teal-800',
         borderColor: 'border-teal-200',
         suggestedActions: [
-            { text: 'Calculate yield metrics', highlight: true },
-            { text: 'Track production yield' },
-            { text: 'Analyze efficiency' },
-            { text: 'Identify bottlenecks' },
-            { text: 'Generate yield report' }
+            { text: 'Dashboard Analytics', highlight: true },
+            { text: 'Repair Machine Status' },
+            { text: 'Maintenance Schedule' },
+            { text: 'Late Maintenance Alert' },
+            { text: 'Machine Invoice' }
         ]
     },
     {
@@ -147,11 +147,11 @@ const PREDEFINED_BOTS = [
         textColor: 'text-rose-800',
         borderColor: 'border-rose-200',
         suggestedActions: [
-            { text: 'Track sales pipeline', highlight: true },
-            { text: 'Create sales forecast' },
-            { text: 'Analyze customer data' },
-            { text: 'Generate proposal' },
-            { text: 'Follow up with leads' }
+            { text: 'Sale Order Update Status', highlight: true },
+            { text: 'Buyer Replied' },
+            { text: 'Quotation update' },
+            { text: 'You got 3 email to replied' },
+            { text: 'Customer Factory Visit' }
         ]
     },
     {
@@ -165,11 +165,11 @@ const PREDEFINED_BOTS = [
         textColor: 'text-violet-800',
         borderColor: 'border-violet-200',
         suggestedActions: [
-            { text: 'Run quality audit', highlight: true },
-            { text: 'Check compliance status' },
-            { text: 'Generate quality report' },
-            { text: 'Update procedures' },
-            { text: 'Track quality metrics' }
+            { text: 'Hight Defect Rate Inspection', highlight: true },
+            { text: 'Thirt party schedule' },
+            { text: 'Buyer Visit' },
+            { text: 'Pre Production Meeting Schedule' },
+            { text: 'You got 4 email to replied' }
         ]
     },
     {
@@ -183,11 +183,11 @@ const PREDEFINED_BOTS = [
         textColor: 'text-sky-800',
         borderColor: 'border-sky-200',
         suggestedActions: [
-            { text: 'Create social post', highlight: true },
-            { text: 'Schedule content' },
-            { text: 'Analyze engagement' },
-            { text: 'Respond to comments' },
-            { text: 'Plan content calendar' }
+            { text: 'Tiktok Comment', highlight: true },
+            { text: 'Facebook Comment' },
+            { text: 'Youtube Comment' },
+            { text: 'Instagram Comment' },
+            { text: 'Linkedin Comment' }
         ]
     }
 ];
@@ -404,7 +404,7 @@ const PhoneFrame = ({
                                                         : `bg-white border ${bot.borderColor || 'border-gray-200'} ${bot.textColor || 'text-gray-800'} rounded-bl-none shadow-sm`
                                                         }`}
                                                 >
-                                                    {msg.text}
+                                                    {msg.type !== 'social-media' && msg.text}
                                                     {msg.type === 'button' && msg.buttonText && (
                                                         <button
                                                             onClick={() => {
@@ -500,6 +500,22 @@ const PhoneFrame = ({
                                                             </button>
                                                             <div className="hidden text-xs text-gray-500 mt-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
                                                                 Image preview: {msg.imageName}
+                                                            </div>
+                                                        </div>
+                                                    )}
+                                                    {msg.type === 'social-media' && msg.iconUrl && (
+                                                        <div className="flex items-start gap-3">
+                                                            <img
+                                                                src={msg.iconUrl}
+                                                                alt={msg.platform || 'Social Media'}
+                                                                className="w-10 h-10 rounded-lg object-contain flex-shrink-0 border border-gray-200 bg-white p-1"
+                                                                onError={(e) => {
+                                                                    e.target.style.display = 'none';
+                                                                }}
+                                                            />
+                                                            <div className="flex-1">
+                                                                <div className="text-sm font-semibold mb-1.5 text-gray-800">{msg.platform} Comments</div>
+                                                                <div className="text-xs text-gray-600 whitespace-pre-line leading-relaxed">{msg.text}</div>
                                                             </div>
                                                         </div>
                                                     )}
@@ -1185,6 +1201,166 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
             }
 
+            // Production PA specific responses
+            if (botId === 'productions-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. Plan production schedule
+                if (messageLower.includes('plan production schedule') || messageLower === 'plan production schedule' || messageLower.includes('production schedule')) {
+                    botResponse = '📅 Production Schedule Planning\n\n✅ Status: Initiated\n📊 Current Capacity: 85%\n⏰ Available Time Slots: Ready for scheduling\n\nNext Steps:\n• Review current production load\n• Allocate resources\n• Set timeline targets';
+                }
+                // 2. Track inventory levels
+                else if (messageLower.includes('track inventory levels') || messageLower === 'track inventory levels' || messageLower.includes('inventory levels')) {
+                    botResponse = '📦 Inventory Tracking Status\n\n📊 Current Stock Levels:\n• Raw Materials: 72%\n• Finished Goods: 68%\n• Work in Progress: 45%\n\n⚠️ Alert: Raw materials below optimal level (80%)';
+                }
+                // 3. Optimize workflow
+                else if (messageLower.includes('optimize workflow') || messageLower === 'optimize workflow' || messageLower.includes('workflow')) {
+                    botResponse = '⚙️ Workflow Optimization Analysis\n\n✅ Analysis Complete\n\n💡 Recommendations:\n• Reduce setup time by 15%\n• Improve material flow efficiency by 22%\n• Optimize machine utilization\n\n📈 Expected Impact: +18% overall efficiency';
+                }
+                // 4. Monitor quality metrics
+                else if (messageLower.includes('monitor quality metrics') || messageLower === 'monitor quality metrics' || messageLower.includes('quality metrics')) {
+                    botResponse = '📊 Quality Metrics Monitoring\n\n📈 Current Metrics:\n• Defect Rate: 2.3%\n• First Pass Yield: 97.7%\n• Customer Satisfaction: 94.5%\n\n✅ Status: All metrics within acceptable range\n🎯 Target: Maintain current performance';
+                }
+                // 5. Production Status
+                else if (messageLower.includes('production status') || messageLower === 'production status') {
+                    botResponse = '🏭 Production Status Overview\n\n📋 Current Status:\n• Active Lines: 8/10\n• Efficiency: 87%\n• On-time Delivery: 92%\n• Current Output: 1,250 units/day\n\n✅ Production running smoothly';
+                }
+            }
+
+            // Sale PA specific responses
+            if (botId === 'sale-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. Sale Order Update Status
+                if (messageLower.includes('sale order update status') || messageLower === 'sale order update status' || messageLower.includes('order update status') || messageLower.includes('sale order')) {
+                    botResponse = '📋 Sale Order Status Update\n\n📦 Order Details:\n• Order #SO-2024-001: ✅ Shipped\n• Order #SO-2024-002: ⚙️ In Production\n• Order #SO-2024-003: ⏳ Pending Payment\n• Order #SO-2024-004: ✅ Delivered\n\n📊 Summary: 2 completed, 1 in progress, 1 pending';
+                }
+                // 2. Buyer Replied
+                else if (messageLower.includes('buyer replied') || messageLower === 'buyer replied' || messageLower.includes('buyer reply')) {
+                    botResponse = '💬 Buyer Response Received\n\n👤 Buyer: ABC Corporation\n📝 Message: Requesting sample approval\n🔴 Priority: High\n⏰ Response Time: Within 24 hours\n\n✅ Action Required: Review and respond';
+                }
+                // 3. Quotation update
+                else if (messageLower.includes('quotation update') || messageLower === 'quotation update' || messageLower.includes('quotation')) {
+                    botResponse = '📄 Quotation Update\n\n📋 Updated Quotations:\n• #QT-2024-015: Updated pricing\n• #QT-2024-016: Revised delivery terms\n• #QT-2024-017: New product added\n\n⏳ Status: Pending buyer approval\n📅 Review deadline: 3 business days';
+                }
+                // 4. You got 3 email to replied
+                else if (messageLower.includes('you got 3 email to replied') || messageLower === 'you got 3 email to replied' || messageLower.includes('3 email') || messageLower.includes('email to reply')) {
+                    botResponse = '📧 You have 3 emails to reply\n\n1️⃣ From: Buyer XYZ Ltd\n   Subject: Order inquiry\n   Priority: Medium\n\n2️⃣ From: Customer ABC Corp\n   Subject: Delivery schedule\n   Priority: High\n\n3️⃣ From: Partner DEF Inc\n   Subject: Price negotiation\n   Priority: Medium\n\n⏰ Please respond within 24 hours';
+                }
+                // 5. Customer Factory Visit
+                else if (messageLower.includes('customer factory visit') || messageLower === 'customer factory visit' || messageLower.includes('factory visit')) {
+                    botResponse = '🏭 Customer Factory Visit Scheduled\n\n👥 Customer: Global Textiles Inc\n📅 Date: Next Friday, 10:00 AM\n👤 Attendees: 5 people\n🎯 Purpose: Quality inspection\n✅ Status: Confirmed\n\n📋 Preparation checklist sent';
+                }
+            }
+
+            // QMS PA specific responses
+            if (botId === 'qms-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. High Defect Rate Inspection
+                if (messageLower.includes('hight defect rate inspection') || messageLower === 'hight defect rate inspection' || messageLower.includes('high defect rate') || messageLower.includes('defect rate inspection')) {
+                    botResponse = '⚠️ High Defect Rate Inspection Alert\n\n📊 Current Status:\n• Defect Rate: 3.8% (Threshold: 2.5%)\n• Status: ⚠️ Above threshold\n• Affected Line: Line 4\n• Defect Type: Stitching issues\n\n🔧 Action Required:\n• Immediate inspection\n• Corrective measures needed\n• Root cause analysis\n\n📅 Scheduled Inspection: Today, 2:00 PM';
+                }
+                // 2. Third party schedule
+                else if (messageLower.includes('thirt party schedule') || messageLower === 'thirt party schedule' || messageLower.includes('third party schedule') || messageLower.includes('third party')) {
+                    botResponse = '🔍 Third Party Audit Schedule\n\n👤 Auditor: SGS Certification Services\n📅 Date: Next Monday, 9:00 AM\n📋 Type: ISO 9001:2015 Audit\n⏱️ Duration: 3 days\n\n📊 Preparation Status:\n• Progress: 85% complete\n• Documents: ✅ Ready\n• Team briefing: Scheduled\n\n✅ All systems ready for audit';
+                }
+                // 3. Buyer Visit
+                else if (messageLower.includes('buyer visit') || messageLower === 'buyer visit') {
+                    botResponse = '👥 Buyer Visit Scheduled\n\n🏢 Buyer: Fashion Retail Group\n📅 Date: This Thursday, 11:00 AM\n👤 Attendees: 3 representatives\n🎯 Purpose: Quality assessment and factory tour\n\n📋 Focus Areas:\n• Production process\n• Quality control\n• Compliance standards\n\n✅ Status: Confirmed';
+                }
+                // 4. Pre Production Meeting Schedule
+                else if (messageLower.includes('pre production meeting schedule') || messageLower === 'pre production meeting schedule' || messageLower.includes('pre production meeting') || messageLower.includes('pre-production meeting')) {
+                    botResponse = '📅 Pre-Production Meeting Schedule\n\n📋 Meeting Details:\n• Style: #2024-015 Pre-Production Review\n• Date: Tomorrow, 2:00 PM\n• Location: Conference Room A\n\n👥 Attendees:\n• Production Team\n• QA Team\n• Merchandising Team\n\n📝 Agenda:\n• Quality standards review\n• Production timeline\n• Resource allocation\n\n✅ Status: Scheduled';
+                }
+                // 5. You got 4 email to replied
+                else if (messageLower.includes('you got 4 email to replied') || messageLower === 'you got 4 email to replied' || messageLower.includes('4 email') || messageLower.includes('email to reply')) {
+                    botResponse = '📧 You have 4 emails to reply\n\n1️⃣ From: Quality Auditor\n   Subject: Audit report review\n   Priority: High\n\n2️⃣ From: Buyer QA Team\n   Subject: Sample approval request\n   Priority: High\n\n3️⃣ From: Supplier\n   Subject: Material quality certificate\n   Priority: Medium\n\n4️⃣ From: Internal QA\n   Subject: Defect analysis report\n   Priority: High\n\n⏰ Please respond within 24 hours';
+                }
+            }
+
+            // Social PA specific responses
+            if (botId === 'social-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. TikTok Comment
+                if (messageLower.includes('tiktok comment') || messageLower === 'tiktok comment' || messageLower.includes('tiktok')) {
+                    botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 12\n• Pending Replies: 5\n• Engagement Rate: +15% this week\n• Response Time: Average 2 hours\n\n💭 Latest Comment:\n"Love this product! When will it be available?"\n\n✅ Action: Reply pending';
+                    responseType = 'social-media';
+                    dropdownItems = [{
+                        id: 'tiktok-icon',
+                        platform: 'TikTok',
+                        iconUrl: 'https://www.google.com/s2/favicons?domain=tiktok.com&sz=64'
+                    }];
+                }
+                // 2. Facebook Comment
+                else if (messageLower.includes('facebook comment') || messageLower === 'facebook comment' || messageLower.includes('facebook')) {
+                    botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 28\n• Pending Replies: 8\n• Engagement Rate: +22% this week\n• Response Time: Average 3 hours\n\n💭 Latest Comment:\n"Great quality! Highly recommend!"\n\n✅ Action: Reply pending';
+                    responseType = 'social-media';
+                    dropdownItems = [{
+                        id: 'facebook-icon',
+                        platform: 'Facebook',
+                        iconUrl: 'https://www.google.com/s2/favicons?domain=facebook.com&sz=64'
+                    }];
+                }
+                // 3. YouTube Comment
+                else if (messageLower.includes('youtube comment') || messageLower === 'youtube comment' || messageLower.includes('youtube')) {
+                    botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 45\n• Pending Replies: 12\n• Engagement Rate: +18% this week\n• Response Time: Average 4 hours\n\n💭 Latest Comment:\n"Excellent video! Very informative."\n\n✅ Action: Reply pending';
+                    responseType = 'social-media';
+                    dropdownItems = [{
+                        id: 'youtube-icon',
+                        platform: 'YouTube',
+                        iconUrl: 'https://www.google.com/s2/favicons?domain=youtube.com&sz=64'
+                    }];
+                }
+                // 4. Instagram Comment
+                else if (messageLower.includes('instagram comment') || messageLower === 'instagram comment' || messageLower.includes('instagram')) {
+                    botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 67\n• Pending Replies: 15\n• Engagement Rate: +25% this week\n• Response Time: Average 2.5 hours\n\n💭 Latest Comment:\n"Beautiful design! Where can I buy this?"\n\n✅ Action: Reply pending';
+                    responseType = 'social-media';
+                    dropdownItems = [{
+                        id: 'instagram-icon',
+                        platform: 'Instagram',
+                        iconUrl: 'https://www.google.com/s2/favicons?domain=instagram.com&sz=64'
+                    }];
+                }
+                // 5. LinkedIn Comment
+                else if (messageLower.includes('linkedin comment') || messageLower === 'linkedin comment' || messageLower.includes('linkedin')) {
+                    botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 19\n• Pending Replies: 6\n• Engagement Rate: +12% this week\n• Response Time: Average 5 hours\n\n💭 Latest Comment:\n"Impressive company growth! Congratulations!"\n\n✅ Action: Reply pending';
+                    responseType = 'social-media';
+                    dropdownItems = [{
+                        id: 'linkedin-icon',
+                        platform: 'LinkedIn',
+                        iconUrl: 'https://www.google.com/s2/favicons?domain=linkedin.com&sz=64'
+                    }];
+                }
+            }
+
+            // YTM PA specific responses
+            if (botId === 'ytm-bot') {
+                const messageLower = message.toLowerCase().trim();
+
+                // 1. Dashboard Analytics
+                if (messageLower.includes('dashboard analytics') || messageLower === 'dashboard analytics' || messageLower.includes('dashboard') || messageLower.includes('analytics')) {
+                    botResponse = '📊 Dashboard Analytics Overview\n\n📈 Key Metrics:\n• Overall Yield: 94.5%\n• Machine Efficiency: 87.3%\n• Production Rate: 1,250 units/day\n• Quality Score: 96.2%\n\n📋 Performance Summary:\n• ✅ Above target: Yield, Quality\n• ⚠️ Needs attention: Machine Efficiency\n• 📅 Trend: +2.3% improvement this week\n\n🎯 Recommendations:\n• Optimize Line 4 efficiency\n• Review maintenance schedules';
+                }
+                // 2. Repair Machine Status
+                else if (messageLower.includes('repair machine status') || messageLower === 'repair machine status' || messageLower.includes('repair machine') || messageLower.includes('machine repair')) {
+                    botResponse = '🔧 Repair Machine Status\n\n📋 Current Repairs:\n• Machine #M-001: ⚙️ In Progress (Expected: 2 hours)\n• Machine #M-005: ✅ Completed\n• Machine #M-012: ⏳ Scheduled (Tomorrow, 9:00 AM)\n\n📊 Status Summary:\n• Active Repairs: 1\n• Completed Today: 3\n• Pending: 2\n\n⏰ Next Repair: Machine #M-012 scheduled for tomorrow';
+                }
+                // 3. Maintenance Schedule
+                else if (messageLower.includes('maintenance schedule') || messageLower === 'maintenance schedule' || messageLower.includes('maintenance') || messageLower.includes('schedule')) {
+                    botResponse = '📅 Maintenance Schedule\n\n📋 Upcoming Maintenance:\n\n• Machine #M-001: Today, 2:00 PM\n  Type: Preventive Maintenance\n  Duration: 3 hours\n\n• Machine #M-003: Tomorrow, 10:00 AM\n  Type: Routine Check\n  Duration: 1 hour\n\n• Machine #M-007: Next Monday, 9:00 AM\n  Type: Preventive Maintenance\n  Duration: 4 hours\n\n📊 Schedule Status:\n• This Week: 3 scheduled\n• Next Week: 5 scheduled\n• All on track ✅';
+                }
+                // 4. Late Maintenance Alert
+                else if (messageLower.includes('late maintenance alert') || messageLower === 'late maintenance alert' || messageLower.includes('late maintenance') || messageLower.includes('maintenance alert')) {
+                    botResponse = '⚠️ Late Maintenance Alert\n\n🔴 Machines Requiring Immediate Attention:\n\n• Machine #M-004: Overdue by 3 days\n  Last Maintenance: 2 weeks ago\n  Status: ⚠️ Critical\n\n• Machine #M-008: Overdue by 1 day\n  Last Maintenance: 1 week ago\n  Status: ⚠️ Warning\n\n• Machine #M-015: Overdue by 2 days\n  Last Maintenance: 2 weeks ago\n  Status: ⚠️ Critical\n\n⏰ Action Required:\nImmediate maintenance needed for these machines.\nPlease schedule maintenance as soon as possible.';
+                }
+                // 5. Machine Invoice
+                else if (messageLower.includes('machine invoice') || messageLower === 'machine invoice' || messageLower.includes('invoice')) {
+                    botResponse = '📄 Machine Invoice Summary\n\n💰 Invoice Details:\n\n• Invoice #INV-2024-001\n  Machine: #M-001 Repair Service\n  Amount: $2,500\n  Status: ✅ Paid\n\n• Invoice #INV-2024-002\n  Machine: #M-005 Maintenance Parts\n  Amount: $1,800\n  Status: ⏳ Pending Payment\n\n• Invoice #INV-2024-003\n  Machine: #M-012 Service Contract\n  Amount: $3,200\n  Status: ⏳ Pending Payment\n\n📊 Summary:\n• Total Paid: $2,500\n• Pending: $5,000\n• This Month: 3 invoices';
+                }
+            }
+
             setBotStates(prev => {
                 const botState = prev[botId];
                 const messageObj = { from: 'bot', text: botResponse };
@@ -1205,6 +1381,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     messageObj.type = 'ppc-image';
                     messageObj.imageUrl = dropdownItems[0].image;
                     messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
+                } else if (responseType === 'social-media' && dropdownItems && dropdownItems[0]) {
+                    messageObj.type = 'social-media';
+                    messageObj.iconUrl = dropdownItems[0].iconUrl;
+                    messageObj.platform = dropdownItems[0].platform;
+                    // Keep botResponse as the text content
                 }
                 const updatedMessages = [...botState.messages, messageObj];
 
@@ -1517,6 +1698,15 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     .sparkle-4-modules { bottom: 10%; right: 20%; animation-delay: 1.5s; }
                 `}</style>
                 <div className="flex items-center gap-4 pointer-events-auto">
+                    {/* Back Button */}
+                    <button
+                        onClick={handleClose}
+                        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-slate-800/95 to-slate-700/95 hover:from-slate-700 hover:to-slate-600 backdrop-blur-md border-2 border-slate-600/50 hover:border-slate-500 transition-all duration-300 hover:scale-105 pointer-events-auto z-50 shadow-2xl hover:shadow-3xl group"
+                        title="Back to Dashboard"
+                    >
+                        <ArrowLeft size={18} className="text-white group-hover:-translate-x-1 transition-transform duration-300" />
+                        <span className="text-white font-semibold text-sm">Back</span>
+                    </button>
                     <div className={`relative ${isDropdownOpen ? '' : 'bot-icon-container-modules'}`}>
                         {/* Rotating Rings - Only show when dropdown is closed */}
                         {!isDropdownOpen && (

@@ -15,7 +15,8 @@ import {
     Clock,
     Trash2,
     Search,
-    ChevronRight
+    ChevronRight,
+    ArrowLeft
 } from 'lucide-react';
 
 const GREETING_NAME = 'Mr. Khun';
@@ -35,7 +36,7 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
     
     // Website-related suggested actions
     const suggestedActions = [
-        { text: 'Tell me about this website', highlight: true },
+        { text: 'Planning Status', highlight: true },
         { text: 'What modules are available?' },
         { text: 'How to navigate the dashboard' },
         { text: 'Show website features' },
@@ -154,7 +155,11 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
     const generateWebsiteResponse = (userInput) => {
         const lowerInput = userInput.toLowerCase();
         
-        if (lowerInput.includes('website') || lowerInput.includes('site') || lowerInput.includes('platform')) {
+        if (lowerInput.includes('planning status') || (lowerInput.includes('planning') && lowerInput.includes('status'))) {
+            return `⚠️ Planning Status Alert\n\n🔴 Please check the following delay alerts:\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📋 Alert Details:\n\n  • Order #7796: Material Delay\n  • Order #8486: Shipment Alert\n  • Order #445: Fabric Reject\n  • Order #8689: PPC Meeting - Critical Issue\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n⏰ Action Required:\n  Immediate attention needed for these items.\n\n  Please review each alert and take appropriate action.`;
+        }
+        
+        if (lowerInput.includes('planning') || lowerInput.includes('platform')) {
             return `This is the Yaikh Dashboard - a comprehensive enterprise management platform. It provides various modules for different departments including Finance, Admin, CSR, PPC, Productions, YTM, PD, Sales, QMS, and Social Media management. The platform offers real-time analytics, workflow automation, and integrated tools for efficient business operations.`;
         }
         
@@ -560,6 +565,15 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
                     
                     {/* Yai Data with Dropdown - First Row */}
                     <div className="flex items-center gap-4 mb-3 pointer-events-none relative">
+                        {/* Back Button */}
+                        <button
+                            onClick={onClose}
+                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 hover:border-white/30 transition-all duration-300 hover:scale-105 pointer-events-auto z-50 shadow-lg hover:shadow-xl group"
+                            title="Back to Dashboard"
+                        >
+                            <ArrowLeft size={18} className="text-white drop-shadow-lg group-hover:-translate-x-1 transition-transform duration-300" />
+                            <span className="text-white font-medium text-sm drop-shadow-lg">Back</span>
+                        </button>
                         <div className={`relative ${isDropdownOpen ? '' : 'bot-icon-container-v2'} pointer-events-auto`}>
                             {/* Rotating Rings - Only show when dropdown is closed */}
                             {!isDropdownOpen && (
@@ -716,7 +730,7 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
                                     )}
                                     <div className="flex flex-col gap-1 max-w-[85%]">
                                         <div
-                                            className={`rounded-2xl px-4 py-2.5 text-sm ${
+                                            className={`rounded-2xl px-4 py-2.5 text-sm whitespace-pre-wrap ${
                                                 msg.from === 'user'
                                                     ? 'bg-blue-500 text-white rounded-br-none'
                                                     : 'bg-white/5 border border-white/10 text-white rounded-bl-none'
