@@ -37,10 +37,10 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
     // Website-related suggested actions
     const suggestedActions = [
         { text: 'Planning Status', highlight: true },
-        { text: 'What modules are available?' },
-        { text: 'How to navigate the dashboard' },
-        { text: 'Show website features' },
-        { text: 'Explain the system architecture' }
+        { text: 'Messenger' },
+        { text: 'Group Chat' },
+        { text: 'Meeting' },
+        { text: 'Your Follow Up' }
     ];
 
     const [messages, setMessages] = useState([]);
@@ -153,10 +153,31 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
     };
 
     const generateWebsiteResponse = (userInput) => {
-        const lowerInput = userInput.toLowerCase();
+        const lowerInput = userInput.toLowerCase().trim();
         
+        // 1. Planning Status
         if (lowerInput.includes('planning status') || (lowerInput.includes('planning') && lowerInput.includes('status'))) {
             return `⚠️ Planning Status Alert\n\n🔴 Please check the following delay alerts:\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📋 Alert Details:\n\n  • Order #7796: Material Delay\n  • Order #8486: Shipment Alert\n  • Order #445: Fabric Reject\n  • Order #8689: PPC Meeting - Critical Issue\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n⏰ Action Required:\n  Immediate attention needed for these items.\n\n  Please review each alert and take appropriate action.`;
+        }
+        
+        // 2. Messenger
+        if (lowerInput.includes('messenger') || lowerInput === 'messenger' || lowerInput.includes('message')) {
+            return `💬 Messenger Overview\n\n📨 Your Messages:\n\n• Unread Messages: 5\n• New Conversations: 2\n• Pending Replies: 3\n\n📋 Recent Conversations:\n\n  • John Smith: "Can we schedule a meeting?"\n    Time: 2 hours ago\n    Status: ⏳ Pending reply\n\n  • Sarah Johnson: "Please review the document"\n    Time: 5 hours ago\n    Status: ⏳ Pending reply\n\n  • Mike Wilson: "Project update needed"\n    Time: 1 day ago\n    Status: ✅ Replied\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n⏰ Action Required:\n  You have 5 unread messages that need your attention.`;
+        }
+        
+        // 3. Group Chat
+        if (lowerInput.includes('group chat') || lowerInput === 'group chat' || (lowerInput.includes('group') && lowerInput.includes('chat'))) {
+            return `👥 Group Chat Overview\n\n📊 Active Group Chats:\n\n• Production Team: 12 members\n  Last Activity: 30 minutes ago\n  Unread: 3 messages\n\n• Management Team: 8 members\n  Last Activity: 1 hour ago\n  Unread: 1 message\n\n• QA Department: 15 members\n  Last Activity: 2 hours ago\n  Unread: 0 messages\n\n📋 Recent Group Activity:\n\n  • Production Team:\n    "Meeting scheduled for tomorrow"\n    Posted by: Manager\n    Time: 30 minutes ago\n\n  • Management Team:\n    "Quarterly review next week"\n    Posted by: Director\n    Time: 1 hour ago\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n💬 Total Unread: 4 messages across 2 groups`;
+        }
+        
+        // 4. Meeting
+        if (lowerInput.includes('meeting') || lowerInput === 'meeting') {
+            return `📅 Meeting Schedule\n\n📋 Upcoming Meetings:\n\n• Team Standup\n  Date: Today, 10:00 AM\n  Duration: 30 minutes\n  Participants: 8 people\n  Status: ✅ Confirmed\n\n• Project Review\n  Date: Tomorrow, 2:00 PM\n  Duration: 1 hour\n  Participants: 12 people\n  Status: ✅ Confirmed\n\n• Client Presentation\n  Date: Next Monday, 11:00 AM\n  Duration: 45 minutes\n  Participants: 6 people\n  Status: ⏳ Pending confirmation\n\n📊 Meeting Summary:\n• Today: 1 meeting\n• This Week: 5 meetings\n• Next Week: 3 meetings\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n⏰ Next Meeting: Team Standup in 2 hours`;
+        }
+        
+        // 5. Your Follow Up
+        if (lowerInput.includes('your follow up') || lowerInput === 'your follow up' || lowerInput.includes('follow up') || lowerInput.includes('follow-up')) {
+            return `📌 Your Follow-Up Items\n\n🔴 High Priority:\n\n  • Follow up with client ABC Corp\n    Due: Today\n    Status: ⚠️ Overdue\n    Action: Call to discuss project status\n\n  • Review proposal for XYZ Ltd\n    Due: Tomorrow\n    Status: 🔴 Urgent\n    Action: Complete review and send feedback\n\n🟡 Medium Priority:\n\n  • Schedule meeting with supplier\n    Due: This Friday\n    Status: ⏳ In progress\n    Action: Send meeting invitation\n\n  • Update project documentation\n    Due: Next Monday\n    Status: ⏳ Pending\n    Action: Review and update files\n\n🟢 Low Priority:\n\n  • Send thank you email\n    Due: Next Wednesday\n    Status: ✅ Scheduled\n    Action: Draft and send email\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n📊 Summary:\n• Total Items: 5\n• Overdue: 1\n• Urgent: 1\n• In Progress: 1\n• Pending: 2`;
         }
         
         if (lowerInput.includes('planning') || lowerInput.includes('platform')) {
