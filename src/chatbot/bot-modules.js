@@ -6,6 +6,7 @@ import {
     Copy, Edit2, RefreshCw, ThumbsUp, ThumbsDown, MoreVertical,
     Menu, Trash2, ChevronRight, ArrowLeft
 } from 'lucide-react';
+import { generateGeminiResponse, shouldUseGemini } from './gemini-api';
 
 // Predefined 10 bots for each moduleContext
 const PREDEFINED_BOTS = [
@@ -787,11 +788,16 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     };
 
     const handleSendMessage = (botId, message) => {
+        let chatHistoryForGemini = [];
+        
         setBotStates(prev => {
             const botState = prev[botId];
             let currentChatId = botState.currentChatId;
             const userMessage = { from: 'user', text: message };
             const updatedMessages = [...botState.messages, userMessage];
+            
+            // Store chat history for Gemini API (before adding user message)
+            chatHistoryForGemini = botState.messages;
 
             // Create new chat if none exists
             if (!currentChatId) {
@@ -838,12 +844,16 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             };
         });
 
-        setTimeout(() => {
+        setTimeout(async () => {
             const bot = PREDEFINED_BOTS.find(b => b.id === botId);
             let botResponse = `Hello! I'm ${bot.name}. You asked: "${message}". ${bot.description}. How can I help you today?`;
             let responseType = 'text'; // 'text', 'button', 'dropdown'
             let buttonText = null;
             let dropdownItems = null;
+            let hasPredefinedResponse = false;
+
+            // Track if we found a predefined response
+            const originalResponse = botResponse;
 
             // Finance PA specific responses
             if (botId === 'finance-bot') {
@@ -851,6 +861,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. Purchase Request appr
                 if (messageLower.includes('purchase request appr') || messageLower === 'purchase request appr') {
+                    hasPredefinedResponse = true;
                     botResponse = 'PA: 776 waiting for payment';
                     buttonText = 'Pay';
                     responseType = 'button';
@@ -921,6 +932,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 2. Supp Payment Request
                 if (messageLower.includes('supp payment request') || messageLower === 'supp payment request') {
+                    hasPredefinedResponse = true;
                     botResponse = 'PA: ES packing payment 6500$ IMV 00078';
                     buttonText = 'Pay';
                     responseType = 'button';
@@ -969,10 +981,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 3. E-invoice
                 if (messageLower.includes('e-invoice') || messageLower === 'e-invoice' || messageLower === 'einvoice') {
+                    hasPredefinedResponse = true;
                     botResponse = 'E-invoice received.';
                 }
                 // 4. Generate Invoice
                 else if (messageLower.includes('generate invoice') || messageLower === 'generate invoice') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Select invoice to generate:';
                     responseType = 'invoice-list';
                     dropdownItems = [
@@ -992,6 +1006,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // Handle invoice display when user clicks on invoice name
                 else if (messageLower.includes('show invoice:')) {
+                    hasPredefinedResponse = true;
                     const invoiceText = message.substring(message.indexOf(':') + 1).trim();
                     if (invoiceText.includes('Purchase Request')) {
                         botResponse = `Invoice: ${invoiceText}`;
@@ -1013,6 +1028,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 5. Data
                 else if (messageLower === 'data' || messageLower.includes('data')) {
+                    hasPredefinedResponse = true;
                     botResponse = 'Monthly declaration';
                 }
             }
@@ -1023,10 +1039,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. Create Support Ticket
                 if (messageLower.includes('create support ticket') || messageLower === 'create support ticket') {
+                    hasPredefinedResponse = true;
                     botResponse = 'What happened? Is it broken or something new?';
                 }
                 // 2. Food Menu
                 else if (messageLower.includes('food menu') || messageLower === 'food menu') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Here is the menu:';
                     responseType = 'invoice-image';
                     dropdownItems = [{
@@ -1037,10 +1055,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 3. Car fuel
                 else if (messageLower.includes('car fuel') || messageLower === 'car fuel') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Car plate 1C-7782: Fuel overconsumption. GPS 167km/week: 1L = 6km [STD: 1L = 10km]';
                 }
                 // 4. Security Issue
                 else if (messageLower.includes('security issue') || messageLower === 'security issue') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Security found 3 strangers trying to enter the factory during lunch time.';
                 }
                 // 5. 2 Applications Received for IE Job Post
@@ -1048,6 +1068,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                          messageLower.includes('2 applications recieve for ie jobs post') ||
                          messageLower.includes('applications received') ||
                          messageLower.includes('applications recieve')) {
+                    hasPredefinedResponse = true;
                     botResponse = 'Do you want to review the 2 applications?';
                 }
             }
@@ -1058,6 +1079,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. Order Status
                 if (messageLower.includes('order status') || messageLower === 'order status') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Order Status & Planning Gantt Chart';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1069,6 +1091,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 2. Delay Alert
                 else if (messageLower.includes('delay alert') || messageLower === 'delay alert') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Delay Alert Notification';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1080,6 +1103,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 3. Need Your Action
                 else if (messageLower.includes('need your action') || messageLower === 'need your action') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Action Required Notification';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1091,6 +1115,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 4. Supplier Alert
                 else if (messageLower.includes('supplier alert') || messageLower === 'supplier alert') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Supplier Alert Dashboard';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1102,6 +1127,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 5. Master Plan
                 else if (messageLower.includes('master plan') || messageLower === 'master plan') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Master Plan - Production Planning & Control';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1113,6 +1139,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 6. Line Plan
                 else if (messageLower.includes('line plan') || messageLower === 'line plan') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Monthly Line Plan - PPC Department';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1130,6 +1157,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. Induction Training
                 if (messageLower.includes('induction training') || messageLower === 'induction training') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Factory Induction: Safety & Rules - Welcome!';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1141,6 +1169,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 2. Monthly 6S Report
                 else if (messageLower.includes('monthly 6s report') || messageLower === 'monthly 6s report' || messageLower.includes('6s report')) {
+                    hasPredefinedResponse = true;
                     botResponse = 'Monthly 6S Report';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1152,6 +1181,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 3. Compliance Certificate
                 else if (messageLower.includes('compliance certificate') || messageLower === 'compliance certificate') {
+                    hasPredefinedResponse = true;
                     botResponse = 'Certificate of Compliance';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1163,6 +1193,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 4. Audit Checklist
                 else if (messageLower.includes('audit checklist') || messageLower === 'audit checklist') {
+                    hasPredefinedResponse = true;
                     botResponse = 'CSR Audit Checklist';
                     responseType = 'ppc-image';
                     dropdownItems = [{
@@ -1174,6 +1205,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 5. CSR Equipment Handling
                 else if (messageLower.includes('csr equipment handling') || messageLower === 'csr equipment handling' || messageLower.includes('equipment handling')) {
+                    hasPredefinedResponse = true;
                     botResponse = 'CSR Equipment Handling:';
                     responseType = 'dropdown';
                     dropdownItems = [
@@ -1207,22 +1239,27 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. Plan production schedule
                 if (messageLower.includes('plan production schedule') || messageLower === 'plan production schedule' || messageLower.includes('production schedule')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📅 Production Schedule Planning\n\n✅ Status: Initiated\n📊 Current Capacity: 85%\n⏰ Available Time Slots: Ready for scheduling\n\nNext Steps:\n• Review current production load\n• Allocate resources\n• Set timeline targets';
                 }
                 // 2. Track inventory levels
                 else if (messageLower.includes('track inventory levels') || messageLower === 'track inventory levels' || messageLower.includes('inventory levels')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📦 Inventory Tracking Status\n\n📊 Current Stock Levels:\n• Raw Materials: 72%\n• Finished Goods: 68%\n• Work in Progress: 45%\n\n⚠️ Alert: Raw materials below optimal level (80%)';
                 }
                 // 3. Optimize workflow
                 else if (messageLower.includes('optimize workflow') || messageLower === 'optimize workflow' || messageLower.includes('workflow')) {
+                    hasPredefinedResponse = true;
                     botResponse = '⚙️ Workflow Optimization Analysis\n\n✅ Analysis Complete\n\n💡 Recommendations:\n• Reduce setup time by 15%\n• Improve material flow efficiency by 22%\n• Optimize machine utilization\n\n📈 Expected Impact: +18% overall efficiency';
                 }
                 // 4. Monitor quality metrics
                 else if (messageLower.includes('monitor quality metrics') || messageLower === 'monitor quality metrics' || messageLower.includes('quality metrics')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📊 Quality Metrics Monitoring\n\n📈 Current Metrics:\n• Defect Rate: 2.3%\n• First Pass Yield: 97.7%\n• Customer Satisfaction: 94.5%\n\n✅ Status: All metrics within acceptable range\n🎯 Target: Maintain current performance';
                 }
                 // 5. Production Status
                 else if (messageLower.includes('production status') || messageLower === 'production status') {
+                    hasPredefinedResponse = true;
                     botResponse = '🏭 Production Status Overview\n\n📋 Current Status:\n• Active Lines: 8/10\n• Efficiency: 87%\n• On-time Delivery: 92%\n• Current Output: 1,250 units/day\n\n✅ Production running smoothly';
                 }
             }
@@ -1233,22 +1270,27 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. Sale Order Update Status
                 if (messageLower.includes('sale order update status') || messageLower === 'sale order update status' || messageLower.includes('order update status') || messageLower.includes('sale order')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📋 Sale Order Status Update\n\n📦 Order Details:\n• Order #SO-2024-001: ✅ Shipped\n• Order #SO-2024-002: ⚙️ In Production\n• Order #SO-2024-003: ⏳ Pending Payment\n• Order #SO-2024-004: ✅ Delivered\n\n📊 Summary: 2 completed, 1 in progress, 1 pending';
                 }
                 // 2. Buyer Replied
                 else if (messageLower.includes('buyer replied') || messageLower === 'buyer replied' || messageLower.includes('buyer reply')) {
+                    hasPredefinedResponse = true;
                     botResponse = '💬 Buyer Response Received\n\n👤 Buyer: ABC Corporation\n📝 Message: Requesting sample approval\n🔴 Priority: High\n⏰ Response Time: Within 24 hours\n\n✅ Action Required: Review and respond';
                 }
                 // 3. Quotation update
                 else if (messageLower.includes('quotation update') || messageLower === 'quotation update' || messageLower.includes('quotation')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📄 Quotation Update\n\n📋 Updated Quotations:\n• #QT-2024-015: Updated pricing\n• #QT-2024-016: Revised delivery terms\n• #QT-2024-017: New product added\n\n⏳ Status: Pending buyer approval\n📅 Review deadline: 3 business days';
                 }
                 // 4. You got 3 email to replied
                 else if (messageLower.includes('you got 3 email to replied') || messageLower === 'you got 3 email to replied' || messageLower.includes('3 email') || messageLower.includes('email to reply')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📧 You have 3 emails to reply\n\n1️⃣ From: Buyer XYZ Ltd\n   Subject: Order inquiry\n   Priority: Medium\n\n2️⃣ From: Customer ABC Corp\n   Subject: Delivery schedule\n   Priority: High\n\n3️⃣ From: Partner DEF Inc\n   Subject: Price negotiation\n   Priority: Medium\n\n⏰ Please respond within 24 hours';
                 }
                 // 5. Customer Factory Visit
                 else if (messageLower.includes('customer factory visit') || messageLower === 'customer factory visit' || messageLower.includes('factory visit')) {
+                    hasPredefinedResponse = true;
                     botResponse = '🏭 Customer Factory Visit Scheduled\n\n👥 Customer: Global Textiles Inc\n📅 Date: Next Friday, 10:00 AM\n👤 Attendees: 5 people\n🎯 Purpose: Quality inspection\n✅ Status: Confirmed\n\n📋 Preparation checklist sent';
                 }
             }
@@ -1259,22 +1301,27 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. High Defect Rate Inspection
                 if (messageLower.includes('hight defect rate inspection') || messageLower === 'hight defect rate inspection' || messageLower.includes('high defect rate') || messageLower.includes('defect rate inspection')) {
+                    hasPredefinedResponse = true;
                     botResponse = '⚠️ High Defect Rate Inspection Alert\n\n📊 Current Status:\n• Defect Rate: 3.8% (Threshold: 2.5%)\n• Status: ⚠️ Above threshold\n• Affected Line: Line 4\n• Defect Type: Stitching issues\n\n🔧 Action Required:\n• Immediate inspection\n• Corrective measures needed\n• Root cause analysis\n\n📅 Scheduled Inspection: Today, 2:00 PM';
                 }
                 // 2. Third party schedule
                 else if (messageLower.includes('thirt party schedule') || messageLower === 'thirt party schedule' || messageLower.includes('third party schedule') || messageLower.includes('third party')) {
+                    hasPredefinedResponse = true;
                     botResponse = '🔍 Third Party Audit Schedule\n\n👤 Auditor: SGS Certification Services\n📅 Date: Next Monday, 9:00 AM\n📋 Type: ISO 9001:2015 Audit\n⏱️ Duration: 3 days\n\n📊 Preparation Status:\n• Progress: 85% complete\n• Documents: ✅ Ready\n• Team briefing: Scheduled\n\n✅ All systems ready for audit';
                 }
                 // 3. Buyer Visit
                 else if (messageLower.includes('buyer visit') || messageLower === 'buyer visit') {
+                    hasPredefinedResponse = true;
                     botResponse = '👥 Buyer Visit Scheduled\n\n🏢 Buyer: Fashion Retail Group\n📅 Date: This Thursday, 11:00 AM\n👤 Attendees: 3 representatives\n🎯 Purpose: Quality assessment and factory tour\n\n📋 Focus Areas:\n• Production process\n• Quality control\n• Compliance standards\n\n✅ Status: Confirmed';
                 }
                 // 4. Pre Production Meeting Schedule
                 else if (messageLower.includes('pre production meeting schedule') || messageLower === 'pre production meeting schedule' || messageLower.includes('pre production meeting') || messageLower.includes('pre-production meeting')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📅 Pre-Production Meeting Schedule\n\n📋 Meeting Details:\n• Style: #2024-015 Pre-Production Review\n• Date: Tomorrow, 2:00 PM\n• Location: Conference Room A\n\n👥 Attendees:\n• Production Team\n• QA Team\n• Merchandising Team\n\n📝 Agenda:\n• Quality standards review\n• Production timeline\n• Resource allocation\n\n✅ Status: Scheduled';
                 }
                 // 5. You got 4 email to replied
                 else if (messageLower.includes('you got 4 email to replied') || messageLower === 'you got 4 email to replied' || messageLower.includes('4 email') || messageLower.includes('email to reply')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📧 You have 4 emails to reply\n\n1️⃣ From: Quality Auditor\n   Subject: Audit report review\n   Priority: High\n\n2️⃣ From: Buyer QA Team\n   Subject: Sample approval request\n   Priority: High\n\n3️⃣ From: Supplier\n   Subject: Material quality certificate\n   Priority: Medium\n\n4️⃣ From: Internal QA\n   Subject: Defect analysis report\n   Priority: High\n\n⏰ Please respond within 24 hours';
                 }
             }
@@ -1285,6 +1332,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. TikTok Comment
                 if (messageLower.includes('tiktok comment') || messageLower === 'tiktok comment' || messageLower.includes('tiktok')) {
+                    hasPredefinedResponse = true;
                     botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 12\n• Pending Replies: 5\n• Engagement Rate: +15% this week\n• Response Time: Average 2 hours\n\n💭 Latest Comment:\n"Love this product! When will it be available?"\n\n✅ Action: Reply pending';
                     responseType = 'social-media';
                     dropdownItems = [{
@@ -1295,6 +1343,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 2. Facebook Comment
                 else if (messageLower.includes('facebook comment') || messageLower === 'facebook comment' || messageLower.includes('facebook')) {
+                    hasPredefinedResponse = true;
                     botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 28\n• Pending Replies: 8\n• Engagement Rate: +22% this week\n• Response Time: Average 3 hours\n\n💭 Latest Comment:\n"Great quality! Highly recommend!"\n\n✅ Action: Reply pending';
                     responseType = 'social-media';
                     dropdownItems = [{
@@ -1305,6 +1354,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 3. YouTube Comment
                 else if (messageLower.includes('youtube comment') || messageLower === 'youtube comment' || messageLower.includes('youtube')) {
+                    hasPredefinedResponse = true;
                     botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 45\n• Pending Replies: 12\n• Engagement Rate: +18% this week\n• Response Time: Average 4 hours\n\n💭 Latest Comment:\n"Excellent video! Very informative."\n\n✅ Action: Reply pending';
                     responseType = 'social-media';
                     dropdownItems = [{
@@ -1315,6 +1365,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 4. Instagram Comment
                 else if (messageLower.includes('instagram comment') || messageLower === 'instagram comment' || messageLower.includes('instagram')) {
+                    hasPredefinedResponse = true;
                     botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 67\n• Pending Replies: 15\n• Engagement Rate: +25% this week\n• Response Time: Average 2.5 hours\n\n💭 Latest Comment:\n"Beautiful design! Where can I buy this?"\n\n✅ Action: Reply pending';
                     responseType = 'social-media';
                     dropdownItems = [{
@@ -1325,6 +1376,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
                 // 5. LinkedIn Comment
                 else if (messageLower.includes('linkedin comment') || messageLower === 'linkedin comment' || messageLower.includes('linkedin')) {
+                    hasPredefinedResponse = true;
                     botResponse = '💬 Comment Statistics\n\n📊 Overview:\n• New Comments: 19\n• Pending Replies: 6\n• Engagement Rate: +12% this week\n• Response Time: Average 5 hours\n\n💭 Latest Comment:\n"Impressive company growth! Congratulations!"\n\n✅ Action: Reply pending';
                     responseType = 'social-media';
                     dropdownItems = [{
@@ -1341,23 +1393,49 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // 1. Dashboard Analytics
                 if (messageLower.includes('dashboard analytics') || messageLower === 'dashboard analytics' || messageLower.includes('dashboard') || messageLower.includes('analytics')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📊 Dashboard Analytics Overview\n\n📈 Key Metrics:\n• Overall Yield: 94.5%\n• Machine Efficiency: 87.3%\n• Production Rate: 1,250 units/day\n• Quality Score: 96.2%\n\n📋 Performance Summary:\n• ✅ Above target: Yield, Quality\n• ⚠️ Needs attention: Machine Efficiency\n• 📅 Trend: +2.3% improvement this week\n\n🎯 Recommendations:\n• Optimize Line 4 efficiency\n• Review maintenance schedules';
                 }
                 // 2. Repair Machine Status
                 else if (messageLower.includes('repair machine status') || messageLower === 'repair machine status' || messageLower.includes('repair machine') || messageLower.includes('machine repair')) {
+                    hasPredefinedResponse = true;
                     botResponse = '🔧 Repair Machine Status\n\n📋 Current Repairs:\n• Machine #M-001: ⚙️ In Progress (Expected: 2 hours)\n• Machine #M-005: ✅ Completed\n• Machine #M-012: ⏳ Scheduled (Tomorrow, 9:00 AM)\n\n📊 Status Summary:\n• Active Repairs: 1\n• Completed Today: 3\n• Pending: 2\n\n⏰ Next Repair: Machine #M-012 scheduled for tomorrow';
                 }
                 // 3. Maintenance Schedule
                 else if (messageLower.includes('maintenance schedule') || messageLower === 'maintenance schedule' || messageLower.includes('maintenance') || messageLower.includes('schedule')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📅 Maintenance Schedule\n\n📋 Upcoming Maintenance:\n\n• Machine #M-001: Today, 2:00 PM\n  Type: Preventive Maintenance\n  Duration: 3 hours\n\n• Machine #M-003: Tomorrow, 10:00 AM\n  Type: Routine Check\n  Duration: 1 hour\n\n• Machine #M-007: Next Monday, 9:00 AM\n  Type: Preventive Maintenance\n  Duration: 4 hours\n\n📊 Schedule Status:\n• This Week: 3 scheduled\n• Next Week: 5 scheduled\n• All on track ✅';
                 }
                 // 4. Late Maintenance Alert
                 else if (messageLower.includes('late maintenance alert') || messageLower === 'late maintenance alert' || messageLower.includes('late maintenance') || messageLower.includes('maintenance alert')) {
+                    hasPredefinedResponse = true;
                     botResponse = '⚠️ Late Maintenance Alert\n\n🔴 Machines Requiring Immediate Attention:\n\n• Machine #M-004: Overdue by 3 days\n  Last Maintenance: 2 weeks ago\n  Status: ⚠️ Critical\n\n• Machine #M-008: Overdue by 1 day\n  Last Maintenance: 1 week ago\n  Status: ⚠️ Warning\n\n• Machine #M-015: Overdue by 2 days\n  Last Maintenance: 2 weeks ago\n  Status: ⚠️ Critical\n\n⏰ Action Required:\nImmediate maintenance needed for these machines.\nPlease schedule maintenance as soon as possible.';
                 }
                 // 5. Machine Invoice
                 else if (messageLower.includes('machine invoice') || messageLower === 'machine invoice' || messageLower.includes('invoice')) {
+                    hasPredefinedResponse = true;
                     botResponse = '📄 Machine Invoice Summary\n\n💰 Invoice Details:\n\n• Invoice #INV-2024-001\n  Machine: #M-001 Repair Service\n  Amount: $2,500\n  Status: ✅ Paid\n\n• Invoice #INV-2024-002\n  Machine: #M-005 Maintenance Parts\n  Amount: $1,800\n  Status: ⏳ Pending Payment\n\n• Invoice #INV-2024-003\n  Machine: #M-012 Service Contract\n  Amount: $3,200\n  Status: ⏳ Pending Payment\n\n📊 Summary:\n• Total Paid: $2,500\n• Pending: $5,000\n• This Month: 3 invoices';
+                }
+            }
+
+            // Check if we should use Gemini API (ONLY when no predefined response found)
+            const isDefaultResponse = botResponse === `Hello! I'm ${bot.name}. You asked: "${message}". ${bot.description}. How can I help you today?`;
+            
+            // Only use Gemini API if there's NO predefined response (hasPredefinedResponse is false)
+            if (!hasPredefinedResponse && (isDefaultResponse || shouldUseGemini(message, hasPredefinedResponse))) {
+                try {
+                    // Generate response using Gemini API with stored chat history
+                    const geminiResponse = await generateGeminiResponse(
+                        message,
+                        bot.name,
+                        bot.description,
+                        chatHistoryForGemini
+                    );
+                    
+                    botResponse = geminiResponse;
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    // Keep the default response if API fails
                 }
             }
 

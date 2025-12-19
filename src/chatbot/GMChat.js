@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Bell, Mic, MessageSquare, Layers, Database, Sparkles, Send } from 'lucide-react';
+import { generateGeminiResponse } from './gemini-api';
 
 const GMChat = ({ onClose }) => {
     const [newMessage, setNewMessage] = useState('');
@@ -15,45 +16,125 @@ const GMChat = ({ onClose }) => {
         scrollToBottom();
     }, [messages]);
 
-    const generateBotResponse = (userMessage) => {
+    const generateBotResponse = async (userMessage) => {
         const lowerMessage = userMessage.toLowerCase();
         
-        // Simple response logic
+        // Keep simple predefined responses for basic greetings
         if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
-            return "Hello! How can I assist you today? I'm here to help with tasks, modules, and data collection.";
-        } else if (lowerMessage.includes('module')) {
-            return "I can help you navigate through all available modules. Would you like to see a list of modules or search for a specific one?";
-        } else if (lowerMessage.includes('data') || lowerMessage.includes('collection')) {
-            return "I can assist with data collection tasks. What kind of data are you looking to collect or manage?";
-        } else if (lowerMessage.includes('help')) {
-            return "I'm here to help! You can ask me about modules, data collection, or use the action buttons above. What would you like to know?";
+            return "Hello! How can I assist you today? I'm here to help with tasks, modules, data collection, and answer any questions you have about Yaikh platform or general topics.";
         } else if (lowerMessage.includes('thank')) {
             return "You're welcome! Is there anything else I can help you with?";
-        } else {
-            return `I understand you're asking about "${userMessage}". Let me help you with that. Could you provide more details?`;
+        }
+        
+        // Use Gemini API for all other queries - modules, general questions, website info, world information
+        try {
+            // Build comprehensive context about Yaikh platform and modules
+            const yaikhContext = `You are Yai, an intelligent AI assistant for Yaikh (Yaikh.com), an AI platform developed by TexLink Technologies Co., Ltd.
+
+Yaikh Platform Information:
+- Website: https://yaikh.com/ (demo/portfolio site)
+- Main Application: https://ym.yaikh.com/ (real production system)
+- Company: TexLink Technologies Co., Ltd.
+- Location: Phnom Penh, Cambodia
+- Contact: [email protected], +855 96 575 4574
+
+Yaikh Specializations:
+- Yai Digitalization: Digital transformation solutions
+- Yai AiOT: AI and Internet of Things integration
+- Yai Bots: AI-powered chatbot solutions
+- Yai E-com: E-commerce solutions
+- Yai Gov: Government digitalization solutions
+
+Available Modules in Yaikh Dashboard:
+
+ADMINISTRATION SECTION:
+- Accountant: Purchase Request, E-Invoicing
+- HR: YHR, Salary Bill, Org Chart, Training, Temp Work Request, Speak Up
+- Admin: Support Ticket, Purchase Request, Y Shop (Stationery), Bill Verify, Gate Pass, Meeting Room, My Car Booking, Fire Alarm, CCTV
+- CSR: Digital Audit, Energy, Air, Water, Waste, Chemical
+- E-GOV: E-GOVERNMENT
+
+MANAGEMENT DASHBOARD:
+- System Analysis
+
+OPERATIONS SECTION:
+- QA: YQMS, FC
+- Production: Traffic Light, YTM, CE, YTM Shop
+- DT Sync: DT Sync, Master Plan, Line Plan, PPM, TNA
+- PRE PRO: TEC PACK, PPS, Sample
+- Production Materials: Material Purchase
+
+AI Assistant Bots (Yai 1 & Yai 2):
+- Finance PA: Financial management, budgeting, accounting, purchase requests, invoices, payments
+- Admin PA: Administrative operations, support tickets, food menu, car fuel tracking, security issues, job applications
+- CSR PA: Corporate social responsibility, induction training, 6S reports, compliance certificates, audit checklists, equipment handling
+- PPC PA: Production planning and control, order status, delay alerts, action items, supplier alerts, master plans, line plans
+- Production PA: Production scheduling, inventory tracking, workflow optimization, quality metrics monitoring, production status
+- Sale PA: Sales order management, buyer communications, quotations, email management, customer factory visits
+- QMS PA: Quality management, defect inspections, third-party audits, buyer visits, pre-production meetings
+- Social PA: Social media management for TikTok, Facebook, YouTube, Instagram, LinkedIn comments and engagement
+- YTM PA: Yield to maturity tracking, machine maintenance schedules, repair status, late maintenance alerts, machine invoices, dashboard analytics
+
+You can answer questions about:
+1. Any Yaikh modules and their functions - provide detailed explanations
+2. How to use the platform and navigate modules
+3. General information and knowledge about any topic
+4. Website-related questions about Yaikh
+5. World information, current events, and general knowledge
+6. Technical questions and explanations
+7. Business and enterprise management topics
+8. Any other questions users may have
+
+Provide helpful, accurate, and professional responses. Be concise but informative. Use emojis appropriately for better readability. When answering about modules, be specific and helpful.`;
+
+            // Get conversation history for context
+            const chatHistory = messages.map(msg => ({
+                from: msg.sender === 'user' ? 'user' : 'bot',
+                text: msg.text
+            }));
+
+            // Generate response using Gemini API
+            const geminiResponse = await generateGeminiResponse(
+                userMessage,
+                'Yai',
+                yaikhContext,
+                chatHistory
+            );
+
+            return geminiResponse;
+        } catch (error) {
+            console.error('Error calling Gemini API:', error);
+            // Fallback response
+            return `I understand you're asking about "${userMessage}". I'm having trouble processing that right now. Could you please rephrase your question or try again?`;
         }
     };
 
-    const handleSendMessage = (e) => {
+    const handleSendMessage = async (e) => {
         e.preventDefault();
         if (newMessage.trim() === '') return;
 
         // Add user message
         const userMsg = { id: Date.now(), text: newMessage, sender: 'user' };
         setMessages(prev => [...prev, userMsg]);
+        const currentMessage = newMessage;
         setNewMessage('');
         setIsTyping(true);
 
-        // Simulate bot thinking and response
-        setTimeout(() => {
-            const botResponse = generateBotResponse(newMessage);
+        // Generate bot response using Gemini API
+        try {
+            const botResponse = await generateBotResponse(currentMessage);
             const botMsg = { id: Date.now() + 1, text: botResponse, sender: 'bot' };
             setMessages(prev => [...prev, botMsg]);
+        } catch (error) {
+            console.error('Error generating response:', error);
+            const botMsg = { id: Date.now() + 1, text: "I apologize, but I'm having trouble processing your request right now. Please try again.", sender: 'bot' };
+            setMessages(prev => [...prev, botMsg]);
+        } finally {
             setIsTyping(false);
-        }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+        }
     };
 
-    const handleActionClick = (action) => {
+    const handleActionClick = async (action) => {
         // Handle action clicks (Speak, Chat, All modules, Data Collection)
         let actionMessage = '';
         switch(action) {
@@ -64,7 +145,7 @@ const GMChat = ({ onClose }) => {
                 actionMessage = "I want to chat with AI";
                 break;
             case 'modules':
-                actionMessage = "Show me all modules";
+                actionMessage = "Show me all modules and explain what each module does";
                 break;
             case 'data':
                 actionMessage = "I need help with data collection";
@@ -78,13 +159,18 @@ const GMChat = ({ onClose }) => {
         setMessages(prev => [...prev, userMsg]);
         setIsTyping(true);
 
-        // Generate bot response
-        setTimeout(() => {
-            const botResponse = generateBotResponse(actionMessage);
+        // Generate bot response using Gemini API
+        try {
+            const botResponse = await generateBotResponse(actionMessage);
             const botMsg = { id: Date.now() + 1, text: botResponse, sender: 'bot' };
             setMessages(prev => [...prev, botMsg]);
+        } catch (error) {
+            console.error('Error generating response:', error);
+            const botMsg = { id: Date.now() + 1, text: "I apologize, but I'm having trouble processing your request right now. Please try again.", sender: 'bot' };
+            setMessages(prev => [...prev, botMsg]);
+        } finally {
             setIsTyping(false);
-        }, 1000);
+        }
     };
 
     const showInitialView = messages.length === 0;

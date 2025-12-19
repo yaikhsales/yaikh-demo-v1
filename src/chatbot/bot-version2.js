@@ -18,6 +18,7 @@ import {
     ChevronRight,
     ArrowLeft
 } from 'lucide-react';
+import { generateGeminiResponse, shouldUseGemini } from './gemini-api';
 
 const GREETING_NAME = 'Mr. Khun';
 
@@ -139,8 +140,46 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
         setIsTyping(true);
 
         // Generate website-related response
-        setTimeout(() => {
-            const botResponse = generateWebsiteResponse(input.trim());
+        setTimeout(async () => {
+            let botResponse = generateWebsiteResponse(input.trim());
+            const lowerInput = input.trim().toLowerCase();
+            
+            // Check if we should use Gemini API (when no predefined response found)
+            const hasPredefinedResponse = 
+                lowerInput.includes('planning status') ||
+                lowerInput.includes('messenger') ||
+                lowerInput.includes('group chat') ||
+                lowerInput.includes('meeting') ||
+                lowerInput.includes('follow up') ||
+                lowerInput.includes('planning') ||
+                lowerInput.includes('platform') ||
+                lowerInput.includes('module') ||
+                lowerInput.includes('feature') ||
+                lowerInput.includes('navigate') ||
+                lowerInput.includes('use') ||
+                lowerInput.includes('how') ||
+                lowerInput.includes('architecture') ||
+                lowerInput.includes('system') ||
+                lowerInput.includes('structure') ||
+                lowerInput.includes('capability');
+            
+            if (!hasPredefinedResponse || shouldUseGemini(input.trim(), hasPredefinedResponse)) {
+                try {
+                    // Generate response using Gemini API
+                    const geminiResponse = await generateGeminiResponse(
+                        input.trim(),
+                        'Yai 2',
+                        'Website Assistant for Yaikh Dashboard platform',
+                        newMessages.slice(0, -1) // Exclude the current user message
+                    );
+                    
+                    botResponse = geminiResponse;
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    // Keep the predefined response if API fails
+                }
+            }
+            
             const updatedMessages = [...newMessages, { from: 'bot', text: botResponse }];
             setMessages(updatedMessages);
             
@@ -224,8 +263,46 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
         setInput('');
         setIsTyping(true);
 
-        setTimeout(() => {
-            const botResponse = generateWebsiteResponse(actionText);
+        setTimeout(async () => {
+            let botResponse = generateWebsiteResponse(actionText);
+            const lowerInput = actionText.toLowerCase();
+            
+            // Check if we should use Gemini API (when no predefined response found)
+            const hasPredefinedResponse = 
+                lowerInput.includes('planning status') ||
+                lowerInput.includes('messenger') ||
+                lowerInput.includes('group chat') ||
+                lowerInput.includes('meeting') ||
+                lowerInput.includes('follow up') ||
+                lowerInput.includes('planning') ||
+                lowerInput.includes('platform') ||
+                lowerInput.includes('module') ||
+                lowerInput.includes('feature') ||
+                lowerInput.includes('navigate') ||
+                lowerInput.includes('use') ||
+                lowerInput.includes('how') ||
+                lowerInput.includes('architecture') ||
+                lowerInput.includes('system') ||
+                lowerInput.includes('structure') ||
+                lowerInput.includes('capability');
+            
+            if (!hasPredefinedResponse || shouldUseGemini(actionText, hasPredefinedResponse)) {
+                try {
+                    // Generate response using Gemini API
+                    const geminiResponse = await generateGeminiResponse(
+                        actionText,
+                        'Yai 2',
+                        'Website Assistant for Yaikh Dashboard platform',
+                        newMessages.slice(0, -1) // Exclude the current user message
+                    );
+                    
+                    botResponse = geminiResponse;
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    // Keep the predefined response if API fails
+                }
+            }
+            
             const updatedMessages = [...newMessages, { from: 'bot', text: botResponse }];
             setMessages(updatedMessages);
             
