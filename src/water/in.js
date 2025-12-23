@@ -1,0 +1,237 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Droplet } from 'lucide-react';
+
+const WaterIn = ({ onBack }) => {
+    const navigate = useNavigate();
+
+    // Sample device data
+    const device = {
+        id: 1,
+        name: 'Washing In',
+        deviceId: 'Bcc3023201230toa',
+        totalWaterConsumed: 60.483
+    };
+
+    // Graph data for top graph
+    const graph1Data = [
+        { time: '01:00', value: 0 },
+        { time: '02:00', value: 0 },
+        { time: '03:00', value: 0 },
+        { time: '05:00', value: 0.5 },
+        { time: '06:00', value: 2.5 },
+        { time: '08:00', value: 0 }
+    ];
+
+    // Graph data for bottom graph
+    const graph2Data = [
+        { time: '01:00', value: 0 },
+        { time: '02:00', value: 0 },
+        { time: '03:00', value: 0 },
+        { time: '05:00', value: 0.2 },
+        { time: '06:00', value: 1.5 },
+        { time: '08:00', value: 3.0 }
+    ];
+
+    const handleBack = () => {
+        if (onBack) {
+            onBack();
+        } else {
+            navigate(-1);
+        }
+    };
+
+    // Render water consumption graph
+    const renderWaterGraph = (data, width = 500, height = 200) => {
+        const times = data.map(d => d.time);
+        const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+        const graphWidth = width - padding.left - padding.right;
+        const graphHeight = height - padding.top - padding.bottom;
+        
+        const maxValue = 4;
+        const yScale = graphHeight / maxValue;
+        
+        const getX = (index) => padding.left + (index / (times.length - 1)) * graphWidth;
+        const getY = (value) => padding.top + graphHeight - (value * yScale);
+        
+        // Create path for water consumption (shaded area)
+        const areaPath = data.map((point, index) => {
+            const x = getX(index);
+            const y = getY(point.value);
+            return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+        }).join(' ') + ` L ${getX(times.length - 1)} ${getY(0)} L ${getX(0)} ${getY(0)} Z`;
+        
+        // Create line path
+        const linePath = data.map((point, index) => {
+            const x = getX(index);
+            const y = getY(point.value);
+            return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+        }).join(' ');
+
+        return (
+            <svg width={width} height={height} className="w-full h-full">
+                {/* Grid lines */}
+                {[0, 1, 2, 3, 4].map((value) => {
+                    const y = getY(value);
+                    return (
+                        <line
+                            key={value}
+                            x1={padding.left}
+                            y1={y}
+                            x2={width - padding.right}
+                            y2={y}
+                            stroke="#e5e7eb"
+                            strokeWidth="1"
+                            strokeDasharray="2,2"
+                        />
+                    );
+                })}
+                
+                {/* Y-axis labels */}
+                {[0, 1, 2, 3, 4].map((value) => {
+                    const y = getY(value);
+                    return (
+                        <text
+                            key={value}
+                            x={padding.left - 10}
+                            y={y + 4}
+                            textAnchor="end"
+                            fontSize="10"
+                            fill="#6b7280"
+                        >
+                            {value} m³
+                        </text>
+                    );
+                })}
+                
+                {/* X-axis labels */}
+                {times.map((time, index) => {
+                    const x = getX(index);
+                    return (
+                        <text
+                            key={index}
+                            x={x}
+                            y={height - padding.bottom + 15}
+                            textAnchor="middle"
+                            fontSize="10"
+                            fill="#6b7280"
+                        >
+                            {time}
+                        </text>
+                    );
+                })}
+                
+                {/* Water consumption area (shaded) */}
+                <path
+                    d={areaPath}
+                    fill="rgba(59, 130, 246, 0.3)"
+                    stroke="none"
+                />
+                
+                {/* Water consumption line */}
+                <path
+                    d={linePath}
+                    fill="none"
+                    stroke="#3b82f6"
+                    strokeWidth="2"
+                />
+            </svg>
+        );
+    };
+
+    return (
+        <div className="fixed inset-0 bg-slate-100 flex flex-col animate-in fade-in duration-500 z-[200]">
+            {/* Header */}
+            <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
+                <button 
+                    onClick={handleBack} 
+                    className="p-2 hover:bg-slate-100 rounded transition-colors flex-shrink-0 bg-blue-600 text-white font-semibold px-3 py-1 text-sm"
+                    aria-label="Go back"
+                >
+                    <ArrowLeft size={16} className="inline" />
+                </button>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 flex-1 text-center underline">Water Product List</h1>
+                <div className="w-16"></div>
+            </div>
+
+            {/* Main Content */}
+            <div className="flex-1 overflow-auto p-6">
+                <div className="w-full h-full">
+                    {/* Dashed Border Container */}
+                    <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 bg-slate-50 h-full">
+                        <div className="flex gap-6 h-full">
+                            {/* Left Panel */}
+                            <div className="w-80 flex-shrink-0 flex flex-col gap-4">
+                                {/* Summary Statistics */}
+                                <div className="bg-white rounded-lg border border-slate-300 p-6">
+                                    <div className="space-y-4">
+                                        <div>
+                                            <div className="text-sm text-slate-600 mb-1">Total Device:</div>
+                                            <div className="text-2xl font-bold text-slate-800">1</div>
+                                        </div>
+                                        <div>
+                                            <div className="text-sm text-slate-600 mb-1">Total Water Consumed:</div>
+                                            <div className="text-2xl font-bold text-slate-800">{device.totalWaterConsumed} m³</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Device Information */}
+                                <div className="bg-white rounded-lg border border-slate-300 p-6 flex flex-col items-center">
+                                    {/* Water Meter Image/Icon */}
+                                    <div className="w-48 h-48 bg-slate-800 rounded-lg flex items-center justify-center mb-4 relative">
+                                        {/* Water meter representation */}
+                                        <div className="w-full h-full flex flex-col items-center justify-center">
+                                            {/* Meter body */}
+                                            <div className="w-32 h-20 bg-slate-700 rounded-lg relative">
+                                                {/* Digital display */}
+                                                <div className="absolute inset-2 bg-slate-900 rounded flex items-center justify-center">
+                                                    <div className="text-green-400 font-mono text-xs">00000</div>
+                                                </div>
+                                                {/* Pipe connections */}
+                                                <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-600 rounded-full border-2 border-slate-500"></div>
+                                                <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-600 rounded-full border-2 border-slate-500"></div>
+                                                {/* Lid */}
+                                                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-16 h-3 bg-slate-600 rounded-t"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Device Name */}
+                                    <div className="text-center mb-2">
+                                        <div className="font-bold text-slate-800 text-lg">{device.id}. {device.name}</div>
+                                    </div>
+                                    
+                                    {/* Device ID */}
+                                    <div className="text-xs text-slate-500 font-mono">
+                                        {device.deviceId}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Right Panel - Graphs */}
+                            <div className="flex-1 flex flex-col gap-6">
+                                {/* Graph 1 (Top) */}
+                                <div className="bg-white rounded-lg border border-slate-300 p-4">
+                                    <div className="h-48">
+                                        {renderWaterGraph(graph1Data)}
+                                    </div>
+                                </div>
+
+                                {/* Graph 2 (Bottom) */}
+                                <div className="bg-white rounded-lg border border-slate-300 p-4">
+                                    <div className="h-48">
+                                        {renderWaterGraph(graph2Data)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default WaterIn;
+

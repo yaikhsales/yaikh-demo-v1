@@ -15,8 +15,7 @@ import {
     Clock,
     Trash2,
     Search,
-    ChevronRight,
-    ArrowLeft
+    ChevronRight
 } from 'lucide-react';
 import { generateGeminiResponse, shouldUseGemini } from './gemini-api';
 
@@ -663,15 +662,6 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
                     
                     {/* Yai Data with Dropdown - First Row */}
                     <div className="flex items-center gap-4 mb-3 pointer-events-none relative">
-                        {/* Back Button */}
-                        <button
-                            onClick={onClose}
-                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 hover:border-white/30 transition-all duration-300 hover:scale-105 pointer-events-auto z-50 shadow-lg hover:shadow-xl group"
-                            title="Back to Dashboard"
-                        >
-                            <ArrowLeft size={18} className="text-white drop-shadow-lg group-hover:-translate-x-1 transition-transform duration-300" />
-                            <span className="text-white font-medium text-sm drop-shadow-lg">Back</span>
-                        </button>
                         <div className={`relative ${isDropdownOpen ? '' : 'bot-icon-container-v2'} pointer-events-auto`}>
                             {/* Rotating Rings - Only show when dropdown is closed */}
                             {!isDropdownOpen && (

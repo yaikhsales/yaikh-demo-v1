@@ -4,7 +4,7 @@ import {
     Wallet, UserCog, HeartHandshake, Megaphone, Factory,
     BarChart3, Lightbulb, Handshake, ClipboardCheck, MessageCircle,
     Copy, Edit2, RefreshCw, ThumbsUp, ThumbsDown, MoreVertical,
-    Menu, Trash2, ChevronRight, ArrowLeft
+    Menu, Trash2, ChevronRight
 } from 'lucide-react';
 import { generateGeminiResponse, shouldUseGemini } from './gemini-api';
 
@@ -1776,15 +1776,6 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     .sparkle-4-modules { bottom: 10%; right: 20%; animation-delay: 1.5s; }
                 `}</style>
                 <div className="flex items-center gap-4 pointer-events-auto">
-                    {/* Back Button */}
-                    <button
-                        onClick={handleClose}
-                        className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-slate-800/95 to-slate-700/95 hover:from-slate-700 hover:to-slate-600 backdrop-blur-md border-2 border-slate-600/50 hover:border-slate-500 transition-all duration-300 hover:scale-105 pointer-events-auto z-50 shadow-2xl hover:shadow-3xl group"
-                        title="Back to Dashboard"
-                    >
-                        <ArrowLeft size={18} className="text-white group-hover:-translate-x-1 transition-transform duration-300" />
-                        <span className="text-white font-semibold text-sm">Back</span>
-                    </button>
                     <div className={`relative ${isDropdownOpen ? '' : 'bot-icon-container-modules'}`}>
                         {/* Rotating Rings - Only show when dropdown is closed */}
                         {!isDropdownOpen && (

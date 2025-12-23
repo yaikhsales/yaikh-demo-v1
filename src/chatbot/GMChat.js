@@ -194,9 +194,9 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                             alt="User Avatar" 
                             className="w-9 h-9 md:w-12 md:h-12 rounded-full object-cover border-2 border-white/20 shadow-lg flex-shrink-0"
                         />
-                        <div className="flex-1 min-w-0">
-                            <h1 className="text-base md:text-xl lg:text-2xl font-bold text-white truncate">Hi, Sin Khun</h1>
-                        </div>
+                        <h2 className="text-base md:text-xl lg:text-2xl font-bold text-white truncate">My AI Agent</h2>
+
+                        
                         {/* Bell Icon */}
                         <div className="relative flex-shrink-0">
                             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-800/80 flex items-center justify-center">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate, Outlet } from 'react-router-dom';
 import { Search, Database, ChevronRight, Lightbulb } from 'lucide-react';
 
@@ -6,6 +6,8 @@ import Header from './components/Header';
 import SectionContainer from './components/SectionContainer';
 import { DASHBOARD_DATA } from './data/module';
 import YaiDataBot from './chatbot/YaiDataBot';
+import DragonAnimation from './components/DragonAnimation';
+import { ThemeBackground, useTheme, ThemeSwitcher } from './thems';
 
 import GMChat from './chatbot/GMChat';
 
@@ -13,6 +15,7 @@ import GMChat from './chatbot/GMChat';
 const AppLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { theme } = useTheme();
     const [isGMChatOpen, setGMChatOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isYaiDataBotOpen, setYaiDataBotOpen] = useState(false);
@@ -21,16 +24,69 @@ const AppLayout = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isLightOn, setIsLightOn] = useState(false);
     const [isPulling, setIsPulling] = useState(false);
+    const [showDragon, setShowDragon] = useState(false);
+    const [dragonMode, setDragonMode] = useState('initial');
+    const yaiDataButtonRef = useRef(null);
+    const [hasPlayedInitialAnimation, setHasPlayedInitialAnimation] = useState(false);
 
     const openBotForModule = (module) => {
         setBotModuleContext(module);
         setYaiDataBotOpen(true);
     };
 
+    // Handle initial dragon animation on page load
+    useEffect(() => {
+        if (location.pathname === '/' && !hasPlayedInitialAnimation) {
+            // Wait a bit for page to load, then start dragon animation
+            const timer = setTimeout(() => {
+                setShowDragon(true);
+                setDragonMode('initial');
+                setHasPlayedInitialAnimation(true);
+            }, 500);
+            return () => clearTimeout(timer);
+        }
+    }, [location.pathname, hasPlayedInitialAnimation]);
+
+    // Handle left arrow key for back navigation
+    useEffect(() => {
+        const handleKeyPress = (e) => {
+            if (e.key === 'ArrowLeft' && !showDragon) {
+                // If Yai Data Bot is open, trigger missile animation to go back
+                if (isYaiDataBotOpen) {
+                    setTimeout(() => {
+                        setShowDragon(true);
+                        setDragonMode('back');
+                    }, 100);
+                }
+                // If on a module page (not home page), navigate back
+                else if (location.pathname !== '/') {
+                    navigate(-1);
+                }
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [isYaiDataBotOpen, showDragon, location.pathname, navigate]);
+
+    const handleDragonComplete = () => {
+        setShowDragon(false);
+    };
+
+    const handleDragonFireComplete = () => {
+        // No longer needed - missile just stops and exits
+    };
+
     const handleModuleClick = (module) => {
         if (module.demoType) {
             const { demoType, id, title } = module;
-            if (demoType === 'IMAGE_VIEW') navigate(`/image/${module.image}`);
+            if (id === 'meeting' && title === 'Meeting Room') {
+                navigate('/meeting-room');
+            } else if (id === 'car' && title === 'My Car Booking') {
+                navigate('/car-booking');
+            } else if (id === 'system-analysis' && title === 'System Analysis') {
+                navigate('/system-analysis');
+            } else if (demoType === 'IMAGE_VIEW') navigate(`/image/${module.image}`);
             else if (demoType === 'VIEW_SYSTEM_ANALYSIS') navigate(`/${id}`);
             else if (demoType?.startsWith('SUBMENU')) {
                  const cards = id === 'digital-audit' ? [
@@ -52,40 +108,40 @@ const AppLayout = () => {
                     { title: 'Approval PR', icon: 'FileCheck', color: 'bg-green-500 text-white', image: 'modules-image/Approval-pr.png' },
                     { title: 'Pay PR', icon: 'Banknote', color: 'bg-orange-500 text-white', image: 'modules-image/Pay-pr.png' }
                 ] : id === 'gatepass' ? [
-                    { title: 'Gate Pass', icon: 'Ticket', color: 'bg-blue-500 text-white' },
+                    { title: 'Gate Pass', icon: 'Ticket', color: 'bg-blue-500 text-white', action: '/gatepass' },
                     { title: 'Gate In/Out Records', icon: 'BookOpen', color: 'bg-sky-500 text-white' },
                     { title: 'Motorcycle Records', icon: 'Bike', color: 'bg-orange-500 text-white' },
                     { title: 'Car Plate Records', icon: 'Car', color: 'bg-red-500 text-white' },
                     { title: 'Truck Records', icon: 'Truck', color: 'bg-slate-500 text-white' },
                     { title: 'Walk In/Out', icon: 'Users', color: 'bg-teal-500 text-white' },
-                    { title: 'Visitor Record', icon: 'FileCheck', color: 'bg-indigo-500 text-white' },
+                    { title: 'Visitor Record', icon: 'FileCheck', color: 'bg-indigo-500 text-white', action: '/gatepass/visitor' },
                     { title: '12K YM Tuk Tuk', icon: 'tuktuk', color: 'bg-lime-500 text-white' }
                 ] : demoType === 'SUBMENU_ORG' ? [ // Org Chart
                     { title: 'Master Organization Chart', icon: 'LayoutDashboard', color: 'bg-purple-500 text-white', action: '/org-chart-master' },
                     { title: 'Custom Organization Chart', icon: 'Settings2', color: 'bg-indigo-500 text-white', action: '/org-chart-master' },
                     { title: 'Leader/Worker Sections', icon: 'Users', color: 'bg-sky-500 text-white', action: '/org-chart-master' }
                 ] : id === 'cctv' ? [
-                    { title: 'Face Scan Logs', icon: 'BookOpen', color: 'bg-sky-500 text-white',image: 'modules-image/face-scan-logs.png' },
-                    { title: 'My Face Scan', icon: 'Scan', color: 'bg-teal-500 text-white' }
+                    { title: 'Face Scan Logs', icon: 'BookOpen', color: 'bg-sky-500 text-white', action: '/cctv/face-scan' },
+                    { title: 'My Face Scan', icon: 'Scan', color: 'bg-teal-500 text-white', action: '/cctv/my-face-scan' }
                 
                 ] : demoType === 'SUBMENU_ENERGY' ? [
                     { title: 'Meters', icon: 'GaugeCircle', color: 'bg-orange-500 text-white', action: '/energy/meters' },
                     { title: 'Solar Dashboard', icon: 'Sun', color: 'bg-yellow-500 text-white', action: '/energy/meters' },
-                    { title: 'Switch Board Ampere Load Monitoring', icon: 'Activity', color: 'bg-red-500 text-white', action: '/energy/meters' },
+                    { title: 'Switch Board Ampere Load Monitoring', icon: 'Activity', color: 'bg-red-500 text-white', action: '/energy/switch-board' },
                     { title: 'Energy Source', icon: 'Power', color: 'bg-green-500 text-white', action: '/energy/meters' }
                 ] : demoType === 'SUBMENU_WASTE' ? [
-                    { title: 'Waste', icon: 'Trash2', color: 'bg-purple-500 text-white', action: '/waste' },
-                    { title: 'Boiler', icon: 'Flame', color: 'bg-orange-500 text-white' }
+                    { title: 'Waste', icon: 'Trash2', color: 'bg-purple-500 text-white', action: '/waste/analytics' },
+                    { title: 'Boiler', icon: 'Flame', color: 'bg-orange-500 text-white', action: '/waste/boiler' }
                 ] : demoType === 'SUBMENU_AIR' ? [
-                    { title: 'Temperature Humidity Sensor', icon: 'Thermometer', color: 'bg-red-500 text-white', action: '/sensors' },
+                    { title: 'Temperature Humidity Sensor', icon: 'Thermometer', color: 'bg-red-500 text-white', action: '/air/temperature' },
                     { title: 'Switch (Fan & Pump)', icon: 'ToggleRight', color: 'bg-slate-500 text-white' },
-                    { title: 'Air Quality Detector', icon: 'Wind', color: 'bg-sky-500 text-white', action: '/sensors' }
+                    { title: 'Air Quality Detector', icon: 'Wind', color: 'bg-sky-500 text-white', action: '/air/quality' }
                 ] : demoType === 'SUBMENU_WATER' ? [
-                    { title: 'In', icon: 'ArrowDownToLine', color: 'bg-sky-500 text-white' },
-                    { title: 'Out', icon: 'ArrowUpFromLine', color: 'bg-orange-500 text-white' }
+                    { title: 'In', icon: 'ArrowDownToLine', color: 'bg-sky-500 text-white', action: '/water/in' },
+                    { title: 'Out', icon: 'ArrowUpFromLine', color: 'bg-orange-500 text-white', action: '/water/out' }
                 ] : demoType === 'SUBMENU_TEMP_WORKER' ? [
-                    { title: 'Request Worker Form', icon: 'FileText', color: 'bg-blue-500 text-white' },
-                    { title: 'Request Worker List', icon: 'Layout', color: 'bg-green-500 text-white' }
+                    { title: 'Request Worker Form', icon: 'FileText', color: 'bg-blue-500 text-white', action: '/temp-worker-request/form' },
+                    { title: 'Request Worker List', icon: 'Layout', color: 'bg-green-500 text-white', action: '/temp-worker-request/list' }
                 ] : demoType === 'SUBMENU_E_INVOICING' ? [
                     { title: 'Cambodia E Invoice', icon: 'Banknote', color: 'bg-emerald-500 text-white' },
                     { title: 'Supplier Management', icon: 'Briefcase', color: 'bg-sky-500 text-white' },
@@ -134,17 +190,39 @@ const AppLayout = () => {
                 else navigate(`/${id}`);
             }
             else if (demoType === 'GRID_SHOP') navigate('/shop'); 
+        } else {
+            // Handle modules without demoType
+            if (module.title === 'Bill Verify') {
+                navigate('/bill-record');
+            } else if (module.title === 'YTM Shop') {
+                navigate('/shop');
+            } else if (module.id === 'meeting' && module.title === 'Meeting Room') {
+                navigate('/meeting-room');
+            } else if (module.image) {
+                navigate(`/image/${module.image}`);
+            } else {
+                navigate(`/${module.id || module.title.toLowerCase().replace(/\s+/g, '-')}`);
+            }
         }
     };
 
     return (
-        <div className={`flex flex-col min-h-screen font-sans bg-slate-900 overflow-x-hidden ${isLightOn ? 'light-on' : ''}`} style={{ zIndex: 1, scrollBehavior: 'smooth' }}>
+        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-slate-900'}`} style={{ zIndex: 1, scrollBehavior: 'smooth' }}>
+            {/* Theme Background - Only show on home page */}
+            {location.pathname === '/' && <ThemeBackground />}
+            
             <style>{`
                 * {
                     scroll-behavior: smooth;
                 }
                 html {
                     scroll-behavior: smooth;
+                }
+                .theme-christmas {
+                    background: transparent;
+                }
+                .theme-normal {
+                    background: rgb(15 23 42);
                 }
             `}</style>
             <Header />
@@ -398,6 +476,7 @@ const AppLayout = () => {
                             )}
                             
                             <button 
+                                ref={yaiDataButtonRef}
                                 onClick={() => setDropdownOpen(prev => !prev)} 
                                 className={`relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 z-10 ${isDropdownOpen ? '' : 'bot-icon-glow'}`} 
                                 aria-label="Open AI Assistant"
@@ -464,7 +543,25 @@ const AppLayout = () => {
                 </div>
             )}
 
-            {isYaiDataBotOpen && <YaiDataBot moduleContext={botModuleContext} version={yaiVersion} onVersionChange={setYaiVersion} onClose={() => setYaiDataBotOpen(false)} />}
+            {/* Dragon Animation */}
+            {showDragon && (
+                <DragonAnimation
+                    mode={dragonMode}
+                    targetElement={dragonMode === 'back' ? null : yaiDataButtonRef.current}
+                    onComplete={handleDragonComplete}
+                    onFireComplete={handleDragonFireComplete}
+                    onClose={dragonMode === 'back' ? () => setYaiDataBotOpen(false) : undefined}
+                />
+            )}
+
+            {isYaiDataBotOpen && (
+                <YaiDataBot 
+                    moduleContext={botModuleContext} 
+                    version={yaiVersion} 
+                    onVersionChange={setYaiVersion} 
+                    onClose={() => setYaiDataBotOpen(false)}
+                />
+            )}
             {isGMChatOpen && <GMChat onClose={() => setGMChatOpen(false)} />}
             <main className="flex-1 relative p-4 md:p-6 overflow-x-auto">
                 {/* === BACKGROUND LAYERS === */}
@@ -585,6 +682,9 @@ const AppLayout = () => {
                     </>
                 ) : <Outlet />}
             </main>
+            
+            {/* Theme Switcher - Floating Button */}
+            <ThemeSwitcher />
         </div>
     );
 }

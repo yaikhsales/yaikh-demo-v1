@@ -7,11 +7,14 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
       return (
           <div className={`flex flex-col items-center mx-2 w-48 shrink-0 ${isDropdownOpen ? '' : 'apple-fade-in-delay'}`}>
              {/* GM Bot Icon */}
-             <div className="mb-4 relative group">
+             <div className="mb-4 relative group flex flex-col items-center gap-2">
                 {!isDropdownOpen && <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl group-hover:bg-purple-400/30 transition-all duration-500 scale-150"></div>}
                 <button onClick={onGMChatClick} className={`relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-slate-900 ${isDropdownOpen ? 'shadow-lg' : 'shadow-2xl hover:shadow-purple-500/50'}`} aria-label="Open GM Bot Assistant">
                     <img src="/assets/modules-image/top-bot.png" alt="GM Bot Assistant" className={`w-16 h-16 rounded-full object-cover border-2 border-purple-400/50 transition-all duration-300 ${isDropdownOpen ? '' : 'group-hover:border-purple-300'}`} />
                 </button>
+                <div className="text-white font-semibold text-sm text-center drop-shadow-lg">
+                    My AI Agent
+                </div>
              </div>
 
              {/* Big Label */}
