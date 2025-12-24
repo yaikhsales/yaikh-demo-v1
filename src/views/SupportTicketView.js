@@ -3,7 +3,120 @@ import { ArrowLeft, Plus, Ticket as TicketIcon } from 'lucide-react';
 import SupportTicketForm from '../support-tickets/form';
 
 const SupportTicketView = ({ onBack }) => {
-    const [requests, setRequests] = useState([]);
+    const [requests, setRequests] = useState([
+        {
+            id: 1,
+            ref: 'ST-001',
+            type: 'GA - Main',
+            subject: 'Broken Office Chair',
+            image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=200&h=200&fit=crop',
+            details: 'Office chair in meeting room 2 is broken. The backrest is loose and needs repair or replacement.',
+            createdDate: '2025-12-20',
+            planDate: '2025-12-25',
+            finishDate: '2025-12-24',
+            status: 'Completed',
+            nature: '6S, H&S',
+            keyword: false
+        },
+        {
+            id: 2,
+            ref: 'ST-002',
+            type: 'IT Support',
+            subject: 'Printer Not Working',
+            image: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=200&h=200&fit=crop',
+            details: 'Printer in the admin office is showing error code E-01. Unable to print documents. Please check and fix.',
+            createdDate: '2025-12-21',
+            planDate: '2025-12-26',
+            finishDate: null,
+            status: 'In Progress',
+            nature: 'Equipment',
+            keyword: false
+        },
+        {
+            id: 3,
+            ref: 'ST-003',
+            type: 'GA - Main',
+            subject: 'Air Conditioner Issue',
+            image: null,
+            details: 'Air conditioner in production area is not cooling properly. Temperature is too high affecting work environment.',
+            createdDate: '2025-12-22',
+            planDate: '2025-12-27',
+            finishDate: null,
+            status: 'Pending',
+            nature: '6S, H&S',
+            keyword: true
+        },
+        {
+            id: 4,
+            ref: 'ST-004',
+            type: 'Maintenance',
+            subject: 'Leaking Pipe in Restroom',
+            image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=200&h=200&fit=crop',
+            details: 'Water pipe in second floor restroom is leaking. Water is dripping from the ceiling. Urgent repair needed.',
+            createdDate: '2025-12-23',
+            planDate: '2025-12-23',
+            finishDate: null,
+            status: 'In Progress',
+            nature: 'Maintenance',
+            keyword: true
+        },
+        {
+            id: 5,
+            ref: 'ST-005',
+            type: 'IT Support',
+            subject: 'Network Connection Problem',
+            image: null,
+            details: 'WiFi connection in the warehouse area is very weak. Employees cannot access the system properly.',
+            createdDate: '2025-12-19',
+            planDate: '2025-12-24',
+            finishDate: '2025-12-23',
+            status: 'Completed',
+            nature: 'Network',
+            keyword: false
+        },
+        {
+            id: 6,
+            ref: 'ST-006',
+            type: 'GA - Main',
+            subject: 'Broken Window Glass',
+            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=200&h=200&fit=crop',
+            details: 'Window glass in conference room 1 is cracked. Safety concern and needs immediate replacement.',
+            createdDate: '2025-12-18',
+            planDate: '2025-12-22',
+            finishDate: '2025-12-21',
+            status: 'Completed',
+            nature: 'Safety',
+            keyword: true
+        },
+        {
+            id: 7,
+            ref: 'ST-007',
+            type: 'Maintenance',
+            subject: 'Elevator Not Working',
+            image: null,
+            details: 'Elevator is stuck on 3rd floor. Cannot move up or down. Please send technician immediately.',
+            createdDate: '2025-12-24',
+            planDate: '2025-12-24',
+            finishDate: null,
+            status: 'Pending',
+            nature: 'Safety',
+            keyword: true
+        },
+        {
+            id: 8,
+            ref: 'ST-008',
+            type: 'IT Support',
+            subject: 'Computer Screen Flickering',
+            image: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=200&h=200&fit=crop',
+            details: 'Computer screen in HR department keeps flickering. Makes it difficult to work. Needs replacement.',
+            createdDate: '2025-12-17',
+            planDate: '2025-12-20',
+            finishDate: '2025-12-19',
+            status: 'Completed',
+            nature: 'Equipment',
+            keyword: false
+        }
+    ]);
     const [showForm, setShowForm] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
 

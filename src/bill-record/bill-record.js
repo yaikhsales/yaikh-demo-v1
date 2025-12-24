@@ -5,7 +5,68 @@ import { ArrowLeft, Plus, X, ChevronDown, Image as ImageIcon, Upload } from 'luc
 const BillRecord = ({ onBack }) => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [bills, setBills] = useState([]); // Empty for now
+    const [bills, setBills] = useState([
+        {
+            id: 1,
+            name: 'Office Supplies Purchase',
+            department: 'Admin',
+            topic: 'Stationery Items',
+            category: 'Office Supplies',
+            description: 'Purchase of pens, papers, and folders for office use',
+            amount: 125.50,
+            currency: 'USD',
+            date: '2025-12-20',
+            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=200&h=200&fit=crop'
+        },
+        {
+            id: 2,
+            name: 'Equipment Maintenance',
+            department: 'IT',
+            topic: 'Printer Repair',
+            category: 'Maintenance',
+            description: 'Repair and maintenance of office printer',
+            amount: 85.00,
+            currency: 'USD',
+            date: '2025-12-19',
+            image: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=200&h=200&fit=crop'
+        },
+        {
+            id: 3,
+            name: 'Transportation Expense',
+            department: 'HR',
+            topic: 'Employee Transport',
+            category: 'Transportation',
+            description: 'Transportation cost for employee events',
+            amount: 250.75,
+            currency: 'USD',
+            date: '2025-12-18',
+            image: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=200&h=200&fit=crop'
+        },
+        {
+            id: 4,
+            name: 'Food & Beverage',
+            department: 'Admin',
+            topic: 'Team Lunch',
+            category: 'Food & Beverage',
+            description: 'Team lunch meeting expenses',
+            amount: 180.00,
+            currency: 'USD',
+            date: '2025-12-17',
+            image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=200&h=200&fit=crop'
+        },
+        {
+            id: 5,
+            name: 'Utility Bill',
+            department: 'Admin',
+            topic: 'Electricity Bill',
+            category: 'Utilities',
+            description: 'Monthly electricity bill payment',
+            amount: 450.00,
+            currency: 'USD',
+            date: '2025-12-16',
+            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=200&h=200&fit=crop'
+        }
+    ]);
     const [formData, setFormData] = useState({
         department: '',
         topic: '',
@@ -169,7 +230,7 @@ const BillRecord = ({ onBack }) => {
                                                 <td className="px-4 py-4 border border-slate-200 text-slate-700">{bill.department}</td>
                                                 <td className="px-4 py-4 border border-slate-200 text-slate-700">{bill.topic}</td>
                                                 <td className="px-4 py-4 border border-slate-200 text-slate-700">{bill.category}</td>
-                                                <td className="px-4 py-4 border border-slate-200 text-slate-700">{bill.amount}</td>
+                                                <td className="px-4 py-4 border border-slate-200 text-slate-700">{typeof bill.amount === 'number' ? `${bill.amount.toFixed(2)} ${bill.currency}` : bill.amount}</td>
                                                 <td className="px-4 py-4 border border-slate-200 text-center">
                                                     {bill.image ? (
                                                         <img src={bill.image} alt="Bill" className="w-12 h-12 object-cover rounded" />

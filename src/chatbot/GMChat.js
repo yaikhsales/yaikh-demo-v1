@@ -139,16 +139,16 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
         let actionMessage = '';
         switch(action) {
             case 'speak':
-                actionMessage = "I'd like to speak with AI";
+                actionMessage = "I want to see my salary bill";
                 break;
             case 'chat':
-                actionMessage = "I want to chat with AI";
+                actionMessage = "I want to see my group chat";
                 break;
             case 'modules':
-                actionMessage = "Show me all modules and explain what each module does";
+                actionMessage = "show me my modules";
                 break;
             case 'data':
-                actionMessage = "I need help with data collection";
+                actionMessage = "I want to see my chat history";
                 break;
             default:
                 return;
@@ -246,7 +246,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                         className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
                                     >
                                         <Mic size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">Speak with AI</span>
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Salary Bill</span>
                                     </button>
 
                                     {/* Chat with AI */}
@@ -255,7 +255,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                         className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
                                     >
                                         <MessageSquare size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">Chat with AI</span>
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Group Chat</span>
                                     </button>
 
                                     {/* All modules */}
@@ -264,7 +264,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                         className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
                                     >
                                         <Layers size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">All modules</span>
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Modules</span>
                                     </button>
 
                                     {/* Data Collection */}
@@ -273,7 +273,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                         className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
                                     >
                                         <Database size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">Data Collection</span>
+                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Chat History</span>
                                     </button>
                                 </div>
                             </div>

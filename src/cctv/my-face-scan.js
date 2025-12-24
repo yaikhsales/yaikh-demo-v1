@@ -24,6 +24,45 @@ const MyFaceScan = ({ onBack }) => {
         setToDate('2025-12-23');
     };
 
+    // Sample face scan history data
+    const faceScanHistory = [
+        {
+            id: 1,
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+            timestamp: '2025-12-23 08:15:32 AM',
+            location: 'Main Gate In',
+            status: 'success'
+        },
+        {
+            id: 2,
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+            timestamp: '2025-12-23 12:30:15 PM',
+            location: 'Building A - Entrance',
+            status: 'success'
+        },
+        {
+            id: 3,
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+            timestamp: '2025-12-23 05:45:22 PM',
+            location: 'Main Gate Out',
+            status: 'success'
+        },
+        {
+            id: 4,
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+            timestamp: '2025-12-22 09:20:10 AM',
+            location: 'Main Gate In',
+            status: 'success'
+        },
+        {
+            id: 5,
+            image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+            timestamp: '2025-12-22 06:15:45 PM',
+            location: 'Main Gate Out',
+            status: 'success'
+        }
+    ];
+
     return (
         <div className="fixed inset-0 bg-slate-100 flex flex-col animate-in fade-in duration-500 z-[200]">
             {/* Header */}
@@ -94,11 +133,38 @@ const MyFaceScan = ({ onBack }) => {
                             </button>
                         </div>
 
-                        {/* Empty State - Centered */}
-                        <div className="flex-1 flex flex-col items-center justify-center">
-                            <div className="text-slate-500 text-xl font-semibold">
-                                No logs found for your account.
-                            </div>
+                        {/* Face Scan History Table */}
+                        <div className="flex-1 overflow-auto">
+                            <table className="w-full">
+                                <thead className="bg-slate-100 border-b border-slate-300 sticky top-0">
+                                    <tr>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">IMAGE</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">TIMESTAMP</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">LOCATION</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {faceScanHistory.map((log) => (
+                                        <tr key={log.id} className="border-b border-slate-200 hover:bg-slate-50">
+                                            <td className="px-4 py-3">
+                                                <img 
+                                                    src={log.image} 
+                                                    alt="Face Scan" 
+                                                    className="w-12 h-12 rounded-full object-cover"
+                                                />
+                                            </td>
+                                            <td className="px-4 py-3 text-sm text-slate-800">{log.timestamp}</td>
+                                            <td className="px-4 py-3 text-sm text-slate-800">{log.location}</td>
+                                            <td className="px-4 py-3">
+                                                <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                                                    {log.status.charAt(0).toUpperCase() + log.status.slice(1)}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

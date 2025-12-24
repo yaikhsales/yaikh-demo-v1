@@ -6,8 +6,41 @@ const MyConfirmReceived = ({ onBack }) => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('pending');
 
-    // Sample data - empty for pending, can add sample data for "My Received"
-    const pendingRequests = [];
+    // Sample data - pending requests
+    const pendingRequests = [
+        {
+            id: 1,
+            code: 1940,
+            requestedBy: 'John Smith',
+            department: 'IT',
+            topic: 'Computer Equipment Purchase',
+            requestDate: '15-12-25'
+        },
+        {
+            id: 2,
+            code: 1941,
+            requestedBy: 'Mary Johnson',
+            department: 'HR',
+            topic: 'Office Furniture',
+            requestDate: '16-12-25'
+        },
+        {
+            id: 3,
+            code: 1942,
+            requestedBy: 'Peter Wilson',
+            department: 'Production',
+            topic: 'Raw Materials',
+            requestDate: '17-12-25'
+        },
+        {
+            id: 4,
+            code: 1943,
+            requestedBy: 'Lisa Brown',
+            department: 'Admin',
+            topic: 'Office Supplies',
+            requestDate: '18-12-25'
+        }
+    ];
     const myReceivedRequests = [
         {
             id: 1,

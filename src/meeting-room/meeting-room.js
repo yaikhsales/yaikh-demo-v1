@@ -43,6 +43,54 @@ const MeetingRoom = ({ onBack }) => {
         { id: 5, name: 'Conference Room 05', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400' }
     ];
 
+    // Sample meeting bookings data
+    const meetings = [
+        {
+            id: 1,
+            meetingInfo: 'Team Standup Meeting',
+            organizer: { name: 'John Doe', department: 'IT', employeeId: 'TS00000001' },
+            schedule: { date: '2025-12-24', startTime: '09:00 AM', endTime: '09:30 AM' },
+            status: 'ongoing',
+            participants: 8,
+            meetingLink: 'https://meet.google.com/abc-defg-hij',
+            room: 'Conference Room 01',
+            meetingType: 'Team Meeting'
+        },
+        {
+            id: 2,
+            meetingInfo: 'Client Presentation - Q4 Review',
+            organizer: { name: 'Sarah Smith', department: 'Sales', employeeId: 'TS00000002' },
+            schedule: { date: '2025-12-24', startTime: '02:00 PM', endTime: '03:30 PM' },
+            status: 'upcoming',
+            participants: 12,
+            meetingLink: 'https://zoom.us/j/123456789',
+            room: 'Conference Room 02',
+            meetingType: 'Client Presentation'
+        },
+        {
+            id: 3,
+            meetingInfo: 'Training Session - New System',
+            organizer: { name: 'Mike Johnson', department: 'HR', employeeId: 'TS00000003' },
+            schedule: { date: '2025-12-25', startTime: '10:00 AM', endTime: '12:00 PM' },
+            status: 'upcoming',
+            participants: 25,
+            meetingLink: 'https://teams.microsoft.com/l/meetup-join/...',
+            room: 'Conference Room 03',
+            meetingType: 'Training Session'
+        },
+        {
+            id: 4,
+            meetingInfo: 'Project Review Meeting',
+            organizer: { name: 'Emily Chen', department: 'Production', employeeId: 'TS00000004' },
+            schedule: { date: '2025-12-23', startTime: '11:00 AM', endTime: '12:00 PM' },
+            status: 'completed',
+            participants: 6,
+            meetingLink: 'https://meet.google.com/xyz-uvwx-rst',
+            room: 'Conference Room 01',
+            meetingType: 'Project Review'
+        }
+    ];
+
     const handleBack = () => {
         if (onBack) {
             onBack();
@@ -182,7 +230,7 @@ const MeetingRoom = ({ onBack }) => {
                             </div>
                         </div>
                         <div className="text-slate-600 text-sm">
-                            Showing 0 meetings
+                            Showing {meetings.length} meetings
                         </div>
                     </div>
 
@@ -210,20 +258,48 @@ const MeetingRoom = ({ onBack }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td colSpan="7" className="px-4 py-16 text-center">
-                                            <div className="flex flex-col items-center gap-4">
-                                                <div className="relative">
-                                                    <Calendar size={64} className="text-slate-300" />
-                                                    <div className="absolute inset-0 flex items-center justify-center">
-                                                        <div className="w-12 h-0.5 bg-slate-300"></div>
-                                                    </div>
+                                    {meetings.map((meeting) => (
+                                        <tr key={meeting.id} className="border-b border-slate-200 hover:bg-slate-50">
+                                            <td className="px-4 py-3">
+                                                <div className="font-semibold text-slate-800">{meeting.meetingInfo}</div>
+                                                <div className="text-xs text-slate-600 mt-1">{meeting.room}</div>
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <div className="font-semibold text-slate-800">{meeting.organizer.name}</div>
+                                                <div className="text-xs text-slate-600">{meeting.organizer.department} • {meeting.organizer.employeeId}</div>
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <div className="text-sm text-slate-800">{meeting.schedule.date}</div>
+                                                <div className="text-xs text-slate-600">{meeting.schedule.startTime} - {meeting.schedule.endTime}</div>
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                                                    meeting.status === 'ongoing' ? 'bg-green-100 text-green-700' :
+                                                    meeting.status === 'upcoming' ? 'bg-yellow-100 text-yellow-700' :
+                                                    'bg-slate-100 text-slate-700'
+                                                }`}>
+                                                    {meeting.status.charAt(0).toUpperCase() + meeting.status.slice(1)}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <div className="flex items-center gap-1">
+                                                    <Users size={16} className="text-slate-600" />
+                                                    <span className="text-sm text-slate-800">{meeting.participants}</span>
                                                 </div>
-                                                <div className="text-slate-600 font-semibold text-lg">No meetings found</div>
-                                                <div className="text-slate-500 text-sm">Get started by creating a new meeting booking.</div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <a href={meeting.meetingLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm flex items-center gap-1">
+                                                    <Link2 size={14} />
+                                                    Join
+                                                </a>
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <button className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                                                    View
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>

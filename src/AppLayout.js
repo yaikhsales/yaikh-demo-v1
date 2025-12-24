@@ -16,6 +16,7 @@ const AppLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { theme } = useTheme();
+    
     const [isGMChatOpen, setGMChatOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
     const [isYaiDataBotOpen, setYaiDataBotOpen] = useState(false);
@@ -81,13 +82,13 @@ const AppLayout = () => {
         if (module.demoType) {
             const { demoType, id, title } = module;
             if (id === 'meeting' && title === 'Meeting Room') {
-                navigate('/meeting-room');
+                navigate('/dashboard/meeting-room');
             } else if (id === 'car' && title === 'My Car Booking') {
-                navigate('/car-booking');
+                navigate('/dashboard/car-booking');
             } else if (id === 'system-analysis' && title === 'System Analysis') {
-                navigate('/system-analysis');
-            } else if (demoType === 'IMAGE_VIEW') navigate(`/image/${module.image}`);
-            else if (demoType === 'VIEW_SYSTEM_ANALYSIS') navigate(`/${id}`);
+                navigate('/dashboard/system-analysis');
+            } else if (demoType === 'IMAGE_VIEW') navigate(`/dashboard/image/${module.image}`);
+            else if (demoType === 'VIEW_SYSTEM_ANALYSIS') navigate(`/dashboard/${id}`);
             else if (demoType?.startsWith('SUBMENU')) {
                  const cards = id === 'digital-audit' ? [
                     { title: 'Checklist 6s', icon: 'CheckSquare', color: 'bg-cyan-500 text-white' },
@@ -108,40 +109,40 @@ const AppLayout = () => {
                     { title: 'Approval PR', icon: 'FileCheck', color: 'bg-green-500 text-white', image: 'modules-image/Approval-pr.png' },
                     { title: 'Pay PR', icon: 'Banknote', color: 'bg-orange-500 text-white', image: 'modules-image/Pay-pr.png' }
                 ] : id === 'gatepass' ? [
-                    { title: 'Gate Pass', icon: 'Ticket', color: 'bg-blue-500 text-white', action: '/gatepass' },
+                    { title: 'Gate Pass', icon: 'Ticket', color: 'bg-blue-500 text-white', action: '/dashboard/gatepass' },
                     { title: 'Gate In/Out Records', icon: 'BookOpen', color: 'bg-sky-500 text-white' },
                     { title: 'Motorcycle Records', icon: 'Bike', color: 'bg-orange-500 text-white' },
                     { title: 'Car Plate Records', icon: 'Car', color: 'bg-red-500 text-white' },
                     { title: 'Truck Records', icon: 'Truck', color: 'bg-slate-500 text-white' },
                     { title: 'Walk In/Out', icon: 'Users', color: 'bg-teal-500 text-white' },
-                    { title: 'Visitor Record', icon: 'FileCheck', color: 'bg-indigo-500 text-white', action: '/gatepass/visitor' },
+                    { title: 'Visitor Record', icon: 'FileCheck', color: 'bg-indigo-500 text-white', action: '/dashboard/gatepass/visitor' },
                     { title: '12K YM Tuk Tuk', icon: 'tuktuk', color: 'bg-lime-500 text-white' }
                 ] : demoType === 'SUBMENU_ORG' ? [ // Org Chart
-                    { title: 'Master Organization Chart', icon: 'LayoutDashboard', color: 'bg-purple-500 text-white', action: '/org-chart-master' },
-                    { title: 'Custom Organization Chart', icon: 'Settings2', color: 'bg-indigo-500 text-white', action: '/org-chart-master' },
-                    { title: 'Leader/Worker Sections', icon: 'Users', color: 'bg-sky-500 text-white', action: '/org-chart-master' }
+                    { title: 'Master Organization Chart', icon: 'LayoutDashboard', color: 'bg-purple-500 text-white', action: '/dashboard/org-chart-master' },
+                    { title: 'Custom Organization Chart', icon: 'Settings2', color: 'bg-indigo-500 text-white', action: '/dashboard/org-chart-master' },
+                    { title: 'Leader/Worker Sections', icon: 'Users', color: 'bg-sky-500 text-white', action: '/dashboard/org-chart-master' }
                 ] : id === 'cctv' ? [
-                    { title: 'Face Scan Logs', icon: 'BookOpen', color: 'bg-sky-500 text-white', action: '/cctv/face-scan' },
-                    { title: 'My Face Scan', icon: 'Scan', color: 'bg-teal-500 text-white', action: '/cctv/my-face-scan' }
+                    { title: 'Face Scan Logs', icon: 'BookOpen', color: 'bg-sky-500 text-white', action: '/dashboard/cctv/face-scan' },
+                    { title: 'My Face Scan', icon: 'Scan', color: 'bg-teal-500 text-white', action: '/dashboard/cctv/my-face-scan' }
                 
                 ] : demoType === 'SUBMENU_ENERGY' ? [
-                    { title: 'Meters', icon: 'GaugeCircle', color: 'bg-orange-500 text-white', action: '/energy/meters' },
-                    { title: 'Solar Dashboard', icon: 'Sun', color: 'bg-yellow-500 text-white', action: '/energy/meters' },
-                    { title: 'Switch Board Ampere Load Monitoring', icon: 'Activity', color: 'bg-red-500 text-white', action: '/energy/switch-board' },
-                    { title: 'Energy Source', icon: 'Power', color: 'bg-green-500 text-white', action: '/energy/meters' }
+                    { title: 'Meters', icon: 'GaugeCircle', color: 'bg-orange-500 text-white', action: '/dashboard/energy/meters' },
+                    { title: 'Solar Dashboard', icon: 'Sun', color: 'bg-yellow-500 text-white', action: '/dashboard/energy/meters' },
+                    { title: 'Switch Board Ampere Load Monitoring', icon: 'Activity', color: 'bg-red-500 text-white', action: '/dashboard/energy/switch-board' },
+                    { title: 'Energy Source', icon: 'Power', color: 'bg-green-500 text-white', action: '/dashboard/energy/meters' }
                 ] : demoType === 'SUBMENU_WASTE' ? [
-                    { title: 'Waste', icon: 'Trash2', color: 'bg-purple-500 text-white', action: '/waste/analytics' },
-                    { title: 'Boiler', icon: 'Flame', color: 'bg-orange-500 text-white', action: '/waste/boiler' }
+                    { title: 'Waste', icon: 'Trash2', color: 'bg-purple-500 text-white', action: '/dashboard/waste/analytics' },
+                    { title: 'Boiler', icon: 'Flame', color: 'bg-orange-500 text-white', action: '/dashboard/waste/boiler' }
                 ] : demoType === 'SUBMENU_AIR' ? [
-                    { title: 'Temperature Humidity Sensor', icon: 'Thermometer', color: 'bg-red-500 text-white', action: '/air/temperature' },
+                    { title: 'Temperature Humidity Sensor', icon: 'Thermometer', color: 'bg-red-500 text-white', action: '/dashboard/air/temperature' },
                     { title: 'Switch (Fan & Pump)', icon: 'ToggleRight', color: 'bg-slate-500 text-white' },
-                    { title: 'Air Quality Detector', icon: 'Wind', color: 'bg-sky-500 text-white', action: '/air/quality' }
+                    { title: 'Air Quality Detector', icon: 'Wind', color: 'bg-sky-500 text-white', action: '/dashboard/air/quality' }
                 ] : demoType === 'SUBMENU_WATER' ? [
-                    { title: 'In', icon: 'ArrowDownToLine', color: 'bg-sky-500 text-white', action: '/water/in' },
-                    { title: 'Out', icon: 'ArrowUpFromLine', color: 'bg-orange-500 text-white', action: '/water/out' }
+                    { title: 'In', icon: 'ArrowDownToLine', color: 'bg-sky-500 text-white', action: '/dashboard/water/in' },
+                    { title: 'Out', icon: 'ArrowUpFromLine', color: 'bg-orange-500 text-white', action: '/dashboard/water/out' }
                 ] : demoType === 'SUBMENU_TEMP_WORKER' ? [
-                    { title: 'Request Worker Form', icon: 'FileText', color: 'bg-blue-500 text-white', action: '/temp-worker-request/form' },
-                    { title: 'Request Worker List', icon: 'Layout', color: 'bg-green-500 text-white', action: '/temp-worker-request/list' }
+                    { title: 'Request Worker Form', icon: 'FileText', color: 'bg-blue-500 text-white', action: '/dashboard/temp-worker-request/form' },
+                    { title: 'Request Worker List', icon: 'Layout', color: 'bg-green-500 text-white', action: '/dashboard/temp-worker-request/list' }
                 ] : demoType === 'SUBMENU_E_INVOICING' ? [
                     { title: 'Cambodia E Invoice', icon: 'Banknote', color: 'bg-emerald-500 text-white' },
                     { title: 'Supplier Management', icon: 'Briefcase', color: 'bg-sky-500 text-white' },
@@ -176,40 +177,40 @@ const AppLayout = () => {
                     { title: 'IE', icon: 'BrainCircuit', color: 'bg-fuchsia-500 text-white' }, // Correct
                     { title: 'QA (Fabric)', icon: 'TestTube', color: 'bg-violet-500 text-white' }, // Correct
                     { title: 'Production', icon: 'Factory', color: 'bg-gray-700 text-white' }, // Correct
-                ] : [ // Energy & Others
-                    { title: 'Analytics', icon: 'BarChart2', color: 'bg-blue-400 text-white' },
-                    { title: 'Settings', icon: 'Settings', color: 'bg-gray-200' }
-                ];
-                navigate(`/submenu/${id}`, { state: { title, cards } });
-            }  else if (demoType === 'GRID_TRAINING') navigate('/training');
-            else if (demoType === 'VIEW_TICKET_CUSTOM') navigate('/ticket');
-            else if (demoType === 'DASH_WASTE') navigate('/waste');
-            else if (demoType === 'TIMELINE_MEETING') navigate('/meeting');
+                ] : null; // Return null for empty modules
+                
+                // If cards is null or empty, do nothing (don't navigate)
+                if (!cards || cards.length === 0) {
+                    return;
+                }
+                
+                navigate(`/dashboard/submenu/${id}`, { state: { title, cards } });
+            }  else if (demoType === 'GRID_TRAINING') navigate('/dashboard/training');
+            else if (demoType === 'VIEW_TICKET_CUSTOM') navigate('/dashboard/ticket');
+            else if (demoType === 'DASH_WASTE') navigate('/dashboard/waste');
+            else if (demoType === 'TIMELINE_MEETING') navigate('/dashboard/meeting');
             else if (demoType?.startsWith('TABLE')) {
-                if (id === 'ticket') navigate('/ticket');
-                else navigate(`/${id}`);
+                if (id === 'ticket') navigate('/dashboard/ticket');
+                else navigate(`/dashboard/${id}`);
             }
-            else if (demoType === 'GRID_SHOP') navigate('/shop'); 
+            else if (demoType === 'GRID_SHOP') navigate('/dashboard/shop'); 
         } else {
-            // Handle modules without demoType
+            // Handle modules without demoType - only navigate if explicitly handled
             if (module.title === 'Bill Verify') {
-                navigate('/bill-record');
+                navigate('/dashboard/bill-record');
             } else if (module.title === 'YTM Shop') {
-                navigate('/shop');
+                navigate('/dashboard/shop');
             } else if (module.id === 'meeting' && module.title === 'Meeting Room') {
-                navigate('/meeting-room');
-            } else if (module.image) {
-                navigate(`/image/${module.image}`);
-            } else {
-                navigate(`/${module.id || module.title.toLowerCase().replace(/\s+/g, '-')}`);
+                navigate('/dashboard/meeting-room');
             }
+            
         }
     };
 
     return (
-        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-slate-900'}`} style={{ zIndex: 1, scrollBehavior: 'smooth' }}>
-            {/* Theme Background - Only show on home page */}
-            {location.pathname === '/' && <ThemeBackground />}
+        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-slate-900'}`} style={{ position: 'relative', zIndex: 1, scrollBehavior: 'smooth' }}>
+            {/* Theme Background - Show on home page and dashboard */}
+            {(location.pathname === '/' || location.pathname.startsWith('/dashboard')) && <ThemeBackground />}
             
             <style>{`
                 * {
@@ -565,21 +566,24 @@ const AppLayout = () => {
             {isGMChatOpen && <GMChat onClose={() => setGMChatOpen(false)} />}
             <main className="flex-1 relative p-4 md:p-6 overflow-x-auto">
                 {/* === BACKGROUND LAYERS === */}
-                <div className="fixed inset-0 z-0 pointer-events-none">
-                    <div className={`absolute inset-0 bg-gradient-to-b from-slate-900 via-[#0f172a] to-slate-900 transition-all duration-500 ${isLightOn ? 'brightness-125' : ''}`}></div>
-                    <img
-                        src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop" 
-                        className={`absolute inset-0 w-full h-full object-cover mix-blend-screen transition-all duration-500 ${isLightOn ? 'opacity-30 brightness-110' : 'opacity-20'}`}
-                        alt="Circuit Background"
-                    />
-                    <div className={`absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] transition-all duration-500 ${isLightOn ? 'bg-white/15 animate-pulse' : 'bg-cyan-500/10 animate-pulse'}`}></div>
-                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
-                    
-                    {/* Light Beam Effect when light is on */}
-                    {isLightOn && (
-                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-white/25 via-white/15 to-transparent pointer-events-none"></div>
-                    )}
-                </div>
+                {/* Only show default background when theme is NOT Christmas */}
+                {theme !== 'christmas' && (
+                    <div className="fixed inset-0 z-0 pointer-events-none">
+                        <div className={`absolute inset-0 bg-gradient-to-b from-slate-900 via-[#0f172a] to-slate-900 transition-all duration-500 ${isLightOn ? 'brightness-125' : ''}`}></div>
+                        <img
+                            src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop" 
+                            className={`absolute inset-0 w-full h-full object-cover mix-blend-screen transition-all duration-500 ${isLightOn ? 'opacity-30 brightness-110' : 'opacity-20'}`}
+                            alt="Circuit Background"
+                        />
+                        <div className={`absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] transition-all duration-500 ${isLightOn ? 'bg-white/15 animate-pulse' : 'bg-cyan-500/10 animate-pulse'}`}></div>
+                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
+                        
+                        {/* Light Beam Effect when light is on */}
+                        {isLightOn && (
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-white/25 via-white/15 to-transparent pointer-events-none"></div>
+                        )}
+                    </div>
+                )}
                 
                 {/* Conditionally render dashboard content or other views */}
                 {location.pathname === '/' ? (

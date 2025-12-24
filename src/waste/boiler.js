@@ -7,6 +7,28 @@ const Boiler = ({ onBack }) => {
     const [fromDate, setFromDate] = useState('2025-01-23');
     const [toDate, setToDate] = useState('2025-12-23');
 
+    // Sample daily waste data
+    const dailyWasteData = [
+        { date: '2025-12-20', totalWaste: 125.50, records: 8 },
+        { date: '2025-12-19', totalWaste: 98.75, records: 6 },
+        { date: '2025-12-18', totalWaste: 142.30, records: 10 },
+        { date: '2025-12-17', totalWaste: 87.20, records: 5 },
+        { date: '2025-12-16', totalWaste: 156.80, records: 12 },
+        { date: '2025-12-15', totalWaste: 103.45, records: 7 },
+        { date: '2025-12-14', totalWaste: 119.60, records: 9 }
+    ];
+
+    // Sample boiler categories data
+    const boilerCategories = [
+        { name: 'Steam Boiler', value: 0.45 },
+        { name: 'Hot Water Boiler', value: 0.32 },
+        { name: 'Waste Heat Boiler', value: 0.18 },
+        { name: 'Electric Boiler', value: 0.05 }
+    ];
+
+    const totalBoiler = dailyWasteData.reduce((sum, item) => sum + item.totalWaste, 0).toFixed(2);
+    const daysTracked = dailyWasteData.length;
+
     const handleBack = () => {
         if (onBack) {
             onBack();
@@ -32,7 +54,7 @@ const Boiler = ({ onBack }) => {
         setToDate('');
     };
 
-    // Render bar chart (empty state)
+    // Render bar chart with sample data
     const renderBarChart = (width = 800, height = 300) => {
         const padding = { top: 20, right: 20, bottom: 50, left: 50 };
         const chartWidth = width - padding.left - padding.right;
@@ -43,6 +65,9 @@ const Boiler = ({ onBack }) => {
         for (let i = 0; i <= 10; i++) {
             ticks.push(i * 0.1);
         }
+
+        const maxValue = Math.max(...boilerCategories.map(c => c.value), 0.5);
+        const barWidth = chartWidth / boilerCategories.length - 10;
 
         return (
             <svg width={width} height={height} className="w-full h-full">
@@ -102,16 +127,43 @@ const Boiler = ({ onBack }) => {
                     Quantity (kg)
                 </text>
 
-                {/* No data message */}
-                <text
-                    x={width / 2}
-                    y={height / 2}
-                    textAnchor="middle"
-                    fontSize="14"
-                    fill="#9ca3af"
-                >
-                    No data available select a date range to view categories.
-                </text>
+                {/* Bar chart bars */}
+                {boilerCategories.map((category, index) => {
+                    const barHeight = (category.value / maxValue) * chartHeight;
+                    const x = padding.left + index * (chartWidth / boilerCategories.length) + 5;
+                    const y = padding.top + chartHeight - barHeight;
+                    return (
+                        <g key={index}>
+                            <rect
+                                x={x}
+                                y={y}
+                                width={barWidth}
+                                height={barHeight}
+                                fill={index === 0 ? '#3b82f6' : index === 1 ? '#8b5cf6' : index === 2 ? '#ec4899' : '#f59e0b'}
+                                rx={4}
+                            />
+                            <text
+                                x={x + barWidth / 2}
+                                y={y - 5}
+                                textAnchor="middle"
+                                fontSize="11"
+                                fill="#374151"
+                                fontWeight="600"
+                            >
+                                {(category.value * 100).toFixed(0)}%
+                            </text>
+                            <text
+                                x={x + barWidth / 2}
+                                y={padding.top + chartHeight + 20}
+                                textAnchor="middle"
+                                fontSize="10"
+                                fill="#6b7280"
+                            >
+                                {category.name}
+                            </text>
+                        </g>
+                    );
+                })}
             </svg>
         );
     };
@@ -195,7 +247,7 @@ const Boiler = ({ onBack }) => {
                             <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white flex items-center justify-between">
                                 <div>
                                     <div className="text-sm opacity-90 mb-1">Total Boiler</div>
-                                    <div className="text-3xl font-bold">0.00</div>
+                                    <div className="text-3xl font-bold">{totalBoiler}</div>
                                     <div className="text-sm opacity-90 mt-1">kilograms</div>
                                 </div>
                                 <BarChart3 size={48} className="opacity-80" />
@@ -203,7 +255,7 @@ const Boiler = ({ onBack }) => {
                             <div className="bg-purple-600 rounded-lg p-6 text-white flex items-center justify-between">
                                 <div>
                                     <div className="text-sm opacity-90 mb-1">Days Tracked</div>
-                                    <div className="text-3xl font-bold">0</div>
+                                    <div className="text-3xl font-bold">{daysTracked}</div>
                                     <div className="text-sm opacity-90 mt-1">period</div>
                                 </div>
                                 <Mail size={48} className="opacity-80" />
@@ -227,11 +279,18 @@ const Boiler = ({ onBack }) => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td colSpan="4" className="px-4 py-8 text-center text-slate-500">
-                                                No data available for the selected period.
-                                            </td>
-                                        </tr>
+                                        {dailyWasteData.map((item, index) => (
+                                            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                                <td className="px-4 py-3 text-sm text-slate-800">{item.date}</td>
+                                                <td className="px-4 py-3 text-sm font-semibold text-slate-800">{item.totalWaste.toFixed(2)}</td>
+                                                <td className="px-4 py-3 text-sm text-slate-600">{item.records}</td>
+                                                <td className="px-4 py-3">
+                                                    <button className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
+                                                        View
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>

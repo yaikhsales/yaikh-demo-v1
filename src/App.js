@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import AppLayout from './AppLayout';
 import { ThemeProvider } from './thems';
 
@@ -45,6 +45,22 @@ import FaceScan from './cctv/face-scan';
 import MyFaceScan from './cctv/my-face-scan';
 import SystemAnalyze from './system-analyze/system-analyze';
 import YTMShop from './ytm-shop/ytm-shop';
+import Training from './training/training';
+import WelcomePage from './welcome-page';
+
+// Component to decide whether to show WelcomePage or AppLayout on root path
+function WelcomePageOrDashboard() {
+    const location = useLocation();
+    const welcomeCompleted = sessionStorage.getItem('welcome-completed');
+    
+    // If welcome has been completed in this session, show dashboard
+    if (welcomeCompleted === 'true') {
+        return <AppLayout />;
+    }
+    
+    // Otherwise show welcome page
+    return <WelcomePage />;
+}
 
 export default function App() {
     const navigate = useNavigate();
@@ -53,7 +69,9 @@ export default function App() {
     return (
         <ThemeProvider>
             <Routes>
-            <Route path="/" element={<AppLayout />}>
+            <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/" element={<WelcomePageOrDashboard />} />
+            <Route path="/dashboard" element={<AppLayout />}>
                 <Route index element={<div />} />
                 <Route path="training" element={<TrainingGridView onBack={handleBack} />} />
                 <Route path="sensors" element={<SensorGridView onBack={handleBack} />} />
@@ -143,6 +161,7 @@ export default function App() {
                     element={<SystemAnalyze onBack={handleBack} />}
                 />
                 <Route path="waste" element={<WasteDashboardView onBack={handleBack} />} />
+                <Route path="training/:department" element={<Training onBack={handleBack} />} />
                 <Route path=":moduleId" element={<TableView onBack={handleBack} />} />
             </Route>
         </Routes>

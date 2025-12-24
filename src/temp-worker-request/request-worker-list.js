@@ -6,7 +6,78 @@ const RequestWorkerList = ({ onBack }) => {
     const navigate = useNavigate();
     const [fromDate, setFromDate] = useState('2025-12-23');
     const [toDate, setToDate] = useState('2025-12-23');
-    const [requests, setRequests] = useState([]); // Empty for now, showing "No requests found."
+    const [requests, setRequests] = useState([
+        {
+            id: 1,
+            requestNo: 'TWR-001',
+            department: 'Production',
+            requestor: 'John Doe',
+            workerType: 'Temporary Worker',
+            numberOfWorkers: 5,
+            gender: 'Male',
+            startDate: '2025-12-25',
+            endDate: '2025-12-31',
+            reason: 'Increased production demand',
+            status: 'pending',
+            requestDate: '2025-12-23'
+        },
+        {
+            id: 2,
+            requestNo: 'TWR-002',
+            department: 'Packaging',
+            requestor: 'Sarah Johnson',
+            workerType: 'Seasonal Worker',
+            numberOfWorkers: 3,
+            gender: 'Female',
+            startDate: '2025-12-26',
+            endDate: '2026-01-05',
+            reason: 'Holiday season peak workload',
+            status: 'approved',
+            requestDate: '2025-12-22'
+        },
+        {
+            id: 3,
+            requestNo: 'TWR-003',
+            department: 'Quality Control',
+            requestor: 'Mike Brown',
+            workerType: 'Temporary Worker',
+            numberOfWorkers: 2,
+            gender: 'Male',
+            startDate: '2025-12-24',
+            endDate: '2025-12-30',
+            reason: 'Additional QC inspection needed',
+            status: 'pending',
+            requestDate: '2025-12-21'
+        },
+        {
+            id: 4,
+            requestNo: 'TWR-004',
+            department: 'Warehouse',
+            requestor: 'Emily Chen',
+            workerType: 'Part-time Worker',
+            numberOfWorkers: 4,
+            gender: 'Female',
+            startDate: '2025-12-27',
+            endDate: '2026-01-10',
+            reason: 'Inventory management support',
+            status: 'rejected',
+            requestDate: '2025-12-20'
+        },
+        {
+            id: 5,
+            requestNo: 'TWR-005',
+            department: 'Shipping',
+            requestor: 'David Lee',
+            workerType: 'Temporary Worker',
+            numberOfWorkers: 6,
+            gender: 'Male',
+            startDate: '2025-12-28',
+            endDate: '2026-01-15',
+            reason: 'Year-end shipping rush',
+            status: 'approved',
+            requestDate: '2025-12-19'
+        }
+    ]);
 
     const handleBack = () => {
         if (onBack) {

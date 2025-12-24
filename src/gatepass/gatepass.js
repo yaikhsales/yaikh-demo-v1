@@ -5,7 +5,50 @@ import { ArrowLeft, History, Users, Plus, X, Building, User, Hash, FileText, Clo
 const GatePass = ({ onBack }) => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [pendingRequests, setPendingRequests] = useState([]); // Empty for now
+    const [pendingRequests, setPendingRequests] = useState([
+        {
+            id: 1,
+            employeeId: 'TS00000001',
+            name: 'John Doe',
+            department: 'IT',
+            supervisor: 'Jane Smith',
+            requestType: 'personal',
+            requestReason: 'Office Duty',
+            whereToGo: 'YM to WH12000',
+            departureTime: '09:00 AM',
+            returnTime: '12:00 PM',
+            status: 'pending',
+            requestDate: '2025-12-23'
+        },
+        {
+            id: 2,
+            employeeId: 'TS00000002',
+            name: 'Sarah Johnson',
+            department: 'HR',
+            supervisor: 'Mike Brown',
+            requestType: 'material',
+            requestReason: 'Purchase Goods',
+            whereToGo: 'YM to Sub Factory',
+            departureTime: '02:00 PM',
+            returnTime: '04:30 PM',
+            status: 'pending',
+            requestDate: '2025-12-23'
+        },
+        {
+            id: 3,
+            employeeId: 'TS00000003',
+            name: 'David Lee',
+            department: 'Production',
+            supervisor: 'Emily Chen',
+            requestType: 'assets',
+            requestReason: 'Repair Device',
+            whereToGo: 'YM to Other',
+            departureTime: '10:30 AM',
+            returnTime: '01:00 PM',
+            status: 'pending',
+            requestDate: '2025-12-22'
+        }
+    ]);
 
     const [formData, setFormData] = useState({
         employeeId: 'TS00000005',
@@ -153,8 +196,8 @@ const GatePass = ({ onBack }) => {
                             </button>
                         </div>
 
-                        {/* Empty State */}
-                        {pendingRequests.length === 0 && (
+                        {/* Pending Requests Table */}
+                        {pendingRequests.length === 0 ? (
                             <div className="flex flex-col items-center justify-center py-20">
                                 <div className="w-32 h-32 mb-6 flex items-center justify-center">
                                     <div className="w-full h-full bg-orange-200 rounded-lg flex items-center justify-center">
@@ -163,6 +206,52 @@ const GatePass = ({ onBack }) => {
                                 </div>
                                 <h3 className="text-xl font-bold text-slate-800 mb-2">No pending request to approve</h3>
                                 <p className="text-slate-600">All requests have been processed</p>
+                            </div>
+                        ) : (
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-sm border-collapse">
+                                    <thead className="bg-slate-50">
+                                        <tr>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">N°</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">EMPLOYEE ID</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">NAME</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DEPARTMENT</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">SUPERVISOR</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">REQUEST TYPE</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">REASON</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DESTINATION</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DEPARTURE</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">RETURN</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">ACTIONS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {pendingRequests.map((request, idx) => (
+                                            <tr key={request.id} className="hover:bg-blue-50 transition-colors">
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700 text-center">{idx + 1}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.employeeId}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.name}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.department}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.supervisor}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700 capitalize">{request.requestType}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.requestReason}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.whereToGo}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.departureTime}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-slate-700">{request.returnTime}</td>
+                                                <td className="px-4 py-3 border border-slate-200 text-center">
+                                                    <div className="flex items-center justify-center gap-2">
+                                                        <button className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm">
+                                                            Approve
+                                                        </button>
+                                                        <button className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
+                                                            Reject
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         )}
                     </div>

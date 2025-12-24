@@ -232,7 +232,7 @@ const ChecklistAttendance = ({ onBack }) => {
                     <ArrowLeft size={20} className="text-slate-700" />
                 </button>
                 <div className="flex-1 text-center min-w-0">
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800 leading-tight">Textlink (Cambodia) Garment MFG Co., Ltd</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800 leading-tight">TEXLINK TECHNOLOGIES CO., LTD.</h1>
                     <p className="text-sm md:text-base text-slate-600 mt-1">បញ្ជីស្រង់វត្តមានប្រចាំថ្ងៃតាមស្តេខទម្រង់មុខ</p>
                 </div>
                 <div className="w-10 flex-shrink-0"></div>

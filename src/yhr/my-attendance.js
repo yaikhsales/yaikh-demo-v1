@@ -122,7 +122,7 @@ const MyAttendance = ({ onBack }) => {
                     Back
                 </button>
                 <div className="flex-1 text-center min-w-0">
-                    <h1 className="text-xl md:text-2xl font-bold text-blue-900 leading-tight">Textlink (Cambodia) Garment MFG Co., Ltd</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-blue-900 leading-tight">TEXLINK TECHNOLOGIES CO., LTD.</h1>
                     <p className="text-sm md:text-base text-slate-600 mt-1">បញ្ជីស្រង់វត្តមានប្រចាំថ្ងៃ</p>
                 </div>
                 <div className="w-24 flex-shrink-0"></div>
