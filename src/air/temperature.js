@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Thermometer } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 
 const Temperature = ({ onBack }) => {
     const navigate = useNavigate();
@@ -61,47 +61,45 @@ const Temperature = ({ onBack }) => {
             {/* Main Content */}
             <div className="flex-1 overflow-auto p-6">
                 <div className="max-w-7xl mx-auto">
-                    {/* White Content Card */}
-                    <div className="bg-white rounded-lg border border-slate-300 p-6">
-                        {/* Device Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {devices.map((device) => (
-                                <div
-                                    key={device.id}
-                                    onClick={() => handleDeviceClick(device.deviceId)}
-                                    className="bg-white border border-slate-300 rounded-lg p-4 hover:shadow-lg transition-shadow cursor-pointer"
-                                >
-                                    {/* Device Icon */}
-                                    <div className="w-full h-24 bg-slate-800 rounded-lg flex items-center justify-center mb-3">
-                                        <div className="grid grid-cols-4 gap-1 p-2">
-                                            {Array.from({ length: 16 }).map((_, i) => (
-                                                <div
-                                                    key={i}
-                                                    className="w-2 h-2 bg-white rounded-full"
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
+                    {/* Device Grid - No white background container */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {devices.map((device) => (
+                            <div
+                                key={device.id}
+                                onClick={() => handleDeviceClick(device.deviceId)}
+                                className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden"
+                            >
+                                {/* Device Icon */}
+                                <div className="w-full bg-gradient-to-br from-slate-50 to-slate-100 p-6 flex items-center justify-center">
+                                    <img 
+                                        src="/assets/icons/sub-icons/air.png" 
+                                        alt="Air Sensor Icon"
+                                        className="h-32 w-auto object-contain"
+                                    />
+                                </div>
 
+                                {/* Device Information */}
+                                <div className="px-4 pb-4 space-y-2">
                                     {/* Device Name */}
-                                    <h3 className="font-bold text-slate-800 mb-2 text-center min-h-[40px] flex items-center justify-center">
+                                    <h3 className="font-bold text-slate-800 text-lg">
                                         {device.name}
                                     </h3>
 
                                     {/* Device ID */}
-                                    <div className="text-xs text-slate-500 font-mono mb-3 text-center">
+                                    <div className="text-xs text-slate-500 font-mono">
                                         {device.deviceId}
                                     </div>
 
-                                    {/* Price/Status */}
-                                    <div className="text-center">
-                                        <span className="text-green-600 font-semibold text-sm">
-                                            {device.price}
+                                    {/* Status Indicator */}
+                                    <div className="flex items-center gap-2">
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 rounded-full">
+                                            <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                            <span className="text-green-700 text-xs font-semibold">Online</span>
                                         </span>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

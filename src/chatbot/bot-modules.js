@@ -504,6 +504,24 @@ const PhoneFrame = ({
                                                             </div>
                                                         </div>
                                                     )}
+                                                    {msg.type === 'ytm-image' && msg.imageUrl && (
+                                                        <div className="mt-2">
+                                                            <div className="text-xs font-semibold mb-2 text-gray-700">{msg.imageName}</div>
+                                                            <img
+                                                                src={msg.imageUrl}
+                                                                alt={msg.imageName || 'YTM Image'}
+                                                                className="w-full rounded-lg border-2 border-gray-200 shadow-lg max-h-96 object-contain bg-white"
+                                                                onError={(e) => {
+                                                                    e.target.style.display = 'none';
+                                                                    const fallback = e.target.nextSibling;
+                                                                    if (fallback) fallback.style.display = 'block';
+                                                                }}
+                                                            />
+                                                            <div className="hidden text-xs text-gray-500 mt-2 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                                                Image preview: {msg.imageName}
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                     {msg.type === 'social-media' && msg.iconUrl && (
                                                         <div className="flex items-start gap-3">
                                                             <img
@@ -1394,27 +1412,45 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 // 1. Dashboard Analytics
                 if (messageLower.includes('dashboard analytics') || messageLower === 'dashboard analytics' || messageLower.includes('dashboard') || messageLower.includes('analytics')) {
                     hasPredefinedResponse = true;
-                    botResponse = '📊 Dashboard Analytics Overview\n\n📈 Key Metrics:\n• Overall Yield: 94.5%\n• Machine Efficiency: 87.3%\n• Production Rate: 1,250 units/day\n• Quality Score: 96.2%\n\n📋 Performance Summary:\n• ✅ Above target: Yield, Quality\n• ⚠️ Needs attention: Machine Efficiency\n• 📅 Trend: +2.3% improvement this week\n\n🎯 Recommendations:\n• Optimize Line 4 efficiency\n• Review maintenance schedules';
+                    botResponse = '📊 Dashboard Analytics\n\nKey metrics and performance overview';
+                    responseType = 'ytm-image';
+                    dropdownItems = [{
+                        id: 'dashboard-analytics',
+                        image: '/assets/bot-images/dashboard-analytics.png',
+                        name: 'Dashboard Analytics'
+                    }];
                 }
                 // 2. Repair Machine Status
                 else if (messageLower.includes('repair machine status') || messageLower === 'repair machine status' || messageLower.includes('repair machine') || messageLower.includes('machine repair')) {
                     hasPredefinedResponse = true;
-                    botResponse = '🔧 Repair Machine Status\n\n📋 Current Repairs:\n• Machine #M-001: ⚙️ In Progress (Expected: 2 hours)\n• Machine #M-005: ✅ Completed\n• Machine #M-012: ⏳ Scheduled (Tomorrow, 9:00 AM)\n\n📊 Status Summary:\n• Active Repairs: 1\n• Completed Today: 3\n• Pending: 2\n\n⏰ Next Repair: Machine #M-012 scheduled for tomorrow';
+                    botResponse = '🔧 Repair Machine Status\n\nActive: 1 | Completed: 3 | Pending: 2';
                 }
                 // 3. Maintenance Schedule
                 else if (messageLower.includes('maintenance schedule') || messageLower === 'maintenance schedule' || messageLower.includes('maintenance') || messageLower.includes('schedule')) {
                     hasPredefinedResponse = true;
-                    botResponse = '📅 Maintenance Schedule\n\n📋 Upcoming Maintenance:\n\n• Machine #M-001: Today, 2:00 PM\n  Type: Preventive Maintenance\n  Duration: 3 hours\n\n• Machine #M-003: Tomorrow, 10:00 AM\n  Type: Routine Check\n  Duration: 1 hour\n\n• Machine #M-007: Next Monday, 9:00 AM\n  Type: Preventive Maintenance\n  Duration: 4 hours\n\n📊 Schedule Status:\n• This Week: 3 scheduled\n• Next Week: 5 scheduled\n• All on track ✅';
+                    botResponse = '📅 Maintenance Schedule\n\nThis week: 3 scheduled | Next week: 5 scheduled';
+                    responseType = 'ytm-image';
+                    dropdownItems = [{
+                        id: 'maintenance-schedule',
+                        image: '/assets/bot-images/maintenance-schedule.png',
+                        name: 'Maintenance Schedule'
+                    }];
                 }
                 // 4. Late Maintenance Alert
                 else if (messageLower.includes('late maintenance alert') || messageLower === 'late maintenance alert' || messageLower.includes('late maintenance') || messageLower.includes('maintenance alert')) {
                     hasPredefinedResponse = true;
-                    botResponse = '⚠️ Late Maintenance Alert\n\n🔴 Machines Requiring Immediate Attention:\n\n• Machine #M-004: Overdue by 3 days\n  Last Maintenance: 2 weeks ago\n  Status: ⚠️ Critical\n\n• Machine #M-008: Overdue by 1 day\n  Last Maintenance: 1 week ago\n  Status: ⚠️ Warning\n\n• Machine #M-015: Overdue by 2 days\n  Last Maintenance: 2 weeks ago\n  Status: ⚠️ Critical\n\n⏰ Action Required:\nImmediate maintenance needed for these machines.\nPlease schedule maintenance as soon as possible.';
+                    botResponse = '⚠️ Late Maintenance Alert\n\n3 machines require immediate attention';
                 }
                 // 5. Machine Invoice
                 else if (messageLower.includes('machine invoice') || messageLower === 'machine invoice' || messageLower.includes('invoice')) {
                     hasPredefinedResponse = true;
-                    botResponse = '📄 Machine Invoice Summary\n\n💰 Invoice Details:\n\n• Invoice #INV-2024-001\n  Machine: #M-001 Repair Service\n  Amount: $2,500\n  Status: ✅ Paid\n\n• Invoice #INV-2024-002\n  Machine: #M-005 Maintenance Parts\n  Amount: $1,800\n  Status: ⏳ Pending Payment\n\n• Invoice #INV-2024-003\n  Machine: #M-012 Service Contract\n  Amount: $3,200\n  Status: ⏳ Pending Payment\n\n📊 Summary:\n• Total Paid: $2,500\n• Pending: $5,000\n• This Month: 3 invoices';
+                    botResponse = '📄 Machine Invoice\n\nTotal paid: $2,500 | Pending: $5,000';
+                    responseType = 'ytm-image';
+                    dropdownItems = [{
+                        id: 'machine-invoice',
+                        image: '/assets/bot-images/machine-invoice.png',
+                        name: 'Machine Invoice'
+                    }];
                 }
             }
 
@@ -1457,6 +1493,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     messageObj.invoiceName = dropdownItems[0].text;
                 } else if (responseType === 'ppc-image' && dropdownItems && dropdownItems[0]) {
                     messageObj.type = 'ppc-image';
+                    messageObj.imageUrl = dropdownItems[0].image;
+                    messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
+                } else if (responseType === 'ytm-image' && dropdownItems && dropdownItems[0]) {
+                    messageObj.type = 'ytm-image';
                     messageObj.imageUrl = dropdownItems[0].image;
                     messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
                 } else if (responseType === 'social-media' && dropdownItems && dropdownItems[0]) {

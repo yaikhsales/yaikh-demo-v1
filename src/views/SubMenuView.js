@@ -94,7 +94,8 @@ const getSubIconImage = (title) => {
         'Workspace': 'purchaser-workspace.png',
         'Temperature Sensor': 'temperature-humidity-sensor.jpg',
         'Humidity Sensor': 'temperature-humidity-sensor.jpg',
-        'Air Quality': 'temperature-humidity-sensor.jpg', // Fallback
+        'Air Quality Detector': 'air.png',
+        'Air Quality': 'air.png', // Fallback
         'Traffic': 'traffic-light.png'
     };
     

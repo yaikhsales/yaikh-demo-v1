@@ -40,7 +40,7 @@ export const DASHBOARD_DATA = [
           { id: 'ticket', title: 'Support Ticket', image: 'assets/icons/support-ticket.png', status: 'active', demoType: 'VIEW_TICKET_CUSTOM' },
           { id: 'pr-admin', title: 'Purchase Request', image: 'assets/icons/purchase-request.png', status: 'active', demoType: 'SUBMENU_PR_ADMIN' },
           { id: 'shop', title: 'Y Shop', image: 'assets/icons/y-shop.png', status: 'active', sub: 'Stationery', demoType: 'GRID_SHOP' },
-          { title: 'Bill Verify', image: 'assets/icons/bill-verify.png', status: 'active' }, // New Module
+          { title: 'Bill Record', image: 'assets/icons/bill-verify.png', status: 'active' }, // New Module
           { id: 'gatepass', title: 'Gate Pass', image: 'assets/icons/gatepass.png', status: 'active', demoType: 'SUBMENU_VISITOR' },
           { id: 'meeting', title: 'Meeting Room', image: 'assets/icons/meeting-room.png', status: 'active', demoType: 'IMAGE_VIEW' },
           { id: 'car', title: 'My Car Booking', image: 'assets/icons/my-car-booking.png', status: 'active', demoType: 'IMAGE_VIEW' },

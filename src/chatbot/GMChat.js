@@ -50,7 +50,7 @@ Available Modules in Yaikh Dashboard:
 ADMINISTRATION SECTION:
 - Accountant: Purchase Request, E-Invoicing
 - HR: YHR, Salary Bill, Org Chart, Training, Temp Work Request, Speak Up
-- Admin: Support Ticket, Purchase Request, Y Shop (Stationery), Bill Verify, Gate Pass, Meeting Room, My Car Booking, Fire Alarm, CCTV
+- Admin: Support Ticket, Purchase Request, Y Shop (Stationery), Bill Record, Gate Pass, Meeting Room, My Car Booking, Fire Alarm, CCTV
 - CSR: Digital Audit, Energy, Air, Water, Waste, Chemical
 - E-GOV: E-GOVERNMENT
 
@@ -240,40 +240,72 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
 
                                 {/* Interaction Cards Grid - Responsive - Ensure all visible */}
                                 <div className="grid grid-cols-2 gap-2.5 xs:gap-3 sm:gap-3 md:gap-4 w-full max-w-xs xs:max-w-sm sm:max-w-md md:max-w-md lg:max-w-lg pb-4 flex-shrink-0">
-                                    {/* Speak with AI */}
+                                    {/* My Salary Bill - Top Left */}
                                     <button 
                                         onClick={() => handleActionClick('speak')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
                                     >
-                                        <Mic size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Salary Bill</span>
+                                        <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
+                                            <Mic 
+                                                size={24} 
+                                                className="xs:w-6 xs:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 text-white group-hover:scale-110 transition-transform duration-200" 
+                                                strokeWidth={2}
+                                            />
+                                        </div>
+                                        <span className="text-white text-xs xs:text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-center leading-tight tracking-tight">
+                                            My Salary Bill
+                                        </span>
                                     </button>
 
-                                    {/* Chat with AI */}
+                                    {/* My Group Chat - Top Right */}
                                     <button 
                                         onClick={() => handleActionClick('chat')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
                                     >
-                                        <MessageSquare size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Group Chat</span>
+                                        <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
+                                            <MessageSquare 
+                                                size={24} 
+                                                className="xs:w-6 xs:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 text-white group-hover:scale-110 transition-transform duration-200" 
+                                                strokeWidth={2}
+                                            />
+                                        </div>
+                                        <span className="text-white text-xs xs:text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-center leading-tight tracking-tight">
+                                            My Group Chat
+                                        </span>
                                     </button>
 
-                                    {/* All modules */}
+                                    {/* My Modules - Bottom Left */}
                                     <button 
                                         onClick={() => handleActionClick('modules')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
                                     >
-                                        <Layers size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Modules</span>
+                                        <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
+                                            <Layers 
+                                                size={24} 
+                                                className="xs:w-6 xs:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 text-white group-hover:scale-110 transition-transform duration-200" 
+                                                strokeWidth={2}
+                                            />
+                                        </div>
+                                        <span className="text-white text-xs xs:text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-center leading-tight tracking-tight">
+                                            My Modules
+                                        </span>
                                     </button>
 
-                                    {/* Data Collection */}
+                                    {/* My Chat History - Bottom Right */}
                                     <button 
                                         onClick={() => handleActionClick('data')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-2.5 xs:p-3 sm:p-3 md:p-4 lg:p-5 flex flex-col items-center gap-1.5 xs:gap-2 sm:gap-2 hover:scale-105 transition-transform shadow-lg border border-white/10 min-h-[80px] xs:min-h-[90px] sm:min-h-[100px]"
+                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
                                     >
-                                        <Database size={18} className="xs:w-5 xs:h-5 md:w-6 md:h-6 text-white" />
-                                        <span className="text-white text-[10px] xs:text-xs sm:text-xs md:text-sm lg:text-base font-medium text-center leading-tight">My Chat History</span>
+                                        <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
+                                            <Database 
+                                                size={24} 
+                                                className="xs:w-6 xs:h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 text-white group-hover:scale-110 transition-transform duration-200" 
+                                                strokeWidth={2}
+                                            />
+                                        </div>
+                                        <span className="text-white text-xs xs:text-sm sm:text-sm md:text-base lg:text-lg font-semibold text-center leading-tight tracking-tight">
+                                            My Chat History
+                                        </span>
                                     </button>
                                 </div>
                             </div>

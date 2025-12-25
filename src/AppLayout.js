@@ -196,7 +196,7 @@ const AppLayout = () => {
             else if (demoType === 'GRID_SHOP') navigate('/dashboard/shop'); 
         } else {
             // Handle modules without demoType - only navigate if explicitly handled
-            if (module.title === 'Bill Verify') {
+            if (module.title === 'Bill Record') {
                 navigate('/dashboard/bill-record');
             } else if (module.title === 'YTM Shop') {
                 navigate('/dashboard/shop');

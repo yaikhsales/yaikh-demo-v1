@@ -11,11 +11,90 @@ const YTMShop = ({ onBack }) => {
     const [subCategory, setSubCategory] = useState('All');
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 10;
-    const totalProducts = 192;
+    const totalProducts = 196;
+
+    // Sample requests data
+    const requests = [
+        {
+            id: 1,
+            photo: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=100&h=100&fit=crop',
+            department: 'HR',
+            subject: 'Office Supplies',
+            quantity: 10,
+            unit: 'PCS',
+            requestor: 'John Doe',
+            requestDate: '2025-12-20'
+        },
+        {
+            id: 2,
+            photo: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=100&h=100&fit=crop',
+            department: 'IT',
+            subject: 'Computer Accessories',
+            quantity: 5,
+            unit: 'SET',
+            requestor: 'Jane Smith',
+            requestDate: '2025-12-21'
+        },
+        {
+            id: 3,
+            photo: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=100&h=100&fit=crop',
+            department: 'Admin',
+            subject: 'Cleaning Supplies',
+            quantity: 20,
+            unit: 'PCS',
+            requestor: 'Mike Johnson',
+            requestDate: '2025-12-22'
+        }
+    ];
 
     const products = [
         {
             id: 1,
+            name: 'Gold roast caffe',
+            image: 'https://images.unsplash.com/photo-1511920170033-83939cdcace7?w=300&h=300&fit=crop',
+            supplier: 'Lucky',
+            category: 'Coffee',
+            price: 1.00,
+            stock: 2,
+            stockUnit: 'PCS',
+            inStock: true
+        },
+        {
+            id: 2,
+            name: 'Nescafe',
+            image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=300&h=300&fit=crop',
+            supplier: 'Nestle',
+            category: 'office',
+            price: 1.00,
+            stock: 5,
+            stockUnit: 'PCS',
+            inStock: true
+        },
+        {
+            id: 3,
+            name: 'Key pass word',
+            image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300&h=300&fit=crop',
+            supplier: 'Security Pro',
+            category: 'office',
+            price: 1.00,
+            stock: 6,
+            stockUnit: 'PCS',
+            inStock: true
+        },
+        {
+            id: 4,
+            name: 'Key scan',
+            image: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=300&h=300&fit=crop',
+            supplier: 'Taobao',
+            category: 'office',
+            price: 1.00,
+            stock: 5,
+            stockUnit: 'PCS',
+            inStock: true,
+            currency: 'KHR'
+        },
+        {
+            id: 5,
             name: 'Gloves (iron)',
             image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300&h=300&fit=crop',
             supplier: 'Yi New Sewing Machine Co.,ltd (益新)',
@@ -26,10 +105,10 @@ const YTMShop = ({ onBack }) => {
             inStock: true
         },
         {
-            id: 2,
+            id: 6,
             name: 'Battery 27a/12v',
             image: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=300&h=300&fit=crop',
-            supplier: 'dongxin',
+            supplier: 'dong sin',
             category: 'office',
             price: 1.00,
             stock: 17,
@@ -37,21 +116,21 @@ const YTMShop = ({ onBack }) => {
             inStock: true
         },
         {
-            id: 3,
+            id: 7,
             name: 'Office desk 120cm x 60cm x 75cm',
             image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=300&fit=crop',
-            supplier: 'WU YA X',
-            category: '-',
+            supplier: 'WU YA XI',
+            category: '',
             price: 95.00,
             stock: 0,
             stockUnit: '',
             inStock: false
         },
         {
-            id: 4,
+            id: 8,
             name: 'Key black big 63mm',
             image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=300&h=300&fit=crop',
-            supplier: 'taobao',
+            supplier: 'Key Supplier',
             category: 'office',
             price: 1.00,
             stock: 10,
@@ -59,10 +138,10 @@ const YTMShop = ({ onBack }) => {
             inStock: true
         },
         {
-            id: 5,
+            id: 9,
             name: 'Spray',
             image: 'https://images.unsplash.com/photo-1612817288484-6f916006741a?w=300&h=300&fit=crop',
-            supplier: 'taobao',
+            supplier: 'Taobao',
             category: 'office',
             price: 1.00,
             stock: 11,
@@ -70,58 +149,14 @@ const YTMShop = ({ onBack }) => {
             inStock: true
         },
         {
-            id: 6,
+            id: 10,
             name: 'Printer Paper for DT&FC APP',
             image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300&h=300&fit=crop',
             supplier: 'Taobao',
-            category: '-',
+            category: '',
             price: 11.50,
             stock: 80,
             stockUnit: 'BOX',
-            inStock: true
-        },
-        {
-            id: 7,
-            name: 'Cabinet office',
-            image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=300&fit=crop',
-            supplier: 'N/A',
-            category: '-',
-            price: 0.00,
-            stock: 2,
-            stockUnit: 'SET',
-            inStock: true
-        },
-        {
-            id: 8,
-            name: 'Wood office 1400x1000x25',
-            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=300&h=300&fit=crop',
-            supplier: 'N/A',
-            category: '-',
-            price: 0.00,
-            stock: 10,
-            stockUnit: 'PCS',
-            inStock: true
-        },
-        {
-            id: 9,
-            name: 'Wood office curved',
-            image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=300&h=300&fit=crop',
-            supplier: 'N/A',
-            category: '-',
-            price: 0.00,
-            stock: 16,
-            stockUnit: 'PCS',
-            inStock: true
-        },
-        {
-            id: 10,
-            name: 'Money counting machine',
-            image: 'https://images.unsplash.com/photo-1605244863941-3a1499b2f0a4?w=300&h=300&fit=crop',
-            supplier: 'N/A',
-            category: '-',
-            price: 0.00,
-            stock: 1,
-            stockUnit: 'PCS',
             inStock: true
         }
     ];
@@ -203,7 +238,8 @@ const YTMShop = ({ onBack }) => {
                 >
                     <ArrowLeft size={16} className="inline" />
                 </button>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 flex-1 underline">Y Shop</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 flex-1 text-center">Y Shop</h1>
+                <div className="w-12"></div> {/* Spacer for centering */}
             </div>
 
             {/* Main Content */}
@@ -236,8 +272,7 @@ const YTMShop = ({ onBack }) => {
                     {/* Requests View */}
                     {activeView === 'requests' && (
                         <div className="bg-white border-2 border-dashed border-slate-300 rounded-lg p-6">
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="text-sm text-slate-600 font-semibold">Request Management</div>
+                            <div className="flex items-center justify-end mb-4">
                                 <button
                                     onClick={handleAddNewRequest}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
@@ -248,24 +283,49 @@ const YTMShop = ({ onBack }) => {
                             </div>
                             <div className="overflow-x-auto">
                                 <table className="w-full">
-                                    <thead className="bg-slate-100 border-b border-slate-300">
+                                    <thead className="bg-slate-50 border-b border-slate-200">
                                         <tr>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">PHOTO</th>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">DEPARTMENT</th>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">SUBJECT</th>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">QUANTITY</th>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">UNIT</th>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">REQUESTOR</th>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">REQUEST DATE</th>
-                                            <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">ACTION</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">PHOTO</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">DEPARTMENT</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">SUBJECT</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">QUANTITY</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">UNIT</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">REQUESTOR</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">REQUEST DATE</th>
+                                            <th className="px-6 py-3 text-left text-xs font-bold text-slate-700 uppercase">ACTION</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colSpan="8" className="px-4 py-16 text-center text-slate-500">
-                                                No requests found
-                                            </td>
-                                        </tr>
+                                    <tbody className="divide-y divide-slate-200">
+                                        {requests.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="8" className="px-4 py-16 text-center text-slate-500">
+                                                    No requests found
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            requests.map((request) => (
+                                                <tr key={request.id} className="hover:bg-slate-50">
+                                                    <td className="px-6 py-4">
+                                                        <img 
+                                                            src={request.photo} 
+                                                            alt={request.subject}
+                                                            className="w-12 h-12 object-cover rounded"
+                                                        />
+                                                    </td>
+                                                    <td className="px-6 py-4 text-sm text-slate-700">{request.department}</td>
+                                                    <td className="px-6 py-4 text-sm text-slate-700">{request.subject}</td>
+                                                    <td className="px-6 py-4 text-sm text-slate-700">{request.quantity}</td>
+                                                    <td className="px-6 py-4 text-sm text-slate-700">{request.unit}</td>
+                                                    <td className="px-6 py-4 text-sm text-slate-700">{request.requestor}</td>
+                                                    <td className="px-6 py-4 text-sm text-slate-700">{request.requestDate}</td>
+                                                    <td className="px-6 py-4">
+                                                        <button className="text-blue-600 hover:text-blue-700 text-sm font-semibold">
+                                                            View
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -276,37 +336,25 @@ const YTMShop = ({ onBack }) => {
                     {activeView === 'products' && (
                         <div className="space-y-6">
                             {/* Search and Filters */}
-                            <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                                <div className="mb-4">
-                                    <div className="relative">
-                                        <Search className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-                                        <input
-                                            type="text"
-                                            placeholder="Search Product..."
-                                            value={searchQuery}
-                                            onChange={(e) => setSearchQuery(e.target.value)}
-                                            className="w-full pl-4 pr-10 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="flex flex-wrap items-center gap-4">
-                                    <div>
+                            <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-4">
+                                <div className="flex flex-wrap items-end gap-4">
+                                    <div className="flex-1 min-w-[150px]">
                                         <label className="block text-sm text-slate-700 font-semibold mb-1">Department</label>
                                         <select
                                             value={department}
                                             onChange={(e) => setDepartment(e.target.value)}
-                                            className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                         >
                                             <option value="Office">Office</option>
                                             <option value="All">All</option>
                                         </select>
                                     </div>
-                                    <div>
+                                    <div className="flex-1 min-w-[150px]">
                                         <label className="block text-sm text-slate-700 font-semibold mb-1">Supplier Name</label>
                                         <select
                                             value={supplierName}
                                             onChange={(e) => setSupplierName(e.target.value)}
-                                            className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                         >
                                             <option value="All">All</option>
                                             <option value="Yi New Sewing Machine Co.,ltd (益新)">Yi New Sewing Machine Co.,ltd (益新)</option>
@@ -314,41 +362,53 @@ const YTMShop = ({ onBack }) => {
                                             <option value="taobao">taobao</option>
                                         </select>
                                     </div>
-                                    <div>
+                                    <div className="flex-1 min-w-[150px]">
                                         <label className="block text-sm text-slate-700 font-semibold mb-1">Sub Category</label>
                                         <select
                                             value={subCategory}
                                             onChange={(e) => setSubCategory(e.target.value)}
-                                            className="px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                                         >
                                             <option value="All">All</option>
                                             <option value="office">office</option>
                                         </select>
                                     </div>
-                                    <div className="flex gap-2 items-end">
+                                    <div className="flex gap-2">
                                         <button
                                             onClick={handleFilter}
-                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                                            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
                                         >
                                             Filter
                                         </button>
                                         <button
                                             onClick={handleReset}
-                                            className="px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+                                            className="px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg font-semibold hover:bg-slate-50 transition-colors text-sm"
                                         >
                                             Reset
                                         </button>
                                         <button
-                                            className="px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg font-semibold hover:bg-slate-50 transition-colors"
+                                            className="px-4 py-2 bg-white text-slate-700 border border-slate-300 rounded-lg font-semibold hover:bg-slate-50 transition-colors text-sm"
                                         >
                                             Show Non Sellable
                                         </button>
+                                    </div>
+                                    <div className="flex-1 min-w-[200px]">
+                                        <div className="relative">
+                                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                                            <input
+                                                type="text"
+                                                placeholder="Search Product..."
+                                                value={searchQuery}
+                                                onChange={(e) => setSearchQuery(e.target.value)}
+                                                className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Product Grid */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                                 {products.map((product) => (
                                     <div key={product.id} className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
                                         <div className="aspect-square bg-slate-100 overflow-hidden">
@@ -358,17 +418,18 @@ const YTMShop = ({ onBack }) => {
                                                 className="w-full h-full object-cover"
                                             />
                                         </div>
-                                        <div className="p-4">
-                                            <h3 className="font-semibold text-slate-800 mb-2 text-sm line-clamp-2">{product.name}</h3>
+                                        <div className="p-3">
+                                            <h3 className="font-semibold text-slate-800 mb-2 text-sm line-clamp-2 min-h-[2.5rem]">{product.name}</h3>
                                             <div className="text-xs text-slate-600 mb-1">
-                                                <div className="font-semibold">Supplier Name:</div>
-                                                <div className="truncate">{product.supplier}</div>
+                                                <span className="font-semibold">Supplier Name: </span>
+                                                <span className="truncate block">{product.supplier}</span>
                                             </div>
                                             <div className="text-xs text-slate-600 mb-2">
-                                                <span className="font-semibold">Category:</span> {product.category}
+                                                <span className="font-semibold">Category: </span>
+                                                <span>{product.category || '-'}</span>
                                             </div>
-                                            <div className="text-lg font-bold text-blue-600 mb-2">
-                                                {product.price.toFixed(2)} USD
+                                            <div className="text-base font-bold text-blue-600 mb-2">
+                                                {product.price.toFixed(2)} {product.currency || (product.price >= 1 ? 'USD' : 'KHR')}
                                             </div>
                                             <div className={`text-xs font-semibold mb-3 ${
                                                 product.inStock ? 'text-green-600' : 'text-red-600'
