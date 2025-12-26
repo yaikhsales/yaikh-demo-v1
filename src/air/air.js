@@ -16,7 +16,7 @@ const Air = ({ onBack }) => {
         { id: 7, name: 'Supervisor room', deviceId: 'f3jgh3c53f3f93c53h4g', status: 'Online' },
         { id: 8, name: 'Fabric folding', deviceId: 'a4khi4d64a4a04d64i5h', status: 'Online' },
         { id: 9, name: 'Deliverally Room', deviceId: 'c6mjk6f86c6c26f86k7j', status: 'Online' },
-        { id: 10, name: 'Packing', deviceId: 'd7nkl7g97d7d37g97l8k', status: 'Online' },
+        { id: 10, name: 'Packing', deviceId: 'd7nkl7g97d7d37g97l8k', status: 'Online' },    
         { id: 11, name: 'Sewing C', deviceId: 'e8olm8h08e8e48h08m9l', status: 'Online' },
         { id: 12, name: 'Winding Dept', deviceId: 'f9pmn9i19f9f59i19n0m', status: 'Online' }
     ];

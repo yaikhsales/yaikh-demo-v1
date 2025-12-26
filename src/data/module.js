@@ -93,8 +93,8 @@ export const DASHBOARD_DATA = [
         id: 'qa',
         title: 'QA',
         modules: [
-          { title: 'YQMS', image: 'assets/icons/yqms.png', status: 'active' }, // New Module
-          { title: 'FC', image: 'assets/icons/fc.png', status: 'active' },
+          { id: 'yqms', title: 'YQMS', image: 'assets/icons/yqms.png', status: 'active', demoType: 'SUBMENU_YQMS' },
+          { id: 'fc', title: 'FC', image: 'assets/icons/fc.png', status: 'active', demoType: 'SUBMENU_FC' },
         ]
       },
       {

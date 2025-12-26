@@ -147,6 +147,38 @@ const AppLayout = () => {
                     { title: 'Cambodia E Invoice', icon: 'Banknote', color: 'bg-emerald-500 text-white' },
                     { title: 'Supplier Management', icon: 'Briefcase', color: 'bg-sky-500 text-white' },
                     { title: 'IEWS', icon: 'Layers', color: 'bg-indigo-500 text-white' }
+                ] : demoType === 'SUBMENU_YQMS' ? [
+                    { title: 'Pre Production Meeting', icon: 'Users', color: 'bg-blue-500 text-white', image: 'assets/yqms/pre-production-meeting.jpg' },
+                    { title: 'Material Quality', icon: 'Package', color: 'bg-green-500 text-white', image: 'assets/yqms/material-quality.jpg' },
+                    { title: 'Supplier Evaluation', icon: 'CheckSquare', color: 'bg-teal-500 text-white', image: 'assets/yqms/supplier-evaluation.jpg' },
+                    { title: 'Test And Pilot', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/yqms/test-and-pilot.jpg' },
+                    { title: 'First Output Cutting', icon: 'Scissors', color: 'bg-orange-500 text-white', image: 'assets/yqms/first-output-cutting.jpg' },
+                    { title: 'First Output Printing Embroidery', icon: 'PenTool', color: 'bg-pink-500 text-white', image: 'assets/yqms/first-output-printing-embroidery.jpg' },
+                    { title: 'First Output Sewing', icon: 'PenTool', color: 'bg-lime-500 text-white', image: 'assets/yqms/first-output-sewing.jpg' },
+                    { title: 'First Output Finishing And Packing', icon: 'PackageCheck', color: 'bg-cyan-500 text-white', image: 'assets/yqms/first-output-finishing-and-packing.jpg' },
+                    { title: 'QA Cutting', icon: 'Search', color: 'bg-amber-500 text-white', image: 'assets/yqms/qa-cutting.jpg' },
+                    { title: 'QA Printing Embroidery', icon: 'Search', color: 'bg-yellow-500 text-white', image: 'assets/yqms/qa-printing-embroidery.jpg' },
+                    { title: 'QA 20pcs Audit', icon: 'ClipboardCheck', color: 'bg-emerald-500 text-white', image: 'assets/yqms/qa-20pcs-audit.jpg' },
+                    { title: 'QA Audit Finishing Packing', icon: 'ClipboardCheck', color: 'bg-green-500 text-white', image: 'assets/yqms/qa-audit-finishing-packing.jpg' },
+                    { title: 'Inline Audit Rolling', icon: 'FileCheck', color: 'bg-indigo-500 text-white', image: 'assets/yqms/inline-audit-rolling.jpg' },
+                    { title: 'Offline Audit', icon: 'FileCheck', color: 'bg-violet-500 text-white', image: 'assets/yqms/offline-audit.jpg' },
+                    { title: 'QC End Line Checking', icon: 'CheckCircle', color: 'bg-blue-600 text-white', image: 'assets/yqms/qc-end-line-checking.jpg' },
+                    { title: 'QC File', icon: 'FileText', color: 'bg-slate-500 text-white', image: 'assets/yqms/qc-file.jpg' },
+                    { title: 'Pre Final Inspection', icon: 'Eye', color: 'bg-rose-500 text-white', image: 'assets/yqms/pre-final-inspection.jpg' },
+                    { title: 'Final Inspection', icon: 'Eye', color: 'bg-red-500 text-white', image: 'assets/yqms/final-inspection.jpg' },
+                    { title: 'Buyer Final Inspection', icon: 'Eye', color: 'bg-red-600 text-white', image: 'assets/yqms/buyer-final-inspection.jpg' },
+                    { title: 'Humidity Acraboy Checking', icon: 'Thermometer', color: 'bg-sky-500 text-white', image: 'assets/yqms/humidity-acraboy-checking.jpg' },
+                    { title: 'Customer Complain Cap', icon: 'AlertTriangle', color: 'bg-orange-600 text-white', image: 'assets/yqms/customer-complain-cap.jpg' }
+                ] : demoType === 'SUBMENU_FC' ? [
+                    { title: 'Fabric Receiving', icon: 'Package', color: 'bg-blue-500 text-white', image: 'assets/fc/fabric-receiving.jpg' },
+                    { title: 'Fabric Inspection', icon: 'Search', color: 'bg-green-500 text-white', image: 'assets/fc/fabric-inspection.jpg' },
+                    { title: 'Fabric Test', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/fc/fabric-test.jpg' },
+                    { title: 'Fabric Issuing', icon: 'ArrowUpRight', color: 'bg-orange-500 text-white', image: 'assets/fc/fabric-issuing.jpg' },
+                    { title: 'Accessories Receiving', icon: 'Package', color: 'bg-teal-500 text-white', image: 'assets/fc/accessories-receiving.jpg' },
+                    { title: 'Accessories Inspection', icon: 'Search', color: 'bg-emerald-500 text-white', image: 'assets/fc/accessories-inspection.jpg' },
+                    { title: 'Accessories Issuing', icon: 'ArrowUpRight', color: 'bg-yellow-500 text-white', image: 'assets/fc/accessories-issuing.jpg' },
+                    { title: 'Warehouse Tracking Location', icon: 'MapPin', color: 'bg-indigo-500 text-white', image: 'assets/fc/warehouse-tracking-location.jpg' },
+                    { title: 'Delivery Tracking', icon: 'Truck', color: 'bg-red-500 text-white', image: 'assets/fc/delivery-tracking.jpg' }
                 ] : demoType === 'SUBMENU_DEPARTMENTS' ? [
                     { title: 'Online Training', icon: 'MonitorPlay', color: 'bg-blue-500 text-white' }, // Correct
                     { title: 'YAI', icon: 'Building', color: 'bg-slate-500 text-white' }, // Correct

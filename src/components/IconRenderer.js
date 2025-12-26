@@ -5,7 +5,8 @@ import {
     Hand, Shirt, Feather, PackageCheck, WashingMachine, Wrench, BrainCircuit,
     TestTube, LayoutDashboard, Settings2, GaugeCircle, Sun, Activity, Power,
     Car, Bike, Bus, Rocket, BarChartBig, UsersRound, Download, Flame, Fan,
-    ToggleRight, ArrowDownToLine, ArrowUpFromLine, X, Image as ImageIcon
+    ToggleRight, ArrowDownToLine, ArrowUpFromLine, X, Image as ImageIcon,
+    Search, FlaskConical, ArrowUpRight, MapPin, Eye, PenTool, ClipboardCheck, AlertTriangle, Thermometer
 } from 'lucide-react';
 
 const iconMap = {
@@ -59,6 +60,15 @@ const iconMap = {
     ArrowDownToLine,
     ArrowUpFromLine,
     X,
+    Search,
+    FlaskConical,
+    ArrowUpRight,
+    MapPin,
+    Eye,
+    PenTool,
+    ClipboardCheck,
+    AlertTriangle,
+    Thermometer,
 };
 
 export const IconRenderer = ({ iconName, ...props }) => {

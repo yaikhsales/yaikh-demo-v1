@@ -96,7 +96,39 @@ const getSubIconImage = (title) => {
         'Humidity Sensor': 'temperature-humidity-sensor.jpg',
         'Air Quality Detector': 'air.png',
         'Air Quality': 'air.png', // Fallback
-        'Traffic': 'traffic-light.png'
+        'Traffic': 'traffic-light.png',
+        // FC module sub-modules
+        'Fabric Receiving': 'fabric-receiving.jpg',
+        'Fabric Inspection': 'fabric-inspection.jpg',
+        'Fabric Test': 'fabric-test.jpg',
+        'Fabric Issuing': 'fabric-issuing.jpg',
+        'Accessories Receiving': 'accessories-receiving.jpg',
+        'Accessories Inspection': 'accessories-inspection.jpg',
+        'Accessories Issuing': 'accessories-issuing.jpg',
+        'Warehouse Tracking Location': 'warehouse-tracking-location.jpg',
+        'Delivery Tracking': 'delivery-tracking.jpg',
+        // YQMS module sub-modules
+        'Pre Production Meeting': 'pre-production-meeting.jpg',
+        'Material Quality': 'material-quality.jpg',
+        'Supplier Evaluation': 'supplier-evaluation.jpg',
+        'Test And Pilot': 'test-and-pilot.jpg',
+        'First Output Cutting': 'first-output-cutting.jpg',
+        'First Output Printing Embroidery': 'first-output-printing-embroidery.jpg',
+        'First Output Sewing': 'first-output-sewing.jpg',
+        'First Output Finishing And Packing': 'first-output-finishing-and-packing.jpg',
+        'QA Cutting': 'qa-cutting.jpg',
+        'QA Printing Embroidery': 'qa-printing-embroidery.jpg',
+        'QA 20pcs Audit': 'qa-20pcs-audit.jpg',
+        'QA Audit Finishing Packing': 'qa-audit-finishing-packing.jpg',
+        'Inline Audit Rolling': 'inline-audit-rolling.jpg',
+        'Offline Audit': 'offline-audit.jpg',
+        'QC End Line Checking': 'qc-end-line-checking.jpg',
+        'QC File': 'qc-file.jpg',
+        'Pre Final Inspection': 'pre-final-inspection.jpg',
+        'Final Inspection': 'final-inspection.jpg',
+        'Buyer Final Inspection': 'buyer-final-inspection.jpg',
+        'Humidity Acraboy Checking': 'humidity-acraboy-checking.jpg',
+        'Customer Complain Cap': 'customer-complain-cap.jpg'
     };
     
     // First try exact match
@@ -124,6 +156,28 @@ const getSubIconImage = (title) => {
     }
     
     if (imageName) {
+        // Check if it's an FC sub-module image (jpg files in fc folder)
+        const fcSubModules = ['fabric-receiving.jpg', 'fabric-inspection.jpg', 'fabric-test.jpg', 
+                             'fabric-issuing.jpg', 'accessories-receiving.jpg', 'accessories-inspection.jpg', 
+                             'accessories-issuing.jpg', 'warehouse-tracking-location.jpg', 'delivery-tracking.jpg'];
+        if (fcSubModules.includes(imageName)) {
+            return `assets/fc/${imageName}`;
+        }
+        
+        // Check if it's a YQMS sub-module image (jpg files in yqms folder)
+        const yqmsSubModules = [
+            'pre-production-meeting.jpg', 'material-quality.jpg', 'supplier-evaluation.jpg',
+            'test-and-pilot.jpg', 'first-output-cutting.jpg', 'first-output-printing-embroidery.jpg',
+            'first-output-sewing.jpg', 'first-output-finishing-and-packing.jpg', 'qa-cutting.jpg',
+            'qa-printing-embroidery.jpg', 'qa-20pcs-audit.jpg', 'qa-audit-finishing-packing.jpg',
+            'inline-audit-rolling.jpg', 'offline-audit.jpg', 'qc-end-line-checking.jpg',
+            'qc-file.jpg', 'pre-final-inspection.jpg', 'final-inspection.jpg',
+            'buyer-final-inspection.jpg', 'humidity-acraboy-checking.jpg', 'customer-complain-cap.jpg'
+        ];
+        if (yqmsSubModules.includes(imageName)) {
+            return `assets/yqms/${imageName}`;
+        }
+        
         return `assets/icons/sub-icons/${imageName}`;
     }
     return null;
@@ -159,10 +213,21 @@ const SubMenuView = () => {
                 <div className="w-32"></div>
             </div>
             <div className="flex gap-8 flex-wrap justify-center">
-                {cards.map((card, idx) => (
-                    <button
+                {cards.map((card, idx) => {
+                    // Calculate image path once for efficiency
+                    const subIconImage = getSubIconImage(card.title);
+                    const imageToUse = subIconImage || card.image;
+                    const isFCModule = imageToUse && imageToUse.includes('assets/fc/');
+                    const isYQMSModule = imageToUse && imageToUse.includes('assets/yqms/');
+                    const isNonClickableModule = isFCModule || isYQMSModule;
+                    
+                    // For FC and YQMS modules, use div instead of button since they're not clickable
+                    const CardComponent = isNonClickableModule ? 'div' : 'button';
+                    
+                    return (
+                    <CardComponent
                         key={idx}
-                        onClick={() => {
+                        onClick={isNonClickableModule ? undefined : () => {
                             // Handle Training sub-modules (except Online Training)
                             if (isTrainingModule && card.title !== 'Online Training') {
                                 navigate(`/dashboard/training/${encodeURIComponent(card.title)}`, { state: { departmentName: card.title } });
@@ -216,17 +281,26 @@ const SubMenuView = () => {
                                 navigate('/dashboard/cctv/face-scan');
                             } else if (card.title === 'My Face Scan') {
                                 navigate('/dashboard/cctv/my-face-scan');
+                            } else if (isFCModule || isYQMSModule) {
+                                // FC and YQMS sub-modules: display icons only, no navigation
+                                return;
                             } else if (card.image) {
-                                navigate(`/dashboard/image/${card.image}`);
+                                // Encode the image path to handle slashes correctly
+                                const encodedPath = encodeURIComponent(card.image);
+                                navigate(`/dashboard/image/${encodedPath}`);
                             } else {
                                 navigate(`/dashboard/submenu/${moduleId}`);
                             }
                         }}
-                        className={`w-48 h-40 rounded-xl shadow-xl hover:scale-105 transition transform flex flex-col items-center justify-center gap-4 border-b-4 border-black/20 ${
-                            card.color || 'bg-white text-slate-800'
-                        }`}
+                        className={`${isNonClickableModule 
+                            ? 'w-56 h-52 rounded-xl shadow-2xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center gap-3 border-b-4 border-black/20 cursor-default' 
+                            : 'w-48 h-40 rounded-xl shadow-xl hover:scale-105 transition transform flex flex-col items-center justify-center gap-4 border-b-4 border-black/20'
+                        } ${card.color || 'bg-white text-slate-800'}`}
                     >
-                        <div className="p-4 rounded-full relative" style={{ backgroundColor: 'transparent' }}>
+                        <div className={isNonClickableModule
+                            ? 'p-3 rounded-lg relative bg-white/10 backdrop-blur-sm' 
+                            : 'p-4 rounded-full relative'
+                        } style={{ backgroundColor: 'transparent' }}>
                             {(() => {
                                 // All modules now use sub-icons when available
                                 // No modules are excluded from sub-icon mapping
@@ -234,17 +308,20 @@ const SubMenuView = () => {
                                 
                                 // Priority: 1. sub-icon image (from mapping - check first), 2. card.image (explicit), 3. IconRenderer
                                 // But skip sub-icon mapping for modules that should keep original icons
-                                const subIconImage = shouldUseOriginalIcon ? null : getSubIconImage(card.title);
-                                const imageToUse = subIconImage || card.image;
+                                const finalImageToUse = shouldUseOriginalIcon ? null : imageToUse;
                                 
-                                if (imageToUse) {
+                                if (finalImageToUse) {
                                     return (
                                         <>
                                             <img
-                                                src={`/${imageToUse}`}
+                                                src={`/${finalImageToUse}`}
                                                 alt={card.title}
-                                                className="w-16 h-16 object-contain"
-                                                style={{
+                                                className={isNonClickableModule ? 'w-28 h-28 object-contain' : 'w-16 h-16 object-contain'}
+                                                style={isNonClickableModule ? {
+                                                    backgroundColor: 'transparent',
+                                                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
+                                                    borderRadius: '8px'
+                                                } : {
                                                     mixBlendMode: 'multiply',
                                                     backgroundColor: 'transparent',
                                                     filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
@@ -257,7 +334,7 @@ const SubMenuView = () => {
                                                 }}
                                             />
                                             <div className="icon-fallback hidden">
-                                                <IconRenderer iconName={card.icon} size={64} />
+                                                <IconRenderer iconName={card.icon} size={isNonClickableModule ? 112 : 64} />
                                             </div>
                                         </>
                                     );
@@ -265,11 +342,11 @@ const SubMenuView = () => {
                                 return <IconRenderer iconName={card.icon} size={64} />;
                             })()}
                         </div>
-                        <span className="font-bold text-lg text-center px-2 leading-tight">
+                        <span className={`font-bold text-center px-2 leading-tight ${isNonClickableModule ? 'text-base' : 'text-lg'}`}>
                             {card.title}
                         </span>
-                    </button>
-                ))}
+                    </CardComponent>
+                )})}
             </div>
         </div>
     );

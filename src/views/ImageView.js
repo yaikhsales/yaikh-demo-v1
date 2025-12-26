@@ -9,16 +9,35 @@ const ImageView = ({ onBack }) => {
     // Normalize image path - ensure it starts with / and doesn't duplicate assets/
     const normalizeImagePath = (path) => {
         if (!path) return '';
-        // Remove leading slash if present
-        let normalized = path.startsWith('/') ? path.slice(1) : path;
-        // Remove 'assets/' if it's duplicated (e.g., 'assets/assets/...')
-        normalized = normalized.replace(/^assets\/assets\//, 'assets/');
-        // If path doesn't start with 'assets/', add it
-        if (!normalized.startsWith('assets/')) {
-            normalized = `assets/${normalized}`;
+        
+        try {
+            // Decode URL-encoded characters (handles %2F for slashes, etc.)
+            let decoded = decodeURIComponent(path);
+            
+            // Remove leading slash if present
+            let normalized = decoded.startsWith('/') ? decoded.slice(1) : decoded;
+            
+            // Remove 'assets/' if it's duplicated (e.g., 'assets/assets/...')
+            normalized = normalized.replace(/^assets\/assets\//, 'assets/');
+            
+            // If path doesn't start with 'assets/', add it
+            if (!normalized.startsWith('assets/')) {
+                normalized = `assets/${normalized}`;
+            }
+            
+            // Ensure it starts with / for absolute path
+            const finalPath = `/${normalized}`;
+            
+            return finalPath;
+        } catch (e) {
+            // If decoding fails, try using the path as-is
+            console.error('Error decoding image path:', path, e);
+            let normalized = path.startsWith('/') ? path.slice(1) : path;
+            if (!normalized.startsWith('assets/')) {
+                normalized = `assets/${normalized}`;
+            }
+            return `/${normalized}`;
         }
-        // Ensure it starts with / for absolute path
-        return `/${normalized}`;
     };
     
     const imageUrl = normalizeImagePath(imagePath);
@@ -144,7 +163,9 @@ const ImageView = ({ onBack }) => {
                             <h3 className="text-xl font-bold text-white mb-2">Image Not Found</h3>
                             <p className="text-white/70 mb-1">Unable to load the image at:</p>
                             <p className="text-white/50 text-sm font-mono break-all max-w-2xl">{imageUrl}</p>
+                            <p className="text-white/60 mt-2 text-xs">Original path: {imagePath || 'N/A'}</p>
                             <p className="text-white/60 mt-4 text-sm">Please check if the file exists in the public folder.</p>
+                            <p className="text-white/50 mt-2 text-xs">Expected location: public{imageUrl}</p>
                         </div>
                     </div>
                 ) : (
@@ -162,9 +183,14 @@ const ImageView = ({ onBack }) => {
                                 setIsLoading(false);
                                 setHasError(false);
                             }}
-                            onError={() => {
+                            onError={(e) => {
                                 setIsLoading(false);
                                 setHasError(true);
+                                console.error('Image load error:', {
+                                    imageUrl,
+                                    imagePath,
+                                    src: e.target.src
+                                });
                             }}
                             className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl select-none"
                             draggable={false}
