@@ -35,29 +35,26 @@ const AppLayout = () => {
         setYaiDataBotOpen(true);
     };
 
-    // Handle initial dragon animation on page load
-    useEffect(() => {
-        if (location.pathname === '/' && !hasPlayedInitialAnimation) {
-            // Wait a bit for page to load, then start dragon animation
-            const timer = setTimeout(() => {
-                setShowDragon(true);
-                setDragonMode('initial');
-                setHasPlayedInitialAnimation(true);
-            }, 500);
-            return () => clearTimeout(timer);
-        }
-    }, [location.pathname, hasPlayedInitialAnimation]);
+    // Handle initial dragon animation on page load - DISABLED
+    // useEffect(() => {
+    //     if (location.pathname === '/' && !hasPlayedInitialAnimation) {
+    //         // Wait a bit for page to load, then start dragon animation
+    //         const timer = setTimeout(() => {
+    //             setShowDragon(true);
+    //             setDragonMode('initial');
+    //             setHasPlayedInitialAnimation(true);
+    //         }, 500);
+    //         return () => clearTimeout(timer);
+    //     }
+    // }, [location.pathname, hasPlayedInitialAnimation]);
 
     // Handle left arrow key for back navigation
     useEffect(() => {
         const handleKeyPress = (e) => {
             if (e.key === 'ArrowLeft' && !showDragon) {
-                // If Yai Data Bot is open, trigger missile animation to go back
+                // If Yai Data Bot is open, close it directly (skip missile animation)
                 if (isYaiDataBotOpen) {
-                    setTimeout(() => {
-                        setShowDragon(true);
-                        setDragonMode('back');
-                    }, 100);
+                    setYaiDataBotOpen(false);
                 }
                 // If on a module page (not home page), navigate back
                 else if (location.pathname !== '/') {

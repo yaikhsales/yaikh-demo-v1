@@ -43,10 +43,10 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
               mixBlendMode: isDropdownOpen ? 'normal' : 'screen',
               filter: isDropdownOpen 
                 ? 'none' 
-                : 'brightness(0.4) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
+                : 'brightness(0.8) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
               WebkitFilter: isDropdownOpen 
                 ? 'none' 
-                : 'brightness(0.4) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
+                : 'brightness(0.8) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
             }}
           />
         </div>
