@@ -3,10 +3,20 @@ import { X, Download, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react';
 
 const PdfViewer = ({ pdfPath, onClose }) => {
     const [scale, setScale] = useState(1);
+    const [pdfZoom, setPdfZoom] = useState(150); // PDF native zoom (percentage)
 
-    const handleZoomIn = () => setScale(prev => Math.min(prev + 0.25, 2));
-    const handleZoomOut = () => setScale(prev => Math.max(prev - 0.25, 0.5));
-    const handleReset = () => setScale(1);
+    const handleZoomIn = () => {
+        setScale(prev => Math.min(prev + 0.25, 3));
+        setPdfZoom(prev => Math.min(prev + 25, 300));
+    };
+    const handleZoomOut = () => {
+        setScale(prev => Math.max(prev - 0.25, 0.5));
+        setPdfZoom(prev => Math.max(prev - 25, 50));
+    };
+    const handleReset = () => {
+        setScale(1);
+        setPdfZoom(150);
+    };
     const handleDownload = () => {
         const link = document.createElement('a');
         link.href = pdfPath;
@@ -61,7 +71,7 @@ const PdfViewer = ({ pdfPath, onClose }) => {
                     </span>
                     <button
                         onClick={handleZoomIn}
-                        disabled={scale >= 2}
+                        disabled={scale >= 3}
                         className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all backdrop-blur-sm border border-white/10 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Zoom In (+)"
                     >
@@ -94,19 +104,24 @@ const PdfViewer = ({ pdfPath, onClose }) => {
             {/* PDF Container */}
             <div className="flex-1 flex items-center justify-center p-4 overflow-auto mt-16">
                 <div
-                    className="relative transition-transform duration-300 ease-out"
+                    className="relative transition-all duration-300 ease-out"
                     style={{
                         transform: `scale(${scale})`,
                         transformOrigin: 'center center',
+                        willChange: 'transform',
                     }}
                 >
                     <iframe
-                        src={`${pdfPath}#toolbar=0`}
-                        className="w-[90vw] h-[90vh] rounded-lg shadow-2xl border-0"
+                        src={`${pdfPath}#toolbar=0&zoom=${pdfZoom}&navpanes=0&scrollbar=0`}
+                        className="rounded-lg shadow-2xl border-0"
                         title="PDF Viewer"
                         style={{
-                            maxWidth: '1200px',
-                            maxHeight: '800px',
+                            width: `${2000 * (pdfZoom / 150)}px`,
+                            height: `${1400 * (pdfZoom / 150)}px`,
+                            maxWidth: '95vw',
+                            maxHeight: '95vh',
+                            imageRendering: 'auto',
+                            WebkitImageRendering: 'auto',
                         }}
                     />
                 </div>

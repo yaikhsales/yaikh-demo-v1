@@ -1,7 +1,7 @@
 import React from 'react';
 import ColumnGroup from './ColumnGroup';
 
-const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 'default', onBotModuleClick, isDropdownOpen = false, isLightOn = false }) => {
+const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 'default', onBotModuleClick, isDropdownOpen = false, isLightOn = false, theme = 'normal' }) => {
   // Central Section (Management Dashboard)
   if (section.isCentral) {
       return (
@@ -34,6 +34,7 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
                             onBotModuleClick={onBotModuleClick}
                             isDropdownOpen={isDropdownOpen}
                             isLightOn={isLightOn}
+                            theme={theme}
                         />
                     ))}
                  </div>
@@ -45,6 +46,8 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
   }
 
   // Regular Sections (Admin, Ops)
+  const isAdministration = section.id === 'admin-section';
+  
   return (
     <div className={`flex flex-col mx-2 ${isDropdownOpen ? '' : 'apple-fade-in-delay-2'}`}>
        {/* Big Section Label (Spans all children) */}
@@ -63,6 +66,8 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
                 onBotModuleClick={onBotModuleClick}
                 isDropdownOpen={isDropdownOpen}
                 isLightOn={isLightOn}
+                isAdministration={isAdministration}
+                theme={theme}
             />
           ))}
        </div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
-    Home, Mail, Calendar,
-    Bell, ChevronDown, QrCode, FileText, DollarSign
+    Home, Mail, Calendar, MessageCircle,
+    Bell, ChevronDown, QrCode, FileText, DollarSign,
+    ShoppingCart, Ticket, Globe
 } from 'lucide-react';
 import PdfViewer from './PdfViewer';
 import ImageViewer from './ImageViewer';
@@ -9,10 +10,14 @@ import ImageViewer from './ImageViewer';
 const Header = () => {
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState('AT');
+  const [selectedLanguage, setSelectedLanguage] = useState('English');
 
   return (
     <>
-      <header className="bg-white shadow-md px-4 py-1 flex justify-between items-center sticky top-0 z-50 h-16 relative">
+      <header className="bg-white shadow-md px-4 py-1 flex justify-between items-center sticky top-0 z-50 h-16">
         {/* Left Section */}
         <div className="flex items-center gap-4 h-full">
           <div className="flex-shrink-0 cursor-pointer">
@@ -64,10 +69,109 @@ const Header = () => {
             <Home className="w-5 h-5 cursor-pointer hover:text-blue-600" />
             <Mail className="w-5 h-5 cursor-pointer hover:text-blue-600" />
             <Calendar className="w-5 h-5 cursor-pointer hover:text-blue-600" />
-            <div className="flex items-center gap-1 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded">
-                <span className="text-red-600 font-bold text-lg underline decoration-2 decoration-red-600 underline-offset-4">AT</span>
-                <ChevronDown size={14} className="text-gray-400" />
+            <div className="relative">
+                <MessageCircle className="w-5 h-5 cursor-pointer hover:text-blue-600" />
+                {/* Three dots inside chat bubble - using absolute positioning */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-0.5 pointer-events-none">
+                    <div className="w-0.5 h-0.5 bg-gray-500 rounded-full"></div>
+                    <div className="w-0.5 h-0.5 bg-gray-500 rounded-full"></div>
+                    <div className="w-0.5 h-0.5 bg-gray-500 rounded-full"></div>
+                </div>
             </div>
+            <ShoppingCart className="w-5 h-5 cursor-pointer hover:text-blue-600" />
+            <Ticket className="w-5 h-5 cursor-pointer hover:text-blue-600" />
+            
+            {/* Country Selector */}
+            <div className="relative">
+                <div 
+                    className="flex items-center gap-1 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
+                    onClick={() => {
+                        setShowCountryDropdown(!showCountryDropdown);
+                        setShowLanguageDropdown(false);
+                    }}
+                >
+                    <span className="text-red-600 font-bold text-lg underline decoration-2 decoration-red-600 underline-offset-4">{selectedCountry}</span>
+                    <ChevronDown size={14} className="text-gray-400" />
+                </div>
+                {showCountryDropdown && (
+                    <>
+                        <div 
+                            className="fixed inset-0 z-40" 
+                            onClick={() => setShowCountryDropdown(false)}
+                        />
+                        <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 min-w-[120px] py-1">
+                            {['AT', 'US', 'UK', 'DE', 'FR'].map((country) => (
+                                <button
+                                    key={country}
+                                    onClick={() => {
+                                        setSelectedCountry(country);
+                                        setShowCountryDropdown(false);
+                                    }}
+                                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-sm ${
+                                        selectedCountry === country ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-700'
+                                    }`}
+                                >
+                                    {country}
+                                </button>
+                            ))}
+                        </div>
+                    </>
+                )}
+            </div>
+            
+            {/* Language Selector */}
+            <div className="relative">
+                <div 
+                    className="flex items-center gap-2 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
+                    onClick={() => {
+                        setShowLanguageDropdown(!showLanguageDropdown);
+                        setShowCountryDropdown(false);
+                    }}
+                >
+                    <img 
+                        src="https://flagcdn.com/w20/gb.png" 
+                        alt="English" 
+                        className="w-4 h-3 object-cover rounded"
+                    />
+                    <span className="text-sm text-gray-700">{selectedLanguage}</span>
+                    <ChevronDown size={14} className="text-gray-400" />
+                </div>
+                {showLanguageDropdown && (
+                    <>
+                        <div 
+                            className="fixed inset-0 z-40" 
+                            onClick={() => setShowLanguageDropdown(false)}
+                        />
+                        <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 min-w-[150px] py-1">
+                            {[
+                                { code: 'en', name: 'English', flag: 'https://flagcdn.com/w20/gb.png' },
+                                { code: 'km', name: 'ខ្មែរ', flag: 'https://flagcdn.com/w20/kh.png' },
+                                { code: 'zh', name: '中文', flag: 'https://flagcdn.com/w20/cn.png' },
+                                
+                            ].map((lang) => (
+                                <button
+                                    key={lang.code}
+                                    onClick={() => {
+                                        setSelectedLanguage(lang.name);
+                                        setShowLanguageDropdown(false);
+                                    }}
+                                    className={`w-full text-left px-4 py-2 hover:bg-gray-50 text-sm flex items-center gap-2 ${
+                                        selectedLanguage === lang.name ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-700'
+                                    }`}
+                                >
+                                    <img 
+                                        src={lang.flag} 
+                                        alt={lang.name} 
+                                        className="w-4 h-3 object-cover rounded"
+                                    />
+                                    <span>{lang.name}</span>
+                                </button>
+                            ))}
+                        </div>
+                    </>
+                )}
+            </div>
+            
             <div className="hidden 2xl:flex gap-2 ml-2">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="h-8 cursor-pointer hover:opacity-80 transition" />
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" className="h-8 cursor-pointer hover:opacity-80 transition" />

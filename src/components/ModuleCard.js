@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropdownOpen = false, isLightOn = false }) => {
+const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropdownOpen = false, isLightOn = false, isAdministration = false, isOrangeGroup = false, isWhiteGroup = false, theme = 'normal' }) => {
   const isComingSoon = data.status === "coming-soon";
 
   const handleCardClick = () => {
@@ -73,24 +73,48 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
             h-28 w-full transition-all duration-300 cursor-pointer mb-3 overflow-hidden light-effect
             ${isDropdownOpen ? 'rounded-xl' : 'rounded-2xl apple-card'}
             ${isComingSoon 
-              ? isDropdownOpen ? "bg-white/90" : "glass-effect"
-              : isDropdownOpen ? "bg-white hover:bg-blue-50" : "glass-effect-strong hover:bg-white/20"
+              ? isDropdownOpen ? "bg-white/90" : theme === 'normal' ? "bg-white/30 backdrop-blur-md border-2 border-white/40" : "glass-effect"
+              : isAdministration && !isDropdownOpen
+                ? "bg-gradient-to-br from-green-500/30 via-emerald-500/25 to-teal-500/30 backdrop-blur-md border-2 border-green-400/50 hover:border-green-300 hover:bg-green-500/40"
+                : isOrangeGroup && !isDropdownOpen
+                  ? "bg-gradient-to-br from-orange-500/30 via-amber-500/25 to-yellow-500/30 backdrop-blur-md border-2 border-orange-400/50 hover:border-orange-300 hover:bg-orange-500/40"
+                  : isWhiteGroup && !isDropdownOpen
+                    ? "bg-white/90 backdrop-blur-md border-2 border-white/50 hover:border-white/70 hover:bg-white"
+                    : isDropdownOpen ? "bg-white hover:bg-blue-50" : theme === 'normal' ? "bg-white/35 backdrop-blur-md border-2 border-white/50 hover:bg-white/45" : "glass-effect-strong hover:bg-white/20"
             }
             ${
               data.highlight
                 ? isDropdownOpen 
                   ? "border-2 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.4)]"
                   : "border-2 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.5)] hover:shadow-[0_0_30px_rgba(34,211,238,0.7)]"
-                : isDropdownOpen
-                  ? "border border-transparent hover:border-cyan-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]"
-                  : "border border-white/20 hover:border-cyan-300/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
+                : isAdministration && !isDropdownOpen
+                  ? "shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_25px_rgba(34,197,94,0.6)]"
+                  : isOrangeGroup && !isDropdownOpen
+                    ? "shadow-[0_0_15px_rgba(251,146,60,0.4)] hover:shadow-[0_0_25px_rgba(251,146,60,0.6)]"
+                    : isWhiteGroup && !isDropdownOpen
+                      ? "shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_rgba(255,255,255,0.5)]"
+                      : isDropdownOpen
+                        ? "border border-transparent hover:border-cyan-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]"
+                        : "border border-white/20 hover:border-cyan-300/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
             }
             ${isLightOn ? 'brightness-110' : ''}
         `}
     >
       {/* Gradient Overlay on Hover - Only when dropdown is closed */}
-      {!isDropdownOpen && (
+      {!isDropdownOpen && !isAdministration && !isOrangeGroup && !isWhiteGroup && (
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:via-blue-500/10 group-hover:to-purple-500/10 transition-all duration-500 rounded-2xl"></div>
+      )}
+      {/* Green Gradient Overlay for Administration modules */}
+      {!isDropdownOpen && isAdministration && (
+        <div className="absolute inset-0 bg-gradient-to-br from-green-500/0 via-emerald-500/0 to-teal-500/0 group-hover:from-green-500/15 group-hover:via-emerald-500/15 group-hover:to-teal-500/15 transition-all duration-500 rounded-2xl"></div>
+      )}
+      {/* Orange Gradient Overlay for QA, Production, DT Sync modules */}
+      {!isDropdownOpen && isOrangeGroup && (
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 via-amber-500/0 to-yellow-500/0 group-hover:from-orange-500/15 group-hover:via-amber-500/15 group-hover:to-yellow-500/15 transition-all duration-500 rounded-2xl"></div>
+      )}
+      {/* White Gradient Overlay for PRE PRO, Production Materials modules */}
+      {!isDropdownOpen && isWhiteGroup && (
+        <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-gray-100/0 to-white/0 group-hover:from-white/10 group-hover:via-gray-100/10 group-hover:to-white/10 transition-all duration-500 rounded-2xl"></div>
       )}
       
       {/* Inner Content */}
@@ -103,7 +127,11 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
           {renderIcon()}
         </div>
 
-        <span className={`text-center font-bold text-xs px-1 leading-tight line-clamp-2 ${isDropdownOpen ? 'text-slate-800' : 'text-white drop-shadow-lg'}`}>
+        <span className={`text-center font-bold text-xs px-1 leading-tight line-clamp-2 ${
+          isDropdownOpen ? 'text-slate-800' 
+          : isWhiteGroup ? 'text-slate-800 drop-shadow-sm' 
+          : 'text-white drop-shadow-lg'
+        }`}>
           {data.title}
         </span>
       </div>
@@ -122,8 +150,20 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
       )}
 
       {/* Active Glow for highlight items */}
-      {data.highlight && !isDropdownOpen && (
+      {data.highlight && !isDropdownOpen && !isAdministration && !isOrangeGroup && !isWhiteGroup && (
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/20 via-blue-400/20 to-purple-400/20 animate-pulse pointer-events-none"></div>
+      )}
+      {/* Green Glow for Administration modules */}
+      {isAdministration && !isDropdownOpen && !isComingSoon && (
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/15 via-emerald-400/15 to-teal-400/15 pointer-events-none"></div>
+      )}
+      {/* Orange Glow for QA, Production, DT Sync modules */}
+      {isOrangeGroup && !isDropdownOpen && !isComingSoon && (
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-400/15 via-amber-400/15 to-yellow-400/15 pointer-events-none"></div>
+      )}
+      {/* White Glow for PRE PRO, Production Materials modules */}
+      {isWhiteGroup && !isDropdownOpen && !isComingSoon && (
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 via-gray-100/10 to-white/10 pointer-events-none"></div>
       )}
       
       {/* Shimmer Effect on Hover - Only when dropdown is closed */}

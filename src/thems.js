@@ -585,8 +585,34 @@ export const ThemeBackground = () => {
         );
     }
 
-    // Normal theme - no special background
-    return null;
+    // Normal theme - render circuit/network background
+    return createPortal(
+        <div 
+            id="normal-theme-background"
+            className="fixed inset-0 overflow-hidden pointer-events-none" 
+            style={{ 
+                zIndex: 0, 
+                position: 'fixed', 
+                top: 0, 
+                left: 0, 
+                right: 0, 
+                bottom: 0, 
+                width: '100vw', 
+                height: '100vh'
+            }}
+        >
+            {/* Normal Theme Background Layers */}
+            <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-[#0f172a] to-slate-900 transition-all duration-500"></div>
+            <img
+                src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop" 
+                className="absolute inset-0 w-full h-full object-cover mix-blend-screen transition-all duration-500 opacity-20"
+                alt="Circuit Background"
+            />
+            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] bg-cyan-500/10 animate-pulse transition-all duration-500"></div>
+            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
+        </div>,
+        document.body
+    );
 };
 
 // Theme Switcher Component - Separate floating button

@@ -144,39 +144,136 @@ const AppLayout = () => {
                     { title: 'Cambodia E Invoice', icon: 'Banknote', color: 'bg-emerald-500 text-white' },
                     { title: 'Supplier Management', icon: 'Briefcase', color: 'bg-sky-500 text-white' },
                     { title: 'IEWS', icon: 'Layers', color: 'bg-indigo-500 text-white' }
-                ] : demoType === 'SUBMENU_YQMS' ? [
-                    { title: 'Pre Production Meeting', icon: 'Users', color: 'bg-blue-500 text-white', image: 'assets/yqms/pre-production-meeting.jpg' },
-                    { title: 'Material Quality', icon: 'Package', color: 'bg-green-500 text-white', image: 'assets/yqms/material-quality.jpg' },
-                    { title: 'Supplier Evaluation', icon: 'CheckSquare', color: 'bg-teal-500 text-white', image: 'assets/yqms/supplier-evaluation.jpg' },
-                    { title: 'Test And Pilot', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/yqms/test-and-pilot.jpg' },
-                    { title: 'First Output Cutting', icon: 'Scissors', color: 'bg-orange-500 text-white', image: 'assets/yqms/first-output-cutting.jpg' },
-                    { title: 'First Output Printing Embroidery', icon: 'PenTool', color: 'bg-pink-500 text-white', image: 'assets/yqms/first-output-printing-embroidery.jpg' },
-                    { title: 'First Output Sewing', icon: 'PenTool', color: 'bg-lime-500 text-white', image: 'assets/yqms/first-output-sewing.jpg' },
-                    { title: 'First Output Finishing And Packing', icon: 'PackageCheck', color: 'bg-cyan-500 text-white', image: 'assets/yqms/first-output-finishing-and-packing.jpg' },
-                    { title: 'QA Cutting', icon: 'Search', color: 'bg-amber-500 text-white', image: 'assets/yqms/qa-cutting.jpg' },
-                    { title: 'QA Printing Embroidery', icon: 'Search', color: 'bg-yellow-500 text-white', image: 'assets/yqms/qa-printing-embroidery.jpg' },
-                    { title: 'QA 20pcs Audit', icon: 'ClipboardCheck', color: 'bg-emerald-500 text-white', image: 'assets/yqms/qa-20pcs-audit.jpg' },
-                    { title: 'QA Audit Finishing Packing', icon: 'ClipboardCheck', color: 'bg-green-500 text-white', image: 'assets/yqms/qa-audit-finishing-packing.jpg' },
-                    { title: 'Inline Audit Rolling', icon: 'FileCheck', color: 'bg-indigo-500 text-white', image: 'assets/yqms/inline-audit-rolling.jpg' },
-                    { title: 'Offline Audit', icon: 'FileCheck', color: 'bg-violet-500 text-white', image: 'assets/yqms/offline-audit.jpg' },
-                    { title: 'QC End Line Checking', icon: 'CheckCircle', color: 'bg-blue-600 text-white', image: 'assets/yqms/qc-end-line-checking.jpg' },
-                    { title: 'QC File', icon: 'FileText', color: 'bg-slate-500 text-white', image: 'assets/yqms/qc-file.jpg' },
-                    { title: 'Pre Final Inspection', icon: 'Eye', color: 'bg-rose-500 text-white', image: 'assets/yqms/pre-final-inspection.jpg' },
-                    { title: 'Final Inspection', icon: 'Eye', color: 'bg-red-500 text-white', image: 'assets/yqms/final-inspection.jpg' },
-                    { title: 'Buyer Final Inspection', icon: 'Eye', color: 'bg-red-600 text-white', image: 'assets/yqms/buyer-final-inspection.jpg' },
-                    { title: 'Humidity Acraboy Checking', icon: 'Thermometer', color: 'bg-sky-500 text-white', image: 'assets/yqms/humidity-acraboy-checking.jpg' },
-                    { title: 'Customer Complain Cap', icon: 'AlertTriangle', color: 'bg-orange-600 text-white', image: 'assets/yqms/customer-complain-cap.jpg' }
-                ] : demoType === 'SUBMENU_FC' ? [
-                    { title: 'Fabric Receiving', icon: 'Package', color: 'bg-blue-500 text-white', image: 'assets/fc/fabric-receiving.jpg' },
-                    { title: 'Fabric Inspection', icon: 'Search', color: 'bg-green-500 text-white', image: 'assets/fc/fabric-inspection.jpg' },
-                    { title: 'Fabric Test', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/fc/fabric-test.jpg' },
-                    { title: 'Fabric Issuing', icon: 'ArrowUpRight', color: 'bg-orange-500 text-white', image: 'assets/fc/fabric-issuing.jpg' },
-                    { title: 'Accessories Receiving', icon: 'Package', color: 'bg-teal-500 text-white', image: 'assets/fc/accessories-receiving.jpg' },
-                    { title: 'Accessories Inspection', icon: 'Search', color: 'bg-emerald-500 text-white', image: 'assets/fc/accessories-inspection.jpg' },
-                    { title: 'Accessories Issuing', icon: 'ArrowUpRight', color: 'bg-yellow-500 text-white', image: 'assets/fc/accessories-issuing.jpg' },
-                    { title: 'Warehouse Tracking Location', icon: 'MapPin', color: 'bg-indigo-500 text-white', image: 'assets/fc/warehouse-tracking-location.jpg' },
-                    { title: 'Delivery Tracking', icon: 'Truck', color: 'bg-red-500 text-white', image: 'assets/fc/delivery-tracking.jpg' }
-                ] : demoType === 'SUBMENU_DEPARTMENTS' ? [
+                ] : demoType === 'SUBMENU_YQMS' ? {
+                    grouped: true,
+                    groups: [
+                        {
+                            label: 'Pre Production',
+                            cards: [
+                                { title: 'QC File', icon: 'FileText', color: 'bg-slate-500 text-white', image: 'assets/yqms/qc-file.jpg' },
+                                { title: 'Pre Production Meeting', icon: 'Users', color: 'bg-blue-500 text-white', image: 'assets/yqms/pre-production-meeting.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Production',
+                            cards: [
+                                { title: 'Material Quality', icon: 'Package', color: 'bg-green-500 text-white', image: 'assets/yqms/material-quality.jpg' },
+                                { title: 'Test And Pilot', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/yqms/test-and-pilot.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Output Style',
+                            cards: [
+                                { title: 'First Output Cutting', icon: 'Scissors', color: 'bg-orange-500 text-white', image: 'assets/yqms/first-output-cutting.jpg' },
+                                { title: 'First Output Printing Embroidery', icon: 'PenTool', color: 'bg-pink-500 text-white', image: 'assets/yqms/first-output-printing-embroidery.jpg' },
+                                { title: 'First Output Sewing', icon: 'PenTool', color: 'bg-lime-500 text-white', image: 'assets/yqms/first-output-sewing.jpg' },
+                                { title: 'QA Cutting', icon: 'Search', color: 'bg-amber-500 text-white', image: 'assets/yqms/qa-cutting.jpg' },
+                                { title: 'QA Printing Embroidery', icon: 'Search', color: 'bg-yellow-500 text-white', image: 'assets/yqms/qa-printing-embroidery.jpg' },
+                                { title: 'QA 20pcs Audit', icon: 'ClipboardCheck', color: 'bg-emerald-500 text-white', image: 'assets/yqms/qa-20pcs-audit.jpg' },
+                                { title: 'Inline Audit Rolling', icon: 'FileCheck', color: 'bg-indigo-500 text-white', image: 'assets/yqms/inline-audit-rolling.jpg' },
+                                { title: 'Offline Audit', icon: 'FileCheck', color: 'bg-violet-500 text-white', image: 'assets/yqms/offline-audit.jpg' },
+                                { title: 'QC End Line Checking', icon: 'CheckCircle', color: 'bg-blue-600 text-white', image: 'assets/yqms/qc-end-line-checking.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Final Production',
+                            cards: [
+                                { title: 'QA Audit Finishing Packing', icon: 'ClipboardCheck', color: 'bg-green-500 text-white', image: 'assets/yqms/qa-audit-finishing-packing.jpg' },
+                                { title: 'Humidity Acraboy Checking', icon: 'Thermometer', color: 'bg-sky-500 text-white', image: 'assets/yqms/humidity-acraboy-checking.jpg' },
+                                { title: 'First Output Finishing And Packing', icon: 'PackageCheck', color: 'bg-cyan-500 text-white', image: 'assets/yqms/first-output-finishing-and-packing.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Inspection',
+                            cards: [
+                                { title: 'Pre Final Inspection', icon: 'Eye', color: 'bg-rose-500 text-white', image: 'assets/yqms/pre-final-inspection.jpg' },
+                                { title: 'Final Inspection', icon: 'Eye', color: 'bg-red-500 text-white', image: 'assets/yqms/final-inspection.jpg' },
+                                { title: 'Buyer Final Inspection', icon: 'Eye', color: 'bg-red-600 text-white', image: 'assets/yqms/buyer-final-inspection.jpg' },
+                                { title: 'Supplier Evaluation', icon: 'CheckSquare', color: 'bg-teal-500 text-white', image: 'assets/yqms/supplier-evaluation.jpg' },
+                                { title: 'Customer Complain Cap', icon: 'AlertTriangle', color: 'bg-orange-600 text-white', image: 'assets/yqms/customer-complain-cap.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Data',
+                            cards: [
+                                { title: 'Report', icon: 'FileText', color: 'bg-slate-500 text-white' },
+                                { title: 'Document', icon: 'FileText', color: 'bg-slate-500 text-white' }
+                            ]
+                        }
+                    ]
+                } : demoType === 'SUBMENU_EGOV' ? [
+                    { 
+                        title: 'CCF', 
+                        image: 'https://www.ccfdg.gov.kh/wp-content/uploads/2020/12/logo-moc.png',
+                        url: 'https://www.ccfdg.gov.kh/en/about-ccf/',
+                        color: 'bg-yellow-400 text-black'
+                    },
+                    { 
+                        title: 'MISTI', 
+                        image: 'https://www.misti.gov.kh/assets/img/misti-logo.png',
+                        url: 'https://www.misti.gov.kh/',
+                        color: 'bg-green-500 text-white'
+                    },
+                    { 
+                        title: 'OWSO', 
+                        image: 'https://www.owso.gov.kh/wp-content/uploads/2019/07/logo.png',
+                        url: 'https://www.owso.gov.kh/en/',
+                        color: 'bg-orange-500 text-white'
+                    },
+                    { 
+                        title: 'E-Filing', 
+                        image: 'https://efiling.acar.gov.kh/media/logos/logo.png',
+                        url: 'https://www.tax.gov.kh/km/e-service',
+                        color: 'bg-blue-500 text-white'
+                    },
+                    { 
+                        title: 'NSSF', 
+                        image: 'https://account.nssf.gov.kh/images/nssf-logo.png',
+                        url: 'https://account.nssf.gov.kh/Account/Login?ReturnUrl=%2Fconnect%2Fauthorize%2Fcallback%3Fresponse_type%3Dcode%26client_id%3DD151d7d4-3144-4548-3b2e-ae15e11ee463%26state%3DQ3c3SmJQYn4yWmNXdWVRSjJGN1ZJUkY1VXFfU0tfUUY1aGNZUkN4aUNlTFZB%26redirect_uri%3Dhttps%253A%252F%252Fenterprise.nssf.gov.kh%252Fauth%252Fcallback%26scope%3Dopenid%2520profile%2520offline_access%2520beneficiary_registration_api%2520registration_api%2520webadmin_api%2520enterprise%2520roles%2520IDCard%2520email%2520phone%26code_challenge%3Df_8vyoLahcIyyu24Rsd7TX2QCtPZHAMjTGNhFDHR9gw%26code_challenge_method%3DS256%26nonce%3DQ3c3SmJQYn4yWmNXdWVRSjJGN1ZJUkY1VXFfU0tfUUY1aGNZUkN4aUNlTFZB',
+                        color: 'bg-purple-500 text-white'
+                    }
+                ] : demoType === 'SUBMENU_FC' ? {
+                    grouped: true,
+                    groups: [
+                        {
+                            label: 'Receiving',
+                            cards: [
+                                { title: 'Fabric Receiving', icon: 'Package', color: 'bg-blue-500 text-white', image: 'assets/fc/fabric-receiving.jpg' },
+                                { title: 'Accessories Receiving', icon: 'Package', color: 'bg-teal-500 text-white', image: 'assets/fc/accessories-receiving.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Instore',
+                            cards: [
+                                { title: 'Warehouse Tracking Location', icon: 'MapPin', color: 'bg-indigo-500 text-white', image: 'assets/fc/warehouse-tracking-location.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Testing',
+                            cards: [
+                                { title: 'Fabric Inspection', icon: 'Search', color: 'bg-green-500 text-white', image: 'assets/fc/fabric-inspection.jpg' },
+                                { title: 'Fabric Test', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/fc/fabric-test.jpg' },
+                                { title: 'Accessories Inspection', icon: 'Search', color: 'bg-emerald-500 text-white', image: 'assets/fc/accessories-inspection.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Issuing',
+                            cards: [
+                                { title: 'Fabric Issuing', icon: 'ArrowUpRight', color: 'bg-orange-500 text-white', image: 'assets/fc/fabric-issuing.jpg' },
+                                { title: 'Accessories Issuing', icon: 'ArrowUpRight', color: 'bg-yellow-500 text-white', image: 'assets/fc/accessories-issuing.jpg' },
+                                { title: 'Delivery Tracking', icon: 'Truck', color: 'bg-red-500 text-white', image: 'assets/fc/delivery-tracking.jpg' }
+                            ]
+                        },
+                        {
+                            label: 'Return back',
+                            cards: [
+                                { title: 'Return Fabric', icon: 'ArrowDownLeft', color: 'bg-pink-500 text-white', image: 'assets/fc/return-fabric.jpg' },
+                                { title: 'Return Accessories', icon: 'ArrowDownLeft', color: 'bg-rose-500 text-white', image: 'assets/fc/return-accessories.jpg' },
+                                { title: 'Brand Protection', icon: 'Shield', color: 'bg-violet-500 text-white', image: 'assets/fc/brand-protection.jpg' }
+                            ]
+                        }
+                    ]
+                } : demoType === 'SUBMENU_DEPARTMENTS' ? [
                     { title: 'Online Training', icon: 'MonitorPlay', color: 'bg-blue-500 text-white' }, // Correct
                     { title: 'YAI', icon: 'Building', color: 'bg-slate-500 text-white' }, // Correct
                     { title: 'CSR', icon: 'Globe', color: 'bg-green-500 text-white' }, // Correct
@@ -237,7 +334,7 @@ const AppLayout = () => {
     };
 
     return (
-        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-slate-900'}`} style={{ position: 'relative', zIndex: 1, scrollBehavior: 'smooth' }}>
+        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden theme-${theme} ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-slate-900'}`} style={{ position: 'relative', zIndex: 1, scrollBehavior: 'smooth' }}>
             {/* Theme Background - Show on home page and dashboard */}
             {(location.pathname === '/' || location.pathname.startsWith('/dashboard')) && <ThemeBackground />}
             
@@ -595,22 +692,11 @@ const AppLayout = () => {
             {isGMChatOpen && <GMChat onClose={() => setGMChatOpen(false)} />}
             <main className="flex-1 relative p-4 md:p-6 overflow-x-auto">
                 {/* === BACKGROUND LAYERS === */}
-                {/* Only show default background when theme is NOT Christmas */}
-                {theme !== 'christmas' && (
-                    <div className="fixed inset-0 z-0 pointer-events-none">
-                        <div className={`absolute inset-0 bg-gradient-to-b from-slate-900 via-[#0f172a] to-slate-900 transition-all duration-500 ${isLightOn ? 'brightness-125' : ''}`}></div>
-                        <img
-                            src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop" 
-                            className={`absolute inset-0 w-full h-full object-cover mix-blend-screen transition-all duration-500 ${isLightOn ? 'opacity-30 brightness-110' : 'opacity-20'}`}
-                            alt="Circuit Background"
-                        />
-                        <div className={`absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] transition-all duration-500 ${isLightOn ? 'bg-white/15 animate-pulse' : 'bg-cyan-500/10 animate-pulse'}`}></div>
-                        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
-                        
-                        {/* Light Beam Effect when light is on */}
-                        {isLightOn && (
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-white/25 via-white/15 to-transparent pointer-events-none"></div>
-                        )}
+                {/* Background is now handled by ThemeBackground component in thems.js */}
+                {/* Light Beam Effect when light is on - only for normal theme */}
+                {theme !== 'christmas' && isLightOn && (
+                    <div className="fixed inset-0 z-[1] pointer-events-none">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-white/25 via-white/15 to-transparent pointer-events-none"></div>
                     </div>
                 )}
                 
@@ -673,6 +759,18 @@ const AppLayout = () => {
                                 -webkit-backdrop-filter: blur(30px) saturate(180%);
                                 border: 1px solid rgba(255, 255, 255, 0.3);
                             }
+                            .theme-normal .glass-effect {
+                                background: rgba(255, 255, 255, 0.25);
+                                backdrop-filter: blur(20px) saturate(180%);
+                                -webkit-backdrop-filter: blur(20px) saturate(180%);
+                                border: 1px solid rgba(255, 255, 255, 0.4);
+                            }
+                            .theme-normal .glass-effect-strong {
+                                background: rgba(255, 255, 255, 0.3);
+                                backdrop-filter: blur(30px) saturate(180%);
+                                -webkit-backdrop-filter: blur(30px) saturate(180%);
+                                border: 1px solid rgba(255, 255, 255, 0.5);
+                            }
                         `}</style>
                         <div className="relative z-10 min-w-[1200px] max-w-[1800px] mx-auto flex flex-col gap-6">
                             <div className={`w-full flex justify-end mb-4 ${isDropdownOpen ? '' : 'apple-fade-in'}`}>
@@ -694,6 +792,7 @@ const AppLayout = () => {
                                     onBotModuleClick={openBotForModule}
                                     isDropdownOpen={isDropdownOpen}
                                     isLightOn={isLightOn}
+                                    theme={theme}
                                 />
                                 <SectionContainer
                                     section={DASHBOARD_DATA[1]}
@@ -702,6 +801,7 @@ const AppLayout = () => {
                                     onBotModuleClick={openBotForModule}
                                     isDropdownOpen={isDropdownOpen}
                                     isLightOn={isLightOn}
+                                    theme={theme}
                                 />
                                 <SectionContainer
                                     section={DASHBOARD_DATA[2]}
@@ -709,6 +809,7 @@ const AppLayout = () => {
                                     onBotModuleClick={openBotForModule}
                                     isDropdownOpen={isDropdownOpen}
                                     isLightOn={isLightOn}
+                                    theme={theme}
                                 />
                             </div>
                         </div>

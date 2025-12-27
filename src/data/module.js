@@ -64,7 +64,7 @@ export const DASHBOARD_DATA = [
         id: 'egov',
         title: 'E-GOV',
         modules: [
-          { title: 'E-GOVERNMENT', image: 'assets/icons/e-government.png', status: 'active' },
+          { id: 'e-government', title: 'E-GOVERNMENT', image: 'assets/icons/e-government.png', status: 'active', demoType: 'SUBMENU_EGOV' },
         ]
       }
     ]

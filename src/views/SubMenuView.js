@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { IconRenderer } from '../components/IconRenderer';
+import { useTheme } from '../thems';
 
 // Mapping function to match card titles to sub-icon image filenames
 const getSubIconImage = (title) => {
@@ -183,171 +184,278 @@ const getSubIconImage = (title) => {
     return null;
 };
 
-const SubMenuView = () => {
-    const navigate = useNavigate();
-    const { moduleId } = useParams();
-    const { state } = useLocation();
-    const { title = 'Submenu', cards = [] } = state || {};
+// Render card component (extracted for reuse)
+const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal') => {
+    const subIconImage = getSubIconImage(card.title);
+    // For E-Government, use the image URL directly from card.image (external URL)
+    const imageToUse = card.url ? card.image : (subIconImage || card.image);
+    const isFCModule = imageToUse && imageToUse.includes('assets/fc/');
+    const isYQMSModule = imageToUse && imageToUse.includes('assets/yqms/');
+    const isEGovModule = card.url !== undefined; // E-Government modules have url property
+    const isNonClickableModule = isFCModule || isYQMSModule;
     
-    // Check if this is a Training module (SUBMENU_DEPARTMENTS)
-    // Training module has demoType === 'SUBMENU_DEPARTMENTS' and contains department cards
-    const isTrainingModule = cards.some(card => 
-        ['YAI', 'CSR', 'IT', 'Shipping', 'PPC', 'Merchandising', 'Purchasing', 'General Affairs', 
-         'Admin', 'HR', 'QA', 'Financial', 'CBSA', 'Sample', 'Technical', 'Raw Material Warehouse',
-         'Cutting', 'SCC', 'Sewing', 'QC', 'Ironing', 'Packing', 'Washing', 'TPM', 'Warehouse',
-         'IE', 'QA (Fabric)', 'Production', 'Online Training'].includes(card.title)
-    );
-
+    // Determine text color for E-Government modules and Purchase Request modules
+    let textColorClass = '';
+    if (card.color) {
+        if (card.color.includes('text-black')) {
+            textColorClass = 'text-black';
+        } else if (card.color.includes('text-white')) {
+            textColorClass = 'text-white';
+        } else if (isEGovModule) {
+            textColorClass = 'text-white';
+        }
+    }
+    
+    // For FC and YQMS modules, use div instead of button since they're not clickable
+    const CardComponent = isNonClickableModule ? 'div' : 'button';
+    
+    // Compact sizing for grouped layout - all boxes same size
+    // E-Government modules get much larger size for better visibility
+    const cardSize = isEGovModule 
+        ? 'w-64 h-56' // Card size similar to the sample (256px × 224px)
+        : (isCompact 
+            ? (isNonClickableModule ? 'w-[110px] h-[110px]' : 'w-[100px] h-[100px]')
+            : (isNonClickableModule ? 'w-56 h-52' : 'w-48 h-40'));
+    const iconSize = isEGovModule 
+        ? 'w-40 h-40' // Large logo for clarity (160px × 160px)
+        : (isCompact 
+            ? (isNonClickableModule ? 'w-20 h-20' : 'w-16 h-16')
+            : (isNonClickableModule ? 'w-28 h-28' : 'w-16 h-16'));
+    const textSize = isEGovModule 
+        ? 'text-xl font-bold' // Bold text for clarity
+        : (isCompact ? 'text-[9px] leading-tight' : (isNonClickableModule ? 'text-base' : 'text-lg'));
+    const gapSize = isEGovModule ? 'gap-2' : (isCompact ? 'gap-0.5' : 'gap-3');
+    
     return (
-        <div className="flex flex-col items-center justify-center h-full min-h-[500px] animate-in fade-in zoom-in duration-300">
-            <div className="w-full max-w-4xl mb-8 flex items-center">
-                <button
-                    onClick={() => navigate(-1)}
-                    className="flex items-center text-white hover:text-cyan-400 gap-2 font-bold bg-slate-800/50 px-4 py-2 rounded-lg backdrop-blur-sm"
-                >
-                    <ArrowLeft /> Dashboard
-                </button>
-                <h2 className="text-3xl text-white font-bold ml-auto mr-auto uppercase tracking-wider drop-shadow-lg">
-                    {title}
-                </h2>
-                <div className="w-32"></div>
-            </div>
-            <div className="flex gap-8 flex-wrap justify-center">
-                {cards.map((card, idx) => {
-                    // Calculate image path once for efficiency
-                    const subIconImage = getSubIconImage(card.title);
-                    const imageToUse = subIconImage || card.image;
-                    const isFCModule = imageToUse && imageToUse.includes('assets/fc/');
-                    const isYQMSModule = imageToUse && imageToUse.includes('assets/yqms/');
-                    const isNonClickableModule = isFCModule || isYQMSModule;
+        <CardComponent
+            key={idx}
+            onClick={isNonClickableModule ? undefined : () => {
+                // Handle E-Government sub-modules - open URL in new tab
+                if (card.url) {
+                    window.open(card.url, '_blank', 'noopener,noreferrer');
+                    return;
+                }
+                
+                // Handle Training sub-modules (except Online Training)
+                if (isTrainingModule && card.title !== 'Online Training') {
+                    navigate(`/dashboard/training/${encodeURIComponent(card.title)}`, { state: { departmentName: card.title } });
+                    return;
+                }
+                
+                if (card.action) {
+                    navigate(card.action);
+                    return;
+                } else if (card.title === 'Verify PR') {
+                    navigate('/dashboard/verify-pr');
+                } else if (card.title === 'Approval PR') {
+                    navigate('/dashboard/approval-pr');
+                } else if (card.title === 'Pay PR') {
+                    navigate('/dashboard/pay-pr');
+                } else if (card.title === 'Checklist Attendant') {
+                    navigate('/dashboard/checklist-attendance');
+                } else if (card.title === 'My Attendant') {
+                    navigate('/dashboard/my-attendance');
+                } else if (card.title === 'Compliance Certificate') {
+                    navigate('/dashboard/compliance-certificate');
+                } else if (card.title === 'Audit Plan') {
+                    navigate('/dashboard/audit-plan');
+                } else if (card.title === 'Show Lists Request') {
+                    navigate('/dashboard/show-list-request');
+                } else if (card.title === 'Master List') {
+                    navigate('/dashboard/master-list');
+                } else if (card.title === 'My Confirm Received') {
+                    navigate('/dashboard/my-confirm-received');
+                } else if (card.title === 'Temperature Humidity Sensor') {
+                    navigate('/dashboard/air/temperature');
+                } else if (card.title === 'Air Quality Detector') {
+                    navigate('/dashboard/air/quality');
+                } else if (card.title === 'Request Worker Form') {
+                    navigate('/dashboard/temp-worker-request/form');
+                } else if (card.title === 'Request Worker List') {
+                    navigate('/dashboard/temp-worker-request/list');
+                } else if (card.title === 'In') {
+                    navigate('/dashboard/water/in');
+                } else if (card.title === 'Out') {
+                    navigate('/dashboard/water/out');
+                } else if (card.title === 'Gate Pass') {
+                    navigate('/dashboard/gatepass');
+                } else if (card.title === 'Visitor Record') {
+                    navigate('/dashboard/gatepass/visitor');
+                } else if (card.title === 'Waste') {
+                    navigate('/dashboard/waste/analytics');
+                } else if (card.title === 'Boiler') {
+                    navigate('/dashboard/waste/boiler');
+                } else if (card.title === 'Face Scan Logs') {
+                    navigate('/dashboard/cctv/face-scan');
+                } else if (card.title === 'My Face Scan') {
+                    navigate('/dashboard/cctv/my-face-scan');
+                } else if (isFCModule || isYQMSModule) {
+                    // FC and YQMS sub-modules: display icons only, no navigation
+                    return;
+                } else if (card.image) {
+                    // Encode the image path to handle slashes correctly
+                    const encodedPath = encodeURIComponent(card.image);
+                    navigate(`/dashboard/image/${encodedPath}`);
+                } else {
+                    navigate(`/dashboard/submenu/${moduleId}`);
+                }
+            }}
+            className={`${cardSize} ${isEGovModule ? 'rounded-2xl' : 'rounded-lg'} shadow-xl flex flex-col items-center justify-center ${gapSize} ${
+                isEGovModule 
+                    ? '' 
+                    : 'border-2 border-black/20'
+            } ${
+                isNonClickableModule ? 'cursor-default' : (isEGovModule ? 'cursor-pointer' : 'cursor-pointer')
+            } ${card.color ? card.color : (isEGovModule ? 'bg-white text-slate-800' : theme === 'normal' ? 'bg-white/90 text-slate-800 border-white/30' : 'bg-white text-slate-800')} ${isCompact ? 'p-1' : (isEGovModule ? 'p-6' : 'p-4')}`}
+        >
+            <div className={isEGovModule
+                ? 'p-4 rounded-xl relative bg-transparent'
+                : (isNonClickableModule
+                    ? (isCompact ? 'p-0 rounded-lg relative bg-transparent' : theme === 'normal' ? 'p-3 rounded-lg relative bg-white/20 backdrop-blur-sm' : 'p-3 rounded-lg relative bg-white/10 backdrop-blur-sm')
+                    : (isCompact ? 'p-0 rounded-lg relative bg-transparent' : 'p-2 rounded-lg relative bg-transparent')
+                )
+            } style={{ backgroundColor: 'transparent' }}>
+                {(() => {
+                    const shouldUseOriginalIcon = false;
+                    const finalImageToUse = shouldUseOriginalIcon ? null : imageToUse;
                     
-                    // For FC and YQMS modules, use div instead of button since they're not clickable
-                    const CardComponent = isNonClickableModule ? 'div' : 'button';
-                    
-                    return (
-                    <CardComponent
-                        key={idx}
-                        onClick={isNonClickableModule ? undefined : () => {
-                            // Handle Training sub-modules (except Online Training)
-                            if (isTrainingModule && card.title !== 'Online Training') {
-                                navigate(`/dashboard/training/${encodeURIComponent(card.title)}`, { state: { departmentName: card.title } });
-                                return;
-                            }
-                            
-                            if (card.action) {
-                                navigate(card.action);
-                                return;
-                            } else if (card.title === 'Verify PR') {
-                                navigate('/dashboard/verify-pr');
-                            } else if (card.title === 'Approval PR') {
-                                navigate('/dashboard/approval-pr');
-                            } else if (card.title === 'Pay PR') {
-                                navigate('/dashboard/pay-pr');
-                            } else if (card.title === 'Checklist Attendant') {
-                                navigate('/dashboard/checklist-attendance');
-                            } else if (card.title === 'My Attendant') {
-                                navigate('/dashboard/my-attendance');
-                            } else if (card.title === 'Compliance Certificate') {
-                                navigate('/dashboard/compliance-certificate');
-                            } else if (card.title === 'Audit Plan') {
-                                navigate('/dashboard/audit-plan');
-                            } else if (card.title === 'Show Lists Request') {
-                                navigate('/dashboard/show-list-request');
-                            } else if (card.title === 'Master List') {
-                                navigate('/dashboard/master-list');
-                            } else if (card.title === 'My Confirm Received') {
-                                navigate('/dashboard/my-confirm-received');
-                            } else if (card.title === 'Temperature Humidity Sensor') {
-                                navigate('/dashboard/air/temperature');
-                            } else if (card.title === 'Air Quality Detector') {
-                                navigate('/dashboard/air/quality');
-                            } else if (card.title === 'Request Worker Form') {
-                                navigate('/dashboard/temp-worker-request/form');
-                            } else if (card.title === 'Request Worker List') {
-                                navigate('/dashboard/temp-worker-request/list');
-                            } else if (card.title === 'In') {
-                                navigate('/dashboard/water/in');
-                            } else if (card.title === 'Out') {
-                                navigate('/dashboard/water/out');
-                            } else if (card.title === 'Gate Pass') {
-                                navigate('/dashboard/gatepass');
-                            } else if (card.title === 'Visitor Record') {
-                                navigate('/dashboard/gatepass/visitor');
-                            } else if (card.title === 'Waste') {
-                                navigate('/dashboard/waste/analytics');
-                            } else if (card.title === 'Boiler') {
-                                navigate('/dashboard/waste/boiler');
-                            } else if (card.title === 'Face Scan Logs') {
-                                navigate('/dashboard/cctv/face-scan');
-                            } else if (card.title === 'My Face Scan') {
-                                navigate('/dashboard/cctv/my-face-scan');
-                            } else if (isFCModule || isYQMSModule) {
-                                // FC and YQMS sub-modules: display icons only, no navigation
-                                return;
-                            } else if (card.image) {
-                                // Encode the image path to handle slashes correctly
-                                const encodedPath = encodeURIComponent(card.image);
-                                navigate(`/dashboard/image/${encodedPath}`);
-                            } else {
-                                navigate(`/dashboard/submenu/${moduleId}`);
-                            }
-                        }}
-                        className={`${isNonClickableModule 
-                            ? 'w-56 h-52 rounded-xl shadow-2xl hover:scale-105 transition-all duration-300 flex flex-col items-center justify-center gap-3 border-b-4 border-black/20 cursor-default' 
-                            : 'w-48 h-40 rounded-xl shadow-xl hover:scale-105 transition transform flex flex-col items-center justify-center gap-4 border-b-4 border-black/20'
-                        } ${card.color || 'bg-white text-slate-800'}`}
-                    >
-                        <div className={isNonClickableModule
-                            ? 'p-3 rounded-lg relative bg-white/10 backdrop-blur-sm' 
-                            : 'p-4 rounded-full relative'
-                        } style={{ backgroundColor: 'transparent' }}>
-                            {(() => {
-                                // All modules now use sub-icons when available
-                                // No modules are excluded from sub-icon mapping
-                                const shouldUseOriginalIcon = false;
-                                
-                                // Priority: 1. sub-icon image (from mapping - check first), 2. card.image (explicit), 3. IconRenderer
-                                // But skip sub-icon mapping for modules that should keep original icons
-                                const finalImageToUse = shouldUseOriginalIcon ? null : imageToUse;
-                                
-                                if (finalImageToUse) {
-                                    return (
-                                        <>
+                    if (finalImageToUse) {
+                        return (
+                            <>
                                             <img
-                                                src={`/${finalImageToUse}`}
+                                                src={finalImageToUse.startsWith('http://') || finalImageToUse.startsWith('https://') 
+                                                    ? finalImageToUse 
+                                                    : `/${finalImageToUse}`}
                                                 alt={card.title}
-                                                className={isNonClickableModule ? 'w-28 h-28 object-contain' : 'w-16 h-16 object-contain'}
-                                                style={isNonClickableModule ? {
+                                                className={`${iconSize} object-contain`}
+                                                style={isEGovModule ? {
                                                     backgroundColor: 'transparent',
                                                     filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
+                                                    borderRadius: '8px',
+                                                    maxWidth: '100%',
+                                                    maxHeight: '100%'
+                                                } : (isNonClickableModule ? {
+                                                    backgroundColor: 'transparent',
+                                                    filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.2))',
+                                                    borderRadius: '8px'
+                                                } : (card.image ? {
+                                                    backgroundColor: 'transparent',
+                                                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
                                                     borderRadius: '8px'
                                                 } : {
                                                     mixBlendMode: 'multiply',
                                                     backgroundColor: 'transparent',
                                                     filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-                                                }}
+                                                }))}
                                                 onError={(e) => {
-                                                    // Fallback to icon if image fails to load
                                                     e.target.style.display = 'none';
                                                     const fallback = e.target.parentElement.querySelector('.icon-fallback');
                                                     if (fallback) fallback.style.display = 'block';
                                                 }}
                                             />
                                             <div className="icon-fallback hidden">
-                                                <IconRenderer iconName={card.icon} size={isNonClickableModule ? 112 : 64} />
+                                                <IconRenderer iconName={card.icon} size={isCompact ? (isNonClickableModule ? 64 : 48) : (isNonClickableModule ? 112 : 64)} />
                                             </div>
-                                        </>
-                                    );
-                                }
-                                return <IconRenderer iconName={card.icon} size={64} />;
-                            })()}
-                        </div>
-                        <span className={`font-bold text-center px-2 leading-tight ${isNonClickableModule ? 'text-base' : 'text-lg'}`}>
-                            {card.title}
-                        </span>
-                    </CardComponent>
-                )})}
+                            </>
+                        );
+                    }
+                    return <IconRenderer iconName={card.icon} size={isCompact ? 48 : 64} />;
+                })()}
             </div>
+            <span className={`font-bold text-center px-0.5 leading-tight ${textSize} break-words max-w-full ${textColorClass || (card.color && card.color.includes('text-white') ? 'text-white' : card.color && card.color.includes('text-black') ? 'text-black' : 'text-slate-800')}`} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', marginTop: isEGovModule ? '-12px' : '0' }}>
+                {card.title}
+            </span>
+        </CardComponent>
+    );
+};
+
+const SubMenuView = () => {
+    const navigate = useNavigate();
+    const { moduleId } = useParams();
+    const { state } = useLocation();
+    const { theme } = useTheme();
+    const { title = 'Submenu', cards = [], isGrouped = false } = state || {};
+    
+    // Determine if cards is grouped structure
+    const isGroupedStructure = isGrouped || (cards && cards.grouped === true);
+    
+    // Check if this is a Training module (SUBMENU_DEPARTMENTS)
+    // Training module has demoType === 'SUBMENU_DEPARTMENTS' and contains department cards
+    let flatCards = [];
+    if (isGroupedStructure && cards && cards.groups) {
+        // Extract all cards from groups
+        flatCards = Array.isArray(cards.groups) 
+            ? cards.groups.flatMap(group => Array.isArray(group.cards) ? group.cards : [])
+            : [];
+    } else {
+        // Regular array of cards
+        flatCards = Array.isArray(cards) ? cards : [];
+    }
+    
+    const isTrainingModule = flatCards.some(card => 
+        card && card.title && ['YAI', 'CSR', 'IT', 'Shipping', 'PPC', 'Merchandising', 'Purchasing', 'General Affairs', 
+         'Admin', 'HR', 'QA', 'Financial', 'CBSA', 'Sample', 'Technical', 'Raw Material Warehouse',
+         'Cutting', 'SCC', 'Sewing', 'QC', 'Ironing', 'Packing', 'Washing', 'TPM', 'Warehouse',
+         'IE', 'QA (Fabric)', 'Production', 'Online Training'].includes(card.title)
+    );
+
+    // Check if this is E-Government module
+    const isEGovView = Array.isArray(cards) && cards.length > 0 && cards.some(card => card.url !== undefined);
+    
+    return (
+        <div className={`flex flex-col items-center justify-center h-full min-h-[500px] animate-in fade-in zoom-in duration-300 ${isEGovView ? 'relative z-10' : ''}`}>
+            <div className={`w-full max-w-4xl ${isGroupedStructure ? 'mb-4' : 'mb-8'} flex items-center`}>
+                <button
+                    onClick={() => navigate(-1)}
+                    className={`flex items-center text-white hover:text-cyan-400 gap-2 font-bold ${theme === 'normal' ? 'bg-slate-800/70' : 'bg-slate-800/50'} ${isGroupedStructure ? 'px-3 py-1.5 text-sm' : 'px-4 py-2'} rounded-lg backdrop-blur-sm`}
+                >
+                    <ArrowLeft size={isGroupedStructure ? 16 : 20} /> Dashboard
+                </button>
+                <h2 className={`text-white font-bold ml-auto mr-auto uppercase tracking-wider drop-shadow-lg ${isGroupedStructure ? 'text-xl' : 'text-3xl'}`}>
+                    {title}
+                </h2>
+                <div className={isGroupedStructure ? 'w-24' : 'w-32'}></div>
+            </div>
+            {isGroupedStructure ? (
+                // Grouped layout (for YQMS) - Column layout (very compact, no big spaces)
+                <div className="w-full max-w-[99vw] px-0.5">
+                    <div className="flex gap-1 justify-center items-start">
+                        {(cards.groups || []).map((group, groupIdx) => {
+                            // Determine if Output Style (sub-modules in 2 columns) - only for YQMS
+                            const isOutputStyle = group.label === 'Output Style';
+                            // Calculate column width - Output Style takes 2x width for 2-column grid, others take equal width
+                            const columnWidth = isOutputStyle 
+                                ? 'w-[calc(20%-2px)] min-w-[260px]' 
+                                : 'w-[calc(16.66%-2px)] min-w-[130px]';
+                            
+                            return (
+                                <div key={groupIdx} className={`${columnWidth} flex flex-col`}>
+                                    {/* Big Label - Always visible at top with rounded pill shape */}
+                                    <div className="text-center mb-1">
+                                        <h3 className={`text-xs font-bold text-white uppercase tracking-tight drop-shadow-lg whitespace-nowrap ${theme === 'normal' ? 'bg-slate-700/80' : 'bg-slate-700/60'} backdrop-blur-sm px-4 py-1.5 rounded-full border border-slate-500/50 inline-block`}>
+                                            {group.label}
+                                        </h3>
+                                    </div>
+                                    {/* Cards - 2 columns for Output Style, 1 column for others - Minimal spacing */}
+                                    <div className={isOutputStyle 
+                                        ? 'grid grid-cols-2 gap-1 justify-items-center' 
+                                        : 'flex flex-col gap-1 items-center'
+                                    }>
+                                        {group.cards.map((card, idx) => {
+                                            return renderCard(card, idx, navigate, moduleId, isTrainingModule, true, theme);
+                                        })}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            ) : (
+                // Regular flat layout
+                <div className="flex gap-8 flex-wrap justify-center">
+                    {cards.map((card, idx) => renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme))}
+                </div>
+            )}
         </div>
     );
 };
