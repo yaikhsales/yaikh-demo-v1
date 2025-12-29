@@ -226,10 +226,10 @@ const ChecklistAttendance = ({ onBack }) => {
             <div className="bg-white p-4 border-b-2 border-slate-300 flex items-center gap-4 flex-shrink-0 shadow-md relative z-[201]">
                 <button 
                     onClick={handleBack} 
-                    className="p-2 hover:bg-slate-100 rounded-full transition-colors flex-shrink-0"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors flex-shrink-0 bg-slate-100"
                     aria-label="Go back"
                 >
-                    <ArrowLeft size={20} className="text-slate-700" />
+                    <ArrowLeft size={18} className="text-slate-700" /> Back
                 </button>
                 <div className="flex-1 text-center min-w-0">
                     <h1 className="text-xl md:text-2xl font-bold text-slate-800 leading-tight">TEXLINK TECHNOLOGIES CO., LTD.</h1>

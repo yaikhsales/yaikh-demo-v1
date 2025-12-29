@@ -171,10 +171,10 @@ const CarBooking = ({ onBack }) => {
             <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
                 <button 
                     onClick={handleBack} 
-                    className="p-2 hover:bg-slate-100 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold px-3 py-1 text-sm"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                     aria-label="Go back"
                 >
-                    <ArrowLeft size={16} className="inline" />
+                    <ArrowLeft size={16} /> Back
                 </button>
                 <div className="flex items-center gap-2 flex-1">
                     <Car className="text-blue-600" size={24} />

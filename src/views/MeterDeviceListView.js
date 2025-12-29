@@ -15,8 +15,8 @@ const MeterDeviceListView = ({ onBack }) => {
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col h-[600px] animate-in slide-in-from-bottom-4 duration-500 m-4">
             <div className="bg-slate-100 p-4 border-b flex justify-between items-center">
                 <div className="flex items-center gap-4">
-                    <button onClick={onBack} className="p-2 hover:bg-slate-200 rounded-full">
-                        <ArrowLeft size={20} />
+                    <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 hover:bg-slate-300 rounded-lg bg-slate-200">
+                        <ArrowLeft size={18} /> Back
                     </button>
                     <h2 className="text-xl font-bold text-slate-800">Meter's Device List</h2>
                 </div>

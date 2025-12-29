@@ -133,12 +133,12 @@ const SupportTicketView = ({ onBack }) => {
             <div className="fixed inset-0 bg-white flex flex-col animate-in fade-in duration-500 relative z-10">
                 <div className="bg-slate-100 p-4 border-b flex justify-between items-center flex-shrink-0 shadow-sm">
                     <div className="flex items-center gap-4">
-                        <button 
-                            onClick={onBack} 
-                            className="p-2 hover:bg-slate-200 rounded-full transition-colors"
+                        <button
+                            onClick={onBack}
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors bg-slate-100"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={20} />
+                            <ArrowLeft size={18} /> Back
                         </button>
                         <h2 className="text-xl font-bold text-slate-800">Support Ticket</h2>
                     </div>

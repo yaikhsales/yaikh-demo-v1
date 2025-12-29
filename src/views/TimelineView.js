@@ -5,8 +5,8 @@ const TimelineView = ({ onBack, onAdd }) => (
     <div className="bg-white rounded-xl shadow-2xl h-[600px] m-4 animate-in fade-in duration-500 flex flex-col">
         <div className="p-4 border-b flex justify-between items-center">
             <div className="flex items-center gap-4">
-                <button onClick={onBack} className="p-2 hover:bg-slate-100 rounded-full">
-                    <ArrowLeft size={20} />
+                <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg bg-slate-100">
+                    <ArrowLeft size={18} /> Back
                 </button>
                 <h2 className="text-xl font-bold text-slate-800">Meeting Room Booking</h2>
             </div>

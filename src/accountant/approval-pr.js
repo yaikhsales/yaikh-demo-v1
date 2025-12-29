@@ -195,10 +195,10 @@ const ApprovalPR = ({ onBack }) => {
                 <div className="flex items-center gap-4">
                     <button 
                         onClick={handleBack} 
-                        className="p-2 hover:bg-slate-200 rounded-full transition-colors"
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors bg-slate-100"
                         aria-label="Go back"
                     >
-                        <ArrowLeft size={20} />
+                        <ArrowLeft size={18} /> Back
                     </button>
                     <div className="flex items-center gap-2 text-sm text-slate-600">
                         <span>Accountant</span>

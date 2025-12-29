@@ -271,10 +271,10 @@ const ComplianceCertificate = ({ onBack }) => {
             <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
                 <button 
                     onClick={handleBack} 
-                    className="p-2 hover:bg-slate-100 rounded transition-colors flex-shrink-0 bg-black text-white font-semibold px-3 py-1 text-sm"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-slate-800 rounded transition-colors flex-shrink-0 bg-black text-white font-semibold text-sm"
                     aria-label="Go back"
                 >
-                    <ArrowLeft size={16} className="inline" />
+                    <ArrowLeft size={16} /> Back
                 </button>
                 <div className="flex-1 text-center min-w-0">
                     <h1 className="text-xl md:text-2xl font-bold text-slate-800">Certificate and Report</h1>

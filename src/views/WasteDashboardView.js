@@ -4,8 +4,8 @@ import { ArrowLeft } from 'lucide-react';
 const WasteDashboardView = ({ onBack }) => (
     <div className="bg-slate-50 rounded-xl shadow-2xl h-[600px] m-4 animate-in fade-in duration-500 flex flex-col overflow-hidden">
         <div className="bg-purple-700 text-white p-4 flex items-center gap-4 shadow-md">
-            <button onClick={onBack} className="p-2 hover:bg-white/20 rounded-full">
-                <ArrowLeft size={20} />
+            <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 hover:bg-white/30 rounded-lg bg-white/10">
+                <ArrowLeft size={18} /> Back
             </button>
             <h2 className="text-xl font-bold">Waste Management Analytics</h2>
         </div>

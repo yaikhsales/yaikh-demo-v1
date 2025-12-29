@@ -1740,8 +1740,16 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             {/* Background */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 transition-colors duration-300"></div>
 
+            {/* Back Button - Top Left */}
+            <button
+                onClick={onClose}
+                className="absolute top-4 left-4 z-50 flex items-center gap-2 px-4 py-2 bg-slate-800/70 hover:bg-slate-700/80 text-white rounded-lg backdrop-blur-sm transition-colors font-medium shadow-lg pointer-events-auto"
+            >
+                <ChevronRight size={18} className="rotate-180" /> Back
+            </button>
+
             {/* Yai Data Header with Dropdown - Top Left */}
-            <div className="absolute top-4 left-4 z-50 pointer-events-none">
+            <div className="absolute top-4 left-32 z-50 pointer-events-none">
                 <style>{`
                     @keyframes float {
                         0%, 100% { transform: translateY(0px) rotate(0deg); }

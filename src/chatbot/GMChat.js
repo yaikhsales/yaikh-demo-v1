@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Bell, Mic, MessageSquare, Layers, Database, Sparkles, Send } from 'lucide-react';
+import { X, Bell, Mic, MessageSquare, Layers, Database, Sparkles, Send, ChevronRight } from 'lucide-react';
 import { generateGeminiResponse } from './gemini-api';
 
 const GMChat = ({ onClose }) => {
@@ -180,7 +180,15 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
             {/* Main UI Frame - Full Screen Responsive Design */}
             <div className="relative bg-black border border-white/10 md:rounded-3xl shadow-2xl w-full h-full md:h-[95vh] md:max-h-[900px] md:w-[95vw] md:max-w-[1400px] overflow-hidden flex flex-col text-white font-sans">
 
-                {/* Close Button */}
+                {/* Back Button - Top Left */}
+                <button 
+                    onClick={onClose} 
+                    className="absolute top-4 left-4 md:top-6 md:left-6 z-10 flex items-center gap-2 px-4 py-2 bg-slate-800/70 hover:bg-slate-700/80 text-white rounded-lg backdrop-blur-sm transition-colors font-medium shadow-lg"
+                >
+                    <ChevronRight size={18} className="rotate-180" /> Back
+                </button>
+
+                {/* Close Button - Top Right */}
                 <button onClick={onClose} className="absolute top-4 right-4 md:top-6 md:right-6 p-2 text-white/50 hover:bg-white/10 hover:text-white rounded-full transition-colors z-10">
                     <X size={24} className="md:w-6 md:h-6" />
                 </button>

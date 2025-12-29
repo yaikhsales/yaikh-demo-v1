@@ -582,10 +582,18 @@ const BotVersion2 = ({ onClose, moduleContext, onVersionChange, currentVersion =
                 />
             )}
 
+            {/* Back Button - Top Left (Fixed Position) */}
+            <button
+                onClick={onClose}
+                className="absolute top-4 left-4 z-[250] flex items-center gap-2 px-4 py-2 bg-slate-800/70 hover:bg-slate-700/80 text-white rounded-lg backdrop-blur-sm transition-colors font-medium shadow-lg"
+            >
+                <ChevronRight size={18} className="rotate-180" /> Back
+            </button>
+
             {/* Main Content */}
             <div className="flex-1 flex flex-col overflow-hidden w-full h-full min-h-0 flex-shrink relative z-20 pt-4">
                 {/* Header with Bot Name and Avatar */}
-                <div className="flex-shrink-0 flex flex-col px-4 sm:px-6 py-3 border-b border-white/10 bg-[#050505]/80 backdrop-blur-sm w-full h-auto relative z-30">
+                <div className="flex-shrink-0 flex flex-col px-4 sm:px-6 py-3 pt-16 sm:pt-20 border-b border-white/10 bg-[#050505]/80 backdrop-blur-sm w-full h-auto relative z-30">
                     <style>{`
                         @keyframes float {
                             0%, 100% { transform: translateY(0px) rotate(0deg); }

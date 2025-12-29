@@ -418,9 +418,9 @@ const SubMenuView = () => {
             <div className={`w-full max-w-4xl ${isGroupedStructure ? 'mb-4' : 'mb-8'} flex items-center`}>
                 <button
                     onClick={() => navigate(-1)}
-                    className={`flex items-center text-white hover:text-cyan-400 gap-2 font-bold ${theme === 'normal' ? 'bg-slate-800/70' : 'bg-slate-800/50'} ${isGroupedStructure ? 'px-3 py-1.5 text-sm' : 'px-4 py-2'} rounded-lg backdrop-blur-sm`}
+                    className={`flex items-center text-white hover:text-cyan-400 gap-2 font-bold ${theme === 'normal' ? 'bg-slate-800/70' : 'bg-slate-800/50'} ${isGroupedStructure ? 'px-3 py-1.5 text-sm' : 'px-4 py-2'} rounded-lg backdrop-blur-sm transition-colors`}
                 >
-                    <ArrowLeft size={isGroupedStructure ? 16 : 20} /> Dashboard
+                    <ArrowLeft size={isGroupedStructure ? 16 : 20} /> Back
                 </button>
                 <h2 className={`text-white font-bold ml-auto mr-auto uppercase tracking-wider drop-shadow-lg ${isGroupedStructure ? 'text-xl' : 'text-3xl'}`}>
                     {title}
@@ -428,29 +428,29 @@ const SubMenuView = () => {
                 <div className={isGroupedStructure ? 'w-24' : 'w-32'}></div>
             </div>
             {isGroupedStructure ? (
-                // Grouped layout (for YQMS) - Column layout (very compact, no big spaces)
+                // Grouped layout (for YQMS and FC) - Column layout (very compact, no big spaces)
                 <div className="w-full max-w-[99vw] px-0.5">
-                    <div className="flex gap-1 justify-center items-start">
+                    <div className="flex gap-0 justify-center items-start">
                         {(cards.groups || []).map((group, groupIdx) => {
                             // Determine if Output Style (sub-modules in 2 columns) - only for YQMS
                             const isOutputStyle = group.label === 'Output Style';
                             // Calculate column width - Output Style takes 2x width for 2-column grid, others take equal width
                             const columnWidth = isOutputStyle 
-                                ? 'w-[calc(20%-2px)] min-w-[260px]' 
-                                : 'w-[calc(16.66%-2px)] min-w-[130px]';
+                                ? 'w-[calc(20%)] min-w-[260px]' 
+                                : 'w-[calc(16.66%)] min-w-[130px]';
                             
                             return (
                                 <div key={groupIdx} className={`${columnWidth} flex flex-col`}>
                                     {/* Big Label - Always visible at top with rounded pill shape */}
-                                    <div className="text-center mb-1">
-                                        <h3 className={`text-xs font-bold text-white uppercase tracking-tight drop-shadow-lg whitespace-nowrap ${theme === 'normal' ? 'bg-slate-700/80' : 'bg-slate-700/60'} backdrop-blur-sm px-4 py-1.5 rounded-full border border-slate-500/50 inline-block`}>
+                                    <div className="text-center mb-0.5">
+                                        <h3 className={`text-xs font-bold text-white uppercase tracking-tight drop-shadow-lg whitespace-nowrap ${theme === 'normal' ? 'bg-slate-700/80' : 'bg-slate-700/60'} backdrop-blur-sm px-3 py-1 rounded-full border border-slate-500/50 inline-block`}>
                                             {group.label}
                                         </h3>
                                     </div>
                                     {/* Cards - 2 columns for Output Style, 1 column for others - Minimal spacing */}
                                     <div className={isOutputStyle 
-                                        ? 'grid grid-cols-2 gap-1 justify-items-center' 
-                                        : 'flex flex-col gap-1 items-center'
+                                        ? 'grid grid-cols-2 gap-0.5 justify-items-center' 
+                                        : 'flex flex-col gap-0.5 items-center'
                                     }>
                                         {group.cards.map((card, idx) => {
                                             return renderCard(card, idx, navigate, moduleId, isTrainingModule, true, theme);

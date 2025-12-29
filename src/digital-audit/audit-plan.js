@@ -159,10 +159,10 @@ const AuditPlan = ({ onBack }) => {
                 </div>
                 <button 
                     onClick={handleBack} 
-                    className="p-2 hover:bg-slate-100 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold px-3 py-1 text-sm"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                     aria-label="Go back"
                 >
-                    <ArrowLeft size={16} className="inline" />
+                    <ArrowLeft size={16} /> Back
                 </button>
             </div>
 

@@ -2,8 +2,8 @@ import React from 'react';
 import ModuleCard from './ModuleCard';
 
 const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModuleClick, isDropdownOpen = false, isLightOn = false, isAdministration = false, isOperations = false, theme = 'normal' }) => {
-  // Check if this group should have orange styling (QA, Production, DT Sync)
-  const isOrangeGroup = group.id === 'qa' || group.id === 'prod' || group.id === 'dtsync';
+  // Check if this group should have orange styling (QA, Internal Logistics/FC, Production, DT Sync)
+  const isOrangeGroup = group.id === 'qa' || group.id === 'internal-logistics' || group.id === 'prod' || group.id === 'dtsync';
   // Check if this group should have white styling (PRE PRO, Production Materials)
   const isWhiteGroup = group.id === 'prepro' || group.id === 'prodmat';
   
