@@ -40,7 +40,7 @@ export const DASHBOARD_DATA = [
         id: 'admin',
         title: 'HR',
         modules: [
-          { id: 'yhr', title: 'YHR', image: 'assets/icons/yhr.png', status: 'active', color: 'text-blue-500', demoType: 'SUBMENU_YHR' },
+          { id: 'yhr', title: 'YHR', image: 'assets/icons/yhr.png?v=1', status: 'active', color: 'text-blue-500', demoType: 'SUBMENU_YHR' },
           { title: 'Salary Bill', image: 'assets/icons/salary-bill.png', status: 'active' },
           { id: 'org', title: 'Org Chart', image: 'assets/icons/org-chart.png', status: 'active', demoType: 'SUBMENU_ORG' },
           { id: 'training', title: 'Training', image: 'assets/icons/training.png', status: 'active', demoType: 'SUBMENU_DEPARTMENTS' }, // Corrected ID
