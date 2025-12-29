@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
     Home, Mail, Calendar, MessageCircle,
     Bell, ChevronDown, QrCode, FileText, DollarSign,
-    ShoppingCart, Ticket, Globe
+    ShoppingCart, Ticket, Globe, Video, Info
 } from 'lucide-react';
 import PdfViewer from './PdfViewer';
 import ImageViewer from './ImageViewer';
+import AboutUs from './AboutUs';
 
 const Header = () => {
+  const navigate = useNavigate();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
+  const [showAboutUs, setShowAboutUs] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('AT');
@@ -46,8 +50,22 @@ const Header = () => {
           </div>
         </div>
         
-        {/* Center: Vendor and Price Buttons */}
+        {/* Center: Video, About Us, Vendor, and Price Buttons */}
         <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-3">
+          <button
+            onClick={() => navigate('/welcome')}
+            className="flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all shadow-md hover:shadow-lg font-medium"
+          >
+            <Video size={18} />
+            <span className="hidden sm:inline">Video</span>
+          </button>
+          <button
+            onClick={() => setShowAboutUs(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-all shadow-md hover:shadow-lg font-medium"
+          >
+            <Info size={18} />
+            <span className="hidden sm:inline">About Us</span>
+          </button>
           <button
             onClick={() => setShowPdfViewer(true)}
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all shadow-md hover:shadow-lg font-medium"
@@ -192,6 +210,13 @@ const Header = () => {
     <ImageViewer 
       imagePath="/assets/vendor/price.png" 
       onClose={() => setShowImageViewer(false)} 
+    />
+  )}
+  
+  {/* About Us Modal */}
+  {showAboutUs && (
+    <AboutUs 
+      onClose={() => setShowAboutUs(false)} 
     />
   )}
   </>

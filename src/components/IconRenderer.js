@@ -7,7 +7,7 @@ import {
     Car, Bike, Bus, Rocket, BarChartBig, UsersRound, Download, Flame, Fan,
     ToggleRight, ArrowDownToLine, ArrowUpFromLine, X, Image as ImageIcon,
     Search, FlaskConical, ArrowUpRight, MapPin, Eye, PenTool, ClipboardCheck, AlertTriangle, Thermometer,
-    ArrowDownLeft, Shield
+    ArrowDownLeft, Shield, BarChart3, Globe, Calculator
 } from 'lucide-react';
 
 const iconMap = {
@@ -71,7 +71,10 @@ const iconMap = {
     AlertTriangle,
     Thermometer,
     ArrowDownLeft,
-    Shield
+    Shield,
+    BarChart3,
+    Globe,
+    Calculator
 };
 
 export const IconRenderer = ({ iconName, ...props }) => {

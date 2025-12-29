@@ -4,7 +4,7 @@ import { ArrowLeft, Plus, Lock, Search, ChevronLeft, ChevronRight, ShoppingCart 
 
 const YTMShop = ({ onBack }) => {
     const navigate = useNavigate();
-    const [activeView, setActiveView] = useState('requests'); // 'requests' or 'products'
+    const [activeView, setActiveView] = useState('requests'); // 'requests', 'products', or 'stock-report'
     const [searchQuery, setSearchQuery] = useState('');
     const [department, setDepartment] = useState('Office');
     const [supplierName, setSupplierName] = useState('All');
@@ -297,9 +297,10 @@ const YTMShop = ({ onBack }) => {
             </div>
 
             {/* Main Content */}
-            <div className="flex-1 overflow-auto p-6">
-                <div className="max-w-7xl mx-auto">
+            <div className={`flex-1 overflow-auto ${activeView === 'stock-report' ? 'p-0' : 'p-6'}`}>
+                <div className={activeView === 'stock-report' ? 'w-full' : 'max-w-7xl mx-auto'}>
                     {/* Tabs */}
+                    {activeView !== 'stock-report' && (
                     <div className="flex gap-4 mb-6">
                         <button
                             onClick={() => setActiveView('requests')}
@@ -321,7 +322,18 @@ const YTMShop = ({ onBack }) => {
                         >
                             Product Catalog
                         </button>
+                        <button
+                            onClick={() => setActiveView('stock-report')}
+                            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+                                activeView === 'stock-report'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-white text-slate-700 border border-slate-300'
+                            }`}
+                        >
+                            Stock Report
+                        </button>
                     </div>
+                    )}
 
                     {/* Requests View */}
                     {activeView === 'requests' && (
@@ -548,6 +560,32 @@ const YTMShop = ({ onBack }) => {
                                         <ChevronRight size={18} />
                                     </button>
                                 </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Stock Report View */}
+                    {activeView === 'stock-report' && (
+                        <div className="fixed inset-0 bg-white z-[300] overflow-auto" style={{ top: '73px', left: 0, right: 0, bottom: 0 }}>
+                            <div className="w-full min-h-full flex items-start justify-center p-4">
+                                <img
+                                    src="/y-shop/stock-detail.png"
+                                    alt="Stock Detail Report"
+                                    className="w-auto h-auto"
+                                    style={{ 
+                                        maxWidth: '100%',
+                                        height: 'auto',
+                                        imageRendering: 'high-quality',
+                                        imageRendering: '-webkit-optimize-contrast',
+                                        imageRendering: 'crisp-edges',
+                                        display: 'block'
+                                    }}
+                                    onLoad={(e) => {
+                                        // Force high DPI rendering and prevent blur
+                                        e.target.style.imageRendering = 'high-quality';
+                                        e.target.style.imageRendering = '-webkit-optimize-contrast';
+                                    }}
+                                />
                             </div>
                         </div>
                     )}

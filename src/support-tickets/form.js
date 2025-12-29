@@ -76,20 +76,13 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
 
     return (
         <div 
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[300] flex items-center justify-center p-4 animate-in fade-in duration-300"
-            onClick={(e) => {
-                // Close modal when clicking on backdrop
-                if (e.target === e.currentTarget) {
-                    onClose();
-                }
-            }}
+            className="fixed inset-0 bg-white z-[300] flex flex-col animate-in fade-in duration-300"
         >
             <div 
-                className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl h-auto max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col"
-                onClick={(e) => e.stopPropagation()}
+                className="bg-white w-full h-full overflow-auto flex flex-col"
             >
                 {/* Header */}
-                <div className="p-6 border-b flex justify-between items-center bg-white">
+                <div className="p-6 border-b flex justify-between items-center bg-white flex-shrink-0">
                     <h2 className="text-xl font-bold text-slate-800">Support Ticket</h2>
                     <button
                         onClick={onClose}
@@ -100,7 +93,7 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                 </div>
 
                 {/* Form Body */}
-                <div className="p-6 flex-1 overflow-y-auto">
+                <div className="p-6 flex-1 overflow-y-auto max-w-7xl mx-auto w-full">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {/* First Row: Type and Subject */}
                         <div className="grid grid-cols-2 gap-4">

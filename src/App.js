@@ -26,6 +26,7 @@ import AuditPlan from './digital-audit/audit-plan';
 import ShowListRequest from './purchase-request/show-list-request';
 import MasterList from './purchase-request/master-list';
 import MyConfirmReceived from './purchase-request/my-confirm-received';
+import PurchaseRequisitionForm from './purchase-request/purchase-requisition-form';
 import Meters from './energy/meters';
 import SwitchBoard from './energy/switch-board';
 import Temperature from './air/temperature';
@@ -108,6 +109,7 @@ export default function App() {
                 <Route path="my-attendance" element={<MyAttendance onBack={handleBack} />} />
                 <Route path="compliance-certificate" element={<ComplianceCertificate onBack={handleBack} />} />
                 <Route path="audit-plan" element={<AuditPlan onBack={handleBack} />} />
+                <Route path="purchase-requisition-form" element={<PurchaseRequisitionForm onBack={handleBack} />} />
                 <Route path="show-list-request" element={<ShowListRequest onBack={handleBack} />} />
                 <Route path="master-list" element={<MasterList onBack={handleBack} />} />
                 <Route path="my-confirm-received" element={<MyConfirmReceived onBack={handleBack} />} />

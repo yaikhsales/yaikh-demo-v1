@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, FileText, Eye, X } from 'lucide-react';
+import RequestDetailModal from '../components/RequestDetailModal';
+import InvoiceModal from '../components/InvoiceModal';
 
 const VerifyPR = ({ onBack }) => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('new');
     const [searchCode, setSearchCode] = useState('');
+    const [selectedRequest, setSelectedRequest] = useState(null);
+    const [showDetailModal, setShowDetailModal] = useState(false);
+    const [showInvoiceModal, setShowInvoiceModal] = useState(false);
     
     // Sample data - replace with actual data from API
     const sampleData = [
@@ -74,14 +79,14 @@ const VerifyPR = ({ onBack }) => {
         console.log('Reject PR:', code);
     };
 
-    const handleDetails = (code) => {
-        // Handle details action
-        console.log('View details for PR:', code);
+    const handleDetails = (item) => {
+        setSelectedRequest(item);
+        setShowDetailModal(true);
     };
 
-    const handleInvoice = (code) => {
-        // Handle invoice action
-        console.log('View invoice for PR:', code);
+    const handleInvoice = (item) => {
+        setSelectedRequest(item);
+        setShowInvoiceModal(true);
     };
 
     const handleViewDocument = (code) => {
@@ -221,17 +226,19 @@ const VerifyPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={() => handleDetails(item.code)}
-                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
+                                                onClick={() => handleDetails(item)}
+                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
                                             >
+                                                <Eye size={12} />
                                                 Details
                                             </button>
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={() => handleInvoice(item.code)}
-                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
+                                                onClick={() => handleInvoice(item)}
+                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
                                             >
+                                                <Eye size={12} />
                                                 Invoice
                                             </button>
                                         </td>
@@ -276,9 +283,10 @@ const VerifyPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={() => handleDetails(item.code)}
-                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
+                                                onClick={() => handleDetails(item)}
+                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
                                             >
+                                                <Eye size={12} />
                                                 Details
                                             </button>
                                         </td>
@@ -289,6 +297,18 @@ const VerifyPR = ({ onBack }) => {
                     </table>
                 </div>
             </div>
+
+            {/* Modals */}
+            <RequestDetailModal 
+                isOpen={showDetailModal}
+                onClose={() => setShowDetailModal(false)}
+                requestData={selectedRequest}
+            />
+            <InvoiceModal 
+                isOpen={showInvoiceModal}
+                onClose={() => setShowInvoiceModal(false)}
+                requestData={selectedRequest}
+            />
         </div>
     );
 };

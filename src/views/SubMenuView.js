@@ -26,6 +26,10 @@ const getSubIconImage = (title) => {
         'Verify PR': 'verify-image.png',
         'Approval PR': 'approval_images.png',
         'Pay PR': 'pay-pr.png',
+        'TB Monthly Yearly': 'dashboard.png',
+        'TOI': 'global-connection.png',
+        'Factory Accounting': 'factory-account.png',
+        'TAX Reporting': 'tax-reporting.png',
         'Temperature Humidity Sensor': 'temperature-humidity-sensor.jpg',
         'Switch (Fan & Pump)': 'switch.webp',
         'Switch Fan & Pump': 'switch.webp',
@@ -88,6 +92,7 @@ const getSubIconImage = (title) => {
         'In': 'water.jpg', // Using water icon for In
         'Out': 'water.jpg', // Using water icon for Out
         // Additional mappings for variations
+        'Purchase Request': 'purchase-request.png',
         'Show List Request': 'show-list-request.png',
         'Show Lists': 'show-list-request.png',
         'Master': 'master-list.jpg',
@@ -188,7 +193,13 @@ const getSubIconImage = (title) => {
 const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal') => {
     const subIconImage = getSubIconImage(card.title);
     // For E-Government, use the image URL directly from card.image (external URL)
-    const imageToUse = card.url ? card.image : (subIconImage || card.image);
+    // If card.image is provided and starts with modules-image or is an external URL, use it directly
+    // Otherwise, use subIconImage or card.image
+    const imageToUse = card.url ? card.image : (
+        (card.image && (card.image.startsWith('modules-image/') || card.image.startsWith('assets/icons/sub-icons/') || card.image.startsWith('http://') || card.image.startsWith('https://'))) 
+            ? card.image 
+            : (subIconImage || card.image)
+    );
     const isFCModule = imageToUse && imageToUse.includes('assets/fc/');
     const isYQMSModule = imageToUse && imageToUse.includes('assets/yqms/');
     const isEGovModule = card.url !== undefined; // E-Government modules have url property

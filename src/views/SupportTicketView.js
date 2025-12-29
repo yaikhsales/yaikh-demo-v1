@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Plus, Ticket as TicketIcon } from 'lucide-react';
+import { ArrowLeft, Plus, Ticket as TicketIcon, Image as ImageIcon, X } from 'lucide-react';
 import SupportTicketForm from '../support-tickets/form';
 
 const SupportTicketView = ({ onBack }) => {
@@ -119,6 +119,7 @@ const SupportTicketView = ({ onBack }) => {
     ]);
     const [showForm, setShowForm] = useState(false);
     const [selectedRequest, setSelectedRequest] = useState(null);
+    const [showImage, setShowImage] = useState(false);
 
     const columns = ['REF', 'Type', 'Subject', 'Image', 'Details', 'Created Date', 'Plan Date', 'Finish Date', 'Status'];
 
@@ -141,16 +142,25 @@ const SupportTicketView = ({ onBack }) => {
                         </button>
                         <h2 className="text-xl font-bold text-slate-800">Support Ticket</h2>
                     </div>
-                    <button
-                        onClick={() => {
-                            setSelectedRequest(null);
-                            setShowForm(true);
-                        }}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
-                        aria-label="Add new support request"
-                    >
-                        <Plus size={16} /> Add Request
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setShowImage(true)}
+                            className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-green-700 transition-colors shadow-md hover:shadow-lg"
+                            aria-label="View support ticket image"
+                        >
+                            <ImageIcon size={16} /> View Image
+                        </button>
+                        <button
+                            onClick={() => {
+                                setSelectedRequest(null);
+                                setShowForm(true);
+                            }}
+                            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+                            aria-label="Add new support request"
+                        >
+                            <Plus size={16} /> Add Request
+                        </button>
+                    </div>
                 </div>
                 <div className="flex-1 overflow-auto p-6">
                     <div className="overflow-x-auto h-full">
@@ -241,6 +251,32 @@ const SupportTicketView = ({ onBack }) => {
                     }}
                     initialData={selectedRequest}
                 />
+            )}
+            {showImage && (
+                <div 
+                    className="fixed inset-0 bg-black/90 z-[400] flex items-center justify-center p-4 animate-in fade-in duration-300"
+                    onClick={() => setShowImage(false)}
+                >
+                    <div className="relative w-full h-full flex items-center justify-center">
+                        <button
+                            onClick={() => setShowImage(false)}
+                            className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/30 rounded-full transition-colors z-10"
+                        >
+                            <X size={24} className="text-white" />
+                        </button>
+                        <img
+                            src="/assets/icons/sub-icons/support-ticket.png"
+                            alt="Support Ticket"
+                            className="max-w-full max-h-full object-contain"
+                            style={{ 
+                                imageRendering: 'high-quality',
+                                imageRendering: '-webkit-optimize-contrast',
+                                imageRendering: 'crisp-edges'
+                            }}
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
+                </div>
             )}
         </>
     );
