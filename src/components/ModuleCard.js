@@ -117,27 +117,29 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
         <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-gray-100/0 to-white/0 group-hover:from-white/10 group-hover:via-gray-100/10 group-hover:to-white/10 transition-all duration-500 rounded-2xl"></div>
       )}
       
-      {/* Inner Content */}
-      <div
-        className={`relative z-10 flex flex-col items-center gap-1 transition-all duration-300 ${
-          isComingSoon ? "opacity-40 grayscale" : isDropdownOpen ? "opacity-100" : "opacity-100 group-hover:scale-105"
-        }`}
-      >
-        <div className={isDropdownOpen ? "" : "transition-transform duration-300 group-hover:scale-110"}>
-          {renderIcon()}
+      {/* Inner Content - Hidden for coming soon modules */}
+      {!isComingSoon && (
+        <div
+          className={`relative z-10 flex flex-col items-center gap-1 transition-all duration-300 ${
+            isDropdownOpen ? "opacity-100" : "opacity-100 group-hover:scale-105"
+          }`}
+        >
+          <div className={isDropdownOpen ? "" : "transition-transform duration-300 group-hover:scale-110"}>
+            {renderIcon()}
+          </div>
+
+          <span className={`text-center font-bold text-xs px-1 leading-tight line-clamp-2 ${
+            isDropdownOpen ? 'text-slate-800' 
+            : isWhiteGroup ? 'text-slate-800 drop-shadow-sm' 
+            : 'text-white drop-shadow-lg'
+          }`}>
+            {data.title}
+          </span>
         </div>
+      )}
 
-        <span className={`text-center font-bold text-xs px-1 leading-tight line-clamp-2 ${
-          isDropdownOpen ? 'text-slate-800' 
-          : isWhiteGroup ? 'text-slate-800 drop-shadow-sm' 
-          : 'text-white drop-shadow-lg'
-        }`}>
-          {data.title}
-        </span>
-      </div>
-
-      {/* Coming Soon Overlay */}
-      {isComingSoon && (
+      {/* Coming Soon Overlay - Hidden */}
+      {/* {isComingSoon && (
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-xl">
           <div className="bg-black/10 absolute inset-0"></div>
           <div
@@ -147,7 +149,7 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
             COMING SOON
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Active Glow for highlight items */}
       {data.highlight && !isDropdownOpen && !isAdministration && !isOrangeGroup && !isWhiteGroup && (

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { X, Download, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Download, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react';
 
 const PdfViewer = ({ pdfPath, onClose }) => {
+    const navigate = useNavigate();
     const [scale, setScale] = useState(1);
     const [pdfZoom, setPdfZoom] = useState(150); // PDF native zoom (percentage)
 
@@ -48,13 +50,26 @@ const PdfViewer = ({ pdfPath, onClose }) => {
         >
             {/* Header Controls */}
             <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-gradient-to-b from-black/80 to-transparent">
-                <button
-                    onClick={onClose}
-                    className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all backdrop-blur-sm border border-white/10"
-                >
-                    <X size={18} />
-                    <span className="text-sm font-medium">Close</span>
-                </button>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => navigate('/')}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0 shadow-lg"
+                        title="Home"
+                    >
+                        <img 
+                            src="/logo.jpg" 
+                            alt="Home" 
+                            className="w-full h-full object-cover"
+                        />
+                    </button>
+                    <button
+                        onClick={onClose}
+                        className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all backdrop-blur-sm border border-white/10"
+                    >
+                        <ArrowLeft size={18} />
+                        <span className="text-sm font-medium">Back</span>
+                    </button>
+                </div>
                 
                 <div className="flex items-center gap-2">
                     {/* Zoom Controls */}

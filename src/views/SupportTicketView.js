@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Ticket as TicketIcon, Image as ImageIcon, X } from 'lucide-react';
 import SupportTicketForm from '../support-tickets/form';
 
 const SupportTicketView = ({ onBack }) => {
+    const navigate = useNavigate();
     const [requests, setRequests] = useState([
         {
             id: 1,
@@ -139,6 +141,17 @@ const SupportTicketView = ({ onBack }) => {
                             aria-label="Go back"
                         >
                             <ArrowLeft size={18} /> Back
+                        </button>
+                        <button
+                            onClick={() => navigate('/')}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                            title="Home"
+                        >
+                            <img 
+                                src="/logo.jpg" 
+                                alt="Home" 
+                                className="w-full h-full object-cover"
+                            />
                         </button>
                         <h2 className="text-xl font-bold text-slate-800">Support Ticket</h2>
                     </div>

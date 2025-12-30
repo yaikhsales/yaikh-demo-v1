@@ -421,13 +421,26 @@ const SystemAnalyze = ({ onBack }) => {
             {/* Header */}
             <div className="bg-white p-6 border-b flex items-center justify-between flex-shrink-0 shadow-sm relative z-[201]">
                 <div className="flex items-center gap-4">
-                    <button 
-                        onClick={handleBack} 
-                        className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
-                        aria-label="Go back"
-                    >
-                        <ArrowLeft size={16} /> Back
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button 
+                            onClick={handleBack} 
+                            className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
+                            aria-label="Go back"
+                        >
+                            <ArrowLeft size={16} /> Back
+                        </button>
+                        <button
+                            onClick={() => navigate('/')}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                            title="Home"
+                        >
+                            <img 
+                                src="/logo.jpg" 
+                                alt="Home" 
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
+                    </div>
                     <div>
                         <h1 className="text-2xl font-bold text-slate-800">System Analytics Dashboard</h1>
                         <p className="text-slate-600 text-sm">Real-time insights and performance metrics.</p>

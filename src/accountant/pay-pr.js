@@ -199,6 +199,17 @@ const PayPR = ({ onBack }) => {
                     >
                         <ArrowLeft size={18} /> Back
                     </button>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                        title="Home"
+                    >
+                        <img 
+                            src="/logo.jpg" 
+                            alt="Home" 
+                            className="w-full h-full object-cover"
+                        />
+                    </button>
                     <div className="flex items-center gap-2 text-sm text-slate-600">
                         <span>Accountant</span>
                         <span className="text-slate-400">/</span>

@@ -8,6 +8,17 @@ const TimelineView = ({ onBack, onAdd }) => (
                 <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg bg-slate-100">
                     <ArrowLeft size={18} /> Back
                 </button>
+                <a
+                    href="/"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                    title="Home"
+                >
+                    <img 
+                        src="/logo.jpg" 
+                        alt="Home" 
+                        className="w-full h-full object-cover"
+                    />
+                </a>
                 <h2 className="text-xl font-bold text-slate-800">Meeting Room Booking</h2>
             </div>
             <button

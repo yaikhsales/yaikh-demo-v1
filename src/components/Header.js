@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     Home, Mail, Calendar, MessageCircle,
     Bell, ChevronDown, QrCode, FileText, DollarSign,
-    ShoppingCart, Ticket, Globe, Video, Info, Menu, X
+    ShoppingCart, Ticket, Globe, Video, Info, Menu, X, Image
 } from 'lucide-react';
 import PdfViewer from './PdfViewer';
 import ImageViewer from './ImageViewer';
@@ -16,6 +16,7 @@ const Header = () => {
   const isMobile = useIsMobile();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
+  const [showPictureViewer, setShowPictureViewer] = useState(false);
   const [showAboutUs, setShowAboutUs] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
@@ -28,7 +29,10 @@ const Header = () => {
       <header className="bg-white shadow-md px-2 sm:px-4 py-1 flex justify-between items-center sticky top-0 z-50 h-14 sm:h-16">
         {/* Left Section */}
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 h-full flex-shrink-0">
-          <div className="flex-shrink-0 cursor-pointer">
+          <div 
+            className="flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => navigate('/')}
+          >
               <img src="/logo.jpg" alt="Logo" className="h-8 sm:h-10" />
           </div>
           <div className="h-6 sm:h-8 w-[1px] bg-gray-300 hidden sm:block"></div>
@@ -54,39 +58,8 @@ const Header = () => {
           </div>
         </div>
         
-        {/* Center: Video, About Us, Vendor, and Price Buttons - Hidden on mobile, shown in menu */}
-        {!isMobile ? (
-          <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1 sm:gap-2 md:gap-3">
-            <button
-              onClick={() => navigate('/welcome')}
-              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-md sm:rounded-lg transition-all shadow-md hover:shadow-lg font-medium text-xs sm:text-sm"
-            >
-              <Video size={14} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden sm:inline">Video</span>
-            </button>
-            <button
-              onClick={() => setShowAboutUs(true)}
-              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-md sm:rounded-lg transition-all shadow-md hover:shadow-lg font-medium text-xs sm:text-sm"
-            >
-              <Info size={14} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden sm:inline">About Us</span>
-            </button>
-            <button
-              onClick={() => setShowPdfViewer(true)}
-              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md sm:rounded-lg transition-all shadow-md hover:shadow-lg font-medium text-xs sm:text-sm"
-            >
-              <FileText size={14} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden sm:inline">Vendor</span>
-            </button>
-            <button
-              onClick={() => setShowImageViewer(true)}
-              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-green-600 hover:bg-green-700 text-white rounded-md sm:rounded-lg transition-all shadow-md hover:shadow-lg font-medium text-xs sm:text-sm"
-            >
-              <DollarSign size={14} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="hidden sm:inline">Price</span>
-            </button>
-          </div>
-        ) : (
+        {/* Center: Mobile Menu Button */}
+        {isMobile && (
           <div className="flex-1 flex justify-center items-center">
             <button
               onClick={() => setShowMobileMenu(!showMobileMenu)}
@@ -99,7 +72,46 @@ const Header = () => {
         
         {/* Right Section */}
         <div className="flex items-center gap-1 sm:gap-2 md:gap-3 text-gray-500 flex-shrink-0">
-            <Home className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer hover:text-blue-600 hidden sm:block" />
+            {/* Video, About Us, Vendor, Price, and Pictures Icons */}
+            {!isMobile && (
+              <>
+                <button
+                  onClick={() => navigate('/welcome')}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  aria-label="Video"
+                >
+                  <Video className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
+                </button>
+                <button
+                  onClick={() => setShowAboutUs(true)}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  aria-label="About Us"
+                >
+                  <Info className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
+                </button>
+                <button
+                  onClick={() => setShowPdfViewer(true)}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  aria-label="Vendor"
+                >
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
+                </button>
+                <button
+                  onClick={() => setShowImageViewer(true)}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  aria-label="Price"
+                >
+                  <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
+                </button>
+                <button
+                  onClick={() => setShowPictureViewer(true)}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  aria-label="Pictures"
+                >
+                  <Image className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
+                </button>
+              </>
+            )}
             <Mail className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer hover:text-blue-600 hidden md:block" />
             <Calendar className="w-4 h-4 sm:w-5 sm:h-5 cursor-pointer hover:text-blue-600 hidden md:block" />
             <div className="relative hidden lg:block">
@@ -255,6 +267,13 @@ const Header = () => {
                   <DollarSign size={18} />
                   <span>Price</span>
                 </button>
+                <button
+                  onClick={() => { setShowPictureViewer(true); setShowMobileMenu(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all font-medium"
+                >
+                  <Image size={18} />
+                  <span>Pictures</span>
+                </button>
               </div>
 
               {/* Quick Actions */}
@@ -329,6 +348,14 @@ const Header = () => {
     <ImageViewer 
       imagePath="/assets/vendor/price.png" 
       onClose={() => setShowImageViewer(false)} 
+    />
+  )}
+  
+  {/* Picture Viewer Modal */}
+  {showPictureViewer && (
+    <ImageViewer 
+      imagePath="/assets/pictures/image.png" 
+      onClose={() => setShowPictureViewer(false)} 
     />
   )}
   

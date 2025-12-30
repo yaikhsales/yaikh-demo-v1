@@ -113,14 +113,27 @@ const MyAttendance = ({ onBack }) => {
         <div className="fixed inset-0 bg-white flex flex-col animate-in fade-in duration-500 z-[200]">
             {/* Header */}
             <div className="bg-slate-50 p-4 border-b-2 border-slate-300 flex items-center gap-4 flex-shrink-0 shadow-md relative z-[201]">
-                <button 
-                    onClick={handleBack} 
-                    className="p-2 hover:bg-slate-200 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold px-4 py-2"
-                    aria-label="Go back"
-                >
-                    <ArrowLeft size={18} className="inline mr-2" />
-                    Back
-                </button>
+                <div className="flex items-center gap-3">
+                    <button 
+                        onClick={handleBack} 
+                        className="p-2 hover:bg-slate-200 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold px-4 py-2"
+                        aria-label="Go back"
+                    >
+                        <ArrowLeft size={18} className="inline mr-2" />
+                        Back
+                    </button>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                        title="Home"
+                    >
+                        <img 
+                            src="/logo.jpg" 
+                            alt="Home" 
+                            className="w-full h-full object-cover"
+                        />
+                    </button>
+                </div>
                 <div className="flex-1 text-center min-w-0">
                     <h1 className="text-xl md:text-2xl font-bold text-blue-900 leading-tight">TEXLINK TECHNOLOGIES CO., LTD.</h1>
                     <p className="text-sm md:text-base text-slate-600 mt-1">បញ្ជីស្រង់វត្តមានប្រចាំថ្ងៃ</p>

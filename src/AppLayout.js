@@ -96,20 +96,20 @@ const AppLayout = () => {
                     { title: 'Checklist Attendant', icon: 'CheckSquare', color: 'bg-sky-400 text-white' },
                     { title: 'My Attendant', icon: 'UserCog', color: 'bg-teal-500 text-white' }
                 ] : id === 'pr-admin' ? [
-                    { title: 'Purchase Request', icon: 'FileText', color: 'bg-yellow-500 text-white', action: '/dashboard/purchase-requisition-form' },
-                    { title: 'Show Lists Request', icon: 'Layout', color: 'bg-blue-500 text-white', image: 'assets/icons/sub-icons/show-list-request.png' },
-                    { title: 'Master List', icon: 'FileCheck', color: 'bg-blue-500 text-white', image: 'assets/icons/sub-icons/master-list.jpg' },
-                    { title: 'Purchaser Workspace', icon: 'Briefcase', color: 'bg-indigo-500 text-white', image: 'assets/icons/sub-icons/purchaser-workspace.png' },
-                    { title: 'My Confirm Received', icon: 'CheckCircle', color: 'bg-emerald-500 text-white', image: 'assets/icons/sub-icons/my-confirm-recieved.png' },
-                    { title: 'Documents Joiner', icon: 'Plus', color: 'bg-orange-500 text-white', image: 'assets/icons/sub-icons/document-joiner.png' }
+                    { title: 'Purchase Request', icon: 'FileText', color: 'bg-yellow-500 text-black', action: '/dashboard/purchase-requisition-form', isPurchaseRequest: true },
+                    { title: 'Show Lists Request', icon: 'Layout', color: 'bg-sky-400 text-black', image: 'assets/icons/sub-icons/show-list-request.png', isPurchaseRequest: true },
+                    { title: 'Master List', icon: 'FileCheck', color: 'bg-blue-500 text-white', image: 'assets/icons/sub-icons/master-list.jpg', isPurchaseRequest: true },
+                    { title: 'Purchaser Workspace', icon: 'Briefcase', color: 'bg-green-500 text-white', image: 'assets/icons/sub-icons/purchaser-workspace.png', isPurchaseRequest: true },
+                    { title: 'My Confirm Received', icon: 'CheckCircle', color: 'bg-orange-500 text-white', image: 'assets/icons/sub-icons/my-confirm-recieved.png', isPurchaseRequest: true },
+                    { title: 'Documents Joiner', icon: 'Plus', color: 'bg-red-500 text-white', image: 'assets/icons/sub-icons/document-joiner.png', isPurchaseRequest: true }
                 ] : demoType === 'SUBMENU_PR' ? [
-                    { title: 'Verify PR', icon: 'CheckCircle', color: 'bg-yellow-400', image: 'assets/icons/sub-icons/verify-image.png' },
-                    { title: 'Approval PR', icon: 'FileCheck', color: 'bg-green-500 text-white', image: 'assets/icons/sub-icons/approval_images.png' },
-                    { title: 'Pay PR', icon: 'Banknote', color: 'bg-orange-500 text-white', image: 'assets/icons/sub-icons/pay-pr.png' },
-                    { title: 'TB Monthly Yearly', icon: 'BarChart3', color: 'bg-blue-500 text-white', image: 'https://ym.yaikh.com/IMG/dashboard.png' },
-                    { title: 'TOI', icon: 'Globe', color: 'bg-green-600 text-white', image: 'https://ym.yaikh.com/IMG/global-connection.png' },
-                    { title: 'Factory Accounting', icon: 'Calculator', color: 'bg-purple-500 text-white', image: 'modules-image/factory-account.png' },
-                    { title: 'TAX Reporting', icon: 'FileText', color: 'bg-purple-400 text-white', image: 'modules-image/tax-reporting.png' }
+                    { title: 'Verify PR', icon: 'CheckCircle', color: 'bg-yellow-400 text-black', image: 'assets/icons/sub-icons/verify-image.png', isAccountant: true },
+                    { title: 'Approval PR', icon: 'FileCheck', color: 'bg-blue-500 text-white', image: 'assets/icons/sub-icons/approval_images.png', isAccountant: true },
+                    { title: 'Pay PR', icon: 'Banknote', color: 'bg-orange-500 text-white', image: 'assets/icons/sub-icons/pay-pr.png', isAccountant: true },
+                    { title: 'TB Monthly Yearly', icon: 'BarChart3', color: 'bg-blue-500 text-white', image: 'https://ym.yaikh.com/IMG/dashboard.png', isAccountant: true },
+                    { title: 'TOI', icon: 'Globe', color: 'bg-green-600 text-white', image: 'https://ym.yaikh.com/IMG/global-connection.png', isAccountant: true },
+                    { title: 'Factory Accounting', icon: 'Calculator', color: 'bg-purple-500 text-white', image: 'modules-image/factory-account.png', isAccountant: true },
+                    { title: 'TAX Reporting', icon: 'FileText', color: 'bg-purple-400 text-white', image: 'modules-image/tax-reporting.png', isAccountant: true }
                 ] : id === 'gatepass' ? [
                     { title: 'Gate Pass', icon: 'Ticket', color: 'bg-blue-500 text-white', action: '/dashboard/gatepass' },
                     { title: 'Gate In/Out Records', icon: 'BookOpen', color: 'bg-sky-500 text-white' },
@@ -324,7 +324,7 @@ const AppLayout = () => {
                 if (id === 'ticket') navigate('/dashboard/ticket');
                 else navigate(`/dashboard/${id}`);
             }
-            else if (demoType === 'GRID_SHOP') navigate('/dashboard/shop'); 
+            else if (demoType === 'GRID_SHOP') navigate('/dashboard/y-shop'); 
         } else {
             // Handle modules without demoType - only navigate if explicitly handled
             if (module.title === 'Bill Record') {
@@ -346,7 +346,8 @@ const AppLayout = () => {
             !location.pathname.includes('verify-pr') && 
             !location.pathname.includes('approval-pr') && 
             !location.pathname.includes('pay-pr') && 
-            !location.pathname.includes('ticket') && <ThemeBackground />}
+            !location.pathname.includes('ticket') && 
+            !location.pathname.includes('y-shop') && <ThemeBackground />}
             
             <style>{`
                 * {
@@ -363,10 +364,11 @@ const AppLayout = () => {
                 }
             `}</style>
             {!location.pathname.includes('purchase-requisition-form') && 
-             !location.pathname.includes('verify-pr') && 
-             !location.pathname.includes('approval-pr') && 
-             !location.pathname.includes('pay-pr') && 
-             !location.pathname.includes('ticket') && <Header />}
+            !location.pathname.includes('verify-pr') && 
+            !location.pathname.includes('approval-pr') && 
+            !location.pathname.includes('pay-pr') && 
+            !location.pathname.includes('ticket') && 
+            !location.pathname.includes('y-shop') && <Header />}
 
             {/* Light Bulb - Center Top */}
             {location.pathname === '/' && (

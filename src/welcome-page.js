@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 
 const WelcomePage = () => {
     const navigate = useNavigate();
-    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(null); // No video selected initially
     const [isPlaying, setIsPlaying] = useState(false);
-    const [audioEnabled, setAudioEnabled] = useState(false);
-    const [volume, setVolume] = useState(1); // Volume control (0 to 1)
+    const [videoPlayingStates, setVideoPlayingStates] = useState([false, false, false, false]); // Track playing state for each video
+    const [audioEnabled, setAudioEnabled] = useState(true); // Audio enabled by default
+    const [volume, setVolume] = useState(0.7); // Default volume (70%)
     const [videoMuted, setVideoMuted] = useState([false, false, false, false]); // Individual mute state for each video
     const videoRefs = [
         useRef(null),
@@ -87,25 +88,7 @@ const WelcomePage = () => {
         }
     };
 
-    useEffect(() => {
-        // Start playing the first video automatically when page loads (after a short delay)
-        const playFirstVideo = async () => {
-            if (videoRefs[0].current) {
-                // Start muted to allow autoplay
-                videoRefs[0].current.muted = true;
-                videoRefs[0].current.volume = 0;
-                try {
-                    await videoRefs[0].current.play();
-                    setIsPlaying(true);
-                } catch (error) {
-                    console.log('Autoplay prevented:', error);
-                }
-            }
-        };
-        // Delay to ensure video elements are ready
-        const timer = setTimeout(playFirstVideo, 1000);
-        return () => clearTimeout(timer);
-    }, []);
+    // No autoplay - videos will only play when clicked
 
     // Update muted state and volume when audioEnabled, volume, or videoMuted changes
     useEffect(() => {
@@ -119,100 +102,68 @@ const WelcomePage = () => {
     }, [audioEnabled, volume, videoMuted]);
 
     const handleVideoEnd = () => {
-        if (currentVideoIndex < videos.length - 1) {
-            // Move to next video
-            const nextIndex = currentVideoIndex + 1;
-            setCurrentVideoIndex(nextIndex);
-            setIsPlaying(false);
-            
-            // Enable audio automatically when video ends
-            if (!audioEnabled) {
-                setAudioEnabled(true);
-            }
-            
-            // Small delay before starting next video
-            setTimeout(async () => {
-                if (videoRefs[nextIndex].current) {
-                    // Unmute and set volume when moving to next video
-                    videoRefs[nextIndex].current.muted = volume === 0 || videoMuted[nextIndex];
-                    videoRefs[nextIndex].current.volume = volume > 0 ? volume : 0.5; // Default to 50% if volume is 0
-                    if (volume === 0) {
-                        setVolume(0.5); // Set volume to 50% if it was 0
-                    }
-                    try {
-                        await videoRefs[nextIndex].current.play();
-                        setIsPlaying(true);
-                    } catch (error) {
-                        console.log('Video play error:', error);
-                        // Retry once
-                        setTimeout(() => {
-                            if (videoRefs[nextIndex].current) {
-                                videoRefs[nextIndex].current.play().catch(console.error);
-                            }
-                        }, 500);
-                    }
-                }
-            }, 500);
-        } else {
-            // All videos finished, navigate to dashboard
-            handleContinue();
-        }
+        // When video ends, just stop playing - no automatic navigation
+        setIsPlaying(false);
     };
 
-    // Update video when currentVideoIndex changes (when video ends and moves to next)
+    // Update video when currentVideoIndex changes (when user clicks a video)
     useEffect(() => {
         // Stop all videos except the current one
         videoRefs.forEach((ref, idx) => {
-            if (ref.current && idx !== currentVideoIndex) {
+            if (ref.current && idx !== currentVideoIndex && currentVideoIndex !== null) {
                 ref.current.pause();
                 ref.current.currentTime = 0;
             }
         });
         
-        // Play current video when index changes (triggered by video end)
-        if (videoRefs[currentVideoIndex].current) {
+        // Play current video when index changes (triggered by user click)
+        if (currentVideoIndex !== null && videoRefs[currentVideoIndex].current) {
             const video = videoRefs[currentVideoIndex].current;
-            const newVolume = volume > 0 ? volume : 0.5;
-            video.muted = newVolume === 0 || videoMuted[currentVideoIndex];
-            video.volume = newVolume;
-            // Small delay before playing to ensure video is ready
-            setTimeout(() => {
-                if (videoRefs[currentVideoIndex].current) {
-                    videoRefs[currentVideoIndex].current.play().then(() => {
-                        setIsPlaying(true);
-                    }).catch(console.error);
-                }
-            }, 300);
+            video.muted = volume === 0 || videoMuted[currentVideoIndex];
+            video.volume = volume;
+            // Play with sound enabled
+            video.play().then(() => {
+                setIsPlaying(true);
+            }).catch(console.error);
         }
     }, [currentVideoIndex]);
 
-    const handleContinue = () => {
-        // Mark welcome as completed, then navigate to root (which will show dashboard)
-        sessionStorage.setItem('welcome-completed', 'true');
-        navigate('/', { replace: true });
-    };
-
-    const handleSkip = () => {
+    const handleBack = () => {
         // Stop all videos
         videoRefs.forEach(ref => {
             if (ref.current) {
                 ref.current.pause();
             }
         });
-        // Navigate directly to dashboard
-        handleContinue();
+        // Navigate back to dashboard
+        navigate('/', { replace: true });
     };
 
     return (
         <div className="fixed inset-0 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500 flex items-center justify-center overflow-hidden p-6">
-            {/* Skip Button */}
+            {/* Home Button - Centered at Top */}
+            <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
+                <button
+                    onClick={() => navigate('/')}
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0 shadow-lg"
+                    title="Home"
+                >
+                    <img 
+                        src="/logo.jpg" 
+                        alt="Home" 
+                        className="w-full h-full object-cover"
+                    />
+                </button>
+            </div>
+            
+            {/* Back Button */}
             <div className="absolute top-6 right-6 z-30">
                 <button
-                    onClick={handleSkip}
+                    onClick={handleBack}
                     className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/20"
                 >
-                    <span>Skip</span>
-                    <span>⏭</span>
+                    <span>Back</span>
+                    <span>←</span>
                 </button>
             </div>
 
@@ -232,7 +183,7 @@ const WelcomePage = () => {
 
                 {/* Panel 1 - Top Left: Production/Factory Floor */}
                 {videos.map((video, index) => {
-                    const isActive = index === currentVideoIndex;
+                    const isActive = index === currentVideoIndex && isPlaying;
                     const departmentInfo = [
                         { name: 'Production', icon: '🏭', color: 'from-green-500/20 to-emerald-500/20', border: 'border-green-400/30' },
                         { name: 'Account Department', icon: '📊', color: 'from-blue-500/20 to-cyan-500/20', border: 'border-blue-400/30' },
@@ -272,18 +223,35 @@ const WelcomePage = () => {
                                 ref={videoRefs[index]}
                                 className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
                                     isActive ? 'opacity-100 z-10' : 'opacity-30'
-                                }`}
+                                } ${videoPlayingStates[index] ? 'cursor-pointer' : ''}`}
                                 onEnded={handleVideoEnd}
-                                onLoadedData={() => {
-                                    // Only auto-play if this is the active video and previous video finished
-                                    if (isActive && videoRefs[index].current && index === currentVideoIndex) {
-                                        videoRefs[index].current.muted = !audioEnabled || volume === 0 || videoMuted[index];
-                                        videoRefs[index].current.volume = audioEnabled ? volume : 0;
-                                        // Don't auto-play on load, wait for video end handler
+                                onPlay={() => {
+                                    const newStates = [...videoPlayingStates];
+                                    newStates[index] = true;
+                                    setVideoPlayingStates(newStates);
+                                    setIsPlaying(true);
+                                }}
+                                onPause={() => {
+                                    const newStates = [...videoPlayingStates];
+                                    newStates[index] = false;
+                                    setVideoPlayingStates(newStates);
+                                    setIsPlaying(false);
+                                }}
+                                onClick={() => {
+                                    // Click to pause when video is playing
+                                    if (videoPlayingStates[index] && videoRefs[index].current) {
+                                        videoRefs[index].current.pause();
                                     }
                                 }}
-                                controls
-                                muted={!audioEnabled || volume === 0 || videoMuted[index]}
+                                onLoadedData={() => {
+                                    // Set up video properties when loaded
+                                    if (videoRefs[index].current) {
+                                        videoRefs[index].current.muted = volume === 0 || videoMuted[index];
+                                        videoRefs[index].current.volume = volume;
+                                    }
+                                }}
+                                controls={false}
+                                muted={volume === 0 || videoMuted[index]}
                                 autoPlay={false}
                                 loop={false}
                                 playsInline
@@ -300,16 +268,19 @@ const WelcomePage = () => {
 
 
 
-                            {/* Play Button Overlay - For non-active panels */}
-                            {!isActive && (
+                            {/* Play Button Overlay - Show when video is not playing */}
+                            {!videoPlayingStates[index] && (
                                 <div 
-                                    className="absolute inset-0 bg-black/30 hover:bg-black/20 transition-colors flex items-center justify-center cursor-pointer z-20"
+                                    className="absolute inset-0 bg-black/30 hover:bg-black/20 transition-colors flex items-center justify-center cursor-pointer z-30"
                                     onClick={() => {
                                         setCurrentVideoIndex(index);
+                                        setAudioEnabled(true); // Enable audio when user clicks
                                         if (videoRefs[index].current) {
-                                            videoRefs[index].current.muted = !audioEnabled || volume === 0 || videoMuted[index];
-                                            videoRefs[index].current.volume = audioEnabled ? volume : 0;
-                                            videoRefs[index].current.play().catch(console.error);
+                                            videoRefs[index].current.muted = volume === 0 || videoMuted[index];
+                                            videoRefs[index].current.volume = volume;
+                                            videoRefs[index].current.play().then(() => {
+                                                setIsPlaying(true);
+                                            }).catch(console.error);
                                         }
                                     }}
                                 >
@@ -320,20 +291,20 @@ const WelcomePage = () => {
                             )}
 
                             {/* Progress Indicator - Top Right Corner (small, minimal) */}
-                            <div className="absolute top-2 right-2 z-20 flex gap-1 bg-black/40 backdrop-blur-sm rounded-lg px-2 py-1">
-                                {videos.map((_, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`h-1 rounded-full transition-all duration-300 ${
-                                            idx < currentVideoIndex
-                                                ? 'bg-green-500 w-4'
-                                                : idx === currentVideoIndex
-                                                ? 'bg-yellow-400 w-5'
-                                                : 'bg-white/30 w-2'
-                                        }`}
-                                    />
-                                ))}
-                            </div>
+                            {currentVideoIndex !== null && (
+                                <div className="absolute top-2 right-2 z-20 flex gap-1 bg-black/40 backdrop-blur-sm rounded-lg px-2 py-1">
+                                    {videos.map((_, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={`h-1 rounded-full transition-all duration-300 ${
+                                                idx === currentVideoIndex && isPlaying
+                                                    ? 'bg-yellow-400 w-5'
+                                                    : 'bg-white/30 w-2'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     );
                 })}

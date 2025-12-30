@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import AppLayout from './AppLayout';
 import { ThemeProvider } from './thems';
 
@@ -46,22 +46,9 @@ import FaceScan from './cctv/face-scan';
 import MyFaceScan from './cctv/my-face-scan';
 import SystemAnalyze from './system-analyze/system-analyze';
 import YTMShop from './ytm-shop/ytm-shop';
+import YShop from './y-shop/y-shop';
 import Training from './training/training';
 import WelcomePage from './welcome-page';
-
-// Component to decide whether to show WelcomePage or AppLayout on root path
-function WelcomePageOrDashboard() {
-    const location = useLocation();
-    const welcomeCompleted = sessionStorage.getItem('welcome-completed');
-    
-    // If welcome has been completed in this session, show dashboard
-    if (welcomeCompleted === 'true') {
-        return <AppLayout />;
-    }
-    
-    // Otherwise show welcome page
-    return <WelcomePage />;
-}
 
 export default function App() {
     const navigate = useNavigate();
@@ -71,7 +58,7 @@ export default function App() {
         <ThemeProvider>
             <Routes>
             <Route path="/welcome" element={<WelcomePage />} />
-            <Route path="/" element={<WelcomePageOrDashboard />} />
+            <Route path="/" element={<AppLayout />} />
             <Route path="/dashboard" element={<AppLayout />}>
                 <Route index element={<div />} />
                 <Route path="training" element={<TrainingGridView onBack={handleBack} />} />
@@ -79,6 +66,7 @@ export default function App() {
                 <Route path="waste/analytics" element={<Waste onBack={handleBack} />} />
                 <Route path="waste/boiler" element={<Boiler onBack={handleBack} />} />
                 <Route path="shop" element={<YTMShop onBack={handleBack} />} />
+                <Route path="y-shop" element={<YShop onBack={handleBack} />} />
                 <Route
                     path="meeting"
                     element={<TimelineView onBack={handleBack} onAdd={() => {}} />}

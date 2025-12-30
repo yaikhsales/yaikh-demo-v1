@@ -161,13 +161,26 @@ const Training = ({ onBack }) => {
             <div className="fixed inset-0 bg-gray-100 flex flex-col animate-in fade-in duration-500 z-[200]" style={{ position: 'relative' }}>
                 {/* Header */}
                 <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
-                    <button
-                        onClick={() => onBack ? onBack() : navigate(-1)}
-                        className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
-                    >
-                        <ArrowLeft size={20} />
-                        Back
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => onBack ? onBack() : navigate(-1)}
+                            className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
+                        >
+                            <ArrowLeft size={20} />
+                            Back
+                        </button>
+                        <button
+                            onClick={() => navigate('/')}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                            title="Home"
+                        >
+                            <img 
+                                src="/logo.jpg" 
+                                alt="Home" 
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
+                    </div>
                     <h1 className="text-3xl font-bold text-center flex-1 underline">{departmentName}</h1>
                     <div className="w-24"></div>
                 </div>
@@ -221,13 +234,26 @@ const Training = ({ onBack }) => {
             <div className="fixed inset-0 bg-gray-100 flex flex-col animate-in fade-in duration-500 z-[200]" style={{ position: 'relative' }}>
                 {/* Header */}
                 <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
-                    <button
-                        onClick={() => setActiveView('main')}
-                        className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
-                    >
-                        <ArrowLeft size={20} />
-                        Back
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setActiveView('main')}
+                            className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
+                        >
+                            <ArrowLeft size={20} />
+                            Back
+                        </button>
+                        <button
+                            onClick={() => navigate('/')}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                            title="Home"
+                        >
+                            <img 
+                                src="/logo.jpg" 
+                                alt="Home" 
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
+                    </div>
                     <h1 className="text-3xl font-bold text-center flex-1">Training Course</h1>
                     <div className="w-24"></div>
                 </div>
@@ -284,13 +310,26 @@ const Training = ({ onBack }) => {
             <div className="fixed inset-0 bg-gray-100 flex flex-col animate-in fade-in duration-500 z-[200]" style={{ position: 'relative' }}>
                 {/* Header */}
                 <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
-                    <button
-                        onClick={() => setActiveView('main')}
-                        className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
-                    >
-                        <ArrowLeft size={20} />
-                        Back
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setActiveView('main')}
+                            className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
+                        >
+                            <ArrowLeft size={20} />
+                            Back
+                        </button>
+                        <button
+                            onClick={() => navigate('/')}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                            title="Home"
+                        >
+                            <img 
+                                src="/logo.jpg" 
+                                alt="Home" 
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
+                    </div>
                     <h1 className="text-3xl font-bold text-center flex-1">Training Lesson</h1>
                     <div className="w-24"></div>
                 </div>
@@ -343,13 +382,26 @@ const Training = ({ onBack }) => {
             <div className="fixed inset-0 bg-gray-100 flex flex-col animate-in fade-in duration-500 z-[200]" style={{ position: 'relative' }}>
                 {/* Header */}
                 <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
-                    <button
-                        onClick={() => setActiveView('main')}
-                        className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
-                    >
-                        <ArrowLeft size={20} />
-                        Back
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setActiveView('main')}
+                            className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
+                        >
+                            <ArrowLeft size={20} />
+                            Back
+                        </button>
+                        <button
+                            onClick={() => navigate('/')}
+                            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                            title="Home"
+                        >
+                            <img 
+                                src="/logo.jpg" 
+                                alt="Home" 
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
+                    </div>
                     <h1 className="text-3xl font-bold text-center flex-1 underline">Training Activity</h1>
                     <div className="w-24"></div>
                 </div>

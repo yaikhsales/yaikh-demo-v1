@@ -190,7 +190,7 @@ const getSubIconImage = (title) => {
 };
 
 // Render card component (extracted for reuse)
-const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal') => {
+const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal', isAccountant = false, isPurchaseRequest = false) => {
     const subIconImage = getSubIconImage(card.title);
     // For E-Government, use the image URL directly from card.image (external URL)
     // If card.image is provided and starts with modules-image or is an external URL, use it directly
@@ -222,20 +222,28 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
     
     // Compact sizing for grouped layout - all boxes same size
     // E-Government modules get much larger size for better visibility
-    const cardSize = isEGovModule 
-        ? 'w-64 h-56' // Card size similar to the sample (256px × 224px)
-        : (isCompact 
-            ? (isNonClickableModule ? 'w-[110px] h-[110px]' : 'w-[100px] h-[100px]')
-            : (isNonClickableModule ? 'w-56 h-52' : 'w-48 h-40'));
-    const iconSize = isEGovModule 
-        ? 'w-40 h-40' // Large logo for clarity (160px × 160px)
-        : (isCompact 
-            ? (isNonClickableModule ? 'w-20 h-20' : 'w-16 h-16')
-            : (isNonClickableModule ? 'w-28 h-28' : 'w-16 h-16'));
-    const textSize = isEGovModule 
-        ? 'text-xl font-bold' // Bold text for clarity
-        : (isCompact ? 'text-[9px] leading-tight' : (isNonClickableModule ? 'text-base' : 'text-lg'));
-    const gapSize = isEGovModule ? 'gap-2' : (isCompact ? 'gap-0.5' : 'gap-3');
+    // Accountant and Purchase Request modules get bigger size with colorful style
+    const isColorfulCard = isAccountant || isPurchaseRequest;
+    const cardSize = isColorfulCard
+        ? 'w-full h-56' // Bigger cards for Accountant and Purchase Request (224px height)
+        : (isEGovModule 
+            ? 'w-64 h-56' // Card size similar to the sample (256px × 224px)
+            : (isCompact 
+                ? (isNonClickableModule ? 'w-[110px] h-[110px]' : 'w-[100px] h-[100px]')
+                : (isNonClickableModule ? 'w-56 h-52' : 'w-48 h-40')));
+    const iconSize = isColorfulCard
+        ? 'w-32 h-32' // Bigger icons for Accountant and Purchase Request (128px × 128px)
+        : (isEGovModule 
+            ? 'w-40 h-40' // Large logo for clarity (160px × 160px)
+            : (isCompact 
+                ? (isNonClickableModule ? 'w-20 h-20' : 'w-16 h-16')
+                : (isNonClickableModule ? 'w-28 h-28' : 'w-16 h-16')));
+    const textSize = isColorfulCard
+        ? 'text-lg font-bold' // Bigger text for Accountant and Purchase Request
+        : (isEGovModule 
+            ? 'text-xl font-bold' // Bold text for clarity
+            : (isCompact ? 'text-[9px] leading-tight' : (isNonClickableModule ? 'text-base' : 'text-lg')));
+    const gapSize = isColorfulCard ? 'gap-4' : (isEGovModule ? 'gap-2' : (isCompact ? 'gap-0.5' : 'gap-3'));
     
     return (
         <CardComponent
@@ -311,13 +319,15 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                     navigate(`/dashboard/submenu/${moduleId}`);
                 }
             }}
-            className={`${cardSize} ${isEGovModule ? 'rounded-2xl' : 'rounded-lg'} shadow-xl flex flex-col items-center justify-center ${gapSize} ${
-                isEGovModule 
-                    ? '' 
-                    : 'border-2 border-black/20'
+            className={`${cardSize} ${isColorfulCard ? 'rounded-xl' : (isEGovModule ? 'rounded-2xl' : 'rounded-lg')} shadow-xl flex flex-col items-center justify-center ${gapSize} ${
+                isColorfulCard
+                    ? 'border-0'
+                    : (isEGovModule 
+                        ? '' 
+                        : 'border-2 border-black/20')
             } ${
                 isNonClickableModule ? 'cursor-default' : (isEGovModule ? 'cursor-pointer' : 'cursor-pointer')
-            } ${card.color ? card.color : (isEGovModule ? 'bg-white text-slate-800' : theme === 'normal' ? 'bg-white/90 text-slate-800 border-white/30' : 'bg-white text-slate-800')} ${isCompact ? 'p-1' : (isEGovModule ? 'p-6' : 'p-4')}`}
+            } ${card.color ? card.color : (isColorfulCard ? 'bg-white' : (isEGovModule ? 'bg-white text-slate-800' : theme === 'normal' ? 'bg-white/90 text-slate-800 border-white/30' : 'bg-white text-slate-800'))} ${isColorfulCard ? 'p-6' : (isCompact ? 'p-1' : (isEGovModule ? 'p-6' : 'p-4'))}`}
         >
             <div className={isEGovModule
                 ? 'p-4 rounded-xl relative bg-transparent'
@@ -365,12 +375,12 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                                                 }}
                                             />
                                             <div className="icon-fallback hidden">
-                                                <IconRenderer iconName={card.icon} size={isCompact ? (isNonClickableModule ? 64 : 48) : (isNonClickableModule ? 112 : 64)} />
+                                                <IconRenderer iconName={card.icon} size={isColorfulCard ? 128 : (isCompact ? (isNonClickableModule ? 64 : 48) : (isNonClickableModule ? 112 : 64))} />
                                             </div>
                             </>
                         );
                     }
-                    return <IconRenderer iconName={card.icon} size={isCompact ? 48 : 64} />;
+                    return <IconRenderer iconName={card.icon} size={isColorfulCard ? 128 : (isCompact ? 48 : 64)} />;
                 })()}
             </div>
             <span className={`font-bold text-center px-0.5 leading-tight ${textSize} break-words max-w-full ${textColorClass || (card.color && card.color.includes('text-white') ? 'text-white' : card.color && card.color.includes('text-black') ? 'text-black' : 'text-slate-800')}`} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', marginTop: isEGovModule ? '-12px' : '0' }}>
@@ -413,16 +423,35 @@ const SubMenuView = () => {
     // Check if this is E-Government module
     const isEGovView = Array.isArray(cards) && cards.length > 0 && cards.some(card => card.url !== undefined);
     
+    // Check if this is Accountant module (has isAccountant flag)
+    const isAccountantView = Array.isArray(cards) && cards.length > 0 && cards.some(card => card.isAccountant === true);
+    
+    // Check if this is Purchase Request module (has isPurchaseRequest flag)
+    const isPurchaseRequestView = Array.isArray(cards) && cards.length > 0 && cards.some(card => card.isPurchaseRequest === true);
+    
     return (
         <div className={`flex flex-col items-center justify-center h-full min-h-[500px] animate-in fade-in zoom-in duration-300 ${isEGovView ? 'relative z-10' : ''}`}>
-            <div className={`w-full max-w-4xl ${isGroupedStructure ? 'mb-4' : 'mb-8'} flex items-center`}>
-                <button
-                    onClick={() => navigate(-1)}
-                    className={`flex items-center text-white hover:text-cyan-400 gap-2 font-bold ${theme === 'normal' ? 'bg-slate-800/70' : 'bg-slate-800/50'} ${isGroupedStructure ? 'px-3 py-1.5 text-sm' : 'px-4 py-2'} rounded-lg backdrop-blur-sm transition-colors`}
-                >
-                    <ArrowLeft size={isGroupedStructure ? 16 : 20} /> Back
-                </button>
-                <h2 className={`text-white font-bold ml-auto mr-auto uppercase tracking-wider drop-shadow-lg ${isGroupedStructure ? 'text-xl' : 'text-3xl'}`}>
+            <div className={`w-full max-w-4xl ${isGroupedStructure ? 'mb-4' : 'mb-8'} flex items-center justify-between`}>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => navigate(-1)}
+                        className={`flex items-center text-white hover:text-cyan-400 gap-2 font-bold ${theme === 'normal' ? 'bg-slate-800/70' : 'bg-slate-800/50'} ${isGroupedStructure ? 'px-3 py-1.5 text-sm' : 'px-4 py-2'} rounded-lg backdrop-blur-sm transition-colors`}
+                    >
+                        <ArrowLeft size={isGroupedStructure ? 16 : 20} /> Back
+                    </button>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                        title="Home"
+                    >
+                        <img 
+                            src="/logo.jpg" 
+                            alt="Home" 
+                            className="w-full h-full object-cover"
+                        />
+                    </button>
+                </div>
+                <h2 className={`text-white font-bold uppercase tracking-wider drop-shadow-lg ${isGroupedStructure ? 'text-xl' : 'text-3xl'}`}>
                     {title}
                 </h2>
                 <div className={isGroupedStructure ? 'w-24' : 'w-32'}></div>
@@ -461,6 +490,66 @@ const SubMenuView = () => {
                         })}
                     </div>
                 </div>
+            ) : isAccountantView ? (
+                // Accountant special layout: 3 cards top row, then 3 columns with TAX Reporting under TB Monthly Yearly
+                <div className="w-full max-w-6xl px-4">
+                    <div className="grid grid-cols-3 gap-6 justify-items-center">
+                        {/* Top row: First 3 cards (Verify PR, Approval PR, Pay PR) */}
+                        {cards.slice(0, 3).map((card, idx) => (
+                            <div key={idx} className="w-full max-w-[280px]">
+                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, true)}
+                            </div>
+                        ))}
+                        
+                        {/* Second row, Column 1: TB Monthly Yearly with TAX Reporting below */}
+                        <div className="w-full max-w-[280px] flex flex-col gap-6">
+                            {cards[3] && (
+                                <div className="w-full">
+                                    {renderCard(cards[3], 3, navigate, moduleId, isTrainingModule, false, theme, true)}
+                                </div>
+                            )}
+                            {cards[6] && (
+                                <div className="w-full">
+                                    {renderCard(cards[6], 6, navigate, moduleId, isTrainingModule, false, theme, true)}
+
+                                </div>
+                            )}
+                        </div>
+                        
+                        {/* Second row, Column 2: TOI */}
+                        {cards[4] && (
+                            <div className="w-full max-w-[280px]">
+                                {renderCard(cards[4], 4, navigate, moduleId, isTrainingModule, false, theme, true)}
+                            </div>
+                        )}
+                        
+                        {/* Second row, Column 3: Factory Accounting */}
+                        {cards[5] && (
+                            <div className="w-full max-w-[280px]">
+                                {renderCard(cards[5], 5, navigate, moduleId, isTrainingModule, false, theme, true)}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            ) : isPurchaseRequestView ? (
+                // Purchase Request special layout: 2x3 grid (2 rows, 3 columns)
+                <div className="w-full max-w-6xl px-4">
+                    <div className="grid grid-cols-3 gap-6 justify-items-center">
+                        {/* Top row: First 3 cards */}
+                        {cards.slice(0, 3).map((card, idx) => (
+                            <div key={idx} className="w-full max-w-[280px]">
+                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, false, true)}
+                            </div>
+                        ))}
+                        
+                        {/* Bottom row: Last 3 cards */}
+                        {cards.slice(3, 6).map((card, idx) => (
+                            <div key={idx + 3} className="w-full max-w-[280px]">
+                                {renderCard(card, idx + 3, navigate, moduleId, isTrainingModule, false, theme, false, true)}
+                            </div>
+                        ))}
+                    </div>
+                </div>
             ) : (
                 // Regular flat layout
                 <div className="flex gap-8 flex-wrap justify-center">
@@ -472,4 +561,5 @@ const SubMenuView = () => {
 };
 
 export default SubMenuView;
+
 

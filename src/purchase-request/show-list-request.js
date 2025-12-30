@@ -286,14 +286,27 @@ const ShowListRequest = ({ onBack }) => {
         <div className="fixed inset-0 bg-white flex flex-col animate-in fade-in duration-500 z-[200]">
             {/* Header */}
             <div className="bg-slate-100 p-3 border-b flex items-center justify-between flex-shrink-0 shadow-sm relative z-[201]">
-                <button 
-                    onClick={handleBack} 
-                    className="p-2 hover:bg-slate-200 rounded transition-colors flex-shrink-0 text-slate-700 font-semibold text-sm"
-                    aria-label="Go back"
-                >
-                    <ArrowLeft size={18} className="inline mr-1" />
-                    Back
-                </button>
+                <div className="flex items-center gap-3">
+                    <button 
+                        onClick={handleBack} 
+                        className="p-2 hover:bg-slate-200 rounded transition-colors flex-shrink-0 text-slate-700 font-semibold text-sm"
+                        aria-label="Go back"
+                    >
+                        <ArrowLeft size={18} className="inline mr-1" />
+                        Back
+                    </button>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                        title="Home"
+                    >
+                        <img 
+                            src="/logo.jpg" 
+                            alt="Home" 
+                            className="w-full h-full object-cover"
+                        />
+                    </button>
+                </div>
                 <h1 className="text-lg font-bold text-slate-800">Purchase Request</h1>
                 <div className="w-16"></div>
             </div>

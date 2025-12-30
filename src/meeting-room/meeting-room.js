@@ -124,13 +124,26 @@ const MeetingRoom = ({ onBack }) => {
         <div className="fixed inset-0 bg-slate-100 flex flex-col animate-in fade-in duration-500 z-[200]">
             {/* Header */}
             <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
-                <button 
-                    onClick={handleBack} 
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
-                    aria-label="Go back"
-                >
-                    <ArrowLeft size={16} /> Back
-                </button>
+                <div className="flex items-center gap-3">
+                    <button 
+                        onClick={handleBack} 
+                        className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
+                        aria-label="Go back"
+                    >
+                        <ArrowLeft size={16} /> Back
+                    </button>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                        title="Home"
+                    >
+                        <img 
+                            src="/logo.jpg" 
+                            alt="Home" 
+                            className="w-full h-full object-cover"
+                        />
+                    </button>
+                </div>
                 <h1 className="text-xl md:text-2xl font-bold text-slate-800 flex-1 text-center">Meeting Room Booking</h1>
                 <button
                     onClick={handleOpenModal}
