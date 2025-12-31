@@ -127,29 +127,32 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                 {/* Header */}
                 <div className="bg-white shadow-md p-4 md:p-6 sticky top-0 z-10">
                     <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={onBack || (() => navigate(-1))}
-                                className="flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
-                            >
-                                <ArrowLeft size={18} />
-                                <span>Back</span>
-                            </button>
-                            <button
-                                onClick={() => navigate('/')}
-                                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                                title="Home"
-                            >
-                                <img 
-                                    src="/logo.jpg" 
-                                    alt="Home" 
-                                    className="w-full h-full object-cover"
-                                />
-                            </button>
+                        <div className="w-32"></div> {/* Left spacer */}
+                        <div className="flex-1 flex flex-col items-center gap-2">
+                            <div className="flex items-center gap-3">
+                                <button
+                                    onClick={onBack || (() => navigate(-1))}
+                                    className="flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+                                >
+                                    <ArrowLeft size={18} />
+                                    <span>Back</span>
+                                </button>
+                                <button
+                                    onClick={() => navigate('/')}
+                                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
+                                    title="Home"
+                                >
+                                    <img 
+                                        src="/logo.jpg" 
+                                        alt="Home" 
+                                        className="w-full h-full object-cover"
+                                    />
+                                </button>
+                            </div>
+                            <h2 className="text-lg md:text-xl font-semibold text-gray-800">
+                                Purchase Request
+                            </h2>
                         </div>
-                        <h2 className="text-lg md:text-xl font-semibold text-gray-800 absolute left-1/2 transform -translate-x-1/2">
-                            Purchase Request
-                        </h2>
                         <button
                             onClick={() => navigate('/dashboard/show-list-request')}
                             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"

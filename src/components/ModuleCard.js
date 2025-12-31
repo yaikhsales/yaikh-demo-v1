@@ -75,9 +75,9 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
             ${isComingSoon 
               ? isDropdownOpen ? "bg-white/90" : theme === 'normal' ? "bg-white/30 backdrop-blur-md border-2 border-white/40" : "glass-effect"
               : isAdministration && !isDropdownOpen
-                ? "bg-gradient-to-br from-green-500/30 via-emerald-500/25 to-teal-500/30 backdrop-blur-md border-2 border-green-400/50 hover:border-green-300 hover:bg-green-500/40"
+                ? "bg-gradient-to-br from-green-500/30 via-emerald-500/25 to-teal-500/30 backdrop-blur-md border-2 border-green-200/50 hover:border-green-200 hover:bg-green-500/40"
                 : isOrangeGroup && !isDropdownOpen
-                  ? "bg-gradient-to-br from-orange-500/30 via-amber-500/25 to-yellow-500/30 backdrop-blur-md border-2 border-orange-400/50 hover:border-orange-300 hover:bg-orange-500/40"
+                  ? "bg-gradient-to-br from-orange-300/30 via-amber-300/25 to-yellow-500/30 backdrop-blur-md border-2 border-orange-400/50 hover:border-orange-300 hover:bg-orange-500/40"
                   : isWhiteGroup && !isDropdownOpen
                     ? "bg-white/90 backdrop-blur-md border-2 border-white/50 hover:border-white/70 hover:bg-white"
                     : isDropdownOpen ? "bg-white hover:bg-blue-50" : theme === 'normal' ? "bg-white/35 backdrop-blur-md border-2 border-white/50 hover:bg-white/45" : "glass-effect-strong hover:bg-white/20"
@@ -106,11 +106,11 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
       )}
       {/* Green Gradient Overlay for Administration modules */}
       {!isDropdownOpen && isAdministration && (
-        <div className="absolute inset-0 bg-gradient-to-br from-green-500/0 via-emerald-500/0 to-teal-500/0 group-hover:from-green-500/15 group-hover:via-emerald-500/15 group-hover:to-teal-500/15 transition-all duration-500 rounded-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-green-300/0 via-emerald-500/0 to-teal-500/0 group-hover:from-green-500/15 group-hover:via-emerald-500/15 group-hover:to-teal-500/15 transition-all duration-500 rounded-2xl"></div>
       )}
       {/* Orange Gradient Overlay for QA, Production, DT Sync modules */}
       {!isDropdownOpen && isOrangeGroup && (
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 via-amber-500/0 to-yellow-500/0 group-hover:from-orange-500/15 group-hover:via-amber-500/15 group-hover:to-yellow-500/15 transition-all duration-500 rounded-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-300/0 via-amber-300/0 to-yellow-500/0 group-hover:from-orange-500/15 group-hover:via-amber-500/15 group-hover:to-yellow-500/15 transition-all duration-500 rounded-2xl"></div>
       )}
       {/* White Gradient Overlay for PRE PRO, Production Materials modules */}
       {!isDropdownOpen && isWhiteGroup && (
@@ -161,7 +161,7 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
       )}
       {/* Orange Glow for QA, Production, DT Sync modules */}
       {isOrangeGroup && !isDropdownOpen && !isComingSoon && (
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-400/15 via-amber-400/15 to-yellow-400/15 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-orange-300/15 via-amber-400/15 to-yellow-400/15 pointer-events-none"></div>
       )}
       {/* White Glow for PRE PRO, Production Materials modules */}
       {isWhiteGroup && !isDropdownOpen && !isComingSoon && (

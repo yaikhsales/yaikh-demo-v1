@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import PdfViewer from './PdfViewer';
 import ImageViewer from './ImageViewer';
+import BookViewer from './BookViewer';
 import AboutUs from './AboutUs';
 import { useWindowSize, useIsMobile } from '../device-responsive/responsive';
 
@@ -17,6 +18,7 @@ const Header = () => {
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
   const [showPictureViewer, setShowPictureViewer] = useState(false);
+  const [showBookViewer, setShowBookViewer] = useState(false);
   const [showAboutUs, setShowAboutUs] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
@@ -104,7 +106,7 @@ const Header = () => {
                   <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
                 </button>
                 <button
-                  onClick={() => setShowPictureViewer(true)}
+                  onClick={() => setShowBookViewer(true)}
                   className="p-1 hover:bg-gray-100 rounded transition-colors"
                   aria-label="Pictures"
                 >
@@ -268,7 +270,7 @@ const Header = () => {
                   <span>Price</span>
                 </button>
                 <button
-                  onClick={() => { setShowPictureViewer(true); setShowMobileMenu(false); }}
+                  onClick={() => { setShowBookViewer(true); setShowMobileMenu(false); }}
                   className="w-full flex items-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all font-medium"
                 >
                   <Image size={18} />
@@ -351,11 +353,10 @@ const Header = () => {
     />
   )}
   
-  {/* Picture Viewer Modal */}
-  {showPictureViewer && (
-    <ImageViewer 
-      imagePath="/assets/pictures/image.png" 
-      onClose={() => setShowPictureViewer(false)} 
+  {/* Book Viewer Modal */}
+  {showBookViewer && (
+    <BookViewer 
+      onClose={() => setShowBookViewer(false)} 
     />
   )}
   

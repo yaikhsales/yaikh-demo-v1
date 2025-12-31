@@ -431,7 +431,7 @@ const SubMenuView = () => {
     
     return (
         <div className={`flex flex-col items-center justify-center h-full min-h-[500px] animate-in fade-in zoom-in duration-300 ${isEGovView ? 'relative z-10' : ''}`}>
-            <div className={`w-full max-w-4xl ${isGroupedStructure ? 'mb-4' : 'mb-8'} flex items-center justify-between`}>
+            <div className={`w-full max-w-4xl ${isGroupedStructure ? 'mb-4' : 'mb-8'} flex flex-col items-center gap-4`}>
                 <div className="flex items-center gap-3">
                     <button
                         onClick={() => navigate(-1)}
@@ -454,7 +454,6 @@ const SubMenuView = () => {
                 <h2 className={`text-white font-bold uppercase tracking-wider drop-shadow-lg ${isGroupedStructure ? 'text-xl' : 'text-3xl'}`}>
                     {title}
                 </h2>
-                <div className={isGroupedStructure ? 'w-24' : 'w-32'}></div>
             </div>
             {isGroupedStructure ? (
                 // Grouped layout (for YQMS and FC) - Column layout (very compact, no big spaces)

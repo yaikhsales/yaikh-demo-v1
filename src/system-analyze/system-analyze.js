@@ -420,7 +420,8 @@ const SystemAnalyze = ({ onBack }) => {
         <div className="fixed inset-0 bg-slate-100 flex flex-col animate-in fade-in duration-500 z-[200]">
             {/* Header */}
             <div className="bg-white p-6 border-b flex items-center justify-between flex-shrink-0 shadow-sm relative z-[201]">
-                <div className="flex items-center gap-4">
+                <div className="w-32"></div> {/* Left spacer */}
+                <div className="flex-1 flex flex-col items-center gap-2">
                     <div className="flex items-center gap-3">
                         <button 
                             onClick={handleBack} 
@@ -441,7 +442,7 @@ const SystemAnalyze = ({ onBack }) => {
                             />
                         </button>
                     </div>
-                    <div>
+                    <div className="text-center">
                         <h1 className="text-2xl font-bold text-slate-800">System Analytics Dashboard</h1>
                         <p className="text-slate-600 text-sm">Real-time insights and performance metrics.</p>
                     </div>

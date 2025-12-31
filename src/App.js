@@ -49,6 +49,7 @@ import YTMShop from './ytm-shop/ytm-shop';
 import YShop from './y-shop/y-shop';
 import Training from './training/training';
 import WelcomePage from './welcome-page';
+import HappyNewYear from './happy-new-year';
 
 export default function App() {
     const navigate = useNavigate();
@@ -58,6 +59,7 @@ export default function App() {
         <ThemeProvider>
             <Routes>
             <Route path="/welcome" element={<WelcomePage />} />
+            <Route path="/happy-new-year" element={<HappyNewYear />} />
             <Route path="/" element={<AppLayout />} />
             <Route path="/dashboard" element={<AppLayout />}>
                 <Route index element={<div />} />

@@ -192,7 +192,7 @@ const ApprovalPR = ({ onBack }) => {
         <div className="fixed inset-0 bg-white flex flex-col animate-in fade-in duration-500 z-10">
             {/* Header with Breadcrumb and Back Button */}
             <div className="bg-slate-100 p-4 border-b flex flex-col gap-3 flex-shrink-0 shadow-sm">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center gap-4">
                     <button 
                         onClick={handleBack} 
                         className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors bg-slate-100"
@@ -217,7 +217,7 @@ const ApprovalPR = ({ onBack }) => {
                         <span className="font-semibold text-slate-800">Purchase Request</span>
                     </div>
                 </div>
-                <h2 className="text-xl font-bold text-slate-800 ml-12">Approve Request Lists - Purchase Request</h2>
+                <h2 className="text-xl font-bold text-slate-800 text-center">Approve Request Lists - Purchase Request</h2>
             </div>
 
             {/* Search Bar */}
