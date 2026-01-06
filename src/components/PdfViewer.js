@@ -50,7 +50,18 @@ const PdfViewer = ({ pdfPath, onClose }) => {
         >
             {/* Header Controls */}
             <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-gradient-to-b from-black/80 to-transparent">
-                <div className="flex items-center gap-3">
+                {/* Left: Empty space for balance */}
+                <div className="flex-1"></div>
+                
+                {/* Center: Home Button and Back Button */}
+                <div className="flex items-center gap-3 justify-center flex-1">
+                    <button
+                        onClick={onClose}
+                        className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all backdrop-blur-sm border border-white/10"
+                    >
+                        <ArrowLeft size={18} />
+                        <span className="text-sm font-medium">Back</span>
+                    </button>
                     <button
                         onClick={() => navigate('/')}
                         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0 shadow-lg"
@@ -62,16 +73,10 @@ const PdfViewer = ({ pdfPath, onClose }) => {
                             className="w-full h-full object-cover"
                         />
                     </button>
-                    <button
-                        onClick={onClose}
-                        className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-all backdrop-blur-sm border border-white/10"
-                    >
-                        <ArrowLeft size={18} />
-                        <span className="text-sm font-medium">Back</span>
-                    </button>
                 </div>
                 
-                <div className="flex items-center gap-2">
+                {/* Right: Controls */}
+                <div className="flex items-center gap-2 flex-1 justify-end">
                     {/* Zoom Controls */}
                     <button
                         onClick={handleZoomOut}

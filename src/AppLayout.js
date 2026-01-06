@@ -86,15 +86,15 @@ const AppLayout = () => {
                 navigate('/dashboard/system-analysis');
             } else if (demoType === 'IMAGE_VIEW') navigate(`/dashboard/image/${module.image}`);
             else if (demoType === 'VIEW_SYSTEM_ANALYSIS') navigate(`/dashboard/${id}`);
-            else if (demoType?.startsWith('SUBMENU')) {
+            else if (demoType === 'SUBMENU_YHR') {
+                // Navigate directly to YHR component
+                navigate('/dashboard/yhr');
+            } else if (demoType?.startsWith('SUBMENU')) {
                  const cards = id === 'digital-audit' ? [
                     { title: 'Checklist 6s', icon: 'CheckSquare', color: 'bg-cyan-500 text-white' },
                     { title: 'Digital Audit', icon: 'MonitorPlay', color: 'bg-blue-500 text-white' },
                     { title: 'Compliance Certificate', icon: 'FileCheck', color: 'bg-emerald-500 text-white' },
                     { title: 'Audit Plan', icon: 'Layout', color: 'bg-indigo-500 text-white' }
-                ] : id === 'yhr' ? [
-                    { title: 'Checklist Attendant', icon: 'CheckSquare', color: 'bg-sky-400 text-white' },
-                    { title: 'My Attendant', icon: 'UserCog', color: 'bg-teal-500 text-white' }
                 ] : id === 'pr-admin' ? [
                     { title: 'Purchase Request', icon: 'FileText', color: 'bg-yellow-500 text-black', action: '/dashboard/purchase-requisition-form', isPurchaseRequest: true },
                     { title: 'Show Lists Request', icon: 'Layout', color: 'bg-sky-400 text-black', image: 'assets/icons/sub-icons/show-list-request.png', isPurchaseRequest: true },
@@ -347,7 +347,8 @@ const AppLayout = () => {
             !location.pathname.includes('approval-pr') && 
             !location.pathname.includes('pay-pr') && 
             !location.pathname.includes('ticket') && 
-            !location.pathname.includes('y-shop') && <ThemeBackground />}
+            !location.pathname.includes('y-shop') && 
+            !location.pathname.includes('yhr') && <ThemeBackground />}
             
             <style>{`
                 * {
@@ -368,7 +369,8 @@ const AppLayout = () => {
             !location.pathname.includes('approval-pr') && 
             !location.pathname.includes('pay-pr') && 
             !location.pathname.includes('ticket') && 
-            !location.pathname.includes('y-shop') && <Header />}
+            !location.pathname.includes('y-shop') && 
+            !location.pathname.includes('yhr') && <Header />}
 
             {/* Light Bulb - Center Top */}
             {location.pathname === '/' && (

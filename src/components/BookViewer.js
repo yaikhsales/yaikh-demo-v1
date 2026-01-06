@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const BookViewer = ({ onClose, images = [] }) => {
     const navigate = useNavigate();
@@ -17,8 +17,18 @@ const BookViewer = ({ onClose, images = [] }) => {
 
     // Use images from nav-images folder
     const defaultImages = images.length > 0 ? images : [
-        '/assets/nav-images/empty-factory.webp',
-        '/assets/nav-images/support-ticket.png',
+        'assets/nav-images/empty-factory1.jpg',
+        'assets/nav-images/empty-factory2.jpg',
+        // '/assets/nav-images/s1.png',
+        // '/assets/nav-images/s2.png',
+        // '/assets/nav-images/s3.png',
+        // '/assets/nav-images/s4.png',
+        // 'assets/nav-images/support-ticket.png',
+        // 'assets/nav-images/11111.jpg',
+        'assets/nav-images/t2.jpg',
+        'assets/nav-images/t1.jpg',
+        'assets/nav-images/scan.jpg',
+        
     ];
 
     const totalPages = defaultImages.length;
@@ -297,7 +307,18 @@ const BookViewer = ({ onClose, images = [] }) => {
         >
             {/* Header Controls */}
             <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-3 sm:p-4 bg-gradient-to-b from-black/30 to-transparent backdrop-blur-md">
-                <div className="flex items-center gap-2 sm:gap-3">
+                {/* Left: Empty space for balance */}
+                <div className="flex-1"></div>
+                
+                {/* Center: Home Button and Back Button */}
+                <div className="flex items-center gap-2 sm:gap-3 justify-center flex-1">
+                    <button
+                        onClick={onClose}
+                        className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all backdrop-blur-sm border border-white/20 shadow-lg text-xs sm:text-sm"
+                    >
+                        <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" />
+                        <span className="font-medium hidden sm:inline">Back</span>
+                    </button>
                     <button
                         onClick={() => navigate('/')}
                         className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0 shadow-lg"
@@ -309,18 +330,16 @@ const BookViewer = ({ onClose, images = [] }) => {
                             className="w-full h-full object-cover"
                         />
                     </button>
-                    <button
-                        onClick={onClose}
-                        className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all backdrop-blur-sm border border-white/20 shadow-lg text-xs sm:text-sm"
-                    >
-                        <ArrowLeft size={16} className="sm:w-[18px] sm:h-[18px]" />
-                        <span className="font-medium hidden sm:inline">Back</span>
-                    </button>
                 </div>
                 
-                <div className="flex items-center gap-2 sm:gap-4">
+                {/* Right: Page Counter */}
+                <div className="flex items-center gap-2 sm:gap-4 flex-1 justify-end">
                     <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg border border-white/20">
-                        <BookOpen size={16} className="text-white sm:w-[18px] sm:h-[18px]" />
+                        <img 
+                            src="/logo.jpg" 
+                            alt="Yai Logo" 
+                            className="w-4 h-4 sm:w-[18px] sm:h-[18px] object-contain"
+                        />
                         <span className="text-white text-xs sm:text-sm font-medium">
                             {currentPage + 1} / {totalPages}
                         </span>
@@ -364,8 +383,12 @@ const BookViewer = ({ onClose, images = [] }) => {
                         ) : (
                             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-orange-100">
                                 <div className="text-center text-amber-800/50">
-                                    <BookOpen size={64} className="mx-auto mb-4" />
-                                    <p className="text-2xl font-serif italic">Cover</p>
+                                    <img 
+                                        src="/logo.jpg" 
+                                        alt="Yai Logo" 
+                                        className="w-32 h-32 mx-auto mb-4 object-contain"
+                                    />
+                                    <p className="text-2xl font-serif italic"></p>
                                 </div>
                             </div>
                         )}
@@ -404,7 +427,11 @@ const BookViewer = ({ onClose, images = [] }) => {
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-orange-100">
                                         <div className="text-center text-amber-800/50">
-                                            <BookOpen size={64} className="mx-auto mb-4" />
+                                            <img 
+                                                src="/logo.jpg" 
+                                                alt="Yai Logo" 
+                                                className="w-32 h-32 mx-auto mb-4 object-contain"
+                                            />
                                             <p className="text-2xl font-serif italic">Page</p>
                                         </div>
                                     </div>
@@ -431,7 +458,11 @@ const BookViewer = ({ onClose, images = [] }) => {
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-orange-100">
                                         <div className="text-center text-amber-800/50">
-                                            <BookOpen size={64} className="mx-auto mb-4" />
+                                            <img 
+                                                src="/logo.jpg" 
+                                                alt="Yai Logo" 
+                                                className="w-32 h-32 mx-auto mb-4 object-contain"
+                                            />
                                             <p className="text-2xl font-serif italic">Cover</p>
                                         </div>
                                     </div>
@@ -462,7 +493,11 @@ const BookViewer = ({ onClose, images = [] }) => {
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-amber-100 to-orange-100">
                                     <div className="text-center text-amber-800/50">
-                                        <BookOpen size={64} className="mx-auto mb-4" />
+                                        <img 
+                                            src="/logo.jpg" 
+                                            alt="Yai Logo" 
+                                            className="w-32 h-32 mx-auto mb-4 object-contain"
+                                        />
                                         <p className="text-2xl font-serif italic">Back Cover</p>
                                     </div>
                                 </div>

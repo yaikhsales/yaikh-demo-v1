@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, FileText, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
 import RequestDetailModal from '../components/RequestDetailModal';
 import InvoiceModal from '../components/InvoiceModal';
+import ImageViewer from '../components/ImageViewer';
+import PdfViewer from '../components/PdfViewer';
 
 const PayPR = ({ onBack }) => {
     const navigate = useNavigate();
@@ -13,74 +15,50 @@ const PayPR = ({ onBack }) => {
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+    const [showImageViewer, setShowImageViewer] = useState(false);
+    const [showPdfViewer, setShowPdfViewer] = useState(false);
+    const [selectedImagePath, setSelectedImagePath] = useState('');
+    const [selectedPdfPath, setSelectedPdfPath] = useState('');
     
     // Sample data - replace with actual data from API
     const sampleData = [
         {
-            code: 1916,
-            name: 'Roth Tongleng',
+            code: 1978,
+            name: 'Yo Ka',
             department: 'Admin',
-            productService: 'Electrical cable rep...',
-            requestDate: '19-12-25',
+            productService: 'Diesel on 27/12/2025',
+            requestDate: '29-12-25',
             accPay: 'paid',
-            accPayDate: '12/22/25 16:55',
-            accPayBy: 'Mom Chheangna'
+            accPayDate: '12/30/25 17:16',
+            accPayBy: 'Mom Chheangna',
+            image: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_0000803120231103125217.jpeg'
         },
         {
-            code: 1915,
-            name: 'Roth Tongleng',
+            code: 1977,
+            name: 'U Chheng',
             department: 'Admin',
-            productService: 'Request for repair',
-            requestDate: '19-12-25',
+            productService: 'New Purchase',
+            requestDate: '29-12-25',
             accPay: 'paid',
-            accPayDate: '12/22/25 16:58',
-            accPayBy: 'Mom Chheangna'
+            accPayDate: '12/31/25 12:35',
+            accPayBy: 'Mom Chheangna',
+            image: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_0000437020211222075243.jpeg'
         },
         {
-            code: 1911,
-            name: 'Yon Kanda',
+            code: 1975,
+            name: 'Ro Ton',
             department: 'Admin',
-            productService: 'Diesel on 18/12/2025',
-            requestDate: '19-12-25',
-            accPay: 'paid',
-            accPayDate: '12/22/25 17:34',
-            accPayBy: 'Mom Chheangna'
+            productService: 'For backup use in ca...',
+            requestDate: '29-12-25',
+            accPay: 'pending',
+            accPayDate: null,
+            accPayBy: null,
+            image: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_00008943_20250313153947.jpeg'
         },
-        {
-            code: 1906,
-            name: 'Roth Tongleng',
-            department: 'Admin',
-            productService: 'Install the electric...',
-            requestDate: '18-12-25',
-            accPay: 'paid',
-            accPayDate: '12/22/25 16:59',
-            accPayBy: 'Mom Chheangna'
-        }
+        
     ];
 
-    // Generate more sample data for pagination
-    const generateMoreData = () => {
-        const moreData = [];
-        const names = ['Roth Tongleng', 'Yon Kanda', 'Mom Chheangna'];
-        const payByNames = ['Mom Chheangna', 'Mom Chheanana'];
-        const times = ['16:55', '16:58', '17:34', '16:59', '17:12', '17:45', '18:01', '18:23'];
-        
-        for (let i = 1905; i >= 1674; i--) {
-            moreData.push({
-                code: i,
-                name: names[i % names.length],
-                department: 'Admin',
-                productService: `Product/Service ${i}`,
-                requestDate: `${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}-12-25`,
-                accPay: 'paid',
-                accPayDate: `12/22/25 ${times[i % times.length]}`,
-                accPayBy: payByNames[i % payByNames.length]
-            });
-        }
-        return [...sampleData, ...moreData];
-    };
-
-    const [data] = useState(generateMoreData());
+    const [data] = useState(sampleData);
     const totalItems = data.length;
 
     const handleBack = () => {
@@ -114,6 +92,31 @@ const PayPR = ({ onBack }) => {
     const handleReqDetails = (code) => {
         // Handle request details action
         console.log('View request details for PR:', code);
+    };
+
+    const handleViewDetail = () => {
+        setSelectedImagePath('/assets/accountant/pay-pr/detail.jpg');
+        setShowImageViewer(true);
+    };
+
+    const handleViewDetailAction = () => {
+        setSelectedImagePath('/assets/accountant/pay-pr/request-detail.jpg');
+        setShowImageViewer(true);
+    };
+
+    const handleViewInvoice = () => {
+        setSelectedImagePath('/assets/accountant/pay-pr/invoice.jpg');
+        setShowImageViewer(true);
+    };
+
+    const handleViewPdf = () => {
+        setSelectedPdfPath('/assets/accountant/pay-pr/view-pdf.pdf');
+        setShowPdfViewer(true);
+    };
+
+    const handleViewRequestForm = () => {
+        setSelectedImagePath('/assets/accountant/pay-pr/request-form.jpg');
+        setShowImageViewer(true);
     };
 
     const filteredData = data.filter(item => 
@@ -220,7 +223,7 @@ const PayPR = ({ onBack }) => {
             </div>
 
             {/* Search Bar */}
-            <div className="bg-white p-4 border-b flex items-center gap-3 flex-shrink-0">
+            {/* <div className="bg-white p-4 border-b flex items-center gap-3 flex-shrink-0">
                 <div className="flex-1 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2">
                     <Search size={18} className="text-slate-400" />
                     <input
@@ -237,10 +240,10 @@ const PayPR = ({ onBack }) => {
                 <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                     Search
                 </button>
-            </div>
+            </div> */}
 
             {/* Tabs */}
-            <div className="bg-white border-b flex gap-1 px-4 flex-shrink-0">
+            {/* <div className="bg-white border-b flex gap-1 px-4 flex-shrink-0">
                 <button
                     onClick={() => {
                         setActiveTab('new');
@@ -267,7 +270,7 @@ const PayPR = ({ onBack }) => {
                 >
                     Old Data
                 </button>
-            </div>
+            </div> */}
 
             {/* Table */}
             <div className="flex-1 overflow-auto p-6">
@@ -288,14 +291,14 @@ const PayPR = ({ onBack }) => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {paginatedData.length === 0 ? (
+                            {data.length === 0 ? (
                                 <tr>
                                     <td colSpan={10} className="text-center py-16 text-slate-500">
                                         No data found
                                     </td>
                                 </tr>
                             ) : (
-                                paginatedData.map((item, idx) => (
+                                data.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-blue-50 transition-colors">
                                         <td className="px-4 py-4 font-medium text-slate-900">{item.code}</td>
                                         <td className="px-4 py-4">
@@ -307,26 +310,32 @@ const PayPR = ({ onBack }) => {
                                             </button>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <div className="flex flex-col gap-1">
-                                                <span className="bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold inline-block w-fit">
-                                                    Paid
-                                                </span>
-                                                <div className="text-xs text-slate-600">{item.accPayDate}</div>
-                                                <div className="text-xs text-slate-600">by {item.accPayBy}</div>
-                                            </div>
+                                            {item.accPay === 'paid' ? (
+                                                <div className="flex flex-col gap-1">
+                                                    <button className="bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors inline-block w-fit">
+                                                        Paid
+                                                    </button>
+                                                    <div className="text-xs text-slate-600">{item.accPayDate}</div>
+                                                    <div className="text-xs text-slate-600">by {item.accPayBy}</div>
+                                                </div>
+                                            ) : (
+                                                <button className="bg-red-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-red-600 transition-colors">
+                                                    Pending
+                                                </button>
+                                            )}
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="flex flex-col gap-2">
                                                 <button
-                                                    onClick={() => handleDetails(item)}
-                                                    className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1 justify-center"
+                                                    onClick={handleViewDetail}
+                                                    className="bg-white text-blue-600 border-2 border-blue-600 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-50 transition-colors flex items-center gap-1 justify-center"
                                                 >
                                                     <Eye size={12} />
                                                     Details
                                                 </button>
                                                 <button
-                                                    onClick={() => handleInvoice(item)}
-                                                    className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1 justify-center"
+                                                    onClick={handleViewInvoice}
+                                                    className="bg-white text-blue-600 border-2 border-blue-600 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-50 transition-colors flex items-center gap-1 justify-center"
                                                 >
                                                     <Eye size={12} />
                                                     Invoice
@@ -334,14 +343,27 @@ const PayPR = ({ onBack }) => {
                                             </div>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-xs font-semibold text-slate-700">
+                                            <div className="flex flex-col items-center gap-1">
+                                                {item.image ? (
+                                                    <img 
+                                                        src={item.image} 
+                                                        alt={item.name}
+                                                        className="w-12 h-16 object-cover border border-slate-200"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = '';
+                                                            e.target.style.display = 'none';
+                                                            const fallback = e.target.nextElementSibling;
+                                                            if (fallback) fallback.style.display = 'flex';
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                <div 
+                                                    className={`w-12 h-16 bg-slate-300 flex items-center justify-center text-xs font-semibold text-slate-700 border border-slate-200 ${item.image ? 'hidden' : ''}`}
+                                                >
                                                     {item.name.charAt(0)}
                                                 </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-slate-700 text-sm font-medium">{item.name}</span>
-                                                    <span className="text-slate-500 text-xs">Admin</span>
-                                                </div>
+                                                <span className="text-slate-700 text-xs text-center">{item.name}</span>
                                             </div>
                                         </td>
                                         <td className="px-4 py-4 text-slate-700">{item.department}</td>
@@ -349,14 +371,22 @@ const PayPR = ({ onBack }) => {
                                         <td className="px-4 py-4 text-slate-700">{item.requestDate}</td>
                                         <td className="px-4 py-4">
                                             <div className="flex flex-col gap-2">
-                                                <div className="text-xs text-slate-600">Request Form</div>
+                                                <button
+                                                    onClick={handleViewRequestForm}
+                                                    className="text-xs text-slate-600 hover:text-slate-800 transition-colors text-left"
+                                                >
+                                                    Request Form
+                                                </button>
                                                 <div className="flex items-center gap-2">
-                                                    <button className="bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors flex items-center gap-1">
+                                                    <button
+                                                        onClick={handleViewPdf}
+                                                        className="bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors flex items-center gap-1"
+                                                    >
                                                         <FileText size={12} />
                                                         PDF
                                                     </button>
                                                     <button
-                                                        onClick={() => handleViewDocument(item.code)}
+                                                        onClick={handleViewDetailAction}
                                                         className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
                                                     >
                                                         <Eye size={12} />
@@ -367,7 +397,10 @@ const PayPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={() => handleReqDetails(item.code)}
+                                                onClick={() => {
+                                                    setSelectedImagePath('/assets/accountant/pay-pr/request-detail.jpg');
+                                                    setShowImageViewer(true);
+                                                }}
                                                 className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
                                             >
                                                 Req Details
@@ -382,12 +415,13 @@ const PayPR = ({ onBack }) => {
             </div>
 
             {/* Pagination Footer */}
-            <div className="bg-white border-t p-4 flex items-center justify-between flex-shrink-0">
+            {/* <div className="bg-white border-t p-4 flex items-center justify-between flex-shrink-0">
                 <div className="text-sm text-slate-600">
                     Showing {startItem} to {endItem} of {filteredData.length} results
                 </div>
                 {renderPagination()}
-            </div>
+            </div> */}
+
 
             {/* Modals */}
             <RequestDetailModal 
@@ -400,6 +434,28 @@ const PayPR = ({ onBack }) => {
                 onClose={() => setShowInvoiceModal(false)}
                 requestData={selectedRequest}
             />
+
+            {/* Image Viewer */}
+            {showImageViewer && (
+                <ImageViewer
+                    imagePath={selectedImagePath}
+                    onClose={() => {
+                        setShowImageViewer(false);
+                        setSelectedImagePath('');
+                    }}
+                />
+            )}
+
+            {/* PDF Viewer */}
+            {showPdfViewer && (
+                <PdfViewer
+                    pdfPath={selectedPdfPath}
+                    onClose={() => {
+                        setShowPdfViewer(false);
+                        setSelectedPdfPath('');
+                    }}
+                />
+            )}
         </div>
     );
 };

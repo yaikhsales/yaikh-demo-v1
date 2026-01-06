@@ -308,6 +308,17 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                     navigate('/dashboard/cctv/face-scan');
                 } else if (card.title === 'My Face Scan') {
                     navigate('/dashboard/cctv/my-face-scan');
+                } else if (card.title === 'Cambodia E Invoice') {
+                    // Open Cambodia E Invoice login page in new tab
+                    window.open('https://einvoice.ggmt.sg/login', '_blank', 'noopener,noreferrer');
+                } else if (card.title === 'Supplier Management') {
+                    // Show Supplier Management image
+                    const encodedPath = encodeURIComponent('assets/e-invoice/supplier-management.jpg');
+                    navigate(`/dashboard/image/${encodedPath}`);
+                } else if (card.title === 'IEWS') {
+                    // Show IEWS image
+                    const encodedPath = encodeURIComponent('assets/e-invoice/IEWS.jpg');
+                    navigate(`/dashboard/image/${encodedPath}`);
                 } else if (isFCModule || isYQMSModule) {
                     // FC and YQMS sub-modules: display icons only, no navigation
                     return;

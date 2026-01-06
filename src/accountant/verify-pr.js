@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, FileText, Eye, X } from 'lucide-react';
 import RequestDetailModal from '../components/RequestDetailModal';
 import InvoiceModal from '../components/InvoiceModal';
+import ImageViewer from '../components/ImageViewer';
+import PdfViewer from '../components/PdfViewer';
 
 const VerifyPR = ({ onBack }) => {
     const navigate = useNavigate();
@@ -11,56 +13,54 @@ const VerifyPR = ({ onBack }) => {
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [showDetailModal, setShowDetailModal] = useState(false);
     const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+    const [showImageViewer, setShowImageViewer] = useState(false);
+    const [showPdfViewer, setShowPdfViewer] = useState(false);
+    const [selectedImagePath, setSelectedImagePath] = useState('');
+    const [selectedPdfPath, setSelectedPdfPath] = useState('');
     
     // Sample data - replace with actual data from API
     const sampleData = [
         {
-            code: 1929,
-            name: 'ZHANG BIN',
-            department: 'Cutting',
-            productService: 'Regular Purchase',
-            requestDate: '22-12-25',
-            headStatus: 'approved',
-            gmStatus: 'approved',
-            purchaserStatus: 'pending',
-            gmDate: '12/22/25',
-            accCheck: 'pending'
-        },
-        {
-            code: 1927,
-            name: 'LIU MINGYU',
-            department: 'TPM',
-            productService: '新辉/针车零件/螺丝+..',
-            requestDate: '21-12-25',
-            headStatus: 'approved',
-            gmStatus: 'approved',
-            purchaserStatus: 'pending',
-            gmDate: '12/22/25',
-            accCheck: 'pending'
-        },
-        {
-            code: 1925,
-            name: 'Roth Tongleng',
+            code: 1974,
+            name: 'Ro Ton',
             department: 'Admin',
-            productService: 'For repair0.',
-            requestDate: '21-12-25',
+            productService: 'For install new GD I...',
+            requestDate: '29-12-25',
             headStatus: 'approved',
             gmStatus: 'approved',
             purchaserStatus: 'pending',
-            gmDate: '12/22/25',
-            accCheck: 'pending'
+            gmDate: '12/30/25',
+            accCheck: 'pending',
+            accCheckDate: null,
+            image: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_00008943_20250313153947.jpeg'
         },
         {
-            code: 1923,
-            name: 'ZHANG BIN',
-            department: 'Cutting',
-            productService: 'Regular Purchase',
-            requestDate: '20-12-25',
+            code: 1958,
+            name: 'Yo Ka',
+            department: 'Admin',
+            productService: 'driver go to Sihanou...',
+            requestDate: '25-12-25',
             headStatus: 'approved',
             gmStatus: 'approved',
             purchaserStatus: 'pending',
-            gmDate: '12/22/25',
-            accCheck: 'pending'
+            gmDate: '12/27/25',
+            accCheck: 'checked',
+            accCheckDate: '12/27/25',
+            image: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_0000803120231103125217.jpeg'
+        },
+        {
+            code: 1948,
+            name: 'Tou Srey',
+            department: 'QA',
+            productService: 'New Purchase',
+            requestDate: '24-12-25',
+            headStatus: 'approved',
+            gmStatus: 'approved',
+            purchaserStatus: 'pending',
+            gmDate: '12/30/25',
+            accCheck: 'pending',
+            accCheckDate: null,
+            image: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_0000674020220209073009.jpeg'
         }
     ];
 
@@ -92,6 +92,31 @@ const VerifyPR = ({ onBack }) => {
     const handleViewDocument = (code) => {
         // Handle view document action
         console.log('View document for PR:', code);
+    };
+
+    const handleViewDetail = () => {
+        setSelectedImagePath('/assets/accountant/verify-pr/detail.jpg');
+        setShowImageViewer(true);
+    };
+
+    const handleViewDetailAction = () => {
+        setSelectedImagePath('/assets/accountant/verify-pr/detail-action.jpg');
+        setShowImageViewer(true);
+    };
+
+    const handleViewInvoice = () => {
+        setSelectedImagePath('/assets/accountant/verify-pr/invoice.jpg');
+        setShowImageViewer(true);
+    };
+
+    const handleViewPdf = () => {
+        setSelectedPdfPath('/assets/accountant/verify-pr/view-pdf.pdf');
+        setShowPdfViewer(true);
+    };
+
+    const handleViewRequestForm = () => {
+        setSelectedImagePath('/assets/accountant/verify-pr/detail.jpg');
+        setShowImageViewer(true);
     };
 
     const filteredData = data.filter(item => 
@@ -131,7 +156,7 @@ const VerifyPR = ({ onBack }) => {
             </div>
 
             {/* Search Bar */}
-            <div className="bg-white p-4 border-b flex items-center gap-3 flex-shrink-0">
+            {/* <div className="bg-white p-4 border-b flex items-center gap-3 flex-shrink-0">
                 <div className="flex-1 flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-lg px-4 py-2">
                     <Search size={18} className="text-slate-400" />
                     <input
@@ -145,10 +170,10 @@ const VerifyPR = ({ onBack }) => {
                 <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                     Search
                 </button>
-            </div>
+            </div> */}
 
             {/* Tabs */}
-            <div className="bg-white border-b flex gap-1 px-4 flex-shrink-0">
+            {/* <div className="bg-white border-b flex gap-1 px-4 flex-shrink-0">
                 <button
                     onClick={() => setActiveTab('new')}
                     className={`px-6 py-3 font-semibold transition-colors border-b-2 ${
@@ -169,7 +194,7 @@ const VerifyPR = ({ onBack }) => {
                 >
                     Old Data
                 </button>
-            </div>
+            </div> */}
 
             {/* Table */}
             <div className="flex-1 overflow-auto p-6">
@@ -193,14 +218,14 @@ const VerifyPR = ({ onBack }) => {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
-                            {filteredData.length === 0 ? (
+                            {data.length === 0 ? (
                                 <tr>
                                     <td colSpan={13} className="text-center py-16 text-slate-500">
                                         No data found
                                     </td>
                                 </tr>
                             ) : (
-                                filteredData.map((item, idx) => (
+                                data.map((item, idx) => (
                                     <tr key={idx} className="hover:bg-blue-50 transition-colors">
                                         <td className="px-4 py-4 font-medium text-slate-900">{item.code}</td>
                                         <td className="px-4 py-4">
@@ -237,8 +262,8 @@ const VerifyPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={() => handleDetails(item)}
-                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
+                                                onClick={handleViewDetail}
+                                                className="bg-white text-blue-600 border-2 border-blue-600 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-50 transition-colors flex items-center gap-1"
                                             >
                                                 <Eye size={12} />
                                                 Details
@@ -246,17 +271,26 @@ const VerifyPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={() => handleInvoice(item)}
-                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
+                                                onClick={handleViewInvoice}
+                                                className="bg-white text-blue-600 border-2 border-blue-600 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-50 transition-colors flex items-center gap-1"
                                             >
                                                 <Eye size={12} />
                                                 Invoice
                                             </button>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <button className="bg-red-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-red-600 transition-colors">
-                                                Pending
-                                            </button>
+                                            {item.accCheck === 'checked' ? (
+                                                <>
+                                                    <button className="bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors">
+                                                        Checked
+                                                    </button>
+                                                    <div className="text-xs text-slate-600 mt-1">{item.accCheckDate}</div>
+                                                </>
+                                            ) : (
+                                                <button className="bg-red-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-red-600 transition-colors">
+                                                    Pending
+                                                </button>
+                                            )}
                                         </td>
                                         <td className="px-4 py-4">
                                             <button className="bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors">
@@ -265,11 +299,27 @@ const VerifyPR = ({ onBack }) => {
                                             <div className="text-xs text-slate-600 mt-1">{item.gmDate}</div>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-8 h-8 rounded-full bg-slate-300 flex items-center justify-center text-xs font-semibold text-slate-700">
+                                            <div className="flex flex-col items-center gap-1">
+                                                {item.image ? (
+                                                    <img 
+                                                        src={item.image} 
+                                                        alt={item.name}
+                                                        className="w-12 h-16 object-cover border border-slate-200"
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = '';
+                                                            e.target.style.display = 'none';
+                                                            const fallback = e.target.nextElementSibling;
+                                                            if (fallback) fallback.style.display = 'flex';
+                                                        }}
+                                                    />
+                                                ) : null}
+                                                <div 
+                                                    className={`w-12 h-16 bg-slate-300 flex items-center justify-center text-xs font-semibold text-slate-700 border border-slate-200 ${item.image ? 'hidden' : ''}`}
+                                                >
                                                     {item.name.charAt(0)}
                                                 </div>
-                                                <span className="text-slate-700">{item.name}</span>
+                                                <span className="text-slate-700 text-xs text-center">{item.name}</span>
                                             </div>
                                         </td>
                                         <td className="px-4 py-4 text-slate-700">{item.department}</td>
@@ -277,13 +327,22 @@ const VerifyPR = ({ onBack }) => {
                                         <td className="px-4 py-4 text-slate-700">{item.requestDate}</td>
                                         <td className="px-4 py-4">
                                             <div className="flex flex-col gap-2">
-                                                <div className="text-xs text-slate-600">Request Form</div>
+                                                <button
+                                                    onClick={handleViewRequestForm}
+                                                    className="text-xs text-slate-600 hover:text-slate-800 transition-colors text-left"
+                                                >
+                                                    Request Form
+                                                </button>
                                                 <div className="flex items-center gap-2">
-                                                    <button className="bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors">
+                                                    <button
+                                                        onClick={handleViewPdf}
+                                                        className="bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors flex items-center gap-1"
+                                                    >
+                                                        <FileText size={12} />
                                                         PDF
                                                     </button>
                                                     <button
-                                                        onClick={() => handleViewDocument(item.code)}
+                                                        onClick={handleViewDetailAction}
                                                         className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
                                                     >
                                                         <Eye size={12} />
@@ -294,10 +353,9 @@ const VerifyPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={() => handleDetails(item)}
-                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
+                                                onClick={handleViewDetailAction}
+                                                className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
                                             >
-                                                <Eye size={12} />
                                                 Details
                                             </button>
                                         </td>
@@ -308,6 +366,7 @@ const VerifyPR = ({ onBack }) => {
                     </table>
                 </div>
             </div>
+
 
             {/* Modals */}
             <RequestDetailModal 
@@ -320,6 +379,28 @@ const VerifyPR = ({ onBack }) => {
                 onClose={() => setShowInvoiceModal(false)}
                 requestData={selectedRequest}
             />
+
+            {/* Image Viewer */}
+            {showImageViewer && (
+                <ImageViewer
+                    imagePath={selectedImagePath}
+                    onClose={() => {
+                        setShowImageViewer(false);
+                        setSelectedImagePath('');
+                    }}
+                />
+            )}
+
+            {/* PDF Viewer */}
+            {showPdfViewer && (
+                <PdfViewer
+                    pdfPath={selectedPdfPath}
+                    onClose={() => {
+                        setShowPdfViewer(false);
+                        setSelectedPdfPath('');
+                    }}
+                />
+            )}
         </div>
     );
 };

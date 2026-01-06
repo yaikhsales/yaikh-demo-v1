@@ -21,8 +21,8 @@ const YShop = ({ onBack }) => {
     const lowStockProducts = [
         {
             id: 1,
-            name: 'Paper clip 1013',
-            image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop',
+            name: 'Tape seal 8 roll',
+            image: 'https://ym.yaikh.com/storage/inventory/M4qIcVk6vONbje8SrRElnDbiQYKAHOs8kJbYoFLZ.jpg',
             department: 'Office',
             inStock: 5.0,
             unit: 'box',
@@ -35,9 +35,26 @@ const YShop = ({ onBack }) => {
             needPurchase: false
         },
         {
+            id: 1,
+            name: 'Paper clip 1013',
+            image: 'https://ym.yaikh.com/storage/inventory/55Z9DBrmd0IFkBMrEd8jxOWDg3jCQeVm5vVd1Z6p.jpg',
+            department: 'Office',
+            inStock: 5.0,
+            unit: 'box',
+            max: 20,
+            min: 5,
+            needBuy: 0,
+            stockIn: 0,
+            stockOut: 0,
+            pending: 1,
+            needPurchase: false
+        },
+
+      
+        {
             id: 2,
             name: 'LAMINATING Film A4',
-            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/shop_images/rEnCM6paslFJhBXb8HXrUhiNTSmyY828XO28yYcp.jpg',
             department: 'Office',
             inStock: 0.0,
             unit: 'packet',
@@ -52,7 +69,7 @@ const YShop = ({ onBack }) => {
         {
             id: 3,
             name: 'Airpods bluetooth',
-            image: 'https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/inFAT8uV9DJ9Xf9oWjanOewMckJrxelbojBZFond.jpg',
             department: 'Office',
             inStock: 1.0,
             unit: 'pcs',
@@ -67,7 +84,7 @@ const YShop = ({ onBack }) => {
         {
             id: 4,
             name: 'Whiteboard',
-            image: 'https://images.unsplash.com/photo-1633265486064-086b219458ec?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/g77K8arosko0xigMhI6ZFa0SupjCF9bkUSsDR3S4.jpg',
             department: 'Office',
             inStock: 0.0,
             unit: 'pcs',
@@ -82,7 +99,7 @@ const YShop = ({ onBack }) => {
         {
             id: 5,
             name: 'C/A',
-            image: 'https://images.unsplash.com/photo-1583484963886-cfe2bff2945f?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/1v1pHlIUZY3Nhn8eCVWjGIYAB3tltP3ncK85Npqk.jpg',
             department: 'Office',
             inStock: 18.0,
             unit: 'pcs',
@@ -97,7 +114,7 @@ const YShop = ({ onBack }) => {
         {
             id: 6,
             name: 'A4 paper (flay blue)',
-            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/lutQmPFpato5szvAA02LnRzR3I3rnZdfbdftxSMm.jpg',
             department: 'Office',
             inStock: 12.0,
             unit: 'box',
@@ -112,7 +129,7 @@ const YShop = ({ onBack }) => {
         {
             id: 7,
             name: 'A4 paper (pink)',
-            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/TbjqOzbrYdWyoAr7ZR08PE4oxsI2vqMJgpX7nhvH.jpg',
             department: 'Office',
             inStock: 14.0,
             unit: 'box',
@@ -127,7 +144,7 @@ const YShop = ({ onBack }) => {
         {
             id: 8,
             name: 'Basket A4',
-            image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/dmZiCXxRQQjWemTFOoywdv0koD9wZAREFuErg6hf.jpg',
             department: 'Office',
             inStock: 0.0,
             unit: 'pcs',
@@ -139,21 +156,7 @@ const YShop = ({ onBack }) => {
             pending: 0,
             needPurchase: true
         },
-        {
-            id: 9,
-            name: 'Walkie talkie',
-            image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop',
-            department: 'Office',
-            inStock: 0.0,
-            unit: 'pcs',
-            max: 15,
-            min: 3,
-            needBuy: 20,
-            stockIn: 0,
-            stockOut: 0,
-            pending: 0,
-            needPurchase: true
-        }
+       
     ];
 
     // Sample data for Healthy Stock Products
@@ -161,7 +164,7 @@ const YShop = ({ onBack }) => {
         {
             id: 1,
             name: 'Scissors 12"',
-            image: 'https://img.freepik.com/free-vector/bright-orange-scissors-illustration_1308-176672.jpg',
+            image: 'https://ym.yaikh.com/storage/inventory/RE2Jieur1A8BmaLmYdVxpkXQyoT65XBK9hxxQEyo.jpg',
             department: 'Office',
             inStock: 15,
             unit: 'pcs',
@@ -174,7 +177,7 @@ const YShop = ({ onBack }) => {
         {
             id: 2,
             name: 'Whiteboard eraser',
-            image: 'https://images.unsplash.com/photo-1633265486064-086b219458ec?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/O0Rv4gmS7mNdlwiKKWeBifnv7YNie0804PmFOWsh.jpg',
             department: 'Office',
             inStock: 18,
             unit: 'pcs',
@@ -187,7 +190,7 @@ const YShop = ({ onBack }) => {
         {
             id: 3,
             name: 'Punch small',
-            image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/69kKVm3Qz0XHsLAlP3jJEK06JgOU3R6CXVoIRsFd.jpg',
             department: 'Office',
             inStock: 10,
             unit: 'pcs',
@@ -200,7 +203,7 @@ const YShop = ({ onBack }) => {
         {
             id: 4,
             name: 'Straight ruler 50 cm',
-            image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/shop_images/lnqHS29CuM0aq77M6zn1QQysBXR7bu780zSF5Pv0.jpg',
             department: 'Office',
             inStock: 8,
             unit: 'pcs',
@@ -213,7 +216,7 @@ const YShop = ({ onBack }) => {
         {
             id: 5,
             name: 'A3 envelope cowhide',
-            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/zcyozI6Ay5zCMno6uFCnlpwb9RYpVI8msHHZ7zUh.jpg',
             department: 'Office',
             inStock: 500,
             unit: 'pcs',
@@ -226,7 +229,7 @@ const YShop = ({ onBack }) => {
         {
             id: 6,
             name: 'Out-of-office strips',
-            image: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/IFEeyLTXDEOAAgTqN6HqNjoB82XLdh30tf4A12ei.jpg',
             department: 'Office',
             inStock: 439,
             unit: 'pcs',
@@ -239,7 +242,7 @@ const YShop = ({ onBack }) => {
         {
             id: 7,
             name: 'A4 File Dividers',
-            image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/694NwrKqVaS17Elgmja0Fs1U2hOwT7fnoxyD4pzi.jpg',
             department: 'Office',
             inStock: 15.0,
             unit: 'packet',
@@ -252,7 +255,7 @@ const YShop = ({ onBack }) => {
         {
             id: 8,
             name: 'Label rope id carde',
-            image: 'https://images.unsplash.com/photo-1583484963886-cfe2bff2945f?w=400&h=400&fit=crop',
+            image: 'https://ym.yaikh.com/storage/inventory/aFTegiQKnBdFS9j6Lnhv4pM9xrXPgz25mKItKE7o.jpg',
             department: 'Office',
             inStock: 900.0,
             unit: 'pcs',
@@ -501,7 +504,7 @@ const YShop = ({ onBack }) => {
             {/* Main Content */}
             <div className="w-full px-6 py-6">
                 {/* Filter Section */}
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                {/* <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                     <div className="mb-4">
                         <h2 className="text-xl font-bold text-gray-800">Data</h2>
                         <p className="text-sm text-gray-600">Filter and view stock transactions.</p>
@@ -562,7 +565,7 @@ const YShop = ({ onBack }) => {
                     <div className="text-sm text-gray-600">
                         <strong>Total Products:</strong> {totalProducts} Showing results from {dateRange.split(' / ')[0]} to {dateRange.split(' / ')[1]}
                     </div>
-                </div>
+                </div> */}
 
                 {/* Two Column Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

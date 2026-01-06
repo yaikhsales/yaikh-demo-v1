@@ -10,7 +10,7 @@ const AboutUs = ({ onClose }) => {
     const aboutUsContent = [
         {
             language: 'ខ្មែរ',
-            text: 'Yaikh គឺជាវេទិកាដំណោះស្រាយសម្រាប់ការផលិតដែលត្រូវបានរចនាជាពិសេសសម្រាប់ការផលិតសម្លៀកបំពាក់ ស្បែកជើង កាបូប និងផលិតផល softgoods ផ្សេងៗ។ ជាកម្មសិទ្ធិរបស់ TexLink Technologies ដែលបានចុះបញ្ជីនៅកម្ពុជា វេទិកានេះដំណើរការលើប្រព័ន្ធ Windows, iOS, និង Android។'
+            text: 'Yaikh គឺជាវេទិកាដំណោះស្រាយសម្រាប់ការផលិតដែលត្រូវបានរចនាជាពិសេសសម្រាប់ការផលិតសម្លៀកបំពាក់ ស្បែកជើង កាបូប និងផលិតផល ក្រណាត់ស្រាលទន់ៗ ផ្សេងៗ។ ជាកម្មសិទ្ធិរបស់ TexLink Technologies ដែលបានចុះបញ្ជីនៅកម្ពុជា វេទិកានេះដំណើរការលើប្រព័ន្ធ Windows, iOS, និង Android។'
         },
         {
             language: 'English',
@@ -24,11 +24,11 @@ const AboutUs = ({ onClose }) => {
 
     const teamMembers = [
         {
-            name: 'Mr Arnold',
+            name: 'Arnold',
             title: 'Team Member',
             contact: '',
             email: '',
-            image: '/assets/about-us/teams/Mr-Arnold.jpeg',
+            image: '/assets/about-us/teams/Mr-Arnold.png',
             skills: [],
             projects: []
         },
@@ -37,62 +37,16 @@ const AboutUs = ({ onClose }) => {
             title: 'Manager YAI',
             contact: '+855 92 973 194',
             email: 'gamini@yalkh.com',
-            image: '/assets/about-us/teams/gamini.jpg',
+            image: '/assets/about-us/teams/gamini.png',
             skills: [],
             projects: []
         },
         {
-            name: 'PICH Daly',
-            title: 'Digital Development Supervisor',
-            contact: '+855 78 255 700',
-            email: 'dalypich100@gmail.com',
-            image: '/assets/about-us/teams/daly.jpg',
-            skills: ['Computer', 'Organized', 'Communication', 'Teamwork', 'Meeting deadlines', 'Critical thinking'],
-            projects: []
-        },
-        {
-            name: 'DILAN Lakmal',
-            title: 'Lead Data Engineer',
-            contact: '+855 75 891 3639',
-            email: 'dilan@yorkmars.com',
-            image: '/assets/about-us/teams/dilan.jpg',
-            skills: ['Full-Stack Web Developer', 'Data Engineer', 'Power BI Specialist'],
-            projects: [
-                'YQMS (Start in 2024.12.1 to continue) - Include 20+ sub systems',
-                'YQMS Visualization (Phase 2 of YQMS)',
-                'YQMS AI (Phase 3 of YQMS)',
-                'Power BI Data Analysis and other Data Analysis works (2022.8.6-2024.11.30) - Includes all of YM, YY, CA'
-            ]
-        },
-        {
-            name: 'PALAYANGODAGE SAMIPATH YASOMI',
-            title: 'Data Analytics',
-            contact: '+855 75 201 2316',
-            email: 'payasomi@gmail.com',
-            image: '/assets/about-us/teams/yasomi.jpg',
-            skills: ['HTML', 'Python', 'C++/C#', 'JavaScript', 'VS Code', 'React', 'Hard Working', 'Team Managing', 'Sinhala'],
-            projects: []
-        },
-        {
-            name: 'Van Virot',
-            title: 'Full-stack developer',
-            contact: '+855 71 651 6791',
-            email: 'bongloyfo@gmail.com',
-            image: '/assets/about-us/teams/virot.jpg',
-            skills: ['Laravel', 'PHP', 'Java', 'Javascript and Jquery', 'PostgreSQL', 'MySQL', 'MongoDB', 'Firmware Development', 'Communication', 'Problem-solving', 'Teamwork', 'Quick learner'],
-            projects: [
-                'Stock management system',
-                'Hospital management system',
-                'SmartPage Builder',
-                'Official website'
-            ]
-        },
-        {
-            name: 'PEANG Sereysothirich',
+            name: 'Peang Sereysothirich',
             title: 'Full-Stack Developer & DevOps Engineer',
             contact: '+855 10 460 407',
             email: 'sothirich.p@yorkmars.com',
-            image: '/assets/about-us/teams/rich.jpg',
+            image: '/assets/about-us/teams/rich.png',
             skills: ['Laravel', 'PHP', 'NodeJS', 'MongoDB', 'Java & JavaFX', 'Discord Bot', 'Flutter', 'React Native', 'Huawei Cloud', 'AWS', 'Cyber Security', 'Splunk BOTS', 'AI', 'Telegram Bot', 'Sketch 3D', 'DevOps', 'RESTful API', 'GraphQL', 'Machine Learning'],
             projects: [
                 'Jan 2025 - Present: Project Manager & Full-Stack Developer on Myelin Technologies (UK)',
@@ -109,6 +63,20 @@ const AboutUs = ({ onClose }) => {
             ]
         },
         {
+            name: 'Van Virot',
+            title: 'Full-stack developer',
+            contact: '+855 71 651 6791',
+            email: 'bongloyfo@gmail.com',
+            image: '/assets/about-us/teams/virot.jpg',
+            skills: ['Laravel', 'PHP', 'Java', 'Javascript and Jquery', 'PostgreSQL', 'MySQL', 'MongoDB', 'Firmware Development', 'Communication', 'Problem-solving', 'Teamwork', 'Quick learner'],
+            projects: [
+                'Stock management system',
+                'Hospital management system',
+                'SmartPage Builder',
+                'Official website'
+            ]
+        },
+        {
             name: 'Samnang Keo',
             title: 'Lead Mobile Developer',
             contact: '+855 96 798 9019',
@@ -120,26 +88,50 @@ const AboutUs = ({ onClose }) => {
                 'Anakut Digital (Anakut Digital)'
             ]
         },
+      
         {
-            name: 'KOEM Chichhong',
-            title: 'Software Engineering',
-            contact: '+855 61 361 239',
-            email: 'chichhorng.koem@student.cadt.edu.kh',
-            image: '/assets/about-us/teams/chhorng.jpg',
-            skills: ['Flutter', 'HTML', 'CSS', 'JavaScript', 'MySQL & Database Management', 'C/C++', 'Deployment with DigitalOcean'],
+            name: 'Dilan Lakmal',
+            title: 'Lead Data Engineer',
+            contact: '+855 75 891 3639',
+            email: 'dilan@yorkmars.com',
+            image: '/assets/about-us/teams/dilan.jpg',
+            skills: ['Full-Stack Web Developer', 'Data Engineer', 'Power BI Specialist'],
+            projects: [
+                'YQMS (Start in 2024.12.1 to continue) - Include 20+ sub systems',
+                'YQMS Visualization (Phase 2 of YQMS)',
+                'YQMS AI (Phase 3 of YQMS)',
+                'Power BI Data Analysis and other Data Analysis works (2022.8.6-2024.11.30) - Includes all of YM, YY, CA'
+            ]
+        },
+        {
+            name: 'Samipath Yasomi',
+            title: 'Data Analytics',
+            contact: '+855 75 201 2316',
+            email: 'payasomi@gmail.com',
+            image: '/assets/about-us/teams/yasomi.png',
+            skills: ['HTML', 'Python', 'C++/C#', 'JavaScript', 'VS Code', 'React', 'Hard Working', 'Team Managing', 'Sinhala'],
             projects: []
         },
         {
-            name: 'CHHANG Mengchhay',
+            name: 'Pich Daly',
+            title: 'Digital Development Supervisor',
+            contact: '+855 78 255 700',
+            email: 'dalypich100@gmail.com',
+            image: '/assets/about-us/teams/daly.png',
+            skills: ['Computer', 'Organized', 'Communication', 'Teamwork', 'Meeting deadlines', 'Critical thinking'],
+            projects: []
+        },
+        {
+            name: 'Chhang Mengchhay',
             title: 'Mobile Developer',
             contact: '+855 85 807492',
             email: 'chhayhighlay1232@gmail.com',
-            image: '/assets/about-us/teams/chhay.jpg',
+            image: '/assets/about-us/teams/chhay.png',
             skills: ['Flutter', 'API-LARAVEL', 'DB management', 'AWS', 'JAVA', 'Chinese Calligraphy', 'Chinese Painting'],
             projects: []
         },
         {
-            name: 'CHHIM Seangleng',
+            name: 'Chhim Seangleng',
             title: 'Web Developer',
             contact: '+855 98 594 600',
             email: 'chhimseangleng123@gmail.com',
@@ -147,6 +139,17 @@ const AboutUs = ({ onClose }) => {
             skills: ['HTML', 'CSS', 'Bootstrap', 'JavaScript', 'Java', 'SQL Server & Project', 'Communication', 'Problem Solving', 'Comprehension', 'Decision Making'],
             projects: []
         },
+       
+        {
+            name: 'Koem Chichhong',
+            title: 'Software Engineering',
+            contact: '+855 61 361 239',
+            email: 'chichhorng.koem@student.cadt.edu.kh',
+            image: '/assets/about-us/teams/chhorng.jpg',
+            skills: ['Flutter', 'HTML', 'CSS', 'JavaScript', 'MySQL & Database Management', 'C/C++', 'Deployment with DigitalOcean'],
+            projects: []
+        },
+      
         {
             name: 'Yeom Chetra',
             title: 'Team Member',
@@ -156,33 +159,8 @@ const AboutUs = ({ onClose }) => {
             skills: [],
             projects: []
         },
-        {
-            name: 'Sin Khun',
-            title: 'Team Member',
-            contact: '',
-            email: '',
-            image: '/assets/about-us/teams/Sin-Khun.jpeg',
-            skills: [],
-            projects: []
-        },
-        {
-            name: 'Koem Phanny',
-            title: 'Team Member',
-            contact: '',
-            email: '',
-            image: '/assets/about-us/teams/Koem-Phanny.jpeg',
-            skills: [],
-            projects: []
-        },
-        {
-            name: 'Proeurng Sokhim',
-            title: 'Team Member',
-            contact: '',
-            email: '',
-            image: '/assets/about-us/teams/Proeurng-Sokhim.jpeg',
-            skills: [],
-            projects: []
-        },
+       
+       
         {
             name: 'Set Sophy',
             title: 'Team Member',
@@ -203,20 +181,31 @@ const AboutUs = ({ onClose }) => {
             projects: []
         },
         {
-            name: 'Van Phanith',
+            name: 'Sin Khun',
             title: 'Team Member',
             contact: '',
             email: '',
-            image: '/assets/about-us/teams/Van-Phanith.jpeg',
+            image: '/assets/about-us/teams/Sin-Khun.jpeg',
             skills: [],
             projects: []
         },
+        {
+            name: 'Proeurng Sokhim',
+            title: 'Team Member',
+            contact: '',
+            email: '',
+            image: '/assets/about-us/teams/Proeurng-Sokhim.png',
+            skills: [],
+            projects: []
+        },
+        
+       
         {
             name: 'Voun Thida',
             title: 'Team Member',
             contact: '',
             email: '',
-            image: '/assets/about-us/teams/Voun-Thida.jpeg',
+            image: '/assets/about-us/teams/Voun-Thida.png',
             skills: [],
             projects: []
         },
@@ -229,7 +218,15 @@ const AboutUs = ({ onClose }) => {
             skills: [],
             projects: []
         },
-       
+        {
+            name: 'Ton Noeun',
+            title: 'Team Member',
+            contact: '',
+            email: '',
+            image: '/assets/about-us/teams/Ton-Noeun.jpeg',
+            skills: [],
+            projects: []
+        },
         {
             name: 'Young Sengheang',
             title: 'Team Member',
@@ -238,12 +235,31 @@ const AboutUs = ({ onClose }) => {
             image: '/assets/about-us/teams/Young-Sengheang.jpeg',
             skills: [],
             projects: []
-        }
+        },
+        {
+            name: 'Van Phanith',
+            title: 'Team Member',
+            contact: '',
+            email: '',
+            image: '/assets/about-us/teams/Van-Phanith.jpeg',
+            skills: [],
+            projects: []
+        },
+        {
+            name: 'Koem Phanny',
+            title: 'Team Member',
+            contact: '',
+            email: '',
+            image: '/assets/about-us/teams/Koem-Phanny.jpeg',
+            skills: [],
+            projects: []
+        },
     ];
 
     const certificates = [
-        { name: 'GK Smart', image: '/assets/about-us/certificates/gk-smart.png' },
         { name: 'MOC', image: '/assets/about-us/certificates/moc.png' },
+        { name: 'GK Smart', image: '/assets/about-us/certificates/gk-smart.png' },
+        
         { name: 'TAFTAC', image: '/assets/about-us/certificates/taftac.png' },
         { name: 'QIP CDC', image: '/assets/about-us/certificates/qip-cdc.png' }
     ];
@@ -261,7 +277,7 @@ const AboutUs = ({ onClose }) => {
         },
         {
             name: 'DeepSeek',
-            logo: 'https://cdn.deepseek.com/logo.png?x-image-process=image%2Fresize%2Cw_1920'
+            logo: 'assets/about-us/deepseek.png'
         }
     ];
     return (
@@ -269,9 +285,20 @@ const AboutUs = ({ onClose }) => {
             className="fixed inset-0 z-[300] bg-gradient-to-br from-gray-50 to-gray-100 flex flex-col animate-in fade-in duration-300 overflow-hidden"
         >
             {/* Header with Back Button and Home Button */}
-            <div className="bg-white shadow-md px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between flex-shrink-0">
-                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">About Us</h2>
-                <div className="flex items-center gap-2 sm:gap-3">
+            <div className="bg-white shadow-md px-3 sm:px-6 py-2 sm:py-3 flex items-center justify-between flex-shrink-0 relative">
+                {/* Left: Empty space for balance */}
+                <div className="flex-1"></div>
+                
+                {/* Center: Back Button and Home Button */}
+                <div className="flex items-center gap-2 sm:gap-3 justify-center flex-1">
+                    <button
+                        onClick={onClose}
+                        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm sm:text-base"
+                        aria-label="Back"
+                    >
+                        <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
+                        <span className="font-medium hidden sm:inline">Back</span>
+                    </button>
                     <button
                         onClick={() => navigate('/')}
                         className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
@@ -283,15 +310,10 @@ const AboutUs = ({ onClose }) => {
                             className="w-full h-full object-cover"
                         />
                     </button>
-                    <button
-                        onClick={onClose}
-                        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors text-sm sm:text-base"
-                        aria-label="Back"
-                    >
-                        <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
-                        <span className="font-medium hidden sm:inline">Back</span>
-                    </button>
                 </div>
+                
+                {/* Right: Empty space for balance */}
+                <div className="flex-1"></div>
             </div>
 
             {/* Main Content Area - No Scroll, Everything in One Screen */}
@@ -305,7 +327,7 @@ const AboutUs = ({ onClose }) => {
                             {/* Logo and Text */}
                             <div className="mb-2 flex-shrink-0">
                                 <div className="flex items-center gap-2 sm:gap-3">
-                                    <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 flex-shrink-0 flex items-center justify-center bg-white border border-gray-200 rounded">
+                                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 flex-shrink-0 flex items-center justify-center bg-white border border-gray-200 rounded">
                                         <img
                                             src="/logo.jpg"
                                             alt="Yai Logo"
@@ -313,8 +335,9 @@ const AboutUs = ({ onClose }) => {
                                         />
                                     </div>
                                     <div className="text-xs sm:text-sm md:text-base lg:text-lg font-bold text-gray-800">
-                                        <p className="mb-0">YaiKh</p>
-                                        <p className="text-[10px] sm:text-xs md:text-sm lg:text-base">TexLink Technologies Co., Ltd.</p>
+                                        <p className="mb-0" style={{ fontFamily: "'Inter', sans-serif" }}>YaiKh</p>
+                                        <p className="text-base sm:text-lg md:text-xl lg:text-2xl xl:text-2xl" style={{ fontFamily: "'Khmer OS Battambang', sans-serif" }}>តិចលីង តិចណូឡូជី ឯ.ក</p>
+                                        <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-xl" style={{ fontFamily: "'Inter', sans-serif" }}>TexLink Technologies Co., Ltd.</p>
                                     </div>
                                 </div>
                             </div>
@@ -346,7 +369,8 @@ const AboutUs = ({ onClose }) => {
                             <div className="flex items-start justify-center gap-2 sm:gap-3 md:gap-4 mb-1 flex-shrink-0">
                                 <div className="flex flex-col items-center" style={{ marginTop: '4px' }}>
                                     <img
-                                        src="https://flagcdn.com/w80/hk.png"
+                                        // src="https://flagcdn.com/w80/hk.png"
+                                        src="/assets/about-us/flags/Hongkong.svg"
                                         alt="Hong Kong"
                                         className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto"
                                         style={{ width: '99%', objectFit: 'contain' }}
@@ -355,7 +379,8 @@ const AboutUs = ({ onClose }) => {
                                 </div>
                                 <div className="flex flex-col items-center">
                                     <img
-                                        src="https://flagcdn.com/w80/kh.png"
+                                        // src="https://flagcdn.com/w80/kh.png"
+                                        src="/assets/about-us/flags/cambodia-4k.png"
                                         alt="Cambodia"
                                         className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto"
                                         style={{ objectFit: 'contain' }}
@@ -364,7 +389,8 @@ const AboutUs = ({ onClose }) => {
                                 </div>
                                 <div className="flex flex-col items-center" style={{ marginTop: '4px' }}>
                                     <img
-                                        src="https://flagcdn.com/w80/sg.png"
+                                        // src="https://flagcdn.com/w80/sg.png"
+                                        src="/assets/about-us/flags/Singapore-4k.png"
                                         alt="Singapore"
                                         className="h-8 sm:h-10 md:h-12 lg:h-14 w-auto"
                                         style={{ width: '99%', objectFit: 'contain' }}
@@ -375,14 +401,25 @@ const AboutUs = ({ onClose }) => {
 
                             {/* Description Boxes - No Frames, Big Font */}
                             <div className="space-y-1 sm:space-y-1.5 mb-1.5 flex-shrink-0">
-                                {aboutUsContent.map((content, index) => (
-                                    <div key={index} className="text-center">
-                                        <h4 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 mb-0.5 sm:mb-1">{content.language}</h4>
-                                        <p className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 leading-relaxed break-words">
-                                            {content.text}
-                                        </p>
-                                    </div>
-                                ))}
+                                {aboutUsContent.map((content, index) => {
+                                    const isKhmer = content.language === 'ខ្មែរ';
+                                    return (
+                                        <div key={index} className="text-center">
+                                            <h4 
+                                                className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-gray-800 mb-0.5 sm:mb-1"
+                                                style={{ fontFamily: isKhmer ? "'Khmer OS Battambang', sans-serif" : "'Inter', sans-serif" }}
+                                            >
+                                                {content.language}
+                                            </h4>
+                                            <p 
+                                                className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-gray-700 leading-relaxed break-words"
+                                                style={{ fontFamily: isKhmer ? "'Khmer OS Battambang', sans-serif" : "'Inter', sans-serif" }}
+                                            >
+                                                {content.text}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
                             </div>
 
                             {/* Technologies Section - No Boxes, Just Logos and Text */}
@@ -394,7 +431,7 @@ const AboutUs = ({ onClose }) => {
                                             key={index}
                                             className="flex flex-col items-center justify-center"
                                         >
-                                            <div className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 mb-0.5 flex items-center justify-center">
+                                            <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 xl:w-9 xl:h-9 mb-0.5 flex items-center justify-center">
                                                 <img
                                                     src={tech.logo}
                                                     alt={tech.name}
@@ -452,7 +489,7 @@ const AboutUs = ({ onClose }) => {
                             {/* Logo and Text */}
                             <div className="flex-shrink-0">
                                 <div className="flex items-center gap-2 sm:gap-3">
-                                    <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center bg-white border border-gray-200 rounded">
+                                    <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 flex-shrink-0 flex items-center justify-center bg-white border border-gray-200 rounded">
                                         <img
                                             src="/logo.jpg"
                                             alt="Yai Logo"
@@ -460,8 +497,9 @@ const AboutUs = ({ onClose }) => {
                                         />
                                     </div>
                                     <div className="text-sm sm:text-base md:text-lg font-bold text-gray-800">
-                                        <p className="mb-0">YaiKh</p>
-                                        <p className="text-xs sm:text-sm md:text-base">TexLink Technologies Co., Ltd.</p>
+                                        <p className="mb-0" style={{ fontFamily: "'Inter', sans-serif" }}>YaiKh</p>
+                                        <p className="text-sm sm:text-base md:text-lg lg:text-xl" style={{ fontFamily: "'Khmer OS Battambang', sans-serif" }}>តិចលីង តិចណូឡូជី ឯ.ក</p>
+                                        <p className="text-base sm:text-lg md:text-xl lg:text-xl" style={{ fontFamily: "'Inter', sans-serif" }}>TexLink Technologies Co., Ltd.</p>
                                     </div>
                                 </div>
                             </div>
@@ -522,14 +560,25 @@ const AboutUs = ({ onClose }) => {
 
                             {/* Description Boxes */}
                             <div className="space-y-2">
-                                {aboutUsContent.map((content, index) => (
-                                    <div key={index} className="text-center">
-                                        <h4 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1">{content.language}</h4>
-                                        <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed break-words">
-                                            {content.text}
-                                        </p>
-                                    </div>
-                                ))}
+                                {aboutUsContent.map((content, index) => {
+                                    const isKhmer = content.language === 'ខ្មែរ';
+                                    return (
+                                        <div key={index} className="text-center">
+                                            <h4 
+                                                className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1"
+                                                style={{ fontFamily: isKhmer ? "'Khmer OS Battambang', sans-serif" : "'Inter', sans-serif" }}
+                                            >
+                                                {content.language}
+                                            </h4>
+                                            <p 
+                                                className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed break-words"
+                                                style={{ fontFamily: isKhmer ? "'Khmer OS Battambang', sans-serif" : "'Inter', sans-serif" }}
+                                            >
+                                                {content.text}
+                                            </p>
+                                        </div>
+                                    );
+                                })}
                             </div>
 
                             {/* Technologies */}
@@ -541,7 +590,7 @@ const AboutUs = ({ onClose }) => {
                                             key={index}
                                             className="flex flex-col items-center justify-center"
                                         >
-                                            <div className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mb-0.5 flex items-center justify-center">
+                                            <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 mb-0.5 flex items-center justify-center">
                                                 <img
                                                     src={tech.logo}
                                                     alt={tech.name}

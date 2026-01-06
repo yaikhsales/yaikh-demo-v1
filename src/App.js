@@ -11,6 +11,7 @@ import TimelineView from './views/TimelineView';
 import SubMenuView from './views/SubMenuView';
 import TableView from './views/TableView';
 import SupportTicketView from './views/SupportTicketView';
+import SupportTicketManagement from './support-tickets/support-ticket-management';
 import OrgChartView from './views/OrgChartView';
 import MeterDeviceListView from './views/MeterDeviceListView';
 import SystemAnalysisView from './views/SystemAnalysisView';
@@ -21,6 +22,7 @@ import ApprovalPR from './accountant/approval-pr';
 import PayPR from './accountant/pay-pr';
 import ChecklistAttendance from './yhr/checklist-attendance';
 import MyAttendance from './yhr/my-attendance';
+import YHR from './yhr/index';
 import ComplianceCertificate from './digital-audit/compliance-certificate';
 import AuditPlan from './digital-audit/audit-plan';
 import ShowListRequest from './purchase-request/show-list-request';
@@ -89,12 +91,13 @@ export default function App() {
                     path="cctv/my-face-scan"
                     element={<MyFaceScan onBack={handleBack} />}
                 />
-                <Route path="ticket" element={<SupportTicketView onBack={handleBack} />} />
+                <Route path="ticket" element={<SupportTicketManagement onBack={handleBack} />} />
                 <Route path="submenu/:moduleId" element={<SubMenuView />} />
                 <Route path="image/*" element={<ImageView onBack={handleBack} />} />
                 <Route path="verify-pr" element={<VerifyPR onBack={handleBack} />} />
                 <Route path="approval-pr" element={<ApprovalPR onBack={handleBack} />} />
                 <Route path="pay-pr" element={<PayPR onBack={handleBack} />} />
+                <Route path="yhr" element={<YHR onBack={handleBack} />} />
                 <Route path="checklist-attendance" element={<ChecklistAttendance onBack={handleBack} />} />
                 <Route path="my-attendance" element={<MyAttendance onBack={handleBack} />} />
                 <Route path="compliance-certificate" element={<ComplianceCertificate onBack={handleBack} />} />

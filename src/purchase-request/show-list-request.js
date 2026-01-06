@@ -315,9 +315,8 @@ const ShowListRequest = ({ onBack }) => {
             </div>
 
             {/* Filter Section */}
-            <div className="bg-white p-4 border-b flex flex-col gap-4 flex-shrink-0">
+            {/* <div className="bg-white p-4 border-b flex flex-col gap-4 flex-shrink-0">
                 <div className="flex items-center gap-4 flex-wrap">
-                    {/* Left Side Filters */}
                     <div className="flex items-center gap-3">
                         <div className="flex items-center gap-2">
                             <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">Filter:</label>
@@ -340,7 +339,6 @@ const ShowListRequest = ({ onBack }) => {
                         </button>
                     </div>
 
-                    {/* Right Side Filters */}
                     <div className="flex items-center gap-3 ml-auto flex-wrap">
                         <div className="flex items-center gap-2">
                             <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">Filter by User:</label>
@@ -413,7 +411,6 @@ const ShowListRequest = ({ onBack }) => {
                     </div>
                 </div>
 
-                {/* Tabs */}
                 <div className="flex gap-1 border-b">
                     <button
                         onClick={() => {
@@ -442,10 +439,10 @@ const ShowListRequest = ({ onBack }) => {
                         Old Data
                     </button>
                 </div>
-            </div>
+            </div> */}
 
             {/* Table */}
-            <div className="flex-1 overflow-auto p-6">
+            {/* <div className="flex-1 overflow-auto p-6">
                 <div className="overflow-x-auto h-full">
                     <table className="w-full text-sm border-collapse">
                         <thead className="bg-slate-50 sticky top-0 z-10">
@@ -582,14 +579,23 @@ const ShowListRequest = ({ onBack }) => {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> */}
 
             {/* Pagination Footer */}
-            <div className="bg-white border-t p-4 flex items-center justify-between flex-shrink-0">
+            {/* <div className="bg-white border-t p-4 flex items-center justify-between flex-shrink-0">
                 <div className="text-sm text-slate-600">
                     Showing {startItem} to {endItem} of {filteredRequests.length} results
                 </div>
                 {renderPagination()}
+            </div> */}
+
+            {/* Image Display */}
+            <div className="flex-1 overflow-auto bg-white p-4 flex items-center justify-center">
+                <img 
+                    src="/assets/purchase/show-purchase.png" 
+                    alt="Purchase Request List" 
+                    className="max-w-full max-h-full object-contain"
+                />
             </div>
         </div>
     );
