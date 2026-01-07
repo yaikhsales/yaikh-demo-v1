@@ -25,13 +25,16 @@ export const ThemeProvider = ({ children }) => {
         if (!localStorage.getItem('default-background-stored')) {
             // Store the default background configuration
             const defaultBgConfig = {
-                gradient: 'from-slate-900 via-[#0f172a] to-slate-900',
-                backgroundColor: 'rgb(15, 23, 42)', // slate-900
-                imageUrl: 'https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop',
-                hasBackgroundLayers: true
+                backgroundColor: 'transparent', // Transparent to show bg.jpg image
+                imageUrl: '/assets/background/bg.jpg',
+                hasBackgroundLayers: false
             };
             localStorage.setItem('default-background-config', JSON.stringify(defaultBgConfig));
             localStorage.setItem('default-background-stored', 'true');
+        }
+        // Ensure theme is set to 'normal' on first load if not set
+        if (!localStorage.getItem('app-theme')) {
+            localStorage.setItem('app-theme', 'normal');
         }
     }, []);
 
@@ -48,17 +51,9 @@ export const ThemeProvider = ({ children }) => {
             document.body.style.backgroundColor = 'transparent';
             document.documentElement.style.backgroundColor = 'transparent';
         } else {
-            // Normal theme - restore default background (slate-900)
-            const defaultBgConfig = localStorage.getItem('default-background-config');
-            if (defaultBgConfig) {
-                const config = JSON.parse(defaultBgConfig);
-                document.body.style.backgroundColor = config.backgroundColor;
-                document.documentElement.style.backgroundColor = config.backgroundColor;
-            } else {
-                // Fallback to slate-900
-                document.body.style.backgroundColor = 'rgb(15, 23, 42)';
-                document.documentElement.style.backgroundColor = 'rgb(15, 23, 42)';
-            }
+            // Normal theme - transparent background to show bg.jpg image
+            document.body.style.backgroundColor = 'transparent';
+            document.documentElement.style.backgroundColor = 'transparent';
         }
     }, [theme]);
 
@@ -585,31 +580,46 @@ export const ThemeBackground = () => {
         );
     }
 
-    // Normal theme - render circuit/network background
+    // Normal theme - render bg.jpg background
     return createPortal(
         <div 
             id="normal-theme-background"
+            key={`normal-theme-${theme}`}
             className="fixed inset-0 overflow-hidden pointer-events-none" 
             style={{ 
-                zIndex: 0, 
+                zIndex: -1, 
                 position: 'fixed', 
                 top: 0, 
                 left: 0, 
                 right: 0, 
                 bottom: 0, 
                 width: '100vw', 
-                height: '100vh'
+                height: '100vh',
+                backgroundColor: 'transparent'
             }}
         >
-            {/* Normal Theme Background Layers */}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-[#0f172a] to-slate-900 transition-all duration-500"></div>
+            {/* Background Image - bg.jpg for Normal theme */}
             <img
-                src="https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2832&auto=format&fit=crop" 
-                className="absolute inset-0 w-full h-full object-cover mix-blend-screen transition-all duration-500 opacity-20"
-                alt="Circuit Background"
+                src="/assets/background/bg.jpg"
+                alt="Background"
+                key={`bg-image-${theme}`}
+                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                style={{
+                    zIndex: -1,
+                    minHeight: '100vh',
+                    width: '100vw',
+                    height: '100vh',
+                    opacity: 1,
+                    display: 'block'
+                }}
+                onError={(e) => {
+                    console.error('Failed to load background image:', '/assets/background/bg.jpg');
+                    e.target.style.display = 'none';
+                }}
+                onLoad={() => {
+                    console.log('Background image loaded successfully');
+                }}
             />
-            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] bg-cyan-500/10 animate-pulse transition-all duration-500"></div>
-            <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
         </div>,
         document.body
     );

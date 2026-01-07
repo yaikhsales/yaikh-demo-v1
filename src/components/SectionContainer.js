@@ -5,9 +5,9 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
   // Central Section (Management Dashboard)
   if (section.isCentral) {
       return (
-          <div className={`flex flex-col items-center mx-2 w-48 shrink-0 ${isDropdownOpen ? '' : 'apple-fade-in-delay'}`}>
-             {/* GM Bot Icon */}
-             <div className="mb-4 relative group flex flex-col items-center gap-2">
+          <div className={`relative flex flex-col items-center mx-2 w-48 shrink-0 ${isDropdownOpen ? '' : 'apple-fade-in-delay'}`}>
+             {/* GM Bot Icon - Positioned absolutely at the top, doesn't affect label position */}
+             <div className="absolute -top-24 left-1/2 -translate-x-1/2 group flex flex-col items-center gap-2">
                 {!isDropdownOpen && <div className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl group-hover:bg-purple-400/30 transition-all duration-500 scale-150"></div>}
                 <button onClick={onGMChatClick} className={`relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-slate-900 ${isDropdownOpen ? 'shadow-lg' : 'shadow-2xl hover:shadow-purple-500/50'}`} aria-label="Open GM Bot Assistant">
                     <img src="/assets/modules-image/top-bot.png" alt="GM Bot Assistant" className={`w-16 h-16 rounded-full object-cover border-2 border-purple-400/50 transition-all duration-300 ${isDropdownOpen ? '' : 'group-hover:border-purple-300'}`} />
@@ -17,8 +17,8 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
                 </div>
              </div>
 
-             {/* Big Label */}
-             <div className={`w-full text-white font-bold text-center py-2 rounded-lg mb-6 uppercase tracking-widest text-xs h-[38px] flex items-center justify-center transition-all duration-300 ${isDropdownOpen ? 'bg-slate-600/40 backdrop-blur-md border border-slate-500/50 shadow-lg' : 'glass-effect rounded-2xl shadow-xl hover:shadow-2xl'}`}>
+             {/* Big Label - Aligned at same level as other sections */}
+             <div className={`w-full text-white font-bold text-center py-2 rounded-lg mb-6 uppercase tracking-widest text-sm h-[38px] flex items-center justify-center transition-all duration-300 ${isDropdownOpen ? 'bg-slate-600/40 backdrop-blur-md border border-slate-500/50 shadow-lg' : 'glass-effect rounded-2xl shadow-xl hover:shadow-2xl'}`}>
                 {section.title}
              </div>
              
@@ -56,7 +56,7 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
        </div>
        
        {/* Container for Columns */}
-       <div className="flex gap-3">
+       <div className="flex gap-3 items-start">
           {section.groups.map(group => (
             <ColumnGroup
                 key={group.id}

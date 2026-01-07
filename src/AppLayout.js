@@ -89,6 +89,15 @@ const AppLayout = () => {
             else if (demoType === 'SUBMENU_YHR') {
                 // Navigate directly to YHR component
                 navigate('/dashboard/yhr');
+            }             else if (demoType === 'SUBMENU_SALARY_BILL') {
+                // Navigate directly to Salary Bill component
+                navigate('/dashboard/salary-bill');
+            } else if (demoType === 'SUBMENU_WATER') {
+                // Navigate directly to Water component
+                navigate('/dashboard/water');
+            } else if (demoType === 'SUBMENU_CE') {
+                // Navigate directly to CE component
+                navigate('/dashboard/ce');
             } else if (demoType?.startsWith('SUBMENU')) {
                  const cards = id === 'digital-audit' ? [
                     { title: 'Checklist 6s', icon: 'CheckSquare', color: 'bg-cyan-500 text-white' },
@@ -140,8 +149,8 @@ const AppLayout = () => {
                     { title: 'Switch (Fan & Pump)', icon: 'ToggleRight', color: 'bg-slate-500 text-white' },
                     { title: 'Air Quality Detector', icon: 'Wind', color: 'bg-sky-500 text-white', action: '/dashboard/air/quality' }
                 ] : demoType === 'SUBMENU_WATER' ? [
-                    { title: 'In', icon: 'ArrowDownToLine', color: 'bg-sky-500 text-white', action: '/dashboard/water/in' },
-                    { title: 'Out', icon: 'ArrowUpFromLine', color: 'bg-orange-500 text-white', action: '/dashboard/water/out' }
+                    { title: 'In', image: 'assets/icons/sub-icons/water.jpg', color: 'bg-sky-500 text-white', action: '/dashboard/water/in' },
+                    { title: 'Out', image: 'assets/icons/sub-icons/water.jpg', color: 'bg-orange-500 text-white', action: '/dashboard/water/out' }
                 ] : demoType === 'SUBMENU_TEMP_WORKER' ? [
                     { title: 'Request Worker Form', icon: 'FileText', color: 'bg-blue-500 text-white', action: '/dashboard/temp-worker-request/form' },
                     { title: 'Request Worker List', icon: 'Layout', color: 'bg-green-500 text-white', action: '/dashboard/temp-worker-request/list' }
@@ -167,7 +176,7 @@ const AppLayout = () => {
                             ]
                         },
                         {
-                            label: 'Output Style',
+                            label: 'First Output ',
                             cards: [
                                 { title: 'First Output Cutting', icon: 'Scissors', color: 'bg-orange-500 text-white', image: 'assets/yqms/first-output-cutting.jpg' },
                                 { title: 'First Output Printing Embroidery', icon: 'PenTool', color: 'bg-pink-500 text-white', image: 'assets/yqms/first-output-printing-embroidery.jpg' },
@@ -201,8 +210,9 @@ const AppLayout = () => {
                         {
                             label: 'Data',
                             cards: [
-                                { title: 'Report', icon: 'FileText', color: 'bg-slate-500 text-white' },
-                                { title: 'Document', icon: 'FileText', color: 'bg-slate-500 text-white' }
+                                { title: 'Dashboard', image: 'https://cdn-icons-png.flaticon.com/128/6820/6820898.png', color: 'bg-slate-500 text-white' },
+                                { title: 'Report', image: 'https://cdn-icons-png.flaticon.com/128/1321/1321938.png', color: 'bg-slate-500 text-white' },
+                                
                             ]
                         }
                     ]
@@ -270,7 +280,7 @@ const AppLayout = () => {
                             ]
                         },
                         {
-                            label: 'Return back',
+                            label: 'Returns',
                             cards: [
                                 { title: 'Return Fabric', icon: 'ArrowDownLeft', color: 'bg-pink-500 text-white', image: 'assets/fc/return-fabric.jpg' },
                                 { title: 'Return Accessories', icon: 'ArrowDownLeft', color: 'bg-rose-500 text-white', image: 'assets/fc/return-accessories.jpg' },
@@ -339,7 +349,7 @@ const AppLayout = () => {
     };
 
     return (
-        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden theme-${theme} ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-slate-900'}`} style={{ position: 'relative', zIndex: 1, scrollBehavior: 'smooth' }}>
+        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden theme-${theme} ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-transparent'}`} style={{ position: 'relative', zIndex: 1, scrollBehavior: 'smooth' }}>
             {/* Theme Background - Show on home page and dashboard, but not on full-screen forms */}
             {(location.pathname === '/' || location.pathname.startsWith('/dashboard')) && 
             !location.pathname.includes('purchase-requisition-form') && 
@@ -348,7 +358,10 @@ const AppLayout = () => {
             !location.pathname.includes('pay-pr') && 
             !location.pathname.includes('ticket') && 
             !location.pathname.includes('y-shop') && 
-            !location.pathname.includes('yhr') && <ThemeBackground />}
+            !location.pathname.includes('yhr') && 
+            !location.pathname.includes('salary-bill') && 
+            !location.pathname.includes('water') && 
+            !location.pathname.includes('ce') && <ThemeBackground />}
             
             <style>{`
                 * {
@@ -361,7 +374,7 @@ const AppLayout = () => {
                     background: transparent;
                 }
                 .theme-normal {
-                    background: rgb(15 23 42);
+                    background: transparent;
                 }
             `}</style>
             {!location.pathname.includes('purchase-requisition-form') && 
@@ -370,7 +383,10 @@ const AppLayout = () => {
             !location.pathname.includes('pay-pr') && 
             !location.pathname.includes('ticket') && 
             !location.pathname.includes('y-shop') && 
-            !location.pathname.includes('yhr') && <Header />}
+            !location.pathname.includes('yhr') && 
+            !location.pathname.includes('salary-bill') && 
+            !location.pathname.includes('water') && 
+            !location.pathname.includes('ce') && <Header />}
 
             {/* Light Bulb - Center Top */}
             {location.pathname === '/' && (

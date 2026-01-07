@@ -23,6 +23,8 @@ import PayPR from './accountant/pay-pr';
 import ChecklistAttendance from './yhr/checklist-attendance';
 import MyAttendance from './yhr/my-attendance';
 import YHR from './yhr/index';
+import SalaryBill from './salary-bill/salary-bill';
+import CE from './ce/ce';
 import ComplianceCertificate from './digital-audit/compliance-certificate';
 import AuditPlan from './digital-audit/audit-plan';
 import ShowListRequest from './purchase-request/show-list-request';
@@ -36,6 +38,7 @@ import Air from './air/air';
 import RequestWorkerForm from './temp-worker-request/request-worker-form';
 import RequestWorkerList from './temp-worker-request/request-worker-list';
 import BillRecord from './bill-record/bill-record';
+import Water from './water/index';
 import WaterIn from './water/in';
 import WaterOut from './water/out';
 import GatePass from './gatepass/gatepass';
@@ -98,6 +101,8 @@ export default function App() {
                 <Route path="approval-pr" element={<ApprovalPR onBack={handleBack} />} />
                 <Route path="pay-pr" element={<PayPR onBack={handleBack} />} />
                 <Route path="yhr" element={<YHR onBack={handleBack} />} />
+                <Route path="salary-bill" element={<SalaryBill onBack={handleBack} />} />
+                <Route path="ce" element={<CE onBack={handleBack} />} />
                 <Route path="checklist-attendance" element={<ChecklistAttendance onBack={handleBack} />} />
                 <Route path="my-attendance" element={<MyAttendance onBack={handleBack} />} />
                 <Route path="compliance-certificate" element={<ComplianceCertificate onBack={handleBack} />} />
@@ -134,6 +139,10 @@ export default function App() {
                 <Route
                     path="bill-record"
                     element={<BillRecord onBack={handleBack} />}
+                />
+                <Route
+                    path="water"
+                    element={<Water onBack={handleBack} />}
                 />
                 <Route
                     path="water/in"

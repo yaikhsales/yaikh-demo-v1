@@ -6,15 +6,15 @@ import { ArrowLeft } from 'lucide-react';
 const getYHRIconImage = (title) => {
     const titleToImageMap = {
         'Recruitment': 'recruitment.png',
-        'Arrange Interview': 'arrange-interview.jpg',
+        'Interview': 'arrange-interview.jpg',
         'Onboarding': 'onboarding.png',
         'Attendant': 'attendant.png',
         'Benefit Profile': 'benifit-profile.png', // Note: filename has typo "benifit"
         'Payroll': 'payroll.png',
-        'NSSF': 'NSSF.jpg',
+        'NSSF': 'NSSF.webp',
         'Visa and Work Permit': 'visa-work-permit.png',
         'FWCMS': 'FWCMS.png',
-        'Food Canteen': 'food-canteen.png'
+        'Canteen': 'food-canteen.png'
     };
     
     return titleToImageMap[title] || null;
@@ -23,6 +23,7 @@ const getYHRIconImage = (title) => {
 const YHR = ({ onBack }) => {
     const navigate = useNavigate();
     const [showAttendantSubMenu, setShowAttendantSubMenu] = useState(false);
+    const [showFWCMSSubMenu, setShowFWCMSSubMenu] = useState(false);
 
     const handleBack = () => {
         if (onBack) {
@@ -44,6 +45,14 @@ const YHR = ({ onBack }) => {
         }
     };
 
+    const handleFWCMSClick = () => {
+        setShowFWCMSSubMenu(true);
+    };
+
+    const handleFWCMSSubModule = (url) => {
+        window.open(url, '_blank', 'noopener,noreferrer');
+    };
+
     const yhrModules = [
         { 
             title: 'Recruitment', 
@@ -52,7 +61,7 @@ const YHR = ({ onBack }) => {
             hasWhiteBg: true // Icon has white background
         },
         { 
-            title: 'Arrange Interview', 
+            title: 'Interview', 
             color: 'bg-gradient-to-br from-green-500 to-green-600',
             shadow: 'shadow-green-200',
             hasWhiteBg: true // Icon has white background
@@ -92,10 +101,12 @@ const YHR = ({ onBack }) => {
         { 
             title: 'FWCMS', 
             color: 'bg-gradient-to-br from-pink-500 to-pink-600',
-            shadow: 'shadow-pink-200'
+            shadow: 'shadow-pink-200',
+            hasSubMenu: true,
+            hasWhiteBg: true // Icon has white background
         },
         { 
-            title: 'Food Canteen', 
+            title: 'Canteen', 
             color: 'bg-gradient-to-br from-cyan-500 to-cyan-600',
             shadow: 'shadow-cyan-200'
         }
@@ -140,7 +151,7 @@ const YHR = ({ onBack }) => {
 
             {/* Main Content */}
             <div className="flex-1 overflow-y-auto p-6 sm:p-8 bg-gradient-to-b from-gray-50 to-gray-100">
-                {!showAttendantSubMenu ? (
+                {!showAttendantSubMenu && !showFWCMSSubMenu ? (
                     <div className="max-w-7xl mx-auto">
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6">
                             {yhrModules.map((module, idx) => {
@@ -150,7 +161,11 @@ const YHR = ({ onBack }) => {
                                         key={idx}
                                         onClick={() => {
                                             if (module.hasSubMenu) {
-                                                handleAttendantClick();
+                                                if (module.title === 'Attendant') {
+                                                    handleAttendantClick();
+                                                } else if (module.title === 'FWCMS') {
+                                                    handleFWCMSClick();
+                                                }
                                             } else {
                                                 // Handle other modules - placeholder for now
                                                 console.log(`${module.title} clicked`);
@@ -207,7 +222,7 @@ const YHR = ({ onBack }) => {
                             })}
                         </div>
                     </div>
-                ) : (
+                ) : showAttendantSubMenu ? (
                     <div className="max-w-4xl mx-auto">
                         <div className="mb-6">
                             <button
@@ -215,7 +230,7 @@ const YHR = ({ onBack }) => {
                                 className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
                             >
                                 <ArrowLeft size={20} />
-                                <span>Back to YHR Modules</span>
+                                <span>Back </span>
                             </button>
                             <h2 className="text-xl font-bold text-gray-800">Attendant</h2>
                         </div>
@@ -250,7 +265,50 @@ const YHR = ({ onBack }) => {
                             </button>
                         </div>
                     </div>
-                )}
+                ) : showFWCMSSubMenu ? (
+                    <div className="max-w-4xl mx-auto">
+                        <div className="mb-6">
+                            <button
+                                onClick={() => setShowFWCMSSubMenu(false)}
+                                className="flex items-center gap-2 text-black-600 hover:text-gray-800 mb-4"
+                            >
+                                <ArrowLeft size={20} />
+                                <span>Back </span>
+                            </button>
+                            <h2 className="text-xl font-bold text-gray-800">FWCMS</h2>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <button
+                                onClick={() => handleFWCMSSubModule('https://fwcms.cppkr.com/')}
+                                className="bg-gradient-to-br from-pink-500 to-pink-600 text-white p-10 rounded-xl shadow-lg shadow-pink-200 hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 flex flex-col items-center justify-center gap-5 min-h-[200px] relative overflow-hidden group"
+                            >
+                                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div className="relative z-10 w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 flex items-center justify-center bg-white rounded-xl p-4 sm:p-5 shadow-xl">
+                                    <img 
+                                        src="/assets/icons/sub-icons/FWCMS.png"
+                                        alt="FWCMS Portal"
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">FWCMS Portal</span>
+                            </button>
+                            <button
+                                onClick={() => handleFWCMSSubModule('https://www.mlvt.gov.kh/')}
+                                className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white p-10 rounded-xl shadow-lg shadow-indigo-200 hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 flex flex-col items-center justify-center gap-5 min-h-[200px] relative overflow-hidden group"
+                            >
+                                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                <div className="relative z-10 w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 flex items-center justify-center bg-white rounded-xl p-4 sm:p-5 shadow-xl">
+                                    <img 
+                                        src="/assets/icons/sub-icons/FWCMS.png"
+                                        alt="Ministry of Labour"
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">Ministry of Labour</span>
+                            </button>
+                        </div>
+                    </div>
+                ) : null}
             </div>
         </div>
     );

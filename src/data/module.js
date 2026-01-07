@@ -41,7 +41,7 @@ export const DASHBOARD_DATA = [
         title: 'HR',
         modules: [
           { id: 'yhr', title: 'YHR', image: 'assets/icons/yhr.png?v=1', status: 'active', color: 'text-blue-500', demoType: 'SUBMENU_YHR' },
-          { title: 'Salary Bill', image: 'assets/icons/salary-bill.png', status: 'active' },
+          { id: 'salary-bill', title: 'Salary Bill', image: 'assets/icons/salary-bill.png', status: 'active', demoType: 'SUBMENU_SALARY_BILL' },
           { id: 'org', title: 'Org Chart', image: 'assets/icons/org-chart.png', status: 'active', demoType: 'SUBMENU_ORG' },
           { id: 'training', title: 'Training', image: 'assets/icons/training.png', status: 'active', demoType: 'SUBMENU_DEPARTMENTS' }, // Corrected ID
           { id: 'temp-work-request', title: 'Temp Work Request', image: 'assets/icons/temp-work-request.png', status: 'active', demoType: 'SUBMENU_TEMP_WORKER' }, // New Module
@@ -107,7 +107,7 @@ export const DASHBOARD_DATA = [
         id: 'prod',
         title: 'Production',
         modules: [
-          { title: 'CE', image: 'assets/icons/ce.png', status: 'active', highlight: true },
+          { id: 'ce', title: 'CE', image: 'assets/icons/ce.png', status: 'active', highlight: true, demoType: 'SUBMENU_CE' },
           { title: 'YTM', image: 'assets/icons/ytm.png', status: 'active' },
           { title: 'YTM Shop', image: 'assets/icons/ytm-shop.png', status: 'active' },
           { title: 'Traffic Light', image: 'assets/icons/traffic-light.png', status: 'active', highlight: true },
@@ -115,29 +115,35 @@ export const DASHBOARD_DATA = [
       },
       {
         id: 'dtsync',
-        title: 'DT Sync',
+        title: '',
         modules: [
           { title: 'DT Sync', image: 'assets/icons/dt-sync.png', status: 'coming-soon' },
           { title: 'Master Plan', image: 'assets/icons/master-plan.png', status: 'coming-soon' },
           { title: 'Line Plan', image: 'assets/icons/line-plan.png', status: 'coming-soon' },
           { title: 'PPM', image: 'assets/icons/ppm.png', status: 'coming-soon' },
-          { title: 'TNA', image: 'assets/icons/tna.png', status: 'coming-soon' },
+          // { title: 'TNA', image: 'assets/icons/tna.png', status: 'coming-soon' },
         ]
       },
       {
         id: 'prepro',
-        title: 'PRE PRO',
+        title: '',
         modules: [
           { title: 'TEC PACK', image: 'assets/icons/tec-pack.png', status: 'coming-soon' },
           { title: 'PPS', image: 'assets/icons/pps.png', status: 'coming-soon' },
           { title: 'Sample', image: 'assets/icons/sample-garment.png', status: 'coming-soon' },
+          { title: '', image: '', status: 'coming-soon' },
+          
+          
         ]
       },
       {
         id: 'prodmat',
-        title: 'Production Materials',
+        title: '',
         modules: [
           { title: 'Material Purchase', image: 'assets/icons/material-purchase.png', status: 'coming-soon' },
+          { title: '', image: '', status: 'coming-soon' },
+          { title: '', image: '', status: 'coming-soon' },
+          { title: '', image: '', status: 'coming-soon' },
         ]
       }
     ]

@@ -1,14 +1,18 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Droplet } from 'lucide-react';
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 
 const WaterOut = ({ onBack }) => {
     const navigate = useNavigate();
+    const location = useLocation();
+    
+    // Get category from navigation state, default to 'Washing'
+    const category = location.state?.category || 'Washing';
 
     // Sample device data
     const device = {
         id: 1,
-        name: 'Wastewater exit',
+        name: `${category} Out`,
         deviceId: 'Bcc3023201230ead',
         totalWaterConsumed: 108.987
     };
@@ -190,22 +194,16 @@ const WaterOut = ({ onBack }) => {
                                 {/* Device Information */}
                                 <div className="bg-white rounded-lg border border-slate-300 p-6 flex flex-col items-center">
                                     {/* Water Meter Image/Icon */}
-                                    <div className="w-48 h-48 bg-slate-800 rounded-lg flex items-center justify-center mb-4 relative">
-                                        {/* Water meter representation */}
-                                        <div className="w-full h-full flex flex-col items-center justify-center">
-                                            {/* Meter body */}
-                                            <div className="w-32 h-20 bg-slate-700 rounded-lg relative">
-                                                {/* Digital display */}
-                                                <div className="absolute inset-2 bg-slate-900 rounded flex items-center justify-center">
-                                                    <div className="text-green-400 font-mono text-xs">00000</div>
-                                                </div>
-                                                {/* Pipe connections */}
-                                                <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-600 rounded-full border-2 border-slate-500"></div>
-                                                <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-slate-600 rounded-full border-2 border-slate-500"></div>
-                                                {/* Lid */}
-                                                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-16 h-3 bg-slate-600 rounded-t"></div>
-                                            </div>
-                                        </div>
+                                    <div className="w-48 h-48 bg-slate-800 rounded-lg flex items-center justify-center mb-4 relative overflow-hidden">
+                                        <img 
+                                            src="/assets/icons/sub-icons/water.jpg"
+                                            alt="Water Meter"
+                                            className="w-full h-full object-contain"
+                                            onError={(e) => {
+                                                console.error('Failed to load water meter image');
+                                                e.target.style.display = 'none';
+                                            }}
+                                        />
                                     </div>
                                     
                                     {/* Device Name */}

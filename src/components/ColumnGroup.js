@@ -9,14 +9,12 @@ const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModule
   
   return (
     <div className="flex flex-col min-w-[100px] flex-1">
-      {/* Sub Label (Only show if title exists) */}
-      {group.title && (
-          <div className="mb-3 flex justify-center">
-            <div className={`text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-center w-full max-w-[120px] transition-all duration-300 ${isDropdownOpen ? 'bg-slate-700/60 backdrop-blur-sm border border-slate-500 shadow-lg' : 'glass-effect shadow-lg hover:shadow-xl'}`}>
-                {group.title}
-            </div>
-          </div>
-      )}
+      {/* Sub Label - Always show frame, even if title is empty - Big label size matching QA but rounded */}
+      <div className="mb-6 flex justify-center h-[38px] items-center">
+        <div className={`w-full text-center py-2 rounded-full uppercase tracking-widest text-sm font-bold h-[38px] flex items-center justify-center transition-all duration-300 ${isDropdownOpen ? 'bg-slate-800/60 backdrop-blur-md border border-slate-600 shadow-xl' : 'glass-effect-strong shadow-xl hover:shadow-2xl'} ${group.title ? 'text-white' : 'text-transparent'}`}>
+            {group.title || ''}
+        </div>
+      </div>
       
       {/* Vertical Stack of Modules */}
       <div className="flex flex-col gap-1">
