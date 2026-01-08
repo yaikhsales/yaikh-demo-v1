@@ -164,47 +164,47 @@ const AppLayout = () => {
                         {
                             label: 'Pre Production',
                             cards: [
-                                { title: 'QC File', icon: 'FileText', color: 'bg-slate-500 text-white', image: 'assets/yqms/qc-file.jpg' },
-                                { title: 'Pre Production Meeting', icon: 'Users', color: 'bg-blue-500 text-white', image: 'assets/yqms/pre-production-meeting.jpg' }
+                                { title: 'QC File', icon: 'FileText', color: 'bg-slate-500/30 text-white', image: 'assets/yqms/qc-file.jpg' },
+                                { title: 'Pre Production Meeting', icon: 'Users', color: 'bg-blue-500/30 text-white', image: 'assets/yqms/pre-production-meeting.jpg' }
                             ]
                         },
                         {
                             label: 'Production',
                             cards: [
-                                { title: 'Material Quality', icon: 'Package', color: 'bg-green-500 text-white', image: 'assets/yqms/material-quality.jpg' },
-                                { title: 'Test And Pilot', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/yqms/test-and-pilot.jpg' }
+                                { title: 'Material Quality', icon: 'Package', color: 'bg-green-500/30 text-white', image: 'assets/yqms/material-quality.jpg' },
+                                { title: 'Test And Pilot', icon: 'FlaskConical', color: 'bg-purple-500/30 text-white', image: 'assets/yqms/test-and-pilot.jpg' }
                             ]
                         },
                         {
                             label: 'First Output ',
                             cards: [
-                                { title: 'First Output Cutting', icon: 'Scissors', color: 'bg-orange-500 text-white', image: 'assets/yqms/first-output-cutting.jpg' },
-                                { title: 'First Output Printing Embroidery', icon: 'PenTool', color: 'bg-pink-500 text-white', image: 'assets/yqms/first-output-printing-embroidery.jpg' },
-                                { title: 'First Output Sewing', icon: 'PenTool', color: 'bg-lime-500 text-white', image: 'assets/yqms/first-output-sewing.jpg' },
-                                { title: 'QA Cutting', icon: 'Search', color: 'bg-amber-500 text-white', image: 'assets/yqms/qa-cutting.jpg' },
-                                { title: 'QA Printing Embroidery', icon: 'Search', color: 'bg-yellow-500 text-white', image: 'assets/yqms/qa-printing-embroidery.jpg' },
-                                { title: 'QA 20pcs Audit', icon: 'ClipboardCheck', color: 'bg-emerald-500 text-white', image: 'assets/yqms/qa-20pcs-audit.jpg' },
-                                { title: 'Inline Audit Rolling', icon: 'FileCheck', color: 'bg-indigo-500 text-white', image: 'assets/yqms/inline-audit-rolling.jpg' },
-                                { title: 'Offline Audit', icon: 'FileCheck', color: 'bg-violet-500 text-white', image: 'assets/yqms/offline-audit.jpg' },
-                                { title: 'QC End Line Checking', icon: 'CheckCircle', color: 'bg-blue-600 text-white', image: 'assets/yqms/qc-end-line-checking.jpg' }
+                                { title: 'First Output Cutting', icon: 'Scissors', color: 'bg-orange-500/30 text-white', image: 'assets/yqms/first-output-cutting.jpg' },
+                                { title: 'First Output Printing Embroidery', icon: 'PenTool', color: 'bg-pink-500/30 text-white', image: 'assets/yqms/first-output-printing-embroidery.jpg' },
+                                { title: 'First Output Sewing', icon: 'PenTool', color: 'bg-lime-500/30 text-white', image: 'assets/yqms/first-output-sewing.jpg' },
+                                { title: 'QA Cutting', icon: 'Search', color: 'bg-amber-500/30 text-white', image: 'assets/yqms/qa-cutting.jpg' },
+                                { title: 'QA Printing Embroidery', icon: 'Search', color: 'bg-yellow-500/30 text-white', image: 'assets/yqms/qa-printing-embroidery.jpg' },
+                                { title: 'QA 20pcs Audit', icon: 'ClipboardCheck', color: 'bg-emerald-500/30 text-white', image: 'assets/yqms/qa-20pcs-audit.jpg' },
+                                { title: 'Inline Audit Rolling', icon: 'FileCheck', color: 'bg-indigo-500/30 text-white', image: 'assets/yqms/inline-audit-rolling.jpg' },
+                                { title: 'Offline Audit', icon: 'FileCheck', color: 'bg-violet-500/30 text-white', image: 'assets/yqms/offline-audit.jpg' },
+                                { title: 'QC End Line Checking', icon: 'CheckCircle', color: 'bg-blue-600/30 text-white', image: 'assets/yqms/qc-end-line-checking.jpg' }
                             ]
                         },
                         {
                             label: 'Final Production',
                             cards: [
-                                { title: 'QA Audit Finishing Packing', icon: 'ClipboardCheck', color: 'bg-green-500 text-white', image: 'assets/yqms/qa-audit-finishing-packing.jpg' },
-                                { title: 'Humidity Acraboy Checking', icon: 'Thermometer', color: 'bg-sky-500 text-white', image: 'assets/yqms/humidity-acraboy-checking.jpg' },
-                                { title: 'First Output Finishing And Packing', icon: 'PackageCheck', color: 'bg-cyan-500 text-white', image: 'assets/yqms/first-output-finishing-and-packing.jpg' }
+                                { title: 'QA Audit Finishing Packing', icon: 'ClipboardCheck', color: 'bg-green-500/30 text-white', image: 'assets/yqms/qa-audit-finishing-packing.jpg' },
+                                { title: 'Humidity Aquaboy Checking', icon: 'Thermometer', color: 'bg-sky-500/30 text-white', image: 'assets/yqms/humidity-acraboy-checking.jpg' },
+                                { title: 'First Output Finishing And Packing', icon: 'PackageCheck', color: 'bg-cyan-500/30 text-white', image: 'assets/yqms/first-output-finishing-and-packing.jpg' }
                             ]
                         },
                         {
                             label: 'Inspection',
                             cards: [
-                                { title: 'Pre Final Inspection', icon: 'Eye', color: 'bg-rose-500 text-white', image: 'assets/yqms/pre-final-inspection.jpg' },
-                                { title: 'Final Inspection', icon: 'Eye', color: 'bg-red-500 text-white', image: 'assets/yqms/final-inspection.jpg' },
-                                { title: 'Buyer Final Inspection', icon: 'Eye', color: 'bg-red-600 text-white', image: 'assets/yqms/buyer-final-inspection.jpg' },
-                                { title: 'Supplier Evaluation', icon: 'CheckSquare', color: 'bg-teal-500 text-white', image: 'assets/yqms/supplier-evaluation.jpg' },
-                                { title: 'Customer Complain Cap', icon: 'AlertTriangle', color: 'bg-orange-600 text-white', image: 'assets/yqms/customer-complain-cap.jpg' }
+                                { title: 'Pre Final Inspection', icon: 'Eye', color: 'bg-rose-500/30 text-white', image: 'assets/yqms/pre-final-inspection.jpg' },
+                                { title: 'Final Inspection', icon: 'Eye', color: 'bg-red-500/30 text-white', image: 'assets/yqms/final-inspection.jpg' },
+                                { title: 'Buyer Final Inspection', icon: 'Eye', color: 'bg-red-600/30 text-white', image: 'assets/yqms/buyer-final-inspection.jpg' },
+                                { title: 'Supplier Evaluation', icon: 'CheckSquare', color: 'bg-teal-500/30 text-white', image: 'assets/yqms/supplier-evaluation.jpg' },
+                                { title: 'Customer Complain Cap', icon: 'AlertTriangle', color: 'bg-orange-600/30 text-white', image: 'assets/yqms/customer-complain-cap.jpg' }
                             ]
                         },
                         {
@@ -253,38 +253,38 @@ const AppLayout = () => {
                         {
                             label: 'Receiving',
                             cards: [
-                                { title: 'Fabric Receiving', icon: 'Package', color: 'bg-blue-500 text-white', image: 'assets/fc/fabric-receiving.jpg' },
-                                { title: 'Accessories Receiving', icon: 'Package', color: 'bg-teal-500 text-white', image: 'assets/fc/accessories-receiving.jpg' }
+                                { title: 'Fabric Receiving', icon: 'Package', color: 'bg-blue-500/30 text-white', image: 'assets/fc/fabric-receiving.jpg' },
+                                { title: 'Accessories Receiving', icon: 'Package', color: 'bg-teal-500/30 text-white', image: 'assets/fc/accessories-receiving.jpg' }
                             ]
                         },
                         {
                             label: 'Instore',
                             cards: [
-                                { title: 'Warehouse Tracking Location', icon: 'MapPin', color: 'bg-indigo-500 text-white', image: 'assets/fc/warehouse-tracking-location.jpg' }
+                                { title: 'Warehouse Tracking Location', icon: 'MapPin', color: 'bg-indigo-500/30 text-white', image: 'assets/fc/warehouse-tracking-location.jpg' }
                             ]
                         },
                         {
                             label: 'Testing',
                             cards: [
-                                { title: 'Fabric Inspection', icon: 'Search', color: 'bg-green-500 text-white', image: 'assets/fc/fabric-inspection.jpg' },
-                                { title: 'Fabric Test', icon: 'FlaskConical', color: 'bg-purple-500 text-white', image: 'assets/fc/fabric-test.jpg' },
-                                { title: 'Accessories Inspection', icon: 'Search', color: 'bg-emerald-500 text-white', image: 'assets/fc/accessories-inspection.jpg' }
+                                { title: 'Fabric Inspection', icon: 'Search', color: 'bg-green-500/30 text-white', image: 'assets/fc/fabric-inspection.jpg' },
+                                { title: 'Fabric Test', icon: 'FlaskConical', color: 'bg-purple-500/30 text-white', image: 'assets/fc/fabric-test.jpg' },
+                                { title: 'Accessories Inspection', icon: 'Search', color: 'bg-emerald-500/30 text-white', image: 'assets/fc/accessories-inspection.jpg' }
                             ]
                         },
                         {
                             label: 'Issuing',
                             cards: [
-                                { title: 'Fabric Issuing', icon: 'ArrowUpRight', color: 'bg-orange-500 text-white', image: 'assets/fc/fabric-issuing.jpg' },
-                                { title: 'Accessories Issuing', icon: 'ArrowUpRight', color: 'bg-yellow-500 text-white', image: 'assets/fc/accessories-issuing.jpg' },
-                                { title: 'Delivery Tracking', icon: 'Truck', color: 'bg-red-500 text-white', image: 'assets/fc/delivery-tracking.jpg' }
+                                { title: 'Fabric Issuing', icon: 'ArrowUpRight', color: 'bg-orange-500/30 text-white', image: 'assets/fc/fabric-issuing.jpg' },
+                                { title: 'Accessories Issuing', icon: 'ArrowUpRight', color: 'bg-yellow-500/30 text-white', image: 'assets/fc/accessories-issuing.jpg' },
+                                { title: 'Delivery Tracking', icon: 'Truck', color: 'bg-red-500/30 text-white', image: 'assets/fc/delivery-tracking.jpg' }
                             ]
                         },
                         {
                             label: 'Returns',
                             cards: [
-                                { title: 'Return Fabric', icon: 'ArrowDownLeft', color: 'bg-pink-500 text-white', image: 'assets/fc/return-fabric.jpg' },
-                                { title: 'Return Accessories', icon: 'ArrowDownLeft', color: 'bg-rose-500 text-white', image: 'assets/fc/return-accessories.jpg' },
-                                { title: 'Brand Protection', icon: 'Shield', color: 'bg-violet-500 text-white', image: 'assets/fc/brand-protection.jpg' }
+                                { title: 'Return Fabric', icon: 'ArrowDownLeft', color: 'bg-pink-500/30 text-white', image: 'assets/fc/return-fabric.jpg' },
+                                { title: 'Return Accessories', icon: 'ArrowDownLeft', color: 'bg-rose-500/30 text-white', image: 'assets/fc/return-accessories.jpg' },
+                                { title: 'Brand Protection', icon: 'Shield', color: 'bg-violet-500/30 text-white', image: 'assets/fc/brand-protection.jpg' }
                             ]
                         }
                     ]
@@ -340,7 +340,11 @@ const AppLayout = () => {
             if (module.title === 'Bill Record') {
                 navigate('/dashboard/bill-record');
             } else if (module.title === 'YTM Shop') {
-                navigate('/dashboard/shop');
+                navigate('/dashboard/ytm-shop');
+            } else if (module.title === 'YTM') {
+                navigate('/dashboard/ytm');
+            } else if (module.title === 'Traffic Light') {
+                navigate('/dashboard/traffic-light');
             } else if (module.id === 'meeting' && module.title === 'Meeting Room') {
                 navigate('/dashboard/meeting-room');
             }
@@ -358,6 +362,9 @@ const AppLayout = () => {
             !location.pathname.includes('pay-pr') && 
             !location.pathname.includes('ticket') && 
             !location.pathname.includes('y-shop') && 
+            !location.pathname.includes('ytm-shop') &&
+            !location.pathname.includes('ytm') &&
+            !location.pathname.includes('traffic-light') && 
             !location.pathname.includes('yhr') && 
             !location.pathname.includes('salary-bill') && 
             !location.pathname.includes('water') && 
@@ -383,6 +390,9 @@ const AppLayout = () => {
             !location.pathname.includes('pay-pr') && 
             !location.pathname.includes('ticket') && 
             !location.pathname.includes('y-shop') && 
+            !location.pathname.includes('ytm-shop') &&
+            !location.pathname.includes('ytm') &&
+            !location.pathname.includes('traffic-light') && 
             !location.pathname.includes('yhr') && 
             !location.pathname.includes('salary-bill') && 
             !location.pathname.includes('water') && 

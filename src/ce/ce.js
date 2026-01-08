@@ -5,13 +5,13 @@ import { ArrowLeft } from 'lucide-react';
 // Mapping function to match module titles to sub-icon image filenames
 const getCEIconImage = (title) => {
     const titleToImageMap = {
-        'Standard time analysis': 'standard-time-analysis.png',
-        'Product development analysis': 'product-development-analysis.png',
+        'ST Standard Time': 'standard-time-analysis.png',
+        'Product development': 'product-development-analysis.png',
         'Garment Analysis': 'garment-analysis.png',
-        'Cut,Sew,Pack worker capacity': 'cut-sew-pack-worker-capacity.png',
+        'Cut,Sew,Pack Productivity': 'cut-sew-pack-worker-capacity.png',
         'Machine allocation': 'machine-allocation.png',
         'Skill inventory': 'skill-inventory.png',
-        'Individual team production records': 'individual-team-production-record.png',
+        'Team Performance': 'individual-team-production-record.png',
         'Learning Curve': 'Learning-curve.png',
         'Downtimes': 'downtimes.png',
         'Cost centers ,Direct/Indirect Cost': 'center-direct-indirect-cost.png',
@@ -40,12 +40,12 @@ const CE = ({ onBack }) => {
 
     const ceModules = [
         { 
-            title: 'Standard time analysis', 
+            title: 'ST Standard Time', 
             color: 'bg-gradient-to-br from-blue-500 to-blue-600',
             shadow: 'shadow-blue-200'
         },
         { 
-            title: 'Product development analysis', 
+            title: 'Product development', 
             color: 'bg-gradient-to-br from-green-500 to-green-600',
             shadow: 'shadow-green-200'
         },
@@ -55,7 +55,7 @@ const CE = ({ onBack }) => {
             shadow: 'shadow-purple-200'
         },
         { 
-            title: 'Cut,Sew,Pack worker capacity', 
+            title: 'Cut,Sew,Pack Productivity', 
             color: 'bg-gradient-to-br from-orange-500 to-orange-600',
             shadow: 'shadow-orange-200'
         },
@@ -70,7 +70,7 @@ const CE = ({ onBack }) => {
             shadow: 'shadow-yellow-200'
         },
         { 
-            title: 'Individual team production records', 
+            title: 'Team Performance', 
             color: 'bg-gradient-to-br from-teal-500 to-teal-600',
             shadow: 'shadow-teal-200'
         },

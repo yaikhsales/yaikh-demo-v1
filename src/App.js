@@ -51,7 +51,9 @@ import FaceScan from './cctv/face-scan';
 import MyFaceScan from './cctv/my-face-scan';
 import SystemAnalyze from './system-analyze/system-analyze';
 import YTMShop from './ytm-shop/ytm-shop';
+import YTM from './ytm/ytm';
 import YShop from './y-shop/y-shop';
+import TrafficLight from './traffic-light/traffic-light';
 import Training from './training/training';
 import WelcomePage from './welcome-page';
 import HappyNewYear from './happy-new-year';
@@ -72,8 +74,10 @@ export default function App() {
                 <Route path="sensors" element={<SensorGridView onBack={handleBack} />} />
                 <Route path="waste/analytics" element={<Waste onBack={handleBack} />} />
                 <Route path="waste/boiler" element={<Boiler onBack={handleBack} />} />
-                <Route path="shop" element={<YTMShop onBack={handleBack} />} />
+                <Route path="ytm-shop" element={<YTMShop onBack={handleBack} />} />
+                <Route path="ytm" element={<YTM onBack={handleBack} />} />
                 <Route path="y-shop" element={<YShop onBack={handleBack} />} />
+                <Route path="traffic-light" element={<TrafficLight onBack={handleBack} />} />
                 <Route
                     path="meeting"
                     element={<TimelineView onBack={handleBack} onAdd={() => {}} />}

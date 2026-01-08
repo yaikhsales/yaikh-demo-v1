@@ -1,176 +1,70 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, X, Eye, FileText, Download, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Eye, Download } from 'lucide-react';
 
 const ShowListRequest = ({ onBack }) => {
     const navigate = useNavigate();
-    const [filterType, setFilterType] = useState('All Request');
-    const [filterByUser, setFilterByUser] = useState('All');
-    const [searchCode, setSearchCode] = useState('');
-    const [department, setDepartment] = useState('All');
-    const [fromDate, setFromDate] = useState('');
-    const [toDate, setToDate] = useState('');
-    const [activeTab, setActiveTab] = useState('new');
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    // Removed unused filter states - keeping for potential future use
 
-    // Sample purchase request data
+    // Sample purchase request data matching the original platform
     const sampleRequests = [
         {
-            code: 1038,
-            name: 'Seth Tangtong',
-            department: 'Admin',
-            preparedBy: 'Parampah',
-            requestDate: '10-12-20',
-            returnStatus: 'pending',
-            signOfDept: 'pending',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
+            code: 2022,
+            name: 'Uth Chantha',
+            profileImage: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_00009468_20251124124718.jpeg',
+            department: 'Warehouse',
+            productService: '平板充电柜',
+            requestDate: '07-01-26',
+            buyerType: 'Buy by Purchaser',
+            headOfDept: {
+                status: 'pending'
+            },
+            gmReqApprove: {
+                status: 'pending'
+            },
+            gmPaymentApprove: {
+                status: 'pending'
+            },
+            purchaser: {
+                status: 'pending'
+            },
+            payment: {
+                status: 'pending'
+            },
             hasReturnMessage: false
         },
         {
-            code: 1037,
-            name: 'Jhanvi Das',
-            department: 'Cooling',
-            preparedBy: 'Buy by Prathana',
-            requestDate: '10-12-20',
-            returnStatus: 'pending',
-            signOfDept: 'pending',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
-            hasReturnMessage: false
-        },
-        {
-            code: 1036,
-            name: 'Saswati Das',
-            department: 'GAR',
-            preparedBy: 'New Purchase',
-            requestDate: '10-12-20',
-            returnStatus: 'approved',
-            returnApprovedBy: 'Saswati Das',
-            returnApprovedDate: '12/25/24',
-            signOfDept: 'approved',
-            signApprovedBy: 'Saswati Das',
-            signApprovedDate: '12/25/24',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
-            hasReturnMessage: false
-        },
-        {
-            code: 1035,
-            name: 'Saswati Das',
-            department: 'GAR',
-            preparedBy: 'Pick up luggage at b...',
-            requestDate: '10-12-20',
-            returnStatus: 'approved',
-            returnApprovedBy: 'Saswati Das',
-            returnApprovedDate: '12/25/24',
-            signOfDept: 'approved',
-            signApprovedBy: 'Saswati Das',
-            signApprovedDate: '12/25/24',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
-            hasReturnMessage: false
-        },
-        {
-            code: 1034,
-            name: 'Yan Kanda',
-            department: 'DSU',
-            preparedBy: 'Ghasel on 10/12/2016',
-            requestDate: '10-12-20',
-            returnStatus: 'pending',
-            signOfDept: 'pending',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
-            hasReturnMessage: false
-        },
-        {
-            code: 1033,
-            name: 'SUMAN GIRI',
-            department: 'Admin',
-            preparedBy: 'NGE Wenderwer Teul...',
-            requestDate: '10-12-20',
-            returnStatus: 'pending',
-            signOfDept: 'pending',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
-            hasReturnMessage: false
-        },
-        {
-            code: 1032,
-            name: 'Seth Tangtong',
-            department: 'Admin',
-            preparedBy: 'Parampah',
-            requestDate: '10-12-20',
-            returnStatus: 'approved',
-            returnApprovedBy: 'NAGAPATI GANGADHAR',
-            returnApprovedDate: '12/25/24',
-            signOfDept: 'approved',
-            signApprovedBy: 'NAGAPATI GANGADHAR',
-            signApprovedDate: '12/25/24',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
-            hasReturnMessage: false
-        },
-        {
-            code: 1031,
-            name: 'Jhanvi Das',
-            department: 'Cooling',
-            preparedBy: 'Buy by Prathana',
-            requestDate: '10-12-20',
-            returnStatus: 'returned',
-            returnMessage: 'buy 7kg paper, 10kg paper jam.',
-            signOfDept: 'pending',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
-            hasReturnMessage: true
-        },
-        {
-            code: 1030,
-            name: 'Yan Kanda',
-            department: 'DSU',
-            preparedBy: 'Ghasel on 10/12/2016',
-            requestDate: '10-12-20',
-            returnStatus: 'pending',
-            signOfDept: 'pending',
-            instmentApprove: 'pending',
-            purchase: 'pending',
-            payment: 'pending',
+            code: 2021,
+            name: 'LIN HUI',
+            profileImage: 'https://ym.kottrahr.com/Uploads/Images/Employee/H01_0000839320240807152708.jpeg',
+            department: 'IT',
+            productService: 'Regular Purchase',
+            requestDate: '07-01-26',
+            buyerType: 'Buy by Purchaser',
+            headOfDept: {
+                status: 'approved',
+                approvedBy: 'LIN HUI',
+                approvedDate: '01/07/26'
+            },
+            gmReqApprove: {
+                status: 'approved',
+                approvedBy: 'CHAN WINGHONG',
+                approvedDate: '01/07/26'
+            },
+            gmPaymentApprove: {
+                status: 'pending'
+            },
+            purchaser: {
+                status: 'pending'
+            },
+            payment: {
+                status: 'pending'
+            },
             hasReturnMessage: false
         }
     ];
 
-    // Generate more requests for pagination
-    const generateMoreRequests = () => {
-        const moreRequests = [];
-        for (let i = 1029; i >= 665; i--) {
-            moreRequests.push({
-                code: i,
-                name: 'Test User',
-                department: 'Admin',
-                preparedBy: 'Prepared by User',
-                requestDate: '10-12-20',
-                returnStatus: 'pending',
-                signOfDept: 'pending',
-                instmentApprove: 'pending',
-                purchase: 'pending',
-                payment: 'pending',
-                hasReturnMessage: false
-            });
-        }
-        return [...sampleRequests, ...moreRequests];
-    };
-
-    const [requests] = useState(generateMoreRequests());
-    const totalRequests = requests.length;
+    // Using sampleRequests directly in the render
 
     const handleBack = () => {
         if (onBack) {
@@ -180,18 +74,6 @@ const ShowListRequest = ({ onBack }) => {
         }
     };
 
-    const handleFilter = () => {
-        console.log('Filter:', { filterType, filterByUser, searchCode, department, fromDate, toDate });
-    };
-
-    const handleClear = () => {
-        setFilterType('All Request');
-        setFilterByUser('All');
-        setSearchCode('');
-        setDepartment('All');
-        setFromDate('');
-        setToDate('');
-    };
 
     const handleReturn = (code) => {
         console.log('Return request:', code);
@@ -209,77 +91,20 @@ const ShowListRequest = ({ onBack }) => {
         console.log('View details:', code);
     };
 
-    const handleViewDocument = (code) => {
-        console.log('View document:', code);
+    const handlePDF = (code) => {
+        console.log('Download PDF:', code);
+        // In a real app, this would trigger a PDF download
+        alert(`Downloading PDF for request ${code}`);
     };
 
-    const filteredRequests = requests.filter(req => {
-        if (filterType !== 'All Request' && req.returnStatus !== filterType.toLowerCase()) return false;
-        if (searchCode && !req.code.toString().includes(searchCode)) return false;
-        if (department !== 'All' && req.department !== department) return false;
-        if (fromDate && req.requestDate < fromDate) return false;
-        if (toDate && req.requestDate > toDate) return false;
-        return true;
-    });
-
-    // Pagination logic
-    const totalPages = Math.ceil(filteredRequests.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedRequests = filteredRequests.slice(startIndex, endIndex);
-    const startItem = filteredRequests.length > 0 ? startIndex + 1 : 0;
-    const endItem = Math.min(endIndex, filteredRequests.length);
-
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    const handleViewForm = (code) => {
+        console.log('View form:', code);
+        alert(`Viewing form for request ${code}`);
     };
 
-    const renderPagination = () => {
-        const pages = [];
-        const maxVisiblePages = 10;
-        
-        if (totalPages <= maxVisiblePages) {
-            for (let i = 1; i <= totalPages; i++) {
-                pages.push(i);
-            }
-        } else {
-            for (let i = 1; i <= 10; i++) {
-                pages.push(i);
-            }
-        }
-
-        return (
-            <div className="flex items-center gap-1">
-                <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-3 py-1 border border-slate-300 rounded text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    <ChevronLeft size={16} />
-                </button>
-                {pages.map((page, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => handlePageChange(page)}
-                        className={`px-3 py-1 border border-slate-300 rounded text-sm font-semibold ${
-                            currentPage === page
-                                ? 'bg-blue-600 text-white border-blue-600'
-                                : 'hover:bg-slate-50'
-                        }`}
-                    >
-                        {page}
-                    </button>
-                ))}
-                <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-3 py-1 border border-slate-300 rounded text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                    <ChevronRight size={16} />
-                </button>
-            </div>
-        );
+    const handleDetail = (code) => {
+        console.log('View detail:', code);
+        alert(`Viewing detail for request ${code}`);
     };
 
     return (
@@ -589,13 +414,184 @@ const ShowListRequest = ({ onBack }) => {
                 {renderPagination()}
             </div> */}
 
-            {/* Image Display */}
-            <div className="flex-1 overflow-auto bg-white p-4 flex items-center justify-center">
-                <img 
-                    src="/assets/purchase/show-purchase.png" 
-                    alt="Purchase Request List" 
-                    className="max-w-full max-h-full object-contain"
-                />
+            {/* Table Display */}
+            <div className="flex-1 overflow-auto bg-white p-4">
+                <div className="max-w-full overflow-x-auto">
+                    <table className="w-full text-sm border-collapse bg-white">
+                        <thead className="bg-slate-50 sticky top-0 z-10">
+                            <tr>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">CODE</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">RETURN</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">HEAD OF DEPT</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">GM(REQ-APPROVE)</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">GM(PAYMENT-APPROVE)</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">PURCHASER</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">PAYMENT</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-left">NAME</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-left">DEPARTMENT</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-left">PRODUCT/SERVICE</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-left">REQUEST DATE</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">ATTACH DOCUMENTS</th>
+                                <th className="px-2 py-2 border border-slate-200 text-slate-600 font-bold text-[10px] text-center">ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sampleRequests.map((req, idx) => (
+                                <tr key={req.code} className="hover:bg-slate-50 transition-colors">
+                                    {/* CODE */}
+                                    <td className="px-2 py-2 border border-slate-200 text-slate-700 text-center font-medium text-xs">{req.code}</td>
+                                    
+                                    {/* RETURN */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        <button
+                                            onClick={() => handleReturn(req.code)}
+                                            className="bg-red-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-600 transition-colors min-w-[60px]"
+                                        >
+                                            Return
+                                        </button>
+                                    </td>
+                                    
+                                    {/* HEAD OF DEPT */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        {req.headOfDept.status === 'approved' ? (
+                                            <div className="flex flex-col gap-1 items-center">
+                                                <button className="bg-green-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-600 transition-colors min-w-[60px]">
+                                                    Approved
+                                                </button>
+                                                <div className="text-[10px] text-slate-600 leading-tight">{req.headOfDept.approvedBy} {req.headOfDept.approvedDate}</div>
+                                            </div>
+                                        ) : (
+                                            <button className="bg-red-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-600 transition-colors min-w-[60px]">
+                                                Pending
+                                            </button>
+                                        )}
+                                    </td>
+                                    
+                                    {/* GM(REQ-APPROVE) */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        {req.gmReqApprove.status === 'approved' ? (
+                                            <div className="flex flex-col gap-1 items-center">
+                                                <button className="bg-green-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-600 transition-colors min-w-[60px]">
+                                                    Approved
+                                                </button>
+                                                <div className="text-[10px] text-slate-600 leading-tight">{req.gmReqApprove.approvedBy} {req.gmReqApprove.approvedDate}</div>
+                                                <button
+                                                    onClick={() => handleDetail(req.code)}
+                                                    className="bg-blue-500 text-white px-2 py-1 rounded-full text-[10px] font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 min-w-[55px]"
+                                                >
+                                                    <Eye size={10} />
+                                                    Detail
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div className="flex flex-col gap-1 items-center">
+                                                <button className="bg-red-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-600 transition-colors min-w-[60px]">
+                                                    Pending
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDetail(req.code)}
+                                                    className="bg-blue-500 text-white px-2 py-1 rounded-full text-[10px] font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 min-w-[55px]"
+                                                >
+                                                    <Eye size={10} />
+                                                    Detail
+                                                </button>
+                                            </div>
+                                        )}
+                                    </td>
+                                    
+                                    {/* GM(PAYMENT-APPROVE) */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        <button className="bg-slate-400 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-slate-500 transition-colors min-w-[60px]">
+                                            Pending
+                                        </button>
+                                    </td>
+                                    
+                                    {/* PURCHASER */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        <button className="bg-slate-400 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-slate-500 transition-colors min-w-[60px]">
+                                            Pending
+                                        </button>
+                                    </td>
+                                    
+                                    {/* PAYMENT */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        <button className="bg-red-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-600 transition-colors min-w-[60px]">
+                                            Pending
+                                        </button>
+                                    </td>
+                                    
+                                    {/* NAME */}
+                                    <td className="px-2 py-2 border border-slate-200">
+                                        <div className="flex flex-col items-center gap-1">
+                                            {req.profileImage ? (
+                                                <img 
+                                                    src={req.profileImage} 
+                                                    alt={req.name}
+                                                    className="w-10 h-10 rounded object-cover border border-slate-200"
+                                                    onError={(e) => {
+                                                        e.target.onerror = null;
+                                                        e.target.src = '';
+                                                        e.target.style.display = 'none';
+                                                    }}
+                                                />
+                                            ) : (
+                                                <div className="w-10 h-10 rounded bg-slate-300 flex items-center justify-center text-[10px] font-semibold text-slate-700">
+                                                    {req.name.charAt(0)}
+                                                </div>
+                                            )}
+                                            <span className="text-slate-700 font-medium text-[10px] text-center">{req.name}</span>
+                                        </div>
+                                    </td>
+                                    
+                                    {/* DEPARTMENT */}
+                                    <td className="px-2 py-2 border border-slate-200 text-slate-700 text-[10px]">{req.department}</td>
+                                    
+                                    {/* PRODUCT/SERVICE */}
+                                    <td className="px-2 py-2 border border-slate-200 text-slate-700 text-[10px]">{req.productService}</td>
+                                    
+                                    {/* REQUEST DATE */}
+                                    <td className="px-2 py-2 border border-slate-200 text-slate-700 text-[10px]">
+                                        <div>{req.requestDate}</div>
+                                        <div className="text-slate-500 mt-0.5">{req.buyerType}</div>
+                                    </td>
+                                    
+                                    {/* ATTACH DOCUMENTS */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        <div className="flex flex-col gap-1 items-center">
+                                            <div className="text-[10px] text-slate-600 font-semibold">Request Form</div>
+                                            <div className="flex flex-col gap-1 items-center">
+                                                <button
+                                                    onClick={() => handlePDF(req.code)}
+                                                    className="bg-green-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-1 min-w-[50px]"
+                                                >
+                                                    <Download size={10} />
+                                                    PDF
+                                                </button>
+                                                <button
+                                                    onClick={() => handleViewForm(req.code)}
+                                                    className="bg-blue-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 min-w-[50px]"
+                                                >
+                                                    <Eye size={10} />
+                                                    View
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    
+                                    {/* ACTIONS */}
+                                    <td className="px-2 py-2 border border-slate-200 text-center">
+                                        <button
+                                            onClick={() => handleDetails(req.code)}
+                                            className="bg-blue-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-blue-600 transition-colors min-w-[60px]"
+                                        >
+                                            Details
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );

@@ -111,7 +111,7 @@ const getSubIconImage = (title) => {
         'Accessories Receiving': 'accessories-receiving.jpg',
         'Accessories Inspection': 'accessories-inspection.jpg',
         'Accessories Issuing': 'accessories-issuing.jpg',
-        'Warehouse Tracking Location': 'warehouse-tracking-location.jpg',
+        'Warehouse Tracking ': 'warehouse-tracking-location.jpg',
         'Delivery Tracking': 'delivery-tracking.jpg',
         // YQMS module sub-modules
         'Pre Production Meeting': 'pre-production-meeting.jpg',
@@ -133,7 +133,7 @@ const getSubIconImage = (title) => {
         'Pre Final Inspection': 'pre-final-inspection.jpg',
         'Final Inspection': 'final-inspection.jpg',
         'Buyer Final Inspection': 'buyer-final-inspection.jpg',
-        'Humidity Acraboy Checking': 'humidity-acraboy-checking.jpg',
+        'Humidity Aquaboy Checking': 'humidity-acraboy-checking.jpg',
         'Customer Complain Cap': 'customer-complain-cap.jpg'
     };
     
@@ -224,26 +224,35 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
     // E-Government modules get much larger size for better visibility
     // Accountant and Purchase Request modules get bigger size with colorful style
     const isColorfulCard = isAccountant || isPurchaseRequest;
+    const isYQMSOrFC = isYQMSModule || isFCModule;
+    
+    // Check if text is long for YQMS/FC modules - adjust font size based on length
+    const titleLength = card.title ? card.title.length : 0;
+    const isLongText = isYQMSOrFC && titleLength > 20;
+    const isVeryLongText = isYQMSOrFC && titleLength > 30;
+    
     const cardSize = isColorfulCard
         ? 'w-full h-56' // Bigger cards for Accountant and Purchase Request (224px height)
         : (isEGovModule 
             ? 'w-64 h-56' // Card size similar to the sample (256px × 224px)
             : (isCompact 
-                ? (isNonClickableModule ? 'w-[110px] h-[110px]' : 'w-[100px] h-[100px]')
+                ? (isNonClickableModule ? (isYQMSOrFC ? 'w-[112px] h-[120px]' : 'w-[110px] h-[110px]') : 'w-[100px] h-[100px]')
                 : (isNonClickableModule ? 'w-56 h-52' : 'w-48 h-40')));
     const iconSize = isColorfulCard
         ? 'w-32 h-32' // Bigger icons for Accountant and Purchase Request (128px × 128px)
         : (isEGovModule 
             ? 'w-40 h-40' // Large logo for clarity (160px × 160px)
             : (isCompact 
-                ? (isNonClickableModule ? 'w-20 h-20' : 'w-16 h-16')
+                ? (isNonClickableModule ? (isYQMSOrFC ? 'w-[72px] h-[72px]' : 'w-20 h-20') : 'w-16 h-16')
                 : (isNonClickableModule ? 'w-28 h-28' : 'w-16 h-16')));
     const textSize = isColorfulCard
         ? 'text-lg font-bold' // Bigger text for Accountant and Purchase Request
         : (isEGovModule 
             ? 'text-xl font-bold' // Bold text for clarity
-            : (isCompact ? 'text-[9px] leading-tight' : (isNonClickableModule ? 'text-base' : 'text-lg')));
-    const gapSize = isColorfulCard ? 'gap-4' : (isEGovModule ? 'gap-2' : (isCompact ? 'gap-0.5' : 'gap-3'));
+            : ((isYQMSModule || isFCModule) 
+                ? (isVeryLongText ? 'text-[9px] font-bold' : (isLongText ? 'text-[10px] font-bold' : 'text-xs font-bold')) 
+                : (isCompact ? 'text-[9px] leading-tight' : (isNonClickableModule ? 'text-base' : 'text-lg'))));
+    const gapSize = isColorfulCard ? 'gap-4' : (isEGovModule ? 'gap-2' : (isCompact ? (isYQMSOrFC ? 'gap-1.5' : 'gap-0.5') : 'gap-3'));
     
     return (
         <CardComponent
@@ -330,7 +339,7 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                     navigate(`/dashboard/submenu/${moduleId}`);
                 }
             }}
-            className={`${cardSize} ${isColorfulCard ? 'rounded-xl' : (isEGovModule ? 'rounded-2xl' : 'rounded-lg')} shadow-xl flex flex-col items-center justify-center ${gapSize} ${
+            className={`${cardSize} ${isColorfulCard ? 'rounded-xl' : (isEGovModule ? 'rounded-2xl' : 'rounded-lg')} shadow-xl flex flex-col items-center ${isYQMSOrFC && isCompact ? 'justify-start' : 'justify-center'} ${gapSize} ${
                 isColorfulCard
                     ? 'border-0'
                     : (isEGovModule 
@@ -338,15 +347,15 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                         : 'border-2 border-black/20')
             } ${
                 isNonClickableModule ? 'cursor-default' : (isEGovModule ? 'cursor-pointer' : 'cursor-pointer')
-            } ${card.color ? card.color : (isColorfulCard ? 'bg-white' : (isEGovModule ? 'bg-white text-slate-800' : theme === 'normal' ? 'bg-white/90 text-slate-800 border-white/30' : 'bg-white text-slate-800'))} ${isColorfulCard ? 'p-6' : (isCompact ? 'p-1' : (isEGovModule ? 'p-6' : 'p-4'))}`}
+            } ${card.color ? card.color : (isColorfulCard ? 'bg-white' : (isEGovModule ? 'bg-white text-slate-800' : theme === 'normal' ? 'bg-white/90 text-slate-800 border-white/30' : 'bg-white text-slate-800'))} ${isColorfulCard ? 'p-6' : (isCompact ? (isYQMSOrFC ? 'p-2' : 'p-1') : (isEGovModule ? 'p-6' : 'p-4'))} ${isYQMSOrFC ? 'overflow-hidden' : ''}`}
         >
             <div className={isEGovModule
-                ? 'p-4 rounded-xl relative bg-transparent'
+                ? 'p-4 rounded-xl relative flex-shrink-0'
                 : (isNonClickableModule
-                    ? (isCompact ? 'p-0 rounded-lg relative bg-transparent' : theme === 'normal' ? 'p-3 rounded-lg relative bg-white/20 backdrop-blur-sm' : 'p-3 rounded-lg relative bg-white/10 backdrop-blur-sm')
-                    : (isCompact ? 'p-0 rounded-lg relative bg-transparent' : 'p-2 rounded-lg relative bg-transparent')
+                    ? (isCompact ? (isYQMSOrFC ? 'flex-shrink-0' : 'p-0 rounded-lg relative') : theme === 'normal' ? 'p-3 rounded-lg relative bg-white/20 backdrop-blur-sm' : 'p-3 rounded-lg relative bg-white/10 backdrop-blur-sm')
+                    : (isCompact ? 'p-0 rounded-lg relative' : 'p-2 rounded-lg relative')
                 )
-            } style={{ backgroundColor: 'transparent' }}>
+            }>
                 {(() => {
                     const shouldUseOriginalIcon = false;
                     const finalImageToUse = shouldUseOriginalIcon ? null : imageToUse;
@@ -394,7 +403,7 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                     return <IconRenderer iconName={card.icon} size={isColorfulCard ? 128 : (isCompact ? 48 : 64)} />;
                 })()}
             </div>
-            <span className={`font-bold text-center px-0.5 leading-tight ${textSize} break-words max-w-full ${textColorClass || (card.color && card.color.includes('text-white') ? 'text-white' : card.color && card.color.includes('text-black') ? 'text-black' : 'text-slate-800')}`} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', marginTop: isEGovModule ? '-12px' : '0' }}>
+            <span className={`font-bold text-center px-1 ${isYQMSOrFC && isCompact ? 'leading-[1.1]' : 'leading-tight'} ${textSize} break-words w-full flex-shrink-0 ${textColorClass || (card.color && card.color.includes('text-white') ? 'text-white' : card.color && card.color.includes('text-black') ? 'text-black' : 'text-slate-800')}`} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', display: 'block', maxHeight: isYQMSOrFC && isCompact ? '36px' : 'none', overflow: 'hidden' }}>
                 {card.title}
             </span>
         </CardComponent>
@@ -471,10 +480,10 @@ const SubMenuView = () => {
                 <div className="w-full max-w-[99vw] px-0.5">
                     <div className="flex gap-0 justify-center items-start">
                         {(cards.groups || []).map((group, groupIdx) => {
-                            // Determine if Output Style (sub-modules in 2 columns) - only for YQMS
-                            const isOutputStyle = group.label === 'Output Style';
-                            // Calculate column width - Output Style takes 2x width for 2-column grid, others take equal width
-                            const columnWidth = isOutputStyle 
+                            // Determine if First Output (sub-modules in 2 columns) - only for YQMS
+                            const isFirstOutput = group.label === 'First Output ' || group.label === 'First Output';
+                            // Calculate column width - First Output takes 2x width for 2-column grid, others take equal width
+                            const columnWidth = isFirstOutput 
                                 ? 'w-[calc(20%)] min-w-[260px]' 
                                 : 'w-[calc(16.66%)] min-w-[130px]';
                             
@@ -486,8 +495,8 @@ const SubMenuView = () => {
                                             {group.label}
                                         </h3>
                                     </div>
-                                    {/* Cards - 2 columns for Output Style, 1 column for others - Minimal spacing */}
-                                    <div className={isOutputStyle 
+                                    {/* Cards - 2 columns for First Output, 1 column for others - Minimal spacing */}
+                                    <div className={isFirstOutput 
                                         ? 'grid grid-cols-2 gap-0.5 justify-items-center' 
                                         : 'flex flex-col gap-0.5 items-center'
                                     }>
