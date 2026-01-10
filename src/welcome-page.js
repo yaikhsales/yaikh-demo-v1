@@ -141,9 +141,19 @@ const WelcomePage = () => {
 
     return (
         <div className="fixed inset-0 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500 flex items-center justify-center overflow-hidden p-6">
-            {/* Home Button - Centered at Top */}
-            <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-30">
+            {/* Home and Back Buttons - Centered at Top */}
+            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
+                
+                    {/* Back Button */}
                 <button
+                    onClick={handleBack}
+                    className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/20"
+                >
+                    <span>Back</span>
+                    <span>←</span>
+                </button>
+                 {/* Home Button */}
+                 <button
                     onClick={() => navigate('/')}
                     className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0 shadow-lg"
                     title="Home"
@@ -154,17 +164,9 @@ const WelcomePage = () => {
                         className="w-full h-full object-cover"
                     />
                 </button>
-            </div>
-            
-            {/* Back Button */}
-            <div className="absolute top-6 right-6 z-30">
-                <button
-                    onClick={handleBack}
-                    className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/20"
-                >
-                    <span>Back</span>
-                    <span>←</span>
-                </button>
+             
+                
+               
             </div>
 
             {/* Welcome Header - Centered with effects */}

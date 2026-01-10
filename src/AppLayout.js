@@ -7,7 +7,7 @@ import SectionContainer from './components/SectionContainer';
 import { DASHBOARD_DATA } from './data/module';
 import YaiDataBot from './chatbot/YaiDataBot';
 import DragonAnimation from './components/DragonAnimation';
-import { ThemeBackground, useTheme, ThemeSwitcher } from './thems';
+import { ThemeBackground } from './thems';
 
 import GMChat from './chatbot/GMChat';
 
@@ -15,7 +15,6 @@ import GMChat from './chatbot/GMChat';
 const AppLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { theme } = useTheme();
     
     const [isGMChatOpen, setGMChatOpen] = useState(false);
     const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -353,7 +352,7 @@ const AppLayout = () => {
     };
 
     return (
-        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden theme-${theme} ${isLightOn ? 'light-on' : ''} ${theme === 'christmas' ? 'bg-transparent' : 'bg-transparent'}`} style={{ position: 'relative', zIndex: 1, scrollBehavior: 'smooth' }}>
+        <div className={`flex flex-col min-h-screen font-sans overflow-x-hidden theme-normal ${isLightOn ? 'light-on' : ''} bg-transparent`} style={{ position: 'relative', zIndex: 1, scrollBehavior: 'smooth' }}>
             {/* Theme Background - Show on home page and dashboard, but not on full-screen forms */}
             {(location.pathname === '/' || location.pathname.startsWith('/dashboard')) && 
             !location.pathname.includes('purchase-requisition-form') && 
@@ -738,7 +737,7 @@ const AppLayout = () => {
                 {/* === BACKGROUND LAYERS === */}
                 {/* Background is now handled by ThemeBackground component in thems.js */}
                 {/* Light Beam Effect when light is on - only for normal theme */}
-                {theme !== 'christmas' && isLightOn && (
+                {isLightOn && (
                     <div className="fixed inset-0 z-[1] pointer-events-none">
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-white/25 via-white/15 to-transparent pointer-events-none"></div>
                     </div>
@@ -836,7 +835,6 @@ const AppLayout = () => {
                                     onBotModuleClick={openBotForModule}
                                     isDropdownOpen={isDropdownOpen}
                                     isLightOn={isLightOn}
-                                    theme={theme}
                                 />
                                 <SectionContainer
                                     section={DASHBOARD_DATA[1]}
@@ -845,7 +843,6 @@ const AppLayout = () => {
                                     onBotModuleClick={openBotForModule}
                                     isDropdownOpen={isDropdownOpen}
                                     isLightOn={isLightOn}
-                                    theme={theme}
                                 />
                                 <SectionContainer
                                     section={DASHBOARD_DATA[2]}
@@ -853,16 +850,12 @@ const AppLayout = () => {
                                     onBotModuleClick={openBotForModule}
                                     isDropdownOpen={isDropdownOpen}
                                     isLightOn={isLightOn}
-                                    theme={theme}
                                 />
                             </div>
                         </div>
                     </>
                 ) : <Outlet />}
             </main>
-            
-            {/* Theme Switcher - Floating Button */}
-            <ThemeSwitcher />
         </div>
     );
 }

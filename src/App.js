@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import AppLayout from './AppLayout';
-import { ThemeProvider } from './thems';
 
 // Import all view components
 import TrainingGridView from './views/TrainingGridView';
@@ -63,8 +62,7 @@ export default function App() {
     const handleBack = () => navigate(-1);
 
     return (
-        <ThemeProvider>
-            <Routes>
+        <Routes>
             <Route path="/welcome" element={<WelcomePage />} />
             <Route path="/happy-new-year" element={<HappyNewYear />} />
             <Route path="/" element={<AppLayout />} />
@@ -173,6 +171,5 @@ export default function App() {
                 <Route path=":moduleId" element={<TableView onBack={handleBack} />} />
             </Route>
         </Routes>
-        </ThemeProvider>
     );
 }

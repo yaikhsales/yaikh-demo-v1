@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { IconRenderer } from '../components/IconRenderer';
-import { useTheme } from '../thems';
 
 // Mapping function to match card titles to sub-icon image filenames
 const getSubIconImage = (title) => {
@@ -414,8 +413,8 @@ const SubMenuView = () => {
     const navigate = useNavigate();
     const { moduleId } = useParams();
     const { state } = useLocation();
-    const { theme } = useTheme();
     const { title = 'Submenu', cards = [], isGrouped = false } = state || {};
+    const theme = 'normal'; // Default theme
     
     // Determine if cards is grouped structure
     const isGroupedStructure = isGrouped || (cards && cards.grouped === true);
