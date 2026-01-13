@@ -22,6 +22,18 @@ import PayPR from './accountant/pay-pr';
 import ChecklistAttendance from './yhr/checklist-attendance';
 import MyAttendance from './yhr/my-attendance';
 import YHR from './yhr/index';
+import Recruitment from './yhr/recruitmentn';
+import Interview from './yhr/interview';
+import Onboarding from './yhr/onboarding';
+import BenefitProfile from './yhr/benefit-profile';
+import Payroll from './yhr/payroll';
+import VisaWorkPermit from './yhr/visa-work-permit';
+import Canteen from './yhr/canteen';
+import NSSF from './yhr/NSSF';
+import MonthlySalary from './salary-bill/monthly-salary';
+import WeeklyIncentive from './salary-bill/weekly-incentive';
+import PermitFee from './salary-bill/permit-fee';
+import ResignPayment from './salary-bill/resign-payment';
 import SalaryBill from './salary-bill/salary-bill';
 import CE from './ce/ce';
 import ComplianceCertificate from './digital-audit/compliance-certificate';
@@ -53,6 +65,8 @@ import YTMShop from './ytm-shop/ytm-shop';
 import YTM from './ytm/ytm';
 import YShop from './y-shop/y-shop';
 import TrafficLight from './traffic-light/traffic-light';
+import PWIP from './PWIP/pwip';
+import CallOut from './Call-out/call-out';
 import Training from './training/training';
 import WelcomePage from './welcome-page';
 import HappyNewYear from './happy-new-year';
@@ -76,6 +90,8 @@ export default function App() {
                 <Route path="ytm" element={<YTM onBack={handleBack} />} />
                 <Route path="y-shop" element={<YShop onBack={handleBack} />} />
                 <Route path="traffic-light" element={<TrafficLight onBack={handleBack} />} />
+                <Route path="pwip" element={<PWIP onBack={handleBack} />} />
+                <Route path="call-out" element={<CallOut onBack={handleBack} />} />
                 <Route
                     path="meeting"
                     element={<TimelineView onBack={handleBack} onAdd={() => {}} />}
@@ -103,7 +119,19 @@ export default function App() {
                 <Route path="approval-pr" element={<ApprovalPR onBack={handleBack} />} />
                 <Route path="pay-pr" element={<PayPR onBack={handleBack} />} />
                 <Route path="yhr" element={<YHR onBack={handleBack} />} />
+                <Route path="recruitment" element={<Recruitment onBack={handleBack} />} />
+                <Route path="interview" element={<Interview onBack={handleBack} />} />
+                <Route path="onboarding" element={<Onboarding onBack={handleBack} />} />
+                <Route path="benefit-profile" element={<BenefitProfile onBack={handleBack} />} />
+                <Route path="payroll" element={<Payroll onBack={handleBack} />} />
+                <Route path="visa-work-permit" element={<VisaWorkPermit onBack={handleBack} />} />
+                <Route path="canteen" element={<Canteen onBack={handleBack} />} />
+                <Route path="nssf" element={<NSSF onBack={handleBack} />} />
                 <Route path="salary-bill" element={<SalaryBill onBack={handleBack} />} />
+                <Route path="monthly-salary" element={<MonthlySalary onBack={handleBack} />} />
+                <Route path="weekly-incentive" element={<WeeklyIncentive onBack={handleBack} />} />
+                <Route path="permit-fee" element={<PermitFee onBack={handleBack} />} />
+                <Route path="resign-payment" element={<ResignPayment onBack={handleBack} />} />
                 <Route path="ce" element={<CE onBack={handleBack} />} />
                 <Route path="checklist-attendance" element={<ChecklistAttendance onBack={handleBack} />} />
                 <Route path="my-attendance" element={<MyAttendance onBack={handleBack} />} />

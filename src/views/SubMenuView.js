@@ -39,7 +39,8 @@ const getSubIconImage = (title) => {
         'Water': 'water.jpg',
         'YQMS': 'YQMS.png',
         'YTM': 'ytm.png',
-        'Traffic Light': 'traffic-light.png',
+        'KANBAN': 'traffic-light.png',
+        'Traffic Light': 'traffic-light.png', // Keep for backward compatibility
         'Waste': 'waste.png',
         'Boiler': 'Boiler.png',
         // CCTV module

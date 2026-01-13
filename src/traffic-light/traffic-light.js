@@ -33,64 +33,59 @@ const TrafficLight = ({ onBack }) => {
         console.log('Refreshing data...');
     };
 
-    // Sample data for Lines 21-30
-    const lineData = {
-        'Line 21': ['L21-3 GPAR12270-1', 'L21-4 GPAR12270-1', 'L21-5 GPAR12270-1'],
-        'Line 22': ['L22-1 GPAR12270-1', 'L22-2 GPAR12270-1', 'L22-3 GPAR12270-1'],
-        'Line 23': ['L23-5 GPAR12270-1', 'L23-6 GPAR12270-1', 'L23-7 GPAR12270-1'],
-        'Line 24': ['L24-1 GPAR12270-1', 'L24-2 GPAR12270-1', 'L24-3 GPAR12270-1'],
-        'Line 25': ['L25-1 GPAR12270-1', 'L25-2 GPAR12270-1', 'L25-3 GPAR12270-1'],
-        'Line 26': ['L26-1 GPAR12270-1', 'L26-2 GPAR12270-1', 'L26-3 GPAR12270-1'],
-        'Line 27': ['L27-1 GPAR12270-1', 'L27-2 GPAR12270-1', 'L27-3 GPAR12270-1'],
-        'Line 28': ['L28-1 GPAR12270-1', 'L28-2 GPAR12270-1', 'L28-3 GPAR12270-1'],
-        'Line 29': ['L29-1 GPAR12270-1', 'L29-2 GPAR12270-1', 'L29-3 GPAR12270-1'],
-        'Line 30': ['L30-1 GPAR12270-1', 'L30-2 GPAR12270-1', 'L30-3 GPAR12270-1']
+    // Generate data for Lines 1-30
+    const generateLineData = (prefix) => {
+        const data = {};
+        for (let i = 1; i <= 30; i++) {
+            data[`Line ${i}`] = [
+                `${prefix}${i}-1 GPAR12270-1`,
+                `${prefix}${i}-2 GPAR12270-1`,
+                `${prefix}${i}-3 GPAR12270-1`
+            ];
+        }
+        return data;
     };
+
+    // Sample data for Sewing (Lines 1-30)
+    const sewingData = generateLineData('S');
 
     // Assign different reaction index to each line (so each shows a different face)
-    const lineReactionMap = {
-        'Line 21': 0,  // 😊
-        'Line 22': 1,  // 😢
-        'Line 23': 2,  // 😂
-        'Line 24': 3,  // 😄
-        'Line 25': 4,  // 🤩
-        'Line 26': 5,  // 😍
-        'Line 27': 6,  // 😎
-        'Line 28': 7,  // 🥳
-        'Line 29': 8,  // 😋
-        'Line 30': 9   // 😃
+    const generateLineReactionMap = () => {
+        const map = {};
+        for (let i = 1; i <= 30; i++) {
+            map[`Line ${i}`] = (i - 1) % reactions.length;
+        }
+        return map;
     };
 
-    // Sample data for Printing Area (PA-PJ)
-    const printingAreaData = {
-        'PA': ['PA-001 GPAR12270-1', 'PA-002 GPAR12270-1'],
-        'PB': ['PB-001 GPAR12270-1', 'PB-002 GPAR12270-1'],
-        'PC': ['PC-001 GPAR12270-1', 'PC-002 GPAR12270-1'],
-        'PD': ['PD-001 GPAR12270-1', 'PD-002 GPAR12270-1'],
-        'PE': ['PE-001 GPAR12270-1', 'PE-002 GPAR12270-1'],
-        'PF': ['PF-001 GPAR12270-1', 'PF-002 GPAR12270-1'],
-        'PG': ['PG-001 GPAR12270-1', 'PG-002 GPAR12270-1'],
-        'PH': ['PH-001 GPAR12270-1', 'PH-002 GPAR12270-1'],
-        'PI': ['PI-001 GPAR12270-1', 'PI-002 GPAR12270-1'],
-        'PJ': ['PJ-001 GPAR12270-1', 'PJ-002 GPAR12270-1']
+    const lineReactionMap = generateLineReactionMap();
+
+    // Sample data for Finishing Input (A, B, C, ...)
+    const finishingInputData = {
+        'A': ['A-001 GPAR12270-1', 'A-002 GPAR12270-1'],
+        'B': ['B-001 GPAR12270-1', 'B-002 GPAR12270-1'],
+        'C': ['C-001 GPAR12270-1', 'C-002 GPAR12270-1'],
+        'D': ['D-001 GPAR12270-1', 'D-002 GPAR12270-1'],
+        'E': ['E-001 GPAR12270-1', 'E-002 GPAR12270-1'],
+        'F': ['F-001 GPAR12270-1', 'F-002 GPAR12270-1'],
+        'G': ['G-001 GPAR12270-1', 'G-002 GPAR12270-1'],
+        'H': ['H-001 GPAR12270-1', 'H-002 GPAR12270-1'],
+        'I': ['I-001 GPAR12270-1', 'I-002 GPAR12270-1'],
+        'J': ['J-001 GPAR12270-1', 'J-002 GPAR12270-1']
     };
 
-    // Sample data for Hot Stamping Area (SA-PN)
-    const hotStampingAreaData = {
-        'SA': ['SA-001 GPAR12270-1', 'SA-002 GPAR12270-1'],
-        'SB': ['SB-001 GPAR12270-1', 'SB-002 GPAR12270-1'],
-        'SC': ['SC-001 GPAR12270-1', 'SC-002 GPAR12270-1'],
-        'SD': ['SD-001 GPAR12270-1', 'SD-002 GPAR12270-1'],
-        'SE': ['SE-001 GPAR12270-1', 'SE-002 GPAR12270-1'],
-        'SF': ['SF-001 GPAR12270-1', 'SF-002 GPAR12270-1'],
-        'SG': ['SG-001 GPAR12270-1', 'SG-002 GPAR12270-1'],
-        'SH': ['SH-001 GPAR12270-1', 'SH-002 GPAR12270-1'],
-        'SI': ['SI-001 GPAR12270-1', 'SI-002 GPAR12270-1'],
-        'SJ': ['SJ-001 GPAR12270-1', 'SJ-002 GPAR12270-1'],
-        'SK': ['SK-001 GPAR12270-1', 'SK-002 GPAR12270-1'],
-        'SL': ['SL-001 GPAR12270-1', 'SL-002 GPAR12270-1'],
-        'SM': [],
-        'SN': []
+    // Sample data for Packing (A, B, C, ...)
+    const packingData = {
+        'A': ['A-001 GPAR12270-1', 'A-002 GPAR12270-1'],
+        'B': ['B-001 GPAR12270-1', 'B-002 GPAR12270-1'],
+        'C': ['C-001 GPAR12270-1', 'C-002 GPAR12270-1'],
+        'D': ['D-001 GPAR12270-1', 'D-002 GPAR12270-1'],
+        'E': ['E-001 GPAR12270-1', 'E-002 GPAR12270-1'],
+        'F': ['F-001 GPAR12270-1', 'F-002 GPAR12270-1'],
+        'G': ['G-001 GPAR12270-1', 'G-002 GPAR12270-1'],
+        'H': ['H-001 GPAR12270-1', 'H-002 GPAR12270-1'],
+        'I': ['I-001 GPAR12270-1', 'I-002 GPAR12270-1'],
+        'J': ['J-001 GPAR12270-1', 'J-002 GPAR12270-1']
     };
 
     // Get current date
@@ -105,14 +100,33 @@ const TrafficLight = ({ onBack }) => {
         return `DayUp ${dayName}, ${month} ${day}, ${year}`;
     };
 
-    const renderGridColumn = (title, items, reactionIndex = null, isRed = false) => {
+    const renderGridColumn = (title, items, reactionIndex = null, columnColor = null) => {
         // Calculate which reaction to show for this column (different for each, rotating)
         const columnReactionIndex = reactionIndex !== null 
             ? (reactionIndex + currentReactionIndex) % reactions.length
             : null;
         
+        // Determine colors for data area based on columnColor
+        let dataBgColor = 'bg-gray-900';
+        let textColor = 'text-white';
+        let borderColor = 'border-gray-600';
+        
+        if (columnColor === 'green') {
+            dataBgColor = 'bg-green-900/20';
+            textColor = 'text-green-300';
+            borderColor = 'border-green-500';
+        } else if (columnColor === 'red') {
+            dataBgColor = 'bg-red-900/20';
+            textColor = 'text-red-300';
+            borderColor = 'border-red-500';
+        } else if (columnColor === 'orange') {
+            dataBgColor = 'bg-orange-900/20';
+            textColor = 'text-orange-300';
+            borderColor = 'border-orange-500';
+        }
+        
         return (
-        <div key={title} className="flex flex-col border-r border-gray-600 min-w-[150px] flex-shrink-0">
+        <div key={title} className={`flex flex-col border-r ${borderColor} min-w-[150px] flex-shrink-0`}>
             {/* Icon Row */}
             <div className="bg-gray-800 border-b border-gray-600 p-1 text-center min-h-[40px] flex items-center justify-center">
                 {columnReactionIndex !== null ? (
@@ -128,12 +142,12 @@ const TrafficLight = ({ onBack }) => {
                 <span className="text-white font-semibold text-sm whitespace-nowrap">{title}</span>
             </div>
             {/* Data Rows */}
-            <div className="flex-1 bg-gray-900">
+            <div className={`flex-1 ${dataBgColor}`}>
                 {items.length > 0 ? (
                     items.map((item, idx) => (
                         <div 
                             key={idx} 
-                            className={`p-2 border-b border-gray-700 text-xs ${isRed ? 'text-red-400' : 'text-white'} whitespace-normal break-words`}
+                            className={`p-2 border-b border-gray-700 text-xs ${textColor} whitespace-normal break-words`}
                             style={{ 
                                 wordBreak: 'break-word', 
                                 overflowWrap: 'break-word',
@@ -144,7 +158,7 @@ const TrafficLight = ({ onBack }) => {
                         </div>
                     ))
                 ) : (
-                    <div className="p-2 text-gray-600 text-xs text-center min-h-[40px] flex items-center justify-center">-</div>
+                    <div className={`p-2 ${textColor}/50 text-xs text-center min-h-[40px] flex items-center justify-center`}>-</div>
                 )}
             </div>
         </div>
@@ -244,43 +258,49 @@ const TrafficLight = ({ onBack }) => {
 
             {/* Main Content */}
             <div className="flex-1 overflow-y-auto bg-gray-900 p-4">
-                {/* Workshop Section (车间) */}
+                {/* Sewing Section */}
                 <div className="mb-5">
-                    <div className="text-white font-bold text-base mb-2 px-1">车间</div>
+                    <div className="text-white font-bold text-base mb-2 px-1">Sewing</div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-                            {Object.entries(lineData).map(([line, items]) => (
-                                renderGridColumn(
+                            {Object.entries(sewingData).map(([line, items], index) => {
+                                const colors = ['green', 'red', 'orange'];
+                                const columnColor = colors[index % colors.length];
+                                return renderGridColumn(
                                     line,
                                     items,
                                     lineReactionMap[line],
-                                    line === 'Line 21' || line === 'Line 23'
-                                )
-                            ))}
+                                    columnColor
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
 
-                {/* Printing Area Section (待印花区) */}
+                {/* Finishing Input Section */}
                 <div className="mb-5">
-                    <div className="text-white font-bold text-base mb-2 px-1">待印花区</div>
+                    <div className="text-white font-bold text-base mb-2 px-1">Finishing Input</div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-                            {Object.entries(printingAreaData).map(([area, items]) => (
-                                renderGridColumn(area, items)
-                            ))}
+                            {Object.entries(finishingInputData).map(([area, items], index) => {
+                                const colors = ['green', 'red', 'orange'];
+                                const columnColor = colors[index % colors.length];
+                                return renderGridColumn(area, items, null, columnColor);
+                            })}
                         </div>
                     </div>
                 </div>
 
-                {/* Hot Stamping Area Section (待烫标区) */}
+                {/* Packing Section */}
                 <div className="mb-5">
-                    <div className="text-white font-bold text-base mb-2 px-1">待烫标区</div>
+                    <div className="text-white font-bold text-base mb-2 px-1">Packing</div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-                            {Object.entries(hotStampingAreaData).map(([area, items]) => (
-                                renderGridColumn(area, items)
-                            ))}
+                            {Object.entries(packingData).map(([area, items], index) => {
+                                const colors = ['green', 'red', 'orange'];
+                                const columnColor = colors[index % colors.length];
+                                return renderGridColumn(area, items, null, columnColor);
+                            })}
                         </div>
                     </div>
                 </div>

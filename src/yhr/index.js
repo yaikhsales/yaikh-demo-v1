@@ -167,8 +167,23 @@ const YHR = ({ onBack }) => {
                                                     handleFWCMSClick();
                                                 }
                                             } else {
-                                                // Handle other modules - placeholder for now
-                                                console.log(`${module.title} clicked`);
+                                                // Navigate to respective module pages
+                                                const routeMap = {
+                                                    'Recruitment': '/dashboard/recruitment',
+                                                    'Interview': '/dashboard/interview',
+                                                    'Onboarding': '/dashboard/onboarding',
+                                                    'Benefit Profile': '/dashboard/benefit-profile',
+                                                    'Payroll': '/dashboard/payroll',
+                                                    'NSSF': '/dashboard/nssf',
+                                                    'Visa and Work Permit': '/dashboard/visa-work-permit',
+                                                    'Canteen': '/dashboard/canteen'
+                                                };
+                                                const route = routeMap[module.title];
+                                                if (route) {
+                                                    navigate(route);
+                                                } else {
+                                                    console.log(`${module.title} clicked - no route defined`);
+                                                }
                                             }
                                         }}
                                         className={`

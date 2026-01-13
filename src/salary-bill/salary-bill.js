@@ -26,9 +26,19 @@ const SalaryBill = ({ onBack }) => {
     };
 
     const handleSubModuleClick = (module) => {
-        // Handle sub-module clicks - placeholder for now
-        console.log(`${module.title} clicked`);
-        // You can add navigation logic here when routes are ready
+        // Navigate to respective module pages
+        const routeMap = {
+            'Monthly Salary': '/dashboard/monthly-salary',
+            'Weekly Incentive': '/dashboard/weekly-incentive',
+            'Permit Fee': '/dashboard/permit-fee',
+            'Resign Payment': '/dashboard/resign-payment'
+        };
+        const route = routeMap[module.title];
+        if (route) {
+            navigate(route);
+        } else {
+            console.log(`${module.title} clicked - no route defined`);
+        }
     };
 
     const salaryBillModules = [

@@ -342,8 +342,12 @@ const AppLayout = () => {
                 navigate('/dashboard/ytm-shop');
             } else if (module.title === 'YTM') {
                 navigate('/dashboard/ytm');
-            } else if (module.title === 'Traffic Light') {
+            } else if (module.title === 'KANBAN' || module.id === 'kanban') {
                 navigate('/dashboard/traffic-light');
+            } else if (module.title === 'PWIP' || module.id === 'pwip') {
+                navigate('/dashboard/pwip');
+            } else if (module.title === 'Call Out' || module.id === 'call-out') {
+                navigate('/dashboard/call-out');
             } else if (module.id === 'meeting' && module.title === 'Meeting Room') {
                 navigate('/dashboard/meeting-room');
             }
@@ -364,6 +368,8 @@ const AppLayout = () => {
             !location.pathname.includes('ytm-shop') &&
             !location.pathname.includes('ytm') &&
             !location.pathname.includes('traffic-light') && 
+            !location.pathname.includes('pwip') && 
+            !location.pathname.includes('call-out') && 
             !location.pathname.includes('yhr') && 
             !location.pathname.includes('salary-bill') && 
             !location.pathname.includes('water') && 
@@ -392,6 +398,8 @@ const AppLayout = () => {
             !location.pathname.includes('ytm-shop') &&
             !location.pathname.includes('ytm') &&
             !location.pathname.includes('traffic-light') && 
+            !location.pathname.includes('pwip') && 
+            !location.pathname.includes('call-out') && 
             !location.pathname.includes('yhr') && 
             !location.pathname.includes('salary-bill') && 
             !location.pathname.includes('water') && 

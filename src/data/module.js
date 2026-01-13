@@ -94,6 +94,7 @@ export const DASHBOARD_DATA = [
         title: 'QA',
         modules: [
           { id: 'yqms', title: 'YQMS', image: 'assets/icons/yqms.png', status: 'active', demoType: 'SUBMENU_YQMS' },
+          { id: 'call-out', title: 'Call Out', image: 'assets/icons/traffic-light.png', status: 'active', highlight: true },
         ]
       },
       {
@@ -101,6 +102,8 @@ export const DASHBOARD_DATA = [
         title: 'Internal Logistics',
         modules: [
           { id: 'fc', title: 'FC', image: 'assets/icons/fc.png', status: 'active', demoType: 'SUBMENU_FC' },
+          { id: 'pwip', title: 'PWIP', image: 'assets/icons/traffic-light.png', status: 'active', highlight: true },
+          { id: 'kanban', title: 'KANBAN', image: 'assets/icons/traffic-light.png', status: 'active', highlight: true },
         ]
       },
       {
@@ -110,7 +113,6 @@ export const DASHBOARD_DATA = [
           { id: 'ce', title: 'CE', image: 'assets/icons/ce.png', status: 'active', highlight: true, demoType: 'SUBMENU_CE' },
           { title: 'YTM', image: 'assets/icons/ytm.png', status: 'active' },
           { title: 'YTM Shop', image: 'assets/icons/ytm-shop.png', status: 'active' },
-          { title: 'Traffic Light', image: 'assets/icons/traffic-light.png', status: 'active', highlight: true },
         ]
       },
       {

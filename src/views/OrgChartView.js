@@ -12,32 +12,36 @@ const OrgChartView = ({ onBack }) => {
         name: 'CEO / President',
         title: 'YAI',
         level: 0,
+        photo: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
         children: [
             {
                 name: 'VP of Operations',
                 title: 'Operations',
                 level: 1,
+                photo: 'https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
                 children: [
-                    { name: 'Production Manager', title: 'Production', level: 2 },
-                    { name: 'QA Manager', title: 'QA', level: 2 }
+                    { name: 'Production Manager', title: 'Production', level: 2, photo: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop' },
+                    { name: 'QA Manager', title: 'QA', level: 2, photo: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop' }
                 ]
             },
             {
                 name: 'VP of Finance',
                 title: 'Finance',
                 level: 1,
+                photo: 'https://images.pexels.com/photos/1043473/pexels-photo-1043473.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
                 children: [
-                    { name: 'Accountant', title: 'Accounting', level: 2 },
-                    { name: 'Purchasing Head', title: 'Purchasing', level: 2 }
+                    { name: 'Accountant', title: 'Accounting', level: 2, photo: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop' },
+                    { name: 'Purchasing Head', title: 'Purchasing', level: 2, photo: 'https://images.pexels.com/photos/1181690/pexels-photo-1181690.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop' }
                 ]
             },
             {
                 name: 'VP of HR & Admin',
                 title: 'HR & Admin',
                 level: 1,
+                photo: 'https://images.pexels.com/photos/1181345/pexels-photo-1181345.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
                 children: [
-                    { name: 'HR Manager', title: 'HR', level: 2 },
-                    { name: 'Admin Manager', title: 'Admin', level: 2 }
+                    { name: 'HR Manager', title: 'HR', level: 2, photo: 'https://images.pexels.com/photos/1181346/pexels-photo-1181346.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop' },
+                    { name: 'Admin Manager', title: 'Admin', level: 2, photo: 'https://images.pexels.com/photos/1181519/pexels-photo-1181519.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop' }
                 ]
             },
         ],
@@ -93,16 +97,29 @@ const OrgChartView = ({ onBack }) => {
                 <div
                     className={`group relative ${nodeStyle} px-6 py-4 rounded-xl border-2 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl min-w-[200px] max-w-[250px] cursor-pointer`}
                 >
-                    <div className="flex flex-col items-center gap-1">
-                        <div className="flex items-center gap-2 mb-1">
-                            <Users size={level === 0 ? 20 : 16} className={level === 2 ? 'text-slate-600' : ''} />
+                    <div className="flex flex-col items-center gap-2">
+                        {/* Profile Photo */}
+                        {node.photo && (
+                            <div className={`relative ${level === 0 ? 'w-20 h-20' : level === 1 ? 'w-16 h-16' : 'w-14 h-14'} rounded-full overflow-hidden border-2 ${level === 2 ? 'border-slate-300' : 'border-white/30'} shadow-lg`}>
+                                <img 
+                                    src={node.photo} 
+                                    alt={node.name}
+                                    className="w-full h-full object-cover"
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(node.name)}&background=random&size=128`;
+                                    }}
+                                />
+                            </div>
+                        )}
+                        <div className="flex flex-col items-center gap-1">
                             <h3 className={`font-bold text-center ${level === 0 ? 'text-lg' : level === 1 ? 'text-base' : 'text-sm'}`}>
                                 {node.name}
                             </h3>
+                            <p className={`text-xs font-medium ${level === 2 ? 'text-slate-600' : 'text-white/90'}`}>
+                                {node.title}
+                            </p>
                         </div>
-                        <p className={`text-xs font-medium ${level === 2 ? 'text-slate-600' : 'text-white/90'}`}>
-                            {node.title}
-                        </p>
                     </div>
                     
                     {/* Hover Effect Glow */}

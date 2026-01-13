@@ -270,15 +270,16 @@ const AboutUs = ({ onClose }) => {
         { name: 'React', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/react.svg' },
         { name: 'Node.js', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/nodedotjs.svg' },
         { name: 'Express', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/express.svg' },
-        { name: 'ChatGPT', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/openai.svg' },
-        { 
-            name: 'Gemini', 
-            logo: 'https://cdn.simpleicons.org/googlegemini' 
-        },
-        {
-            name: 'DeepSeek',
-            logo: 'assets/about-us/deepseek.png'
-        }
+        { name: 'Microsoft Azure', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/microsoftazure.svg' },
+        // { name: 'ChatGPT', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/openai.svg' },
+        // { 
+        //     name: 'Gemini', 
+        //     logo: 'https://cdn.simpleicons.org/googlegemini' 
+        // },
+        // {
+        //     name: 'DeepSeek',
+        //     logo: 'assets/about-us/deepseek.png'
+        // }
     ];
     return (
         <div 
