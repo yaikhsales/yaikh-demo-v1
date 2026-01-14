@@ -17,17 +17,11 @@ const BookViewer = ({ onClose, images = [] }) => {
 
     // Use images from nav-images folder
     const defaultImages = images.length > 0 ? images : [
-        'assets/nav-images/empty-factory1.jpg',
-        'assets/nav-images/empty-factory2.jpg',
-        // '/assets/nav-images/s1.png',
-        // '/assets/nav-images/s2.png',
-        // '/assets/nav-images/s3.png',
-        // '/assets/nav-images/s4.png',
-        // 'assets/nav-images/support-ticket.png',
-        // 'assets/nav-images/11111.jpg',
-        'assets/nav-images/t2.jpg',
-        'assets/nav-images/t1.jpg',
-        'assets/nav-images/scan.jpg',
+        'assets/nav-images/empty-factory1.jpg?v=1',
+        'assets/nav-images/empty-factory2.jpg?v=1',
+        'assets/nav-images/t2.jpg?v=1',
+        'assets/nav-images/t1.jpg?v=1',
+        'assets/nav-images/scan.jpg?v=1',
         
     ];
 
