@@ -146,8 +146,8 @@ const Header = () => {
                             className="fixed inset-0 z-40" 
                             onClick={() => setShowCountryDropdown(false)}
                         />
-                        <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 min-w-[100px] sm:min-w-[120px] py-1">
-                            {['AT', 'US', 'UK', 'DE', 'FR'].map((country) => (
+                        {/* <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg border border-gray-200 z-50 min-w-[100px] sm:min-w-[120px] py-1">
+                            {[ 'AT', 'US', 'UK', 'DE', 'FR'].map((country) => (
                                 <button
                                     key={country}
                                     onClick={() => {
@@ -161,7 +161,7 @@ const Header = () => {
                                     {country}
                                 </button>
                             ))}
-                        </div>
+                        </div> */}
                     </>
                 )}
             </div>

@@ -401,7 +401,7 @@ const AboutUs = ({ onClose }) => {
                             </div>
 
                             {/* Description Boxes - No Frames, Big Font */}
-                            <div className="space-y-1 sm:space-y-1.5 mb-1.5 flex-shrink-0">
+                            <div className="space-y-1 sm:space-y-1.5 mb-1.5 flex-shrink-0 py-2">
                                 {aboutUsContent.map((content, index) => {
                                     const isKhmer = content.language === 'ខ្មែរ';
                                     return (

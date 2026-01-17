@@ -1,24 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RefreshCw, X } from 'lucide-react';
 
 const CallOut = ({ onBack }) => {
     const navigate = useNavigate();
-    const [selectedDay, setSelectedDay] = useState('1Day');
     const [selectedLocation, setSelectedLocation] = useState('All Location');
-    const [currentReactionIndex, setCurrentReactionIndex] = useState(0);
-    
-    // Array of different reaction emojis
-    const reactions = ['😊', '😢', '😂', '😄', '🤩', '😍', '😎', '🥳', '😋', '😃', '😁', '😆'];
-    
-    // Change reaction every 30 seconds
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentReactionIndex((prevIndex) => (prevIndex + 1) % reactions.length);
-        }, 30000); // 30 seconds
-        
-        return () => clearInterval(interval);
-    }, [reactions.length]);
 
     const handleBack = () => {
         if (onBack) {
@@ -49,17 +35,6 @@ const CallOut = ({ onBack }) => {
     // Sample data for Sewing (Lines 1-30)
     const sewingData = generateLineData('S');
 
-    // Assign different reaction index to each line (so each shows a different face)
-    const generateLineReactionMap = () => {
-        const map = {};
-        for (let i = 1; i <= 30; i++) {
-            map[`Line ${i}`] = (i - 1) % reactions.length;
-        }
-        return map;
-    };
-
-    const lineReactionMap = generateLineReactionMap();
-
     // Sample data for Finishing Input (A, B, C, ...)
     const finishingInputData = {
         'A': ['A-001 GPAR12270-1', 'A-002 GPAR12270-1'],
@@ -88,50 +63,65 @@ const CallOut = ({ onBack }) => {
         'J': ['J-001 GPAR12270-1', 'J-002 GPAR12270-1']
     };
 
-    // Get current date
-    const getCurrentDate = () => {
-        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        const today = new Date();
-        const dayName = days[today.getDay()];
-        const month = months[today.getMonth()];
-        const day = today.getDate();
-        const year = today.getFullYear();
-        return `DayUp ${dayName}, ${month} ${day}, ${year}`;
+    const renderEmptyColumn = (maxItems = 3) => {
+        return (
+            <div key="empty" className="flex flex-col border-r border-gray-600 w-[150px] max-w-[150px] flex-shrink-0 box-border">
+                {/* Icon Row */}
+                <div className="bg-gray-800 border-b border-gray-600 p-1 text-center min-h-[80px] flex items-center justify-center">
+                    <div className="w-10 h-10"></div>
+                </div>
+                {/* Line Header Row */}
+                <div className="bg-gray-800 border-b border-gray-600 p-2 text-center min-h-[40px] flex items-center justify-center">
+                    <span className="text-white font-semibold text-sm whitespace-nowrap"></span>
+                </div>
+                {/* Data Rows */}
+                <div className="flex-1 bg-gray-900">
+                    {Array.from({ length: maxItems }).map((_, idx) => (
+                        <div 
+                            key={idx}
+                            className="p-2 border-b border-gray-700 text-xs text-white text-center min-h-[40px] flex items-center justify-center"
+                        ></div>
+                    ))}
+                </div>
+            </div>
+        );
     };
 
-    const renderGridColumn = (title, items, reactionIndex = null, columnColor = null) => {
-        // Calculate which reaction to show for this column (different for each, rotating)
-        const columnReactionIndex = reactionIndex !== null 
-            ? (reactionIndex + currentReactionIndex) % reactions.length
-            : null;
-        
+    const renderGridColumn = (title, items, columnColor = null) => {
         // Determine colors for data area based on columnColor
         let dataBgColor = 'bg-gray-900';
         let textColor = 'text-white';
         let borderColor = 'border-gray-600';
+        let emojiIcon = null;
+        let statusIcon = null;
         
         if (columnColor === 'green') {
             dataBgColor = 'bg-green-900/20';
             textColor = 'text-green-300';
             borderColor = 'border-green-500';
+            emojiIcon = '😊'; // Happy icon for green
+            statusIcon = '✅'; // Checkmark icon for green
         } else if (columnColor === 'red') {
             dataBgColor = 'bg-red-900/20';
             textColor = 'text-red-300';
             borderColor = 'border-red-500';
+            emojiIcon = '😢'; // Crying icon for red
+            statusIcon = '❌'; // X icon for red
         } else if (columnColor === 'orange') {
             dataBgColor = 'bg-orange-900/20';
             textColor = 'text-orange-300';
             borderColor = 'border-orange-500';
+            emojiIcon = '😟'; // Worried icon for orange
+            statusIcon = '❓'; // Question mark icon for orange
         }
         
         return (
-        <div key={title} className={`flex flex-col border-r ${borderColor} min-w-[150px] flex-shrink-0`}>
+        <div key={title} className={`flex flex-col border-r ${borderColor} w-[150px] max-w-[150px] flex-shrink-0 box-border`}>
             {/* Icon Row */}
-            <div className="bg-gray-800 border-b border-gray-600 p-1 text-center min-h-[40px] flex items-center justify-center">
-                {columnReactionIndex !== null ? (
-                    <span className="text-3xl transition-all duration-500 animate-pulse">
-                        {reactions[columnReactionIndex]}
+            <div className="bg-gray-800 border-b border-gray-600 p-1 text-center min-h-[80px] flex items-center justify-center">
+                {emojiIcon ? (
+                    <span className="text-6xl">
+                        {emojiIcon}
                     </span>
                 ) : (
                     <div className="w-10 h-10"></div>
@@ -147,14 +137,9 @@ const CallOut = ({ onBack }) => {
                     items.map((item, idx) => (
                         <div 
                             key={idx} 
-                            className={`p-2 border-b border-gray-700 text-xs ${textColor} whitespace-normal break-words`}
-                            style={{ 
-                                wordBreak: 'break-word', 
-                                overflowWrap: 'break-word',
-                                lineHeight: '1.4'
-                            }}
+                            className={`p-2 border-b border-gray-700 text-xs ${textColor} flex items-center justify-center min-h-[40px]`}
                         >
-                            {item}
+                            {statusIcon && <span className="text-2xl">{statusIcon}</span>}
                         </div>
                     ))
                 ) : (
@@ -205,7 +190,7 @@ const CallOut = ({ onBack }) => {
                             />
                         </button>
                     </div>
-                    <h1 className="text-base font-bold text-white flex-1 text-center">{getCurrentDate()}</h1>
+                    <h1 className="text-5xl font-bold text-white flex-1 text-center">Call Out</h1>
                     <div className="flex-1 flex justify-end">
                         <button
                             onClick={handleBack}
@@ -220,24 +205,6 @@ const CallOut = ({ onBack }) => {
 
             {/* Top Filter Bar */}
             <div className="bg-gray-800 border-b border-gray-700 px-4 py-2.5 flex items-center gap-2 flex-wrap">
-                {['1Day', '2Day', '3Day', '4Day', '7Day'].map((day) => (
-                    <button
-                        key={day}
-                        onClick={() => setSelectedDay(day)}
-                        className={`px-4 py-1.5 rounded text-sm font-medium transition-colors ${
-                            selectedDay === day
-                                ? 'bg-blue-600 text-white shadow-md'
-                                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                        }`}
-                    >
-                        {day}
-                    </button>
-                ))}
-                <button
-                    className="px-4 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors"
-                >
-                    AB
-                </button>
                 <select
                     value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
@@ -263,13 +230,13 @@ const CallOut = ({ onBack }) => {
                     <div className="text-white font-bold text-base mb-2 px-1">Sewing</div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+                            {renderEmptyColumn(Math.max(...Object.values(sewingData).map(items => items.length)))}
                             {Object.entries(sewingData).map(([line, items], index) => {
                                 const colors = ['green', 'red', 'orange'];
                                 const columnColor = colors[index % colors.length];
                                 return renderGridColumn(
                                     line,
                                     items,
-                                    lineReactionMap[line],
                                     columnColor
                                 );
                             })}
@@ -279,13 +246,14 @@ const CallOut = ({ onBack }) => {
 
                 {/* Finishing Input Section */}
                 <div className="mb-5">
-                    <div className="text-white font-bold text-base mb-2 px-1">Finishing Input</div>
+                    <div className="text-white font-bold text-base mb-2 px-1">Finishing </div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+                            {renderEmptyColumn(Math.max(...Object.values(finishingInputData).map(items => items.length)))}
                             {Object.entries(finishingInputData).map(([area, items], index) => {
                                 const colors = ['green', 'red', 'orange'];
                                 const columnColor = colors[index % colors.length];
-                                return renderGridColumn(area, items, null, columnColor);
+                                return renderGridColumn(area, items, columnColor);
                             })}
                         </div>
                     </div>
@@ -296,10 +264,11 @@ const CallOut = ({ onBack }) => {
                     <div className="text-white font-bold text-base mb-2 px-1">Packing</div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+                            {renderEmptyColumn(Math.max(...Object.values(packingData).map(items => items.length)))}
                             {Object.entries(packingData).map(([area, items], index) => {
                                 const colors = ['green', 'red', 'orange'];
                                 const columnColor = colors[index % colors.length];
-                                return renderGridColumn(area, items, null, columnColor);
+                                return renderGridColumn(area, items, columnColor);
                             })}
                         </div>
                     </div>
