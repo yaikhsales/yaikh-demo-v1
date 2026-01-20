@@ -386,7 +386,7 @@ const ApprovalPR = ({ onBack }) => {
                                                         PDF
                                                     </button>
                                                     <button
-                                                        onClick={handleViewDocumentClick}
+                                                        onClick={handleViewPdf}
                                                         className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
                                                     >
                                                         <Eye size={12} />
@@ -444,7 +444,7 @@ const ApprovalPR = ({ onBack }) => {
             )}
 
             {/* PDF Viewer */}
-            {showPdfViewer && (
+            {showPdfViewer && selectedPdfPath && (
                 <PdfViewer
                     pdfPath={selectedPdfPath}
                     onClose={() => {

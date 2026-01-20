@@ -38,13 +38,7 @@ const PREDEFINED_BOTS = [
         lightAccent: 'from-blue-200 to-cyan-200',
         textColor: 'text-blue-800',
         borderColor: 'border-blue-200',
-        suggestedActions: [
-            { text: 'Create Support Ticket', highlight: true },
-            { text: 'Food Menu' },
-            { text: 'Car fuel' },
-            { text: 'Security Issue' },
-            { text: '2 Applications Received for IE Job Post' }
-        ]
+        suggestedActions: [] // Module boxes will be shown instead
     },
     {
         id: 'csr-bot',
@@ -209,18 +203,32 @@ const PhoneFrame = ({
     onDeleteChat,
     currentChatId,
     botId,
-    onShowInvoice
+    onShowInvoice,
+    adminPAModule,
+    adminPAModules,
+    adminPAUsedActions,
+    onMarkActionUsed
 }) => {
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-    const suggestedActions = bot.suggestedActions || [
+    
+    // Get suggested actions based on Admin PA module selection
+    let suggestedActions = bot.suggestedActions || [
         { text: 'Create image', highlight: true },
         { text: 'Create video' },
         { text: 'Write anything' },
         { text: 'Help me learn' },
         { text: 'Boost my day' }
     ];
+    
+    // For Admin PA, show module-specific actions if a module is selected, filtering out used ones
+    if (botId === 'admin-bot' && adminPAModule && adminPAModules && adminPAModules[adminPAModule]) {
+        const allActions = adminPAModules[adminPAModule].suggestedActions;
+        const usedActions = adminPAUsedActions && adminPAUsedActions[adminPAModule] ? adminPAUsedActions[adminPAModule] : [];
+        // Filter out actions that have been used
+        suggestedActions = allActions.filter(action => !usedActions.includes(action.text));
+    }
 
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -371,18 +379,47 @@ const PhoneFrame = ({
                                         <p className={`text-sm ${bot.textColor || 'text-gray-600'} mb-2`}>Hi {GREETING_NAME}</p>
                                         <h2 className={`text-3xl font-light leading-tight ${bot.textColor || 'text-gray-800'}`}>Where should we start?</h2>
                                     </div>
-                                    <div className="flex flex-col gap-2 mt-8">
-                                        {suggestedActions.map((action, idx) => (
-                                            <button
-                                                key={idx}
-                                                onClick={() => onSendMessage(action.text)}
-                                                className={`text-left px-5 py-3 rounded-full bg-gradient-to-r ${bot.lightAccent || 'from-gray-100 to-gray-200'} border ${bot.borderColor || 'border-gray-200'} text-sm ${bot.textColor || 'text-gray-800'} hover:opacity-80 hover:shadow-md transition flex items-center gap-2 font-medium`}
-                                            >
-                                                {action.highlight && <Sparkles size={16} className={`text-${bot.bgGradient.split('-')[1]}-500`} />}
-                                                {action.text}
-                                            </button>
-                                        ))}
-                                    </div>
+                                    {botId === 'admin-bot' && !adminPAModule ? (
+                                        // Admin PA Module Boxes
+                                        <div className="space-y-4 mt-8">
+                                            <p className={`text-sm ${bot.textColor || 'text-gray-600'} mb-4`}>Select a module:</p>
+                                            <div className="grid grid-cols-1 gap-3">
+                                                {Object.entries(adminPAModules || {}).map(([key, module]) => (
+                                                    <button
+                                                        key={key}
+                                                        onClick={() => onSendMessage(module.name)}
+                                                        className={`text-left px-5 py-4 rounded-xl bg-gradient-to-r ${module.lightColor} border-2 border-transparent hover:border-${module.color.split('-')[1]}-300 text-sm ${bot.textColor || 'text-gray-800'} hover:shadow-lg transition-all flex items-center gap-3 font-medium`}
+                                                    >
+                                                        <span className="text-2xl">{module.icon}</span>
+                                                        <span className="flex-1">{module.name}</span>
+                                                        <ChevronRight size={18} className="opacity-50" />
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        // Regular Suggested Actions or Admin PA Module Actions
+                                        suggestedActions.length > 0 && (
+                                            <div className="flex flex-col gap-2 mt-8">
+                                                {suggestedActions.map((action, idx) => (
+                                                    <button
+                                                        key={idx}
+                                                        onClick={() => {
+                                                            // Mark action as used immediately for Admin PA modules
+                                                            if (botId === 'admin-bot' && adminPAModule && onMarkActionUsed) {
+                                                                onMarkActionUsed(adminPAModule, action.text);
+                                                            }
+                                                            onSendMessage(action.text);
+                                                        }}
+                                                        className={`text-left px-5 py-3 rounded-full bg-gradient-to-r ${bot.lightAccent || 'from-gray-100 to-gray-200'} border ${bot.borderColor || 'border-gray-200'} text-sm ${bot.textColor || 'text-gray-800'} hover:opacity-80 hover:shadow-md transition flex items-center gap-2 font-medium`}
+                                                    >
+                                                        {action.highlight && <Sparkles size={16} className={`text-${bot.bgGradient.split('-')[1]}-500`} />}
+                                                        {action.text}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        )
+                                    )}
                                 </div>
                             ) : (
                                 // Messages Display
@@ -538,6 +575,49 @@ const PhoneFrame = ({
                                                             </div>
                                                         </div>
                                                     )}
+                                                    
+                                                    {/* Show suggested actions after module selection message for Admin PA */}
+                                                    {msg.from === 'bot' && botId === 'admin-bot' && 
+                                                     msg.text && msg.text.includes('Selected:') && msg.text.includes('module. Choose an action below:') && (
+                                                        (() => {
+                                                            // Detect module from message text or use current adminPAModule state
+                                                            let currentModule = adminPAModule;
+                                                            if (!currentModule && msg.text) {
+                                                                if (msg.text.includes('Purchase Request')) currentModule = 'purchase';
+                                                                else if (msg.text.includes('Support Ticket')) currentModule = 'support_ticket';
+                                                                else if (msg.text.includes('Y-Shop')) currentModule = 'shop';
+                                                            }
+                                                            
+                                                            // Calculate suggested actions dynamically for this module
+                                                            let moduleActions = [];
+                                                            if (currentModule && adminPAModules && adminPAModules[currentModule]) {
+                                                                const allActions = adminPAModules[currentModule].suggestedActions;
+                                                                const usedActions = adminPAUsedActions && adminPAUsedActions[currentModule] ? adminPAUsedActions[currentModule] : [];
+                                                                moduleActions = allActions.filter(action => !usedActions.includes(action.text));
+                                                            }
+                                                            
+                                                            return moduleActions.length > 0 ? (
+                                                                <div className="mt-3 space-y-2">
+                                                                    {moduleActions.map((action, actionIdx) => (
+                                                                        <button
+                                                                            key={actionIdx}
+                                                                            onClick={() => {
+                                                                                // Mark action as used immediately
+                                                                                if (onMarkActionUsed && currentModule) {
+                                                                                    onMarkActionUsed(currentModule, action.text);
+                                                                                }
+                                                                                onSendMessage(action.text);
+                                                                            }}
+                                                                            className={`w-full text-left px-4 py-2.5 rounded-full bg-gradient-to-r ${bot.lightAccent || 'from-gray-100 to-gray-200'} border ${bot.borderColor || 'border-gray-200'} text-sm ${bot.textColor || 'text-gray-800'} hover:opacity-80 hover:shadow-md transition flex items-center gap-2 font-medium`}
+                                                                        >
+                                                                            {action.highlight && <Sparkles size={16} className={`text-${bot.bgGradient.split('-')[1]}-500`} />}
+                                                                            {action.text}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            ) : null;
+                                                        })()
+                                                    )}
                                                 </div>
                                                 {msg.from === 'bot' && (
                                                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity px-1">
@@ -598,6 +678,7 @@ const PhoneFrame = ({
                                     <div ref={messagesEndRef} />
                                 </div>
                             )}
+                            
                         </div>
 
                         {/* Input Field with Thinking Status */}
@@ -677,6 +758,58 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     const [isDragging, setIsDragging] = useState(false);
     const [thumbPosition, setThumbPosition] = useState(0);
     const [thumbWidth, setThumbWidth] = useState(100);
+    
+    // State for Admin PA module selection
+    const [adminPAModule, setAdminPAModule] = useState(null); // 'purchase', 'support_ticket', 'shop', or null
+    
+    // Track used suggested actions per module
+    const [adminPAUsedActions, setAdminPAUsedActions] = useState({
+        purchase: [],
+        support_ticket: [],
+        shop: []
+    });
+    
+    // Admin PA module configurations
+    const adminPAModules = {
+        purchase: {
+            name: 'Purchase Request',
+            icon: '📋',
+            color: 'from-blue-500 to-cyan-500',
+            lightColor: 'from-blue-100 to-cyan-100',
+            suggestedActions: [
+                { text: 'Show me all purchase requests', highlight: true },
+                { text: 'How many requests are pending GM approval?' },
+                { text: 'How many purchase requests were created this month?' },
+                { text: 'How many requests have been approved by the accountant?' }
+            ]
+        },
+        support_ticket: {
+            name: 'Support Ticket',
+            icon: '🎫',
+            color: 'from-purple-500 to-pink-500',
+            lightColor: 'from-purple-100 to-pink-100',
+            suggestedActions: [
+                { text: 'Show all tickets requested this month', highlight: true },
+                { text: 'How many tickets are currently in progress?' },
+                { text: 'Show all completed tickets' },
+                { text: 'How many users are using the support ticket module?' },
+                { text: 'How many tickets were requested by the admin department?' }
+            ]
+        },
+        shop: {
+            name: 'Y-Shop',
+            icon: '🛒',
+            color: 'from-orange-500 to-amber-500',
+            lightColor: 'from-orange-100 to-amber-100',
+            suggestedActions: [
+                { text: 'Show all shop requests this month', highlight: true },
+                { text: 'How many requests have been approved by the shop controller?' },
+                { text: 'How many requests have been issued to requestors?' },
+                { text: 'How many A4 items have been requested and issued?' },
+                { text: 'How many total requests have been made by requestors?' }
+            ]
+        }
+    };
 
     // Load chat history from localStorage
     const loadChatHistory = (botId) => {
@@ -743,6 +876,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 currentChatId: newChatId
             }
         }));
+        
+        // Reset Admin PA module selection when creating new chat
+        if (botId === 'admin-bot') {
+            setAdminPAModule(null);
+        }
     };
 
     const updateChatInHistory = (botId, chatId, newMessages) => {
@@ -805,11 +943,172 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
         });
     };
 
+    // API call function for Admin PA modules
+    const callAdminPAAPI = async (message, module) => {
+        try {
+            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    module: module
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.response || data.message || 'I received your request, but the response format was unexpected.';
+        } catch (error) {
+            console.error('API Error:', error);
+            return `Sorry, I encountered an error: ${error.message}. Please try again later.`;
+        }
+    };
+
+    // Mark a suggested action as used for a specific module
+    const markActionAsUsed = (module, actionText) => {
+        setAdminPAUsedActions(prev => ({
+            ...prev,
+            [module]: [...(prev[module] || []), actionText]
+        }));
+    };
+
     const handleSendMessage = (botId, message) => {
+        // Check for duplicate message first
+        const currentBotState = botStates[botId];
+        if (currentBotState && currentBotState.messages.length > 0) {
+            const lastMessage = currentBotState.messages[currentBotState.messages.length - 1];
+            if (lastMessage.from === 'user' && lastMessage.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                return; // Don't process duplicate message
+            }
+        }
+        
+        // Handle Admin PA module selection
+        if (botId === 'admin-bot') {
+            const messageLower = message.toLowerCase().trim();
+            
+            // Only allow module switching if explicitly requested
+            // If already in a module, only switch if message is EXACTLY a module name or explicit switch command
+            const isExplicitModuleSwitch = 
+                messageLower === 'purchase request' || messageLower === 'support ticket' || messageLower === 'y-shop' ||
+                messageLower === 'switch to purchase request' || messageLower === 'switch to support ticket' || messageLower === 'switch to y-shop' ||
+                messageLower === 'go to purchase request' || messageLower === 'go to support ticket' || messageLower === 'go to y-shop';
+            
+            // Check if user wants to select a module
+            // If no module selected: allow any mention of module name
+            // If module already selected: only allow exact match or explicit switch
+            if (messageLower === 'purchase request' || 
+                (!adminPAModule && messageLower.includes('purchase request')) ||
+                (adminPAModule && isExplicitModuleSwitch && messageLower === 'purchase request')) {
+                setAdminPAModule('purchase');
+                // Add bot message showing module selected
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.purchase.name} module. Choose an action below:` };
+                    const updatedMessages = [...botState.messages, { from: 'user', text: message }, botMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: false,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+                return;
+            }
+            else if (messageLower === 'support ticket' || 
+                     messageLower === 'create support ticket' ||
+                     (!adminPAModule && (messageLower.includes('support ticket') || messageLower.includes('create support ticket'))) ||
+                     (adminPAModule && isExplicitModuleSwitch && (messageLower === 'support ticket' || messageLower === 'create support ticket'))) {
+                setAdminPAModule('support_ticket');
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.support_ticket.name} module. Choose an action below:` };
+                    const updatedMessages = [...botState.messages, { from: 'user', text: message }, botMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: false,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+                return;
+            }
+            else if (messageLower === 'y-shop' ||
+                     (!adminPAModule && messageLower.includes('y-shop')) ||
+                     (adminPAModule && isExplicitModuleSwitch && messageLower === 'y-shop')) {
+                setAdminPAModule('shop');
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.shop.name} module. Choose an action below:` };
+                    const updatedMessages = [...botState.messages, { from: 'user', text: message }, botMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: false,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+                return;
+            }
+            // Check if user wants to go back to module selection
+            else if (messageLower.includes('back') || messageLower === 'back' || messageLower.includes('menu')) {
+                setAdminPAModule(null);
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    const botMsg = { from: 'bot', text: 'Select a module to get started:' };
+                    const updatedMessages = [...botState.messages, { from: 'user', text: message }, botMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: false,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+                return;
+            }
+        }
+
         let chatHistoryForGemini = [];
         
         setBotStates(prev => {
             const botState = prev[botId];
+            
+            // Check for duplicate message before adding
+            if (botState.messages.length > 0) {
+                const lastMsg = botState.messages[botState.messages.length - 1];
+                if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                    return prev; // Don't add duplicate
+                }
+            }
+            
             let currentChatId = botState.currentChatId;
             const userMessage = { from: 'user', text: message };
             const updatedMessages = [...botState.messages, userMessage];
@@ -1055,13 +1354,89 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             if (botId === 'admin-bot') {
                 const messageLower = message.toLowerCase().trim();
 
-                // 1. Create Support Ticket
-                if (messageLower.includes('create support ticket') || messageLower === 'create support ticket') {
-                    hasPredefinedResponse = true;
-                    botResponse = 'What happened? Is it broken or something new?';
+                // Check if a module is selected and handle API calls
+                if (adminPAModule) {
+                    // Mark this action as used immediately if it matches a suggested action
+                    if (adminPAModules[adminPAModule]) {
+                        const matchingAction = adminPAModules[adminPAModule].suggestedActions.find(
+                            action => action.text.toLowerCase() === message.toLowerCase().trim()
+                        );
+                        if (matchingAction) {
+                            markActionAsUsed(adminPAModule, matchingAction.text);
+                        }
+                    }
+                    
+                    // User is asking a question in a selected module - call API
+                    // Add user message and set typing state
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        
+                        // Check for duplicate message before adding
+                        if (botState.messages.length > 0) {
+                            const lastMsg = botState.messages[botState.messages.length - 1];
+                            if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                                return prev; // Don't add duplicate
+                            }
+                        }
+                        
+                        const userMsg = { from: 'user', text: message };
+                        const updatedMessages = [...botState.messages, userMsg];
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: true,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    
+                    callAdminPAAPI(message, adminPAModule).then(apiResponse => {
+                        setBotStates(prev => {
+                            const botState = prev[botId];
+                            const botMsg = { from: 'bot', text: apiResponse };
+                            const updatedMessages = [...botState.messages, botMsg];
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                            ) : botState.chatHistory;
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    messages: updatedMessages,
+                                    isTyping: false,
+                                    chatHistory: updatedHistory
+                                }
+                            };
+                        });
+                    }).catch(error => {
+                        setBotStates(prev => {
+                            const botState = prev[botId];
+                            const botMsg = { from: 'bot', text: `Error: ${error.message}` };
+                            const updatedMessages = [...botState.messages, botMsg];
+                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                            ) : botState.chatHistory;
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    messages: updatedMessages,
+                                    isTyping: false,
+                                    chatHistory: updatedHistory
+                                }
+                            };
+                        });
+                    });
+                    return; // Exit early, API call handles the response
                 }
-                // 2. Food Menu
-                else if (messageLower.includes('food menu') || messageLower === 'food menu') {
+
+                // 1. Food Menu
+                if (messageLower.includes('food menu') || messageLower === 'food menu') {
                     hasPredefinedResponse = true;
                     botResponse = 'Here is the menu:';
                     responseType = 'invoice-image';
@@ -1071,17 +1446,17 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                         image: 'assets/modules-image/menu.png'
                     }];
                 }
-                // 3. Car fuel
+                // 5. Car fuel
                 else if (messageLower.includes('car fuel') || messageLower === 'car fuel') {
                     hasPredefinedResponse = true;
                     botResponse = 'Car plate 1C-7782: Fuel overconsumption. GPS 167km/week: 1L = 6km [STD: 1L = 10km]';
                 }
-                // 4. Security Issue
+                // 6. Security Issue
                 else if (messageLower.includes('security issue') || messageLower === 'security issue') {
                     hasPredefinedResponse = true;
                     botResponse = 'Security found 3 strangers trying to enter the factory during lunch time.';
                 }
-                // 5. 2 Applications Received for IE Job Post
+                // 7. 2 Applications Received for IE Job Post
                 else if (messageLower.includes('2 applications received for ie job post') || 
                          messageLower.includes('2 applications recieve for ie jobs post') ||
                          messageLower.includes('applications received') ||
@@ -1455,10 +1830,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             }
 
             // Check if we should use Gemini API (ONLY when no predefined response found)
+            // Admin PA should NEVER use Gemini API - it uses the custom API endpoint
             const isDefaultResponse = botResponse === `Hello! I'm ${bot.name}. You asked: "${message}". ${bot.description}. How can I help you today?`;
             
-            // Only use Gemini API if there's NO predefined response (hasPredefinedResponse is false)
-            if (!hasPredefinedResponse && (isDefaultResponse || shouldUseGemini(message, hasPredefinedResponse))) {
+            // Only use Gemini API if there's NO predefined response AND it's NOT Admin PA bot
+            if (botId !== 'admin-bot' && !hasPredefinedResponse && (isDefaultResponse || shouldUseGemini(message, hasPredefinedResponse))) {
                 try {
                     // Generate response using Gemini API with stored chat history
                     const geminiResponse = await generateGeminiResponse(
@@ -1473,6 +1849,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     console.error('Error calling Gemini API:', error);
                     // Keep the default response if API fails
                 }
+            }
+            
+            // For Admin PA, if no module is selected and no predefined response, show module selection message
+            if (botId === 'admin-bot' && !adminPAModule && !hasPredefinedResponse) {
+                botResponse = 'Please select a module first: Purchase Request, Support Ticket, or Y-Shop.';
             }
 
             setBotStates(prev => {
@@ -2031,6 +2412,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                                             onDeleteChat={(chatId) => deleteChat(bot.id, chatId)}
                                             currentChatId={botState.currentChatId}
                                             botId={bot.id}
+                                            adminPAModule={bot.id === 'admin-bot' ? adminPAModule : null}
+                                            adminPAModules={bot.id === 'admin-bot' ? adminPAModules : null}
+                                            adminPAUsedActions={bot.id === 'admin-bot' ? adminPAUsedActions : null}
+                                            onMarkActionUsed={bot.id === 'admin-bot' ? markActionAsUsed : null}
                                             onShowInvoice={(item) => {
                                                 // Directly add invoice image message
                                                 setBotStates(prev => {
@@ -2097,6 +2482,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };

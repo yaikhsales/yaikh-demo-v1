@@ -342,7 +342,7 @@ const VerifyPR = ({ onBack }) => {
                                                         PDF
                                                     </button>
                                                     <button
-                                                        onClick={handleViewDetailAction}
+                                                        onClick={handleViewPdf}
                                                         className="bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1"
                                                     >
                                                         <Eye size={12} />
@@ -353,7 +353,7 @@ const VerifyPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button
-                                                onClick={handleViewDetailAction}
+                                                onClick={handleViewPdf}
                                                 className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
                                             >
                                                 Details
@@ -392,7 +392,7 @@ const VerifyPR = ({ onBack }) => {
             )}
 
             {/* PDF Viewer */}
-            {showPdfViewer && (
+            {showPdfViewer && selectedPdfPath && (
                 <PdfViewer
                     pdfPath={selectedPdfPath}
                     onClose={() => {

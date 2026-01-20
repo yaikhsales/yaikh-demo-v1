@@ -17,54 +17,54 @@ export const DASHBOARD_DATA = [
         title: 'Accountant', // New Column from image
         modules: [
           // Added 'id' to identify this specific module for the click action
-          { id: 'pr-module', title: 'Accountant', image: 'assets/icons/purchase-request.png', status: 'active', color: 'text-green-600', demoType: 'SUBMENU_PR' },
-          { id: 'e-invoicing', title: 'E-Invoicing', image: 'assets/icons/e-invoicing.png', status: 'active', color: 'text-green-500', demoType: 'SUBMENU_E_INVOICING' },
+          { id: 'pr-module', title: 'Accountant', image: 'assets/modules-image/new-icons-modules/accountant.png', status: 'active', color: 'text-green-600', demoType: 'SUBMENU_PR' },
+          { id: 'e-invoicing', title: 'E-Invoicing', image: 'assets/modules-image/new-icons-modules/E-Invoicing.png', status: 'active', color: 'text-green-500', demoType: 'SUBMENU_E_INVOICING' },
         ]
       },
       {
         id: 'hr',
         title: 'ADMIN',
         modules: [
-          { id: 'pr-admin', title: 'Purchase Request', image: 'assets/icons/purchase-request.png', status: 'active', demoType: 'SUBMENU_PR_ADMIN' },
-          { id: 'shop', title: 'Y Shop', image: 'assets/icons/y-shop.png', status: 'active', sub: 'Stationery', demoType: 'GRID_SHOP' },
-          { id: 'ticket', title: 'Support Ticket', image: 'assets/icons/support-ticket.png', status: 'active', demoType: 'VIEW_TICKET_CUSTOM' },
-          { title: 'Bill Record', image: 'assets/icons/bill-verify.png', status: 'active' }, // New Module
-          { id: 'gatepass', title: 'Gate Pass', image: 'assets/icons/gatepass.png', status: 'active', demoType: 'SUBMENU_VISITOR' },
-          { id: 'meeting', title: 'Meeting Room', image: 'assets/icons/meeting-room.png', status: 'active', demoType: 'IMAGE_VIEW' },
-          { id: 'car', title: 'My Car Booking', image: 'assets/icons/my-car-booking.png', status: 'active', demoType: 'IMAGE_VIEW' },
-          { title: 'Fire Alarm', image: 'assets/icons/fire-alarm.png', status: 'active' },
-          { id: 'cctv', title: 'CCTV', image: 'assets/icons/cctv.png', status: 'active', highlight: true, demoType: 'SUBMENU_CCTV' },
+          { id: 'pr-admin', title: 'Purchase Request', image: 'assets/modules-image/new-icons-modules/Purchase-Request.png', status: 'active', demoType: 'SUBMENU_PR_ADMIN' },
+          { id: 'shop', title: 'Y Shop', image: 'assets/modules-image/new-icons-modules/Y-Shop.png', status: 'active', sub: 'Stationery', demoType: 'GRID_SHOP' },
+          { id: 'ticket', title: 'Support Ticket', image: 'assets/modules-image/new-icons-modules/Support-Ticket.png', status: 'active', demoType: 'VIEW_TICKET_CUSTOM' },
+          { title: 'Bill Record', image: 'assets/modules-image/new-icons-modules/Bill-Record.png', status: 'active' }, // New Module
+          { id: 'gatepass', title: 'Gate Pass', image: 'assets/modules-image/new-icons-modules/Gatepass.png', status: 'active', demoType: 'SUBMENU_VISITOR' },
+          { id: 'meeting', title: 'Meeting Room', image: 'assets/modules-image/new-icons-modules/Meeting-Room.png', status: 'active', demoType: 'IMAGE_VIEW' },
+          { id: 'car', title: 'My Car Booking', image: 'assets/modules-image/new-icons-modules/My-Car-Booking.png', status: 'active', demoType: 'IMAGE_VIEW' },
+          { title: 'Fire Alarm', image: 'assets/modules-image/new-icons-modules/Fire-Alarm.png', status: 'active' },
+          { id: 'cctv', title: 'CCTV', image: 'assets/modules-image/new-icons-modules/CCTV.png', status: 'active', highlight: true, demoType: 'SUBMENU_CCTV' },
         ]
       },
       {
         id: 'admin',
         title: 'HR',
         modules: [
-          { id: 'yhr', title: 'YHR', image: 'assets/icons/yhr.png?v=1', status: 'active', color: 'text-blue-500', demoType: 'SUBMENU_YHR' },
-          { id: 'salary-bill', title: 'Salary Bill', image: 'assets/icons/salary-bill.png', status: 'active', demoType: 'SUBMENU_SALARY_BILL' },
-          { id: 'org', title: 'Org Chart', image: 'assets/icons/org-chart.png', status: 'active', demoType: 'SUBMENU_ORG' },
-          { id: 'training', title: 'Training', image: 'assets/icons/training.png', status: 'active', demoType: 'SUBMENU_DEPARTMENTS' }, // Corrected ID
-          { id: 'temp-work-request', title: 'Temp Work Request', image: 'assets/icons/temp-work-request.png', status: 'active', demoType: 'SUBMENU_TEMP_WORKER' }, // New Module
-          { title: 'Speak Up', image: 'assets/icons/speak-up.png', status: 'active' },
+          { id: 'yhr', title: 'YHR', image: 'assets/modules-image/new-icons-modules/YHR.png', status: 'active', color: 'text-blue-500', demoType: 'SUBMENU_YHR' },
+          { id: 'salary-bill', title: 'Salary Bill', image: 'assets/modules-image/new-icons-modules/Salary-Bill.png', status: 'active', demoType: 'SUBMENU_SALARY_BILL' },
+          { id: 'org', title: 'Org Chart', image: 'assets/modules-image/new-icons-modules/Org-Chart.png', status: 'active', demoType: 'SUBMENU_ORG' },
+          { id: 'training', title: 'Training', image: 'assets/modules-image/new-icons-modules/Training.png', status: 'active', demoType: 'SUBMENU_DEPARTMENTS' }, // Corrected ID
+          { id: 'temp-work-request', title: 'Temp Work Request', image: 'assets/modules-image/new-icons-modules/Temp-Worker-Request.png', status: 'active', demoType: 'SUBMENU_TEMP_WORKER' }, // New Module
+          { title: 'Speak Up', image: 'assets/modules-image/new-icons-modules/Speak-Up.png', status: 'active' },
         ]
       },
       {
         id: 'csr',
         title: 'CSR',
         modules: [
-          { id: 'digital-audit', title: 'Digital Audit', image: 'assets/icons/digital-audit.png', status: 'active', demoType: 'SUBMENU_DIGITAL_AUDIT' },
-          { id: 'energy', title: 'Energy', image: 'assets/icons/energy.png', status: 'active', demoType: 'SUBMENU_ENERGY' },
-          { id: 'air', title: 'Air', image: 'assets/icons/air.png', status: 'active', demoType: 'SUBMENU_AIR' },
-          { id: 'water', title: 'Water', image: 'assets/icons/water.png', status: 'active', demoType: 'SUBMENU_WATER' },
-          { id: 'waste', title: 'Waste', image: 'assets/icons/waste.png', status: 'active', demoType: 'SUBMENU_WASTE' },
-          { title: 'Chemical', image: 'assets/icons/chemical.png', status: 'active' }, // New Module
+          { id: 'digital-audit', title: 'Digital Audit', image: 'assets/modules-image/new-icons-modules/Digital-Auditt.png', status: 'active', demoType: 'SUBMENU_DIGITAL_AUDIT' },
+          { id: 'energy', title: 'Energy', image: 'assets/modules-image/new-icons-modules/Energy.png', status: 'active', demoType: 'SUBMENU_ENERGY' },
+          { id: 'air', title: 'Air', image: 'assets/modules-image/new-icons-modules/Air.png', status: 'active', demoType: 'SUBMENU_AIR' },
+          { id: 'water', title: 'Water', image: 'assets/modules-image/new-icons-modules/Water.png', status: 'active', demoType: 'SUBMENU_WATER' },
+          { id: 'waste', title: 'Waste', image: 'assets/modules-image/new-icons-modules/Waste.png', status: 'active', demoType: 'SUBMENU_WASTE' },
+          { title: 'Chemical', image: 'assets/modules-image/new-icons-modules/Chemical.png', status: 'active' }, // New Module
         ]
       },
       {
         id: 'egov',
         title: 'E-GOV',
         modules: [
-          { id: 'e-government', title: 'E-GOVERNMENT', image: 'assets/icons/e-government.png', status: 'active', demoType: 'SUBMENU_EGOV' },
+          { id: 'e-government', title: 'E-GOVERNMENT', image: 'assets/modules-image/new-icons-modules/E-Government.png', status: 'active', demoType: 'SUBMENU_EGOV' },
         ]
       }
     ]
@@ -79,7 +79,7 @@ export const DASHBOARD_DATA = [
             id: 'mgmt-main',
             title: '', // No sub-label needed for this single column
             modules: [
-                { id: 'system-analysis', title: 'System Analysis', image: 'assets/icons/system-analysis.png', status: 'active', demoType: 'IMAGE_VIEW' } // New Module
+                { id: 'system-analysis', title: 'System Analysis', image: 'assets/modules-image/new-icons-modules/System-Analysis.png', status: 'active', demoType: 'IMAGE_VIEW' } // New Module
             ]
         }
     ]
@@ -93,8 +93,8 @@ export const DASHBOARD_DATA = [
         id: 'qa',
         title: 'QA',
         modules: [
-          { id: 'yqms', title: 'YQMS', image: 'assets/icons/yqms.png', status: 'active', demoType: 'SUBMENU_YQMS' },
-          { id: 'call-out', title: 'Call Out', image: 'assets/icons/sub-icons/call-out1.png', status: 'active', highlight: true },
+          { id: 'yqms', title: 'YQMS', image: 'assets/modules-image/new-icons-modules/YQMS.png', status: 'active', demoType: 'SUBMENU_YQMS' },
+          { id: 'call-out', title: 'Call Out', image: 'assets/modules-image/new-icons-modules/Call-Out.png', status: 'active', highlight: true },
         ]
       },
       {
@@ -102,17 +102,17 @@ export const DASHBOARD_DATA = [
         title: 'Internal Logistics',
         modules: [
           { id: 'fc', title: 'FC', image: 'assets/icons/fc.png', status: 'active', demoType: 'SUBMENU_FC' },
-          { id: 'pwip', title: 'PWIP', image: 'assets/icons/sub-icons/pwip.png', status: 'active', highlight: true },
-          { id: 'kanban', title: 'KANBAN', image: 'assets/icons/sub-icons/kanban.png', status: 'active', highlight: true },
+          { id: 'pwip', title: 'PWIP', image: 'assets/modules-image/new-icons-modules/PWIP.png', status: 'active', highlight: true },
+          { id: 'kanban', title: 'KANBAN', image: 'assets/modules-image/new-icons-modules/KANBAN.png', status: 'active', highlight: true },
         ]
       },
       {
         id: 'prod',
         title: 'Production',
         modules: [
-          { id: 'ce', title: 'CE', image: 'assets/icons/ce.png', status: 'active', highlight: true, demoType: 'SUBMENU_CE' },
-          { title: 'YTM', image: 'assets/icons/ytm.png', status: 'active' },
-          { title: 'YTM Shop', image: 'assets/icons/ytm-shop.png', status: 'active' },
+          { id: 'ce', title: 'CE', image: 'assets/modules-image/new-icons-modules/CE.png', status: 'active', highlight: true, demoType: 'SUBMENU_CE' },
+          { title: 'YTM', image: 'assets/modules-image/new-icons-modules/ytm.png', status: 'active' },
+          { title: 'YTM Shop', image: 'assets/modules-image/new-icons-modules/ytm-shop.png', status: 'active' },
         ]
       },
       {

@@ -6,6 +6,7 @@ const PdfViewer = ({ pdfPath, onClose }) => {
     const navigate = useNavigate();
     const [scale, setScale] = useState(1);
     const [pdfZoom, setPdfZoom] = useState(150); // PDF native zoom (percentage)
+    const [pdfError, setPdfError] = useState(false);
 
     const handleZoomIn = () => {
         setScale(prev => Math.min(prev + 0.25, 3));
@@ -39,6 +40,11 @@ const PdfViewer = ({ pdfPath, onClose }) => {
         window.addEventListener('keydown', handleKeyPress);
         return () => window.removeEventListener('keydown', handleKeyPress);
     }, []);
+
+    // Reset error state when PDF path changes
+    React.useEffect(() => {
+        setPdfError(false);
+    }, [pdfPath]);
 
     return (
         <div 
@@ -131,19 +137,53 @@ const PdfViewer = ({ pdfPath, onClose }) => {
                         willChange: 'transform',
                     }}
                 >
-                    <iframe
-                        src={`${pdfPath}#toolbar=0&zoom=${pdfZoom}&navpanes=0&scrollbar=0`}
-                        className="rounded-lg shadow-2xl border-0"
-                        title="PDF Viewer"
-                        style={{
-                            width: `${2000 * (pdfZoom / 150)}px`,
-                            height: `${1400 * (pdfZoom / 150)}px`,
-                            maxWidth: '95vw',
-                            maxHeight: '95vh',
-                            imageRendering: 'auto',
-                            WebkitImageRendering: 'auto',
-                        }}
-                    />
+                    {pdfError ? (
+                        <div className="bg-white/10 rounded-lg p-8 text-center backdrop-blur-sm border border-white/20">
+                            <p className="text-white text-lg font-semibold mb-2">Unable to load PDF</p>
+                            <p className="text-white/70 text-sm mb-4">The PDF file may not exist or cannot be accessed.</p>
+                            <p className="text-white/50 text-xs mb-4">Path: {pdfPath}</p>
+                            <button
+                                onClick={() => {
+                                    setPdfError(false);
+                                    // Try to reload
+                                    const iframe = document.querySelector('iframe[title="PDF Viewer"]');
+                                    if (iframe) {
+                                        iframe.src = iframe.src;
+                                    }
+                                }}
+                                className="px-4 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all"
+                            >
+                                Retry
+                            </button>
+                        </div>
+                    ) : (
+                        <iframe
+                            src={`${pdfPath}#toolbar=0&zoom=${pdfZoom}&navpanes=0&scrollbar=0`}
+                            className="rounded-lg shadow-2xl border-0"
+                            title="PDF Viewer"
+                            style={{
+                                width: `${2000 * (pdfZoom / 150)}px`,
+                                height: `${1400 * (pdfZoom / 150)}px`,
+                                maxWidth: '95vw',
+                                maxHeight: '95vh',
+                                imageRendering: 'auto',
+                                WebkitImageRendering: 'auto',
+                            }}
+                            onError={() => setPdfError(true)}
+                            onLoad={(e) => {
+                                // Check if iframe loaded successfully
+                                try {
+                                    const iframeDoc = e.target.contentDocument || e.target.contentWindow.document;
+                                    if (!iframeDoc || iframeDoc.body.innerHTML.includes('404') || iframeDoc.body.innerHTML.includes('Not Found')) {
+                                        setPdfError(true);
+                                    }
+                                } catch (err) {
+                                    // Cross-origin or other error - assume it's loading
+                                    console.log('PDF loading...');
+                                }
+                            }}
+                        />
+                    )}
                 </div>
             </div>
 

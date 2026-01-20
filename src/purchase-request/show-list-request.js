@@ -163,7 +163,7 @@ const ShowListRequest = ({ onBack }) => {
 
     const handleInvoice = (code) => {
         // Show invoice image/PDF matching the request code
-        setSelectedImagePath(`/assets/purchase/detail.png`);
+        setSelectedImagePath(`/assets/purchase/invoice.png?v=1`);
         setShowImageViewer(true);
     };
 
@@ -175,13 +175,13 @@ const ShowListRequest = ({ onBack }) => {
 
     const handlePDF = (code) => {
         // Show PDF viewer - matching with request code
-        setSelectedPdfPath(`/assets/purchase/view-pdf.pdf`);
+        setSelectedPdfPath(`/assets/purchase/view-pdf.pdf?v=1`);
         setShowPdfViewer(true);
     };
 
     const handleViewForm = (code) => {
         // Show PDF viewer for request form
-        setSelectedPdfPath(`/assets/purchase/view-pdf.pdf`);
+        setSelectedPdfPath(`/assets/purchase/view-pdf.pdf?v=1`);
         setShowPdfViewer(true);
     };
 
