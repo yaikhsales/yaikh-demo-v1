@@ -1473,7 +1473,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // Get user_id for this bot and module combination (use internal module name for storage)
             const userId = getUserIdForModule('admin-bot', internalModule);
             
-            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+            const response = await fetch('https://dev.yaikh.com/api/ai-agent', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1526,7 +1526,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // Get user_id for this bot and module combination (use internal module name for storage)
             const userId = getUserIdForModule('finance-bot', internalModule);
             
-            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+            const response = await fetch('https://dev.yaikh.com/api/ai-agent', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1571,7 +1571,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // Get user_id for this bot and module combination (use internal module name for storage)
             const userId = getUserIdForModule('csr-bot', internalModule);
             
-            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+            const response = await fetch('https://dev.yaikh.com/api/ai-agent', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1616,7 +1616,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // Get user_id for this bot and module combination (use internal module name for storage)
             const userId = getUserIdForModule('hr-bot', internalModule);
             
-            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+            const response = await fetch('https://dev.yaikh.com/api/ai-agent', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
