@@ -12,33 +12,33 @@ export const ThemeBackground = () => {
     }
 
     // Render bg.jpg background
-    return createPortal(
-        <div 
+        return createPortal(
+            <div 
             id="background"
-            className="fixed inset-0 overflow-hidden pointer-events-none" 
-            style={{ 
+                className="fixed inset-0 overflow-hidden pointer-events-none" 
+                style={{ 
                 zIndex: -1, 
-                position: 'fixed', 
-                top: 0, 
-                left: 0, 
-                right: 0, 
-                bottom: 0, 
-                width: '100vw', 
-                height: '100vh',
-                backgroundColor: 'transparent'
-            }}
-        >
+                    position: 'fixed', 
+                    top: 0, 
+                    left: 0, 
+                    right: 0, 
+                    bottom: 0, 
+                    width: '100vw', 
+                    height: '100vh',
+                    backgroundColor: 'transparent'
+                }}
+            >
             {/* Background Image - bg.jpg */}
             <img
                 src="/assets/background/bg.jpg"
                 alt="Background"
                 className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                style={{
+                    style={{
                     zIndex: -1,
-                    minHeight: '100vh',
-                    width: '100vw',
+                        minHeight: '100vh',
+                        width: '100vw',
                     height: '100vh',
-                    opacity: 1,
+                    opacity: 0.7,
                     display: 'block'
                 }}
                 onError={(e) => {

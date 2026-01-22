@@ -3,7 +3,7 @@ import {
     X, Plus, Grid3x3, Mic, Send, Sparkles,
     Wallet, UserCog, HeartHandshake, Megaphone, Factory,
     BarChart3, Lightbulb, Handshake, ClipboardCheck, MessageCircle,
-    Copy, Edit2, RefreshCw, ThumbsUp, ThumbsDown, MoreVertical,
+    Copy, Edit2, RefreshCw, MoreVertical,
     Menu, Trash2, ChevronRight
 } from 'lucide-react';
 import { generateGeminiResponse, shouldUseGemini } from './gemini-api';
@@ -20,13 +20,15 @@ const PREDEFINED_BOTS = [
         lightAccent: 'from-green-200 to-emerald-200',
         textColor: 'text-green-800',
         borderColor: 'border-green-200',
-        suggestedActions: [
-            { text: 'Purchase Request appr', highlight: true },
-            { text: 'Supp Payment Request' },
-            { text: 'E-invoice' },
-            { text: 'Generate Invoice' },
-            { text: 'Data' }
-        ]
+        // Original suggested actions - commented out but kept for future use
+        // suggestedActions: [
+        //     { text: 'Purchase Request appr', highlight: true },
+        //     { text: 'Supp Payment Request' },
+        //     { text: 'E-invoice' },
+        //     { text: 'Generate Invoice' },
+        //     { text: 'Data' }
+        // ],
+        suggestedActions: [] // Module boxes will be shown instead
     },
     {
         id: 'admin-bot',
@@ -41,6 +43,18 @@ const PREDEFINED_BOTS = [
         suggestedActions: [] // Module boxes will be shown instead
     },
     {
+        id: 'hr-bot',
+        name: 'HR PA',
+        description: 'Human resources and employee management assistant',
+        icon: UserCog,
+        bgGradient: 'from-indigo-500 to-blue-500',
+        lightBg: 'bg-gradient-to-br from-indigo-50 via-blue-50 to-violet-50',
+        lightAccent: 'from-indigo-200 to-blue-200',
+        textColor: 'text-indigo-800',
+        borderColor: 'border-indigo-200',
+        suggestedActions: [] // Module boxes will be shown instead
+    },
+    {
         id: 'csr-bot',
         name: 'CSR PA',
         description: 'Corporate social responsibility and sustainability assistant',
@@ -50,13 +64,15 @@ const PREDEFINED_BOTS = [
         lightAccent: 'from-purple-200 to-pink-200',
         textColor: 'text-purple-800',
         borderColor: 'border-purple-200',
-        suggestedActions: [
-            { text: 'Induction Training', highlight: true },
-            { text: 'Monthly 6S Report' },
-            { text: 'Compliance Certificate' },
-            { text: 'Audit Checklist' },
-            { text: 'CSR Equipment Handling' }
-        ]
+        // Original suggested actions - commented out but kept for future use
+        // suggestedActions: [
+        //     { text: 'Induction Training', highlight: true },
+        //     { text: 'Monthly 6S Report' },
+        //     { text: 'Compliance Certificate' },
+        //     { text: 'Audit Checklist' },
+        //     { text: 'CSR Equipment Handling' }
+        // ],
+        suggestedActions: [] // Module boxes will be shown instead
     },
     {
         id: 'ppc-bot',
@@ -207,7 +223,23 @@ const PhoneFrame = ({
     adminPAModule,
     adminPAModules,
     adminPAUsedActions,
-    onMarkActionUsed
+    onMarkActionUsed,
+    financePAModule,
+    financePAModules,
+    financePAUsedActions,
+    onMarkFinanceActionUsed,
+    csrPAModule,
+    csrPAModules,
+    csrPAUsedActions,
+    onMarkCsrActionUsed,
+    hrPAModule,
+    hrPAModules,
+    hrPAUsedActions,
+    onMarkHrActionUsed,
+    onResetAdminPAModule,
+    onResetFinancePAModule,
+    onResetCsrPAModule,
+    onResetHrPAModule
 }) => {
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
@@ -226,6 +258,30 @@ const PhoneFrame = ({
     if (botId === 'admin-bot' && adminPAModule && adminPAModules && adminPAModules[adminPAModule]) {
         const allActions = adminPAModules[adminPAModule].suggestedActions;
         const usedActions = adminPAUsedActions && adminPAUsedActions[adminPAModule] ? adminPAUsedActions[adminPAModule] : [];
+        // Filter out actions that have been used
+        suggestedActions = allActions.filter(action => !usedActions.includes(action.text));
+    }
+    
+    // For Finance PA, show module-specific actions if a module is selected, filtering out used ones
+    if (botId === 'finance-bot' && financePAModule && financePAModules && financePAModules[financePAModule]) {
+        const allActions = financePAModules[financePAModule].suggestedActions;
+        const usedActions = financePAUsedActions && financePAUsedActions[financePAModule] ? financePAUsedActions[financePAModule] : [];
+        // Filter out actions that have been used
+        suggestedActions = allActions.filter(action => !usedActions.includes(action.text));
+    }
+    
+    // For CSR PA, show module-specific actions if a module is selected, filtering out used ones
+    if (botId === 'csr-bot' && csrPAModule && csrPAModules && csrPAModules[csrPAModule]) {
+        const allActions = csrPAModules[csrPAModule].suggestedActions;
+        const usedActions = csrPAUsedActions && csrPAUsedActions[csrPAModule] ? csrPAUsedActions[csrPAModule] : [];
+        // Filter out actions that have been used
+        suggestedActions = allActions.filter(action => !usedActions.includes(action.text));
+    }
+    
+    // For HR PA, show module-specific actions if a module is selected, filtering out used ones
+    if (botId === 'hr-bot' && hrPAModule && hrPAModules && hrPAModules[hrPAModule]) {
+        const allActions = hrPAModules[hrPAModule].suggestedActions;
+        const usedActions = hrPAUsedActions && hrPAUsedActions[hrPAModule] ? hrPAUsedActions[hrPAModule] : [];
         // Filter out actions that have been used
         suggestedActions = allActions.filter(action => !usedActions.includes(action.text));
     }
@@ -343,9 +399,41 @@ const PhoneFrame = ({
                         <div className={`flex-shrink-0 flex items-center justify-between px-4 pt-12 pb-3 border-b ${bot.borderColor || 'border-gray-200'} relative z-10`}>
                             <div className="flex items-center gap-2">
                                 <button
-                                    onClick={() => setIsHistoryOpen(true)}
+                                    onClick={() => {
+                                        // For Admin PA, Finance PA, HR PA, and CSR PA:
+                                        // - If a module is selected, reset to show module selection
+                                        // - If no module is selected, show chat history
+                                        if (botId === 'admin-bot') {
+                                            if (adminPAModule && onResetAdminPAModule) {
+                                                onResetAdminPAModule();
+                                            } else {
+                                                setIsHistoryOpen(true);
+                                            }
+                                        } else if (botId === 'finance-bot') {
+                                            if (financePAModule && onResetFinancePAModule) {
+                                                onResetFinancePAModule();
+                                            } else {
+                                                setIsHistoryOpen(true);
+                                            }
+                                        } else if (botId === 'hr-bot') {
+                                            if (hrPAModule && onResetHrPAModule) {
+                                                onResetHrPAModule();
+                                            } else {
+                                                setIsHistoryOpen(true);
+                                            }
+                                        } else if (botId === 'csr-bot') {
+                                            if (csrPAModule && onResetCsrPAModule) {
+                                                onResetCsrPAModule();
+                                            } else {
+                                                setIsHistoryOpen(true);
+                                            }
+                                        } else {
+                                            // For other bots, show chat history
+                                            setIsHistoryOpen(true);
+                                        }
+                                    }}
                                     className={`p-2 rounded-full hover:bg-black/5 transition`}
-                                    title="Chat history"
+                                    title={((botId === 'admin-bot' && adminPAModule) || (botId === 'finance-bot' && financePAModule) || (botId === 'hr-bot' && hrPAModule) || (botId === 'csr-bot' && csrPAModule)) ? "Show modules" : "Chat history"}
                                 >
                                     <Menu size={18} className={bot.textColor || 'text-gray-600'} />
                                 </button>
@@ -379,12 +467,12 @@ const PhoneFrame = ({
                                         <p className={`text-sm ${bot.textColor || 'text-gray-600'} mb-2`}>Hi {GREETING_NAME}</p>
                                         <h2 className={`text-3xl font-light leading-tight ${bot.textColor || 'text-gray-800'}`}>Where should we start?</h2>
                                     </div>
-                                    {botId === 'admin-bot' && !adminPAModule ? (
-                                        // Admin PA Module Boxes
+                                    {(botId === 'admin-bot' && !adminPAModule) || (botId === 'finance-bot' && !financePAModule) || (botId === 'csr-bot' && !csrPAModule) || (botId === 'hr-bot' && !hrPAModule) ? (
+                                        // Module Boxes for Admin PA, Finance PA, CSR PA, or HR PA
                                         <div className="space-y-4 mt-8">
                                             <p className={`text-sm ${bot.textColor || 'text-gray-600'} mb-4`}>Select a module:</p>
                                             <div className="grid grid-cols-1 gap-3">
-                                                {Object.entries(adminPAModules || {}).map(([key, module]) => (
+                                                {Object.entries((botId === 'admin-bot' ? adminPAModules : botId === 'finance-bot' ? financePAModules : botId === 'csr-bot' ? csrPAModules : hrPAModules) || {}).map(([key, module]) => (
                                                     <button
                                                         key={key}
                                                         onClick={() => onSendMessage(module.name)}
@@ -408,6 +496,18 @@ const PhoneFrame = ({
                                                             // Mark action as used immediately for Admin PA modules
                                                             if (botId === 'admin-bot' && adminPAModule && onMarkActionUsed) {
                                                                 onMarkActionUsed(adminPAModule, action.text);
+                                                            }
+                                                            // Mark action as used immediately for Finance PA modules
+                                                            if (botId === 'finance-bot' && financePAModule && onMarkFinanceActionUsed) {
+                                                                onMarkFinanceActionUsed(financePAModule, action.text);
+                                                            }
+                                                            // Mark action as used immediately for CSR PA modules
+                                                            if (botId === 'csr-bot' && csrPAModule && onMarkCsrActionUsed) {
+                                                                onMarkCsrActionUsed(csrPAModule, action.text);
+                                                            }
+                                                            // Mark action as used immediately for HR PA modules
+                                                            if (botId === 'hr-bot' && hrPAModule && onMarkHrActionUsed) {
+                                                                onMarkHrActionUsed(hrPAModule, action.text);
                                                             }
                                                             onSendMessage(action.text);
                                                         }}
@@ -576,23 +676,69 @@ const PhoneFrame = ({
                                                         </div>
                                                     )}
                                                     
-                                                    {/* Show suggested actions after module selection message for Admin PA */}
-                                                    {msg.from === 'bot' && botId === 'admin-bot' && 
+                                                    {/* Show suggested actions after module selection message for Admin PA, Finance PA, CSR PA, or HR PA */}
+                                                    {msg.from === 'bot' && 
+                                                     ((botId === 'admin-bot' && adminPAModule) || (botId === 'finance-bot' && financePAModule) || (botId === 'csr-bot' && csrPAModule) || (botId === 'hr-bot' && hrPAModule)) &&
                                                      msg.text && msg.text.includes('Selected:') && msg.text.includes('module. Choose an action below:') && (
                                                         (() => {
-                                                            // Detect module from message text or use current adminPAModule state
-                                                            let currentModule = adminPAModule;
-                                                            if (!currentModule && msg.text) {
-                                                                if (msg.text.includes('Purchase Request')) currentModule = 'purchase';
-                                                                else if (msg.text.includes('Support Ticket')) currentModule = 'support_ticket';
-                                                                else if (msg.text.includes('Y-Shop')) currentModule = 'shop';
+                                                            // Detect module from message text or use current module state
+                                                            let currentModule = null;
+                                                            let currentModules = null;
+                                                            let currentUsedActions = null;
+                                                            let currentMarkActionUsed = null;
+                                                            
+                                                            if (botId === 'admin-bot') {
+                                                                currentModule = adminPAModule;
+                                                                currentModules = adminPAModules;
+                                                                currentUsedActions = adminPAUsedActions;
+                                                                currentMarkActionUsed = onMarkActionUsed;
+                                                                
+                                                                if (!currentModule && msg.text) {
+                                                                    if (msg.text.includes('Purchase Request')) currentModule = 'purchase';
+                                                                    else if (msg.text.includes('Support Ticket')) currentModule = 'support_ticket';
+                                                                    else if (msg.text.includes('Y-Shop')) currentModule = 'shop';
+                                                                    else if (msg.text.includes('Gatepass')) currentModule = 'gatepass';
+                                                                    else if (msg.text.includes('Car Booking')) currentModule = 'car_booking';
+                                                                }
+                                                            } else if (botId === 'finance-bot') {
+                                                                currentModule = financePAModule;
+                                                                currentModules = financePAModules;
+                                                                currentUsedActions = financePAUsedActions;
+                                                                currentMarkActionUsed = onMarkFinanceActionUsed;
+                                                                
+                                                                if (!currentModule && msg.text) {
+                                                                    if (msg.text.includes('Accounts')) currentModule = 'accounts';
+                                                                }
+                                                            } else if (botId === 'csr-bot') {
+                                                                currentModule = csrPAModule;
+                                                                currentModules = csrPAModules;
+                                                                currentUsedActions = csrPAUsedActions;
+                                                                currentMarkActionUsed = onMarkCsrActionUsed;
+                                                                
+                                                                if (!currentModule && msg.text) {
+                                                                    if (msg.text.includes('CSR') && !msg.text.includes('Air') && !msg.text.includes('Electricity') && !msg.text.includes('Water') && !msg.text.includes('Waste')) currentModule = 'csr';
+                                                                    else if (msg.text.includes('Air Temperature') || msg.text.includes('Air')) currentModule = 'air';
+                                                                    else if (msg.text.includes('Electricity')) currentModule = 'electricity';
+                                                                    else if (msg.text.includes('Water')) currentModule = 'water';
+                                                                    else if (msg.text.includes('Waste Management') || msg.text.includes('Waste')) currentModule = 'waste_management';
+                                                                }
+                                                            } else if (botId === 'hr-bot') {
+                                                                currentModule = hrPAModule;
+                                                                currentModules = hrPAModules;
+                                                                currentUsedActions = hrPAUsedActions;
+                                                                currentMarkActionUsed = onMarkHrActionUsed;
+                                                                
+                                                                if (!currentModule && msg.text) {
+                                                                    if (msg.text.includes('HR') && !msg.text.includes('Training')) currentModule = 'hr';
+                                                                    else if (msg.text.includes('Training')) currentModule = 'training';
+                                                                }
                                                             }
                                                             
                                                             // Calculate suggested actions dynamically for this module
                                                             let moduleActions = [];
-                                                            if (currentModule && adminPAModules && adminPAModules[currentModule]) {
-                                                                const allActions = adminPAModules[currentModule].suggestedActions;
-                                                                const usedActions = adminPAUsedActions && adminPAUsedActions[currentModule] ? adminPAUsedActions[currentModule] : [];
+                                                            if (currentModule && currentModules && currentModules[currentModule]) {
+                                                                const allActions = currentModules[currentModule].suggestedActions;
+                                                                const usedActions = currentUsedActions && currentUsedActions[currentModule] ? currentUsedActions[currentModule] : [];
                                                                 moduleActions = allActions.filter(action => !usedActions.includes(action.text));
                                                             }
                                                             
@@ -603,8 +749,8 @@ const PhoneFrame = ({
                                                                             key={actionIdx}
                                                                             onClick={() => {
                                                                                 // Mark action as used immediately
-                                                                                if (onMarkActionUsed && currentModule) {
-                                                                                    onMarkActionUsed(currentModule, action.text);
+                                                                                if (currentMarkActionUsed && currentModule) {
+                                                                                    currentMarkActionUsed(currentModule, action.text);
                                                                                 }
                                                                                 onSendMessage(action.text);
                                                                             }}
@@ -766,7 +912,9 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     const [adminPAUsedActions, setAdminPAUsedActions] = useState({
         purchase: [],
         support_ticket: [],
-        shop: []
+        shop: [],
+        gatepass: [],
+        car_booking: []
     });
     
     // Admin PA module configurations
@@ -807,6 +955,208 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 { text: 'How many requests have been issued to requestors?' },
                 { text: 'How many A4 items have been requested and issued?' },
                 { text: 'How many total requests have been made by requestors?' }
+            ]
+        },
+        gatepass: {
+            name: 'Gatepass',
+            icon: '🚪',
+            color: 'from-indigo-500 to-purple-500',
+            lightColor: 'from-indigo-100 to-purple-100',
+            // Original suggested actions - commented out but kept for future use
+            // suggestedActions: [
+            //     { text: 'How many gatepass requests this month?', highlight: true },
+            //     { text: 'Show me gatepass requests approved by controller' },
+            //     { text: 'How many gatepass requests issued to requestors?' },
+            //     { text: 'Show me gatepass A4 items requested and issued' },
+            //     { text: 'What\'s the total gatepass requestor requests?' },
+            //     { text: 'Give me gatepass statistics' }
+            // ],
+            suggestedActions: [
+                { text: 'How many gatepass requests this month?', highlight: true },
+                { text: 'Show me gatepass requests approved by controller' },
+                { text: 'How many gatepass requests issued to requestors?' },
+                { text: 'Show me gatepass A4 items requested and issued' },
+                { text: 'What\'s the total gatepass requestor requests?' },
+                { text: 'Give me gatepass statistics' }
+            ]
+        },
+        car_booking: {
+            name: 'Car Booking',
+            icon: '🚗',
+            color: 'from-teal-500 to-cyan-500',
+            lightColor: 'from-teal-100 to-cyan-100',
+            // Original suggested actions - commented out but kept for future use
+            // suggestedActions: [
+            //     { text: 'Show me car requests this month', highlight: true },
+            //     { text: 'How many car booking requests approved by controller?' },
+            //     { text: 'How many car bookings issued to requestors?' },
+            //     { text: 'Show me car booking A4 items requested and issued' },
+            //     { text: 'What\'s the total car booking requestor requests?' },
+            //     { text: 'Give me car booking statistics' },
+            //     { text: 'Show me vehicle booking information' }
+            // ],
+            suggestedActions: [
+                { text: 'Show me car requests this month', highlight: true },
+                { text: 'How many car booking requests approved by controller?' },
+                { text: 'How many car bookings issued to requestors?' },
+                { text: 'Show me car booking A4 items requested and issued' },
+                { text: 'What\'s the total car booking requestor requests?' },
+                { text: 'Give me car booking statistics' },
+                { text: 'Show me vehicle booking information' }
+            ]
+        }
+    };
+
+    // State for Finance PA module selection
+    const [financePAModule, setFinancePAModule] = useState(null); // 'accounts', or null
+    
+    // Track used suggested actions per module
+    const [financePAUsedActions, setFinancePAUsedActions] = useState({
+        accounts: []
+    });
+    
+    // Finance PA module configurations
+    const financePAModules = {
+        accounts: {
+            name: 'Accounts',
+            icon: '💰',
+            color: 'from-green-500 to-emerald-500',
+            lightColor: 'from-green-100 to-emerald-100',
+            suggestedActions: [
+                { text: 'How many accounts requests this month?', highlight: true },
+                { text: 'Show me accounts requests approved by controller' },
+                { text: 'How many accounts requests issued to requestors?' },
+                { text: 'Show me accounts A4 items requested and issued' },
+                { text: 'What\'s the total accounts requestor requests?' },
+                { text: 'Give me accounting department statistics' }
+            ]
+        }
+    };
+
+    // State for CSR PA module selection
+    const [csrPAModule, setCsrPAModule] = useState(null); // 'csr', 'air', 'electricity', 'water', 'waste_management', or null
+    
+    // Track used suggested actions per module
+    const [csrPAUsedActions, setCsrPAUsedActions] = useState({
+        csr: [],
+        air: [],
+        electricity: [],
+        water: [],
+        waste_management: []
+    });
+    
+    // CSR PA module configurations
+    const csrPAModules = {
+        csr: {
+            name: 'CSR',
+            icon: '🤝',
+            color: 'from-purple-500 to-pink-500',
+            lightColor: 'from-purple-100 to-pink-100',
+            suggestedActions: [
+                { text: 'How many CSR requests this month?', highlight: true },
+                { text: 'Show me CSR requests approved by controller' },
+                { text: 'How many CSR requests issued to requestors?' },
+                { text: 'Show me CSR A4 items requested and issued' },
+                { text: 'What\'s the total CSR requestor requests?' },
+                { text: 'Give me CSR statistics' }
+            ]
+        },
+        air: {
+            name: 'Air Temperature & Humidity',
+            icon: '🌡️',
+            color: 'from-blue-500 to-cyan-500',
+            lightColor: 'from-blue-100 to-cyan-100',
+            suggestedActions: [
+                { text: 'How many air monitoring requests this month?', highlight: true },
+                { text: 'Show me air requests approved by controller' },
+                { text: 'How many air requests issued to requestors?' },
+                { text: 'Show me air A4 items requested and issued' },
+                { text: 'What\'s the total air requestor requests?' },
+                { text: 'Give me air temperature and humidity statistics' }
+            ]
+        },
+        electricity: {
+            name: 'Electricity',
+            icon: '⚡',
+            color: 'from-yellow-500 to-orange-500',
+            lightColor: 'from-yellow-100 to-orange-100',
+            suggestedActions: [
+                { text: 'How many electricity requests this month?', highlight: true },
+                { text: 'Show me electricity requests approved by controller' },
+                { text: 'How many electricity requests issued to requestors?' },
+                { text: 'Show me electricity A4 items requested and issued' },
+                { text: 'What\'s the total electricity requestor requests?' },
+                { text: 'Give me electricity usage statistics' }
+            ]
+        },
+        water: {
+            name: 'Water',
+            icon: '💧',
+            color: 'from-cyan-500 to-blue-500',
+            lightColor: 'from-cyan-100 to-blue-100',
+            suggestedActions: [
+                { text: 'How many water requests this month?', highlight: true },
+                { text: 'Show me water requests approved by controller' },
+                { text: 'How many water requests issued to requestors?' },
+                { text: 'Show me water A4 items requested and issued' },
+                { text: 'What\'s the total water requestor requests?' },
+                { text: 'Give me water system statistics' }
+            ]
+        },
+        waste_management: {
+            name: 'Waste Management',
+            icon: '♻️',
+            color: 'from-green-500 to-emerald-500',
+            lightColor: 'from-green-100 to-emerald-100',
+            suggestedActions: [
+                { text: 'How many waste management requests this month?', highlight: true },
+                { text: 'Show me waste requests approved by controller' },
+                { text: 'How many waste management requests issued to requestors?' },
+                { text: 'Show me waste A4 items requested and issued' },
+                { text: 'What\'s the total waste management requestor requests?' },
+                { text: 'Give me waste management statistics' }
+            ]
+        }
+    };
+
+    // State for HR PA module selection
+    const [hrPAModule, setHrPAModule] = useState(null); // 'hr', 'training', or null
+    
+    // Track used suggested actions per module
+    const [hrPAUsedActions, setHrPAUsedActions] = useState({
+        hr: [],
+        training: []
+    });
+    
+    // HR PA module configurations
+    const hrPAModules = {
+        hr: {
+            name: 'HR',
+            icon: '👥',
+            color: 'from-indigo-500 to-blue-500',
+            lightColor: 'from-indigo-100 to-blue-100',
+            suggestedActions: [
+                { text: 'How many HR requests this month?', highlight: true },
+                { text: 'Show me HR requests approved by controller' },
+                { text: 'How many HR requests issued to requestors?' },
+                { text: 'Show me HR A4 items requested and issued' },
+                { text: 'What\'s the total HR requestor requests?' },
+                { text: 'Give me HR department statistics' }
+            ]
+        },
+        training: {
+            name: 'Training',
+            icon: '🎓',
+            color: 'from-blue-500 to-indigo-500',
+            lightColor: 'from-blue-100 to-indigo-100',
+            suggestedActions: [
+                { text: 'How many training requests this month?', highlight: true },
+                { text: 'Show me training requests approved by controller' },
+                { text: 'How many training requests issued to requestors?' },
+                { text: 'Show me training A4 items requested and issued' },
+                { text: 'What\'s the total training requestor requests?' },
+                { text: 'Give me training program statistics' },
+                { text: 'Show me employee training information' }
             ]
         }
     };
@@ -877,9 +1227,25 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             }
         }));
         
-        // Reset Admin PA module selection when creating new chat
+        // Reset module selection when creating new chat for Admin PA, Finance PA, HR PA, and CSR PA
         if (botId === 'admin-bot') {
             setAdminPAModule(null);
+            setAdminPAUsedActions({
+                purchase: [],
+                support_ticket: [],
+                shop: [],
+                gatepass: [],
+                car_booking: []
+            });
+        } else if (botId === 'finance-bot') {
+            setFinancePAModule(null);
+            setFinancePAUsedActions({ accounts: [] });
+        } else if (botId === 'hr-bot') {
+            setHrPAModule(null);
+            setHrPAUsedActions({ hr: [], training: [] });
+        } else if (botId === 'csr-bot') {
+            setCsrPAModule(null);
+            setCsrPAUsedActions({ csr: [], air: [], electricity: [], water: [], waste_management: [] });
         }
     };
 
@@ -943,9 +1309,170 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
         });
     };
 
+    // Helper function to map internal module names to API-expected format
+    const mapModuleToAPIFormat = (botId, moduleName) => {
+        if (!moduleName || moduleName === 'global') {
+            return 'global';
+        }
+        
+        // Map Admin PA modules
+        if (botId === 'admin-bot') {
+            const moduleMap = {
+                'purchase': 'purchase-request',
+                'support_ticket': 'support-ticket',
+                'shop': 'y-shop',
+                'gatepass': 'gatepass',
+                'car_booking': 'car-booking'
+            };
+            return moduleMap[moduleName] || moduleName;
+        }
+        
+        // Map Finance PA modules
+        if (botId === 'finance-bot') {
+            const moduleMap = {
+                'accounts': 'accounts'
+            };
+            return moduleMap[moduleName] || moduleName;
+        }
+        
+        // Map CSR PA modules
+        if (botId === 'csr-bot') {
+            const moduleMap = {
+                'csr': 'csr',
+                'air': 'air',
+                'electricity': 'electricity',
+                'water': 'water',
+                'waste_management': 'waste-management'
+            };
+            return moduleMap[moduleName] || moduleName;
+        }
+        
+        // Map HR PA modules
+        if (botId === 'hr-bot') {
+            const moduleMap = {
+                'hr': 'hr',
+                'training': 'training'
+            };
+            return moduleMap[moduleName] || moduleName;
+        }
+        
+        return moduleName;
+    };
+
+    // Helper function to get or generate user_id for a specific module
+    const getUserIdForModule = (botId, moduleName) => {
+        const storageKey = `user_id_${botId}_${moduleName || 'global'}`;
+        let userId = localStorage.getItem(storageKey);
+        if (!userId) {
+            // Generate a unique user_id: timestamp + random number
+            userId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            localStorage.setItem(storageKey, userId);
+        }
+        return userId;
+    };
+
+    // Helper function to clean up technical tool-call messages from API responses
+    const cleanAPIResponse = (responseText) => {
+        if (!responseText) return responseText;
+        
+        let cleaned = responseText;
+        
+        // Remove JSON tool call structures like {"name": "tool_name", "parameters": {}}
+        // Match JSON objects with "name" and "parameters" fields (handles multi-line)
+        cleaned = cleaned.replace(/\{[^}]*"name"\s*:\s*"[^"]+"\s*,\s*"parameters"\s*:\s*\{[^}]*\}\s*\}/gs, '').trim();
+        // Also match with single quotes
+        cleaned = cleaned.replace(/\{[^}]*'name'\s*:\s*'[^']+'\s*,\s*'parameters'\s*:\s*\{[^}]*\}\s*\}/gs, '').trim();
+        // Match JSON arrays of tool calls (multi-line)
+        cleaned = cleaned.replace(/\[\s*\{[^}]*"name"[^}]*\}\s*\]/gs, '').trim();
+        // Match multiple JSON objects separated by "or"
+        cleaned = cleaned.replace(/\{[^}]*"name"[^}]*\}\s*or\s*\{[^}]*"name"[^}]*\}/gs, '').trim();
+        
+        // Remove text that suggests using tool calls (multi-line patterns)
+        cleaned = cleaned.replace(/It seems like the question.*?However, if you want.*?$/gims, '').trim();
+        cleaned = cleaned.replace(/I'd recommend using:.*$/gims, '').trim();
+        cleaned = cleaned.replace(/However, if you want to get.*$/gims, '').trim();
+        cleaned = cleaned.replace(/It seems like the question.*$/gims, '').trim();
+        cleaned = cleaned.replace(/rather than specific statistics.*$/gims, '').trim();
+        
+        // Check if the entire response is ONLY a technical message (most common case)
+        const isOnlyTechnicalMessage = /^I (called|used) (the )?[`'"]?[\w_]+[`'"]? tool.*?\.?\s*$/gim.test(cleaned.trim());
+        
+        if (isOnlyTechnicalMessage) {
+            // If the entire response is just a technical message, return a helpful fallback
+            return "I'm processing your request. Please wait a moment for the information.";
+        }
+        
+        // Remove technical messages about tool calls - comprehensive patterns
+        const technicalPatterns = [
+            // Pattern: "I called the `tool_name` tool to get this information."
+            /I called the [`'"]?[\w_]+[`'"]? tool to get (this information|the information|the data|the count|the result)\.?\s*/gi,
+            // Pattern: "I called the `tool_name` tool to get/retrieve..."
+            /I called the [`'"]?[\w_]+[`'"]? tool to (get|retrieve|fetch|obtain) (this information|the information|the data|the count|the result)\.?\s*/gi,
+            // Pattern: "I used the `tool_name` tool to get this information."
+            /I used the [`'"]?[\w_]+[`'"]? tool to get (this information|the information|the data|the count|the result)\.?\s*/gi,
+            // Pattern: "I used the `tool_name` tool to get/retrieve..."
+            /I used the [`'"]?[\w_]+[`'"]? tool to (get|retrieve|fetch|obtain) (this information|the information|the data|the count|the result)\.?\s*/gi,
+            // Pattern: "I called/used the `tool_name` tool..." (catch-all for any tool call message)
+            /I (called|used) (the )?[`'"]?[\w_]+[`'"]? tool.*?\.?\s*/gi,
+            // Pattern: "(I used the output of the tool call to format an answer to your original question)"
+            /\(?\s*I used the output of the tool call to format an answer to your original question\s*\)?\s*/gi,
+            // Pattern: "The output from the tool call was X, so I used..."
+            /The output from the tool call was \d+, so I used that number in my response to answer the user's question naturally\.?\s*/gi,
+            // Pattern: "This is based on the output from the tool call, which returned a count of X."
+            /This is based on the output from the tool call, which returned a count of \d+\.?\s*/gi,
+            // Pattern: "I used the output of the tool call to format an answer..."
+            /I used the output of the tool call to format an answer to your original question\.?\s*/gi,
+            // Pattern: "The output of the `tool` tool is X, which corresponds to... I used this information..."
+            /The output of the [`'"]?[\w_]+[`'"]? tool is \d+, which corresponds to.*?I used this information to format a natural-sounding answer to the user's question\.?\s*/gis,
+            // Pattern: "The output of the `tool` tool is used to format an answer..."
+            /The output of the [`'"]?[\w_]+[`'"]? tool is used to format an answer to the original user question\.?\s*/gi,
+            // Pattern: "I used the available tool to get the count of..."
+            /I used the available tool to get the count of.*?\.?\s*/gi,
+            // Pattern: "The output from the tool call was... so I used... in my response..."
+            /The output from the tool call was.*?so I used.*?in my response.*?\.?\s*/gis,
+            // Pattern: "This is based on the output from the tool call..."
+            /This is based on the output from the tool call.*?\.?\s*/gis,
+            // Pattern: Standalone parentheses with technical messages
+            /\([^)]*(?:tool|output|call)[^)]*\)/gi,
+            // Pattern: Remove sentences that mention "tool" and "recommend" or "suggest"
+            /.*?(?:recommend|suggest).*?tool.*?\.?\s*/gi
+        ];
+        
+        // Apply all technical patterns
+        technicalPatterns.forEach(pattern => {
+            cleaned = cleaned.replace(pattern, '').trim();
+        });
+        
+        // Remove standalone empty parentheses or brackets
+        cleaned = cleaned.replace(/^[([]\s*[)\]]\s*$/g, '').trim();
+        cleaned = cleaned.replace(/^\s*[([]\s*$/g, '').trim();
+        cleaned = cleaned.replace(/\s*[([]\s*$/g, '').trim();
+        
+        // Remove multiple consecutive spaces/newlines
+        cleaned = cleaned.replace(/\s+/g, ' ').trim();
+        
+        // Remove leading/trailing punctuation that might be left
+        cleaned = cleaned.replace(/^[.,;:\s]+|[.,;:\s]+$/g, '').trim();
+        
+        // If after cleaning we have nothing meaningful
+        if (!cleaned || cleaned.length < 3) {
+            // Return a helpful fallback message
+            return "I'm processing your request. Please wait a moment for the information.";
+        }
+        
+        return cleaned;
+    };
+
     // API call function for Admin PA modules
     const callAdminPAAPI = async (message, module) => {
         try {
+            // Use "global" if no module is selected, otherwise use the module name
+            const internalModule = module ? module : 'global';
+            // Map to API-expected format
+            const moduleParam = mapModuleToAPIFormat('admin-bot', internalModule);
+            // Get user_id for this bot and module combination (use internal module name for storage)
+            const userId = getUserIdForModule('admin-bot', internalModule);
+            
             const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
                 method: 'POST',
                 headers: {
@@ -953,7 +1480,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 },
                 body: JSON.stringify({
                     message: message,
-                    module: module
+                    module: moduleParam,
+                    user_id: userId
                 })
             });
 
@@ -962,7 +1490,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             }
 
             const data = await response.json();
-            return data.response || data.message || 'I received your request, but the response format was unexpected.';
+            // API returns { response: "...", module: "..." }
+            const rawResponse = data.response || data.message || 'I received your request, but the response format was unexpected.';
+            // Clean up any technical tool-call messages
+            return cleanAPIResponse(rawResponse);
         } catch (error) {
             console.error('API Error:', error);
             return `Sorry, I encountered an error: ${error.message}. Please try again later.`;
@@ -975,6 +1506,141 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             ...prev,
             [module]: [...(prev[module] || []), actionText]
         }));
+    };
+
+    // Mark a suggested action as used for Finance PA modules
+    const markFinanceActionAsUsed = (module, actionText) => {
+        setFinancePAUsedActions(prev => ({
+            ...prev,
+            [module]: [...(prev[module] || []), actionText]
+        }));
+    };
+
+    // API call function for Finance PA modules
+    const callFinancePAAPI = async (message, module) => {
+        try {
+            // Use "global" if no module is selected, otherwise use the module name
+            const internalModule = module ? module : 'global';
+            // Map to API-expected format
+            const moduleParam = mapModuleToAPIFormat('finance-bot', internalModule);
+            // Get user_id for this bot and module combination (use internal module name for storage)
+            const userId = getUserIdForModule('finance-bot', internalModule);
+            
+            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    module: moduleParam,
+                    user_id: userId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            // API returns { response: "...", module: "..." }
+            const rawResponse = data.response || data.message || 'I received your request, but the response format was unexpected.';
+            // Clean up any technical tool-call messages
+            return cleanAPIResponse(rawResponse);
+        } catch (error) {
+            console.error('API Error:', error);
+            return `Sorry, I encountered an error: ${error.message}. Please try again later.`;
+        }
+    };
+
+    // Mark a suggested action as used for CSR PA modules
+    const markCsrActionAsUsed = (module, actionText) => {
+        setCsrPAUsedActions(prev => ({
+            ...prev,
+            [module]: [...(prev[module] || []), actionText]
+        }));
+    };
+
+    // API call function for CSR PA modules
+    const callCsrPAAPI = async (message, module) => {
+        try {
+            // Use "global" if no module is selected, otherwise use the module name
+            const internalModule = module ? module : 'global';
+            // Map to API-expected format
+            const moduleParam = mapModuleToAPIFormat('csr-bot', internalModule);
+            // Get user_id for this bot and module combination (use internal module name for storage)
+            const userId = getUserIdForModule('csr-bot', internalModule);
+            
+            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    module: moduleParam,
+                    user_id: userId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            // API returns { response: "...", module: "..." }
+            const rawResponse = data.response || data.message || 'I received your request, but the response format was unexpected.';
+            // Clean up any technical tool-call messages
+            return cleanAPIResponse(rawResponse);
+        } catch (error) {
+            console.error('API Error:', error);
+            return `Sorry, I encountered an error: ${error.message}. Please try again later.`;
+        }
+    };
+
+    // Mark a suggested action as used for HR PA modules
+    const markHrActionAsUsed = (module, actionText) => {
+        setHrPAUsedActions(prev => ({
+            ...prev,
+            [module]: [...(prev[module] || []), actionText]
+        }));
+    };
+
+    // API call function for HR PA modules
+    const callHrPAAPI = async (message, module) => {
+        try {
+            // Use "global" if no module is selected, otherwise use the module name
+            const internalModule = module ? module : 'global';
+            // Map to API-expected format
+            const moduleParam = mapModuleToAPIFormat('hr-bot', internalModule);
+            // Get user_id for this bot and module combination (use internal module name for storage)
+            const userId = getUserIdForModule('hr-bot', internalModule);
+            
+            const response = await fetch('http://192.167.4.7:8001/api/ai-agent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    module: moduleParam,
+                    user_id: userId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            // API returns { response: "...", module: "..." }
+            const rawResponse = data.response || data.message || 'I received your request, but the response format was unexpected.';
+            // Clean up any technical tool-call messages
+            return cleanAPIResponse(rawResponse);
+        } catch (error) {
+            console.error('API Error:', error);
+            return `Sorry, I encountered an error: ${error.message}. Please try again later.`;
+        }
     };
 
     const handleSendMessage = (botId, message) => {
@@ -995,8 +1661,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // If already in a module, only switch if message is EXACTLY a module name or explicit switch command
             const isExplicitModuleSwitch = 
                 messageLower === 'purchase request' || messageLower === 'support ticket' || messageLower === 'y-shop' ||
+                messageLower === 'gatepass' || messageLower === 'car booking' ||
                 messageLower === 'switch to purchase request' || messageLower === 'switch to support ticket' || messageLower === 'switch to y-shop' ||
-                messageLower === 'go to purchase request' || messageLower === 'go to support ticket' || messageLower === 'go to y-shop';
+                messageLower === 'switch to gatepass' || messageLower === 'switch to car booking' ||
+                messageLower === 'go to purchase request' || messageLower === 'go to support ticket' || messageLower === 'go to y-shop' ||
+                messageLower === 'go to gatepass' || messageLower === 'go to car booking';
             
             // Check if user wants to select a module
             // If no module selected: allow any mention of module name
@@ -1009,7 +1678,23 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 setBotStates(prev => {
                     const botState = prev[botId];
                     const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.purchase.name} module. Choose an action below:` };
-                    const updatedMessages = [...botState.messages, { from: 'user', text: message }, botMsg];
+                    const lastMsg = botState.messages[botState.messages.length - 1];
+                    const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                    // If user already selected this module (double click), don't add duplicates
+                    if (
+                        lastBotMsg?.from === 'bot' &&
+                        typeof lastBotMsg.text === 'string' &&
+                        lastBotMsg.text.includes(`Selected: ${adminPAModules.purchase.name} module`)
+                    ) {
+                        return prev;
+                    }
+
+                    const updatedMessages = [...botState.messages];
+                    // Add the user message only if the last message isn't the same user message already
+                    if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                        updatedMessages.push({ from: 'user', text: message });
+                    }
+                    updatedMessages.push(botMsg);
                     const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                         chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                     ) : botState.chatHistory;
@@ -1033,7 +1718,21 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 setBotStates(prev => {
                     const botState = prev[botId];
                     const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.support_ticket.name} module. Choose an action below:` };
-                    const updatedMessages = [...botState.messages, { from: 'user', text: message }, botMsg];
+                    const lastMsg = botState.messages[botState.messages.length - 1];
+                    const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                    if (
+                        lastBotMsg?.from === 'bot' &&
+                        typeof lastBotMsg.text === 'string' &&
+                        lastBotMsg.text.includes(`Selected: ${adminPAModules.support_ticket.name} module`)
+                    ) {
+                        return prev;
+                    }
+
+                    const updatedMessages = [...botState.messages];
+                    if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                        updatedMessages.push({ from: 'user', text: message });
+                    }
+                    updatedMessages.push(botMsg);
                     const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                         chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                     ) : botState.chatHistory;
@@ -1056,7 +1755,108 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 setBotStates(prev => {
                     const botState = prev[botId];
                     const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.shop.name} module. Choose an action below:` };
-                    const updatedMessages = [...botState.messages, { from: 'user', text: message }, botMsg];
+                    const lastMsg = botState.messages[botState.messages.length - 1];
+                    const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                    if (
+                        lastBotMsg?.from === 'bot' &&
+                        typeof lastBotMsg.text === 'string' &&
+                        lastBotMsg.text.includes(`Selected: ${adminPAModules.shop.name} module`)
+                    ) {
+                        return prev;
+                    }
+
+                    const updatedMessages = [...botState.messages];
+                    if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                        updatedMessages.push({ from: 'user', text: message });
+                    }
+                    updatedMessages.push(botMsg);
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: false,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+                return;
+            }
+            else if (messageLower === 'gatepass' ||
+                     (!adminPAModule && messageLower.includes('gatepass')) ||
+                     (adminPAModule && isExplicitModuleSwitch && messageLower === 'gatepass')) {
+                setAdminPAModule('gatepass');
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.gatepass.name} module. Choose an action below:` };
+                    const lastMsg = botState.messages[botState.messages.length - 1];
+                    const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                    if (
+                        lastBotMsg?.from === 'bot' &&
+                        typeof lastBotMsg.text === 'string' &&
+                        lastBotMsg.text.includes(`Selected: ${adminPAModules.gatepass.name} module`)
+                    ) {
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                isTyping: false
+                            }
+                        };
+                    }
+
+                    const updatedMessages = [...botState.messages];
+                    if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                        updatedMessages.push({ from: 'user', text: message });
+                    }
+                    updatedMessages.push(botMsg);
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: false,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+                return;
+            }
+            else if (messageLower === 'car booking' ||
+                     messageLower === 'car-booking' ||
+                     (!adminPAModule && (messageLower.includes('car booking') || messageLower.includes('car-booking'))) ||
+                     (adminPAModule && isExplicitModuleSwitch && (messageLower === 'car booking' || messageLower === 'car-booking'))) {
+                setAdminPAModule('car_booking');
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    const botMsg = { from: 'bot', text: `Selected: ${adminPAModules.car_booking.name} module. Choose an action below:` };
+                    const lastMsg = botState.messages[botState.messages.length - 1];
+                    const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                    if (
+                        lastBotMsg?.from === 'bot' &&
+                        typeof lastBotMsg.text === 'string' &&
+                        lastBotMsg.text.includes(`Selected: ${adminPAModules.car_booking.name} module`)
+                    ) {
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                isTyping: false
+                            }
+                        };
+                    }
+
+                    const updatedMessages = [...botState.messages];
+                    if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                        updatedMessages.push({ from: 'user', text: message });
+                    }
+                    updatedMessages.push(botMsg);
                     const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
                         chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
                     ) : botState.chatHistory;
@@ -1172,8 +1972,653 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             // Track if we found a predefined response
             const originalResponse = botResponse;
 
-            // Finance PA specific responses
+            // Finance PA module selection handling
             if (botId === 'finance-bot') {
+                const messageLower = message.toLowerCase().trim();
+                
+                // Only allow module switching if explicitly requested
+                const isExplicitModuleSwitch = 
+                    messageLower === 'accounts' ||
+                    messageLower === 'switch to accounts' ||
+                    messageLower === 'go to accounts';
+                
+                // Check if user wants to select Accounts module
+                if (messageLower === 'accounts' || 
+                    (!financePAModule && messageLower.includes('accounts')) ||
+                    (financePAModule && isExplicitModuleSwitch && messageLower === 'accounts')) {
+                    setFinancePAModule('accounts');
+                    // Add bot message showing module selected
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${financePAModules.accounts.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${financePAModules.accounts.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return; // Exit early
+                }
+                
+                // Handle "new chat" or "reset" to clear module selection
+                if (messageLower === 'new chat' || messageLower === 'reset' || messageLower === 'start over') {
+                    setFinancePAModule(null);
+                    setFinancePAUsedActions({ accounts: [] });
+                }
+            }
+
+            // CSR PA module selection handling
+            if (botId === 'csr-bot') {
+                const messageLower = message.toLowerCase().trim();
+                
+                // Only allow module switching if explicitly requested
+                const isExplicitModuleSwitch = 
+                    messageLower === 'csr' || messageLower === 'air' || messageLower === 'electricity' ||
+                    messageLower === 'water' || messageLower === 'waste management' || messageLower === 'waste-management' ||
+                    messageLower === 'switch to csr' || messageLower === 'switch to air' || messageLower === 'switch to electricity' ||
+                    messageLower === 'switch to water' || messageLower === 'switch to waste management' ||
+                    messageLower === 'go to csr' || messageLower === 'go to air' || messageLower === 'go to electricity' ||
+                    messageLower === 'go to water' || messageLower === 'go to waste management';
+                
+                // Check if user wants to select CSR module
+                if (messageLower === 'csr' || 
+                    (!csrPAModule && messageLower.includes('csr')) ||
+                    (csrPAModule && isExplicitModuleSwitch && messageLower === 'csr')) {
+                    setCsrPAModule('csr');
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${csrPAModules.csr.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${csrPAModules.csr.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return;
+                }
+                // Check if user wants to select Air module
+                else if (messageLower === 'air' || messageLower === 'air temperature' || messageLower === 'air temperature & humidity' ||
+                         (!csrPAModule && (messageLower.includes('air') && !messageLower.includes('chair'))) ||
+                         (csrPAModule && isExplicitModuleSwitch && (messageLower === 'air' || messageLower === 'air temperature'))) {
+                    setCsrPAModule('air');
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${csrPAModules.air.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${csrPAModules.air.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return;
+                }
+                // Check if user wants to select Electricity module
+                else if (messageLower === 'electricity' ||
+                         (!csrPAModule && messageLower.includes('electricity')) ||
+                         (csrPAModule && isExplicitModuleSwitch && messageLower === 'electricity')) {
+                    setCsrPAModule('electricity');
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${csrPAModules.electricity.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${csrPAModules.electricity.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return;
+                }
+                // Check if user wants to select Water module
+                else if (messageLower === 'water' ||
+                         (!csrPAModule && messageLower.includes('water')) ||
+                         (csrPAModule && isExplicitModuleSwitch && messageLower === 'water')) {
+                    setCsrPAModule('water');
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${csrPAModules.water.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${csrPAModules.water.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return;
+                }
+                // Check if user wants to select Waste Management module
+                else if (messageLower === 'waste management' || messageLower === 'waste-management' || messageLower === 'waste' ||
+                         (!csrPAModule && (messageLower.includes('waste management') || messageLower.includes('waste-management'))) ||
+                         (csrPAModule && isExplicitModuleSwitch && (messageLower === 'waste management' || messageLower === 'waste-management'))) {
+                    setCsrPAModule('waste_management');
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${csrPAModules.waste_management.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${csrPAModules.waste_management.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return;
+                }
+                
+                // Handle "new chat" or "reset" to clear module selection
+                if (messageLower === 'new chat' || messageLower === 'reset' || messageLower === 'start over') {
+                    setCsrPAModule(null);
+                    setCsrPAUsedActions({ csr: [], air: [], electricity: [], water: [], waste_management: [] });
+                }
+            }
+
+            // HR PA module selection handling
+            if (botId === 'hr-bot') {
+                const messageLower = message.toLowerCase().trim();
+                
+                // Only allow module switching if explicitly requested
+                const isExplicitModuleSwitch = 
+                    messageLower === 'hr' || messageLower === 'training' ||
+                    messageLower === 'switch to hr' || messageLower === 'switch to training' ||
+                    messageLower === 'go to hr' || messageLower === 'go to training';
+                
+                // Check if user wants to select HR module
+                if (messageLower === 'hr' || 
+                    (!hrPAModule && messageLower.includes('hr') && !messageLower.includes('training')) ||
+                    (hrPAModule && isExplicitModuleSwitch && messageLower === 'hr')) {
+                    setHrPAModule('hr');
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${hrPAModules.hr.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${hrPAModules.hr.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return;
+                }
+                // Check if user wants to select Training module
+                else if (messageLower === 'training' ||
+                         (!hrPAModule && messageLower.includes('training')) ||
+                         (hrPAModule && isExplicitModuleSwitch && messageLower === 'training')) {
+                    setHrPAModule('training');
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        const botMsg = { from: 'bot', text: `Selected: ${hrPAModules.training.name} module. Choose an action below:` };
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        const lastBotMsg = lastMsg?.from === 'bot' ? lastMsg : botState.messages[botState.messages.length - 2];
+                        if (
+                            lastBotMsg?.from === 'bot' &&
+                            typeof lastBotMsg.text === 'string' &&
+                            lastBotMsg.text.includes(`Selected: ${hrPAModules.training.name} module`)
+                        ) {
+                            return {
+                                ...prev,
+                                [botId]: {
+                                    ...prev[botId],
+                                    isTyping: false
+                                }
+                            };
+                        }
+                        const updatedMessages = [...botState.messages];
+                        if (!(lastMsg?.from === 'user' && lastMsg.text?.toLowerCase?.().trim?.() === messageLower)) {
+                            updatedMessages.push({ from: 'user', text: message });
+                        }
+                        updatedMessages.push(botMsg);
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    return;
+                }
+                
+                // Handle "new chat" or "reset" to clear module selection
+                if (messageLower === 'new chat' || messageLower === 'reset' || messageLower === 'start over') {
+                    setHrPAModule(null);
+                    setHrPAUsedActions({ hr: [], training: [] });
+                }
+            }
+
+            // Finance PA module API calls
+            if (botId === 'finance-bot' && financePAModule) {
+                // Mark this action as used immediately if it matches a suggested action
+                if (financePAModules[financePAModule]) {
+                    const matchingAction = financePAModules[financePAModule].suggestedActions.find(
+                        action => action.text.toLowerCase() === message.toLowerCase().trim()
+                    );
+                    if (matchingAction) {
+                        markFinanceActionAsUsed(financePAModule, matchingAction.text);
+                    }
+                }
+                
+                // User is asking a question in a selected module - call API
+                // Add user message and set typing state
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    
+                    // Check for duplicate message before adding
+                    if (botState.messages.length > 0) {
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                            return prev; // Don't add duplicate
+                        }
+                    }
+                    
+                    const userMsg = { from: 'user', text: message };
+                    const updatedMessages = [...botState.messages, userMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: true,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+
+                // Call API and update with response
+                callFinancePAAPI(message, financePAModule).then(apiResponse => {
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        if (!botState) return prev;
+                        const botMsg = { from: 'bot', text: apiResponse };
+                        const updatedMessages = [...botState.messages, botMsg];
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                }).catch(error => {
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        if (!botState) return prev;
+                        const errorMsg = { from: 'bot', text: `Sorry, I encountered an error: ${error.message}. Please try again later.` };
+                        const updatedMessages = [...botState.messages, errorMsg];
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false
+                            }
+                        };
+                    });
+                });
+                return; // Exit early - don't process further
+            }
+
+            // CSR PA module API calls
+            if (botId === 'csr-bot' && csrPAModule) {
+                // Mark this action as used immediately if it matches a suggested action
+                if (csrPAModules[csrPAModule]) {
+                    const matchingAction = csrPAModules[csrPAModule].suggestedActions.find(
+                        action => action.text.toLowerCase() === message.toLowerCase().trim()
+                    );
+                    if (matchingAction) {
+                        markCsrActionAsUsed(csrPAModule, matchingAction.text);
+                    }
+                }
+                
+                // User is asking a question in a selected module - call API
+                // Add user message and set typing state
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    
+                    // Check for duplicate message before adding
+                    if (botState.messages.length > 0) {
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                            return prev; // Don't add duplicate
+                        }
+                    }
+                    
+                    const userMsg = { from: 'user', text: message };
+                    const updatedMessages = [...botState.messages, userMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: true,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+
+                // Call API and update with response
+                callCsrPAAPI(message, csrPAModule).then(apiResponse => {
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        if (!botState) return prev;
+                        const botMsg = { from: 'bot', text: apiResponse };
+                        const updatedMessages = [...botState.messages, botMsg];
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                }).catch(error => {
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        if (!botState) return prev;
+                        const errorMsg = { from: 'bot', text: `Sorry, I encountered an error: ${error.message}. Please try again later.` };
+                        const updatedMessages = [...botState.messages, errorMsg];
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false
+                            }
+                        };
+                    });
+                });
+                return; // Exit early - don't process further
+            }
+
+            // HR PA module API calls
+            if (botId === 'hr-bot' && hrPAModule) {
+                // Mark this action as used immediately if it matches a suggested action
+                if (hrPAModules[hrPAModule]) {
+                    const matchingAction = hrPAModules[hrPAModule].suggestedActions.find(
+                        action => action.text.toLowerCase() === message.toLowerCase().trim()
+                    );
+                    if (matchingAction) {
+                        markHrActionAsUsed(hrPAModule, matchingAction.text);
+                    }
+                }
+                
+                // User is asking a question in a selected module - call API
+                // Add user message and set typing state
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    
+                    // Check for duplicate message before adding
+                    if (botState.messages.length > 0) {
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                            return prev; // Don't add duplicate
+                        }
+                    }
+                    
+                    const userMsg = { from: 'user', text: message };
+                    const updatedMessages = [...botState.messages, userMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: true,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+
+                // Call API and update with response
+                callHrPAAPI(message, hrPAModule).then(apiResponse => {
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        if (!botState) return prev;
+                        const botMsg = { from: 'bot', text: apiResponse };
+                        const updatedMessages = [...botState.messages, botMsg];
+                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                        ) : botState.chatHistory;
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                }).catch(error => {
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        if (!botState) return prev;
+                        const errorMsg = { from: 'bot', text: `Sorry, I encountered an error: ${error.message}. Please try again later.` };
+                        const updatedMessages = [...botState.messages, errorMsg];
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: false
+                            }
+                        };
+                    });
+                });
+                return; // Exit early - don't process further
+            }
+
+            // Finance PA specific responses (original predefined responses - commented out but kept)
+            if (botId === 'finance-bot' && !financePAModule) {
                 const messageLower = message.toLowerCase().trim();
 
                 // 1. Purchase Request appr
@@ -1829,12 +3274,34 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
             }
 
+            // For Admin PA, Finance PA, HR PA, CSR PA: if no module is selected and no predefined response, show module selection message
+            // This check must happen BEFORE Gemini API call to prevent incorrect responses
+            if (botId === 'admin-bot' && !adminPAModule && !hasPredefinedResponse) {
+                botResponse = 'Please select a module first: Purchase Request, Support Ticket, Gatepass, Car Booking, or Y-Shop.';
+                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+            } else if (botId === 'finance-bot' && !financePAModule && !hasPredefinedResponse) {
+                botResponse = 'Please select a module first: Accounts.';
+                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+            } else if (botId === 'hr-bot' && !hrPAModule && !hasPredefinedResponse) {
+                botResponse = 'Please select a module first: HR or Training.';
+                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+            } else if (botId === 'csr-bot' && !csrPAModule && !hasPredefinedResponse) {
+                botResponse = 'Please select a module first: CSR, Air Temperature & Humidity, Electricity, Water, or Waste Management.';
+                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+            }
+            
             // Check if we should use Gemini API (ONLY when no predefined response found)
-            // Admin PA should NEVER use Gemini API - it uses the custom API endpoint
+            // Admin PA, Finance PA, HR PA, CSR PA should NEVER use Gemini API when no module is selected - they use the custom API endpoint
             const isDefaultResponse = botResponse === `Hello! I'm ${bot.name}. You asked: "${message}". ${bot.description}. How can I help you today?`;
             
-            // Only use Gemini API if there's NO predefined response AND it's NOT Admin PA bot
-            if (botId !== 'admin-bot' && !hasPredefinedResponse && (isDefaultResponse || shouldUseGemini(message, hasPredefinedResponse))) {
+            // Only use Gemini API if there's NO predefined response AND it's NOT Admin PA, Finance PA, HR PA, CSR PA bots (or they have a module selected)
+            const shouldSkipGemini = 
+                (botId === 'admin-bot' && !adminPAModule) ||
+                (botId === 'finance-bot' && !financePAModule) ||
+                (botId === 'hr-bot' && !hrPAModule) ||
+                (botId === 'csr-bot' && !csrPAModule);
+            
+            if (!shouldSkipGemini && botId !== 'admin-bot' && !hasPredefinedResponse && (isDefaultResponse || shouldUseGemini(message, hasPredefinedResponse))) {
                 try {
                     // Generate response using Gemini API with stored chat history
                     const geminiResponse = await generateGeminiResponse(
@@ -1849,11 +3316,6 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     console.error('Error calling Gemini API:', error);
                     // Keep the default response if API fails
                 }
-            }
-            
-            // For Admin PA, if no module is selected and no predefined response, show module selection message
-            if (botId === 'admin-bot' && !adminPAModule && !hasPredefinedResponse) {
-                botResponse = 'Please select a module first: Purchase Request, Support Ticket, or Y-Shop.';
             }
 
             setBotStates(prev => {
@@ -1938,6 +3400,97 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
     const handleNewChat = (botId) => {
         createNewChat(botId);
+    };
+
+    // Reset module selection functions for Menu button
+    const resetAdminPAModule = () => {
+        // Reset module state first
+        setAdminPAModule(null);
+        setAdminPAUsedActions({
+            purchase: [],
+            support_ticket: [],
+            shop: [],
+            gatepass: [],
+            car_booking: []
+        });
+        // Clear messages and reset chat to show module selection screen
+        setBotStates(prev => {
+            const botState = prev['admin-bot'];
+            if (!botState) return prev;
+            return {
+                ...prev,
+                'admin-bot': {
+                    ...botState,
+                    messages: [],
+                    input: '',
+                    isTyping: false,
+                    currentChatId: null
+                }
+            };
+        });
+    };
+
+    const resetFinancePAModule = () => {
+        // Reset module state first
+        setFinancePAModule(null);
+        setFinancePAUsedActions({ accounts: [] });
+        // Clear messages and reset chat to show module selection screen
+        setBotStates(prev => {
+            const botState = prev['finance-bot'];
+            if (!botState) return prev;
+            return {
+                ...prev,
+                'finance-bot': {
+                    ...botState,
+                    messages: [],
+                    input: '',
+                    isTyping: false,
+                    currentChatId: null
+                }
+            };
+        });
+    };
+
+    const resetCsrPAModule = () => {
+        // Reset module state first
+        setCsrPAModule(null);
+        setCsrPAUsedActions({ csr: [], air: [], electricity: [], water: [], waste_management: [] });
+        // Clear messages and reset chat to show module selection screen
+        setBotStates(prev => {
+            const botState = prev['csr-bot'];
+            if (!botState) return prev;
+            return {
+                ...prev,
+                'csr-bot': {
+                    ...botState,
+                    messages: [],
+                    input: '',
+                    isTyping: false,
+                    currentChatId: null
+                }
+            };
+        });
+    };
+
+    const resetHrPAModule = () => {
+        // Reset module state first
+        setHrPAModule(null);
+        setHrPAUsedActions({ hr: [], training: [] });
+        // Clear messages and reset chat to show module selection screen
+        setBotStates(prev => {
+            const botState = prev['hr-bot'];
+            if (!botState) return prev;
+            return {
+                ...prev,
+                'hr-bot': {
+                    ...botState,
+                    messages: [],
+                    input: '',
+                    isTyping: false,
+                    currentChatId: null
+                }
+            };
+        });
     };
 
     // Check scroll position
@@ -2416,6 +3969,22 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                                             adminPAModules={bot.id === 'admin-bot' ? adminPAModules : null}
                                             adminPAUsedActions={bot.id === 'admin-bot' ? adminPAUsedActions : null}
                                             onMarkActionUsed={bot.id === 'admin-bot' ? markActionAsUsed : null}
+                                            financePAModule={bot.id === 'finance-bot' ? financePAModule : null}
+                                            financePAModules={bot.id === 'finance-bot' ? financePAModules : null}
+                                            financePAUsedActions={bot.id === 'finance-bot' ? financePAUsedActions : null}
+                                            onMarkFinanceActionUsed={bot.id === 'finance-bot' ? markFinanceActionAsUsed : null}
+                                            csrPAModule={bot.id === 'csr-bot' ? csrPAModule : null}
+                                            csrPAModules={bot.id === 'csr-bot' ? csrPAModules : null}
+                                            csrPAUsedActions={bot.id === 'csr-bot' ? csrPAUsedActions : null}
+                                            onMarkCsrActionUsed={bot.id === 'csr-bot' ? markCsrActionAsUsed : null}
+                                            hrPAModule={bot.id === 'hr-bot' ? hrPAModule : null}
+                                            hrPAModules={bot.id === 'hr-bot' ? hrPAModules : null}
+                                            hrPAUsedActions={bot.id === 'hr-bot' ? hrPAUsedActions : null}
+                                            onMarkHrActionUsed={bot.id === 'hr-bot' ? markHrActionAsUsed : null}
+                                            onResetAdminPAModule={bot.id === 'admin-bot' ? resetAdminPAModule : null}
+                                            onResetFinancePAModule={bot.id === 'finance-bot' ? resetFinancePAModule : null}
+                                            onResetCsrPAModule={bot.id === 'csr-bot' ? resetCsrPAModule : null}
+                                            onResetHrPAModule={bot.id === 'hr-bot' ? resetHrPAModule : null}
                                             onShowInvoice={(item) => {
                                                 // Directly add invoice image message
                                                 setBotStates(prev => {

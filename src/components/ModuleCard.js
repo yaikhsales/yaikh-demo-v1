@@ -29,6 +29,13 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
       );
     }
     if (data.image) {
+      // Display icons in their original colors without any filters
+      const iconStyle = {
+        mixBlendMode: 'normal',
+        filter: 'none',
+        WebkitFilter: 'none',
+      };
+      
       return (
         <div className={`relative flex items-center justify-center ${
           isDropdownOpen ? 'w-14 h-14' : 'w-20 h-20 group-hover:w-21 group-hover:h-21'
@@ -36,18 +43,10 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
           <img
             src={`/${data.image}`}
             alt={data.title}
-            className={`w-full h-full object-contain transition-all duration-300 ${
+            className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-110 ${
               isDropdownOpen ? 'rounded-2xl' : 'rounded-3xl'
             }`}
-            style={{
-              mixBlendMode: isDropdownOpen ? 'normal' : 'screen',
-              filter: isDropdownOpen 
-                ? 'none' 
-                : 'brightness(0.8) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
-              WebkitFilter: isDropdownOpen 
-                ? 'none' 
-                : 'brightness(0.8) contrast(1) saturate(1.00) drop-shadow(0 2px 6px rgba(0,0,0,0.1))',
-            }}
+            style={iconStyle}
           />
         </div>
       );
@@ -73,14 +72,14 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
             h-28 w-full transition-all duration-300 cursor-pointer mb-3 overflow-hidden light-effect
             ${isDropdownOpen ? 'rounded-xl' : 'rounded-2xl apple-card'}
             ${isComingSoon 
-              ? isDropdownOpen ? "bg-white/90" : theme === 'normal' ? "bg-white/30 backdrop-blur-md border-2 border-white/40" : "glass-effect"
+              ? isDropdownOpen ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 backdrop-blur-md border-2 border-cyan-400" : theme === 'normal' ? "bg-gradient-to-br from-cyan-300/90 via-blue-300/90 to-indigo-300/90 backdrop-blur-md border-2 border-cyan-500/70" : "bg-gradient-to-br from-cyan-300/80 via-blue-300/80 to-indigo-300/80 backdrop-blur-md border-2 border-cyan-500/60"
               : isAdministration && !isDropdownOpen
-                ? "bg-gray-500 backdrop-blur-md border-2 border-gray-600 hover:border-gray-500 hover:bg-gray-600"
+                ? "bg-blue-700 backdrop-blur-md border-2 border-blue-600 hover:border-blue-500 hover:bg-blue-600"
                 : isOrangeGroup && !isDropdownOpen
-                  ? "bg-green-500 backdrop-blur-md border-2 border-green-600 hover:border-green-500 hover:bg-green-600"
+                  ? "bg-gradient-to-br from-green-200 via-green-300 to-emerald-300 backdrop-blur-md border-2 border-green-400 hover:border-green-500 hover:from-green-300 hover:via-green-400 hover:to-emerald-400 shadow-lg"
                   : isWhiteGroup && !isDropdownOpen
-                    ? "bg-white/90 backdrop-blur-md border-2 border-white/50 hover:border-white/60 hover:bg-white/95"
-                    : isDropdownOpen ? "bg-white hover:bg-blue-50" : theme === 'normal' ? "bg-white/35 backdrop-blur-md border-2 border-white/50 hover:border-white/60 hover:bg-white/40" : "glass-effect-strong hover:bg-white/15"
+                    ? "bg-gradient-to-br from-slate-200 via-slate-300 to-gray-400 backdrop-blur-md border-2 border-slate-400 hover:border-slate-500 hover:from-slate-300 hover:via-slate-400 hover:to-gray-500 shadow-lg"
+                    : isDropdownOpen ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 backdrop-blur-md border-2 border-cyan-400 hover:from-cyan-400 hover:via-blue-400 hover:to-indigo-400" : theme === 'normal' ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 backdrop-blur-md border-2 border-cyan-500 hover:border-cyan-600 hover:from-cyan-400 hover:via-blue-400 hover:to-indigo-400 shadow-lg" : "bg-gradient-to-br from-cyan-300/90 via-blue-300/90 to-indigo-300/90 backdrop-blur-md border-2 border-cyan-500/70 hover:from-cyan-400/95 hover:via-blue-400/95 hover:to-indigo-400/95"
             }
             ${
               data.highlight
@@ -88,33 +87,33 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
                   ? "border-2 border-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.4)]"
                   : "border-2 border-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.5)] hover:shadow-[0_0_22px_rgba(34,211,238,0.55)]"
                 : isAdministration && !isDropdownOpen
-                  ? "shadow-[0_0_15px_rgba(107,114,128,0.4)] hover:shadow-[0_0_17px_rgba(107,114,128,0.5)]"
+                  ? "shadow-[0_0_15px_rgba(29,78,216,0.5)] hover:shadow-[0_0_17px_rgba(29,78,216,0.6)]"
                   : isOrangeGroup && !isDropdownOpen
-                    ? "shadow-[0_0_15px_rgba(34,197,94,0.4)] hover:shadow-[0_0_17px_rgba(34,197,94,0.5)]"
+                    ? "shadow-[0_0_25px_rgba(34,197,94,0.4)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)]"
                     : isWhiteGroup && !isDropdownOpen
-                      ? "shadow-[0_0_15px_rgba(255,255,255,0.3)] hover:shadow-[0_0_17px_rgba(255,255,255,0.35)]"
+                      ? "shadow-[0_0_25px_rgba(71,85,105,0.4)] hover:shadow-[0_0_30px_rgba(71,85,105,0.5)]"
                       : isDropdownOpen
                         ? "border border-transparent hover:border-cyan-300 hover:shadow-[0_0_15px_rgba(34,211,238,0.3)]"
-                        : "border border-white/20 hover:border-white/30 hover:shadow-[0_0_18px_rgba(34,211,238,0.35)]"
+                        : "border border-cyan-400/30 hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]"
             }
             ${isLightOn ? 'brightness-110' : ''}
         `}
     >
       {/* Gradient Overlay on Hover - Only when dropdown is closed */}
       {!isDropdownOpen && !isAdministration && !isOrangeGroup && !isWhiteGroup && (
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-cyan-500/3 group-hover:via-blue-500/3 group-hover:to-purple-500/3 transition-all duration-500 rounded-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/0 via-blue-400/0 to-indigo-400/0 group-hover:from-cyan-400/15 group-hover:via-blue-400/15 group-hover:to-indigo-400/15 transition-all duration-500 rounded-2xl"></div>
       )}
-      {/* Gray Gradient Overlay for Administration modules */}
+      {/* Blue Gradient Overlay for Administration modules */}
       {!isDropdownOpen && isAdministration && (
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-400/0 via-gray-500/0 to-gray-600/0 group-hover:from-gray-500/5 group-hover:via-gray-600/5 group-hover:to-gray-700/5 transition-all duration-500 rounded-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/0 via-blue-500/0 to-blue-600/0 group-hover:from-blue-400/10 group-hover:via-blue-500/10 group-hover:to-blue-600/10 transition-all duration-500 rounded-2xl"></div>
       )}
-      {/* Green Gradient Overlay for Operations modules */}
+      {/* Enhanced Green Gradient Overlay for Operations modules */}
       {!isDropdownOpen && isOrangeGroup && (
-        <div className="absolute inset-0 bg-gradient-to-br from-green-400/0 via-green-500/0 to-green-600/0 group-hover:from-green-500/5 group-hover:via-green-600/5 group-hover:to-green-700/5 transition-all duration-500 rounded-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-200/0 via-green-300/0 to-teal-300/0 group-hover:from-emerald-300/20 group-hover:via-green-400/20 group-hover:to-teal-400/20 transition-all duration-500 rounded-2xl"></div>
       )}
-      {/* White Gradient Overlay for PRE PRO, Production Materials modules */}
+      {/* Slate Gradient Overlay for PRE PRO, Production Materials modules */}
       {!isDropdownOpen && isWhiteGroup && (
-        <div className="absolute inset-0 bg-gradient-to-br from-white/0 via-gray-100/0 to-white/0 group-hover:from-white/5 group-hover:via-gray-100/5 group-hover:to-white/5 transition-all duration-500 rounded-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-300/0 via-slate-400/0 to-gray-500/0 group-hover:from-slate-400/20 group-hover:via-slate-500/20 group-hover:to-gray-600/20 transition-all duration-500 rounded-2xl"></div>
       )}
       
       {/* Inner Content - Hidden for coming soon modules */}
@@ -130,7 +129,7 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
 
           <span className={`text-center font-bold text-xs px-1 leading-tight line-clamp-2 ${
             isDropdownOpen ? 'text-slate-800' 
-            : isWhiteGroup ? 'text-slate-800 drop-shadow-sm' 
+            : isWhiteGroup || isOrangeGroup || (!isAdministration && !isOrangeGroup && !isWhiteGroup) ? 'text-slate-800 drop-shadow-sm' 
             : 'text-white drop-shadow-lg'
           }`}>
             {data.title}
@@ -155,17 +154,21 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
       {data.highlight && !isDropdownOpen && !isAdministration && !isOrangeGroup && !isWhiteGroup && (
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/20 via-blue-400/20 to-purple-400/20 animate-pulse pointer-events-none"></div>
       )}
-      {/* Gray Glow for Administration modules */}
+      {/* Blue Glow for Administration modules */}
       {isAdministration && !isDropdownOpen && !isComingSoon && (
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gray-400/15 via-gray-500/15 to-gray-600/15 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-400/25 via-blue-500/25 to-blue-600/25 group-hover:from-blue-400/30 group-hover:via-blue-500/30 group-hover:to-blue-600/30 transition-all duration-500 pointer-events-none"></div>
       )}
-      {/* Green Glow for Operations modules */}
+      {/* Enhanced Green Glow for Operations modules */}
       {isOrangeGroup && !isDropdownOpen && !isComingSoon && (
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-400/15 via-green-500/15 to-green-600/15 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-300/30 via-green-400/30 to-teal-300/30 group-hover:from-emerald-400/35 group-hover:via-green-500/35 group-hover:to-teal-400/35 transition-all duration-500 pointer-events-none"></div>
       )}
-      {/* White Glow for PRE PRO, Production Materials modules */}
+      {/* Slate Glow for PRE PRO, Production Materials modules */}
       {isWhiteGroup && !isDropdownOpen && !isComingSoon && (
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/10 via-gray-100/10 to-white/10 pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-slate-400/30 via-slate-500/30 to-gray-600/30 group-hover:from-slate-500/35 group-hover:via-slate-600/35 group-hover:to-gray-700/35 transition-all duration-500 pointer-events-none"></div>
+      )}
+      {/* Cyan/Blue Glow for default modules */}
+      {!isAdministration && !isOrangeGroup && !isWhiteGroup && !isDropdownOpen && !isComingSoon && (
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-300/25 via-blue-300/25 to-indigo-300/25 group-hover:from-cyan-400/30 group-hover:via-blue-400/30 group-hover:to-indigo-400/30 transition-all duration-500 pointer-events-none"></div>
       )}
       
       {/* Shimmer Effect on Hover - Only when dropdown is closed */}

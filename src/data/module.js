@@ -33,7 +33,7 @@ export const DASHBOARD_DATA = [
           { id: 'meeting', title: 'Meeting Room', image: 'assets/modules-image/new-icons-modules/Meeting-Room.png', status: 'active', demoType: 'IMAGE_VIEW' },
           { id: 'car', title: 'My Car Booking', image: 'assets/modules-image/new-icons-modules/My-Car-Booking.png', status: 'active', demoType: 'IMAGE_VIEW' },
           { title: 'Fire Alarm', image: 'assets/modules-image/new-icons-modules/Fire-Alarm.png', status: 'active' },
-          { id: 'cctv', title: 'CCTV', image: 'assets/modules-image/new-icons-modules/CCTV.png', status: 'active', highlight: true, demoType: 'SUBMENU_CCTV' },
+          { id: 'cctv', title: 'CCTV', image: 'assets/modules-image/new-icons-modules/cctv1.png', status: 'active', highlight: true, demoType: 'SUBMENU_CCTV' },
         ]
       },
       {
@@ -101,7 +101,7 @@ export const DASHBOARD_DATA = [
         id: 'internal-logistics',
         title: 'Internal Logistics',
         modules: [
-          { id: 'fc', title: 'FC', image: 'assets/icons/fc.png', status: 'active', demoType: 'SUBMENU_FC' },
+          { id: 'fc', title: 'FC', image: 'assets/modules-image/new-icons-modules/FC.png', status: 'active', demoType: 'SUBMENU_FC' },
           { id: 'pwip', title: 'PWIP', image: 'assets/modules-image/new-icons-modules/PWIP.png', status: 'active', highlight: true },
           { id: 'kanban', title: 'KANBAN', image: 'assets/modules-image/new-icons-modules/KANBAN.png', status: 'active', highlight: true },
         ]

@@ -446,40 +446,40 @@ const YShop = ({ onBack }) => {
                         
                         {/* Center: Back Button, Home Button, and OFFICE Button */}
                         <div className="flex items-center gap-3 absolute left-1/2 transform -translate-x-1/2">
-                            <button
+                        <button 
                                 onClick={() => navigate(-1)}
                                 className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
-                            >
+                        >
                                 <ArrowLeft size={20} />
                                 <span className="font-medium">Back</span>
-                            </button>
-                            <button
-                                onClick={() => navigate('/')}
+                        </button>
+                        <button
+                            onClick={() => navigate('/')}
                                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                                title="Home"
-                            >
-                                <img 
-                                    src="/logo.jpg" 
-                                    alt="Home" 
-                                    className="w-full h-full object-cover"
-                                />
-                            </button>
+                            title="Home"
+                        >
+                            <img 
+                                src="/logo.jpg" 
+                                alt="Home" 
+                                className="w-full h-full object-cover"
+                            />
+                        </button>
                             <button className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm font-medium">
                                 OFFICE
                             </button>
-                        </div>
-                        
+            </div>
+
                         {/* Right: Icons and Search Controls */}
                         <div className="flex items-center gap-4">
                             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Shop">
                                 <ShoppingBag size={20} className="text-gray-600" />
-                            </button>
+                        </button>
                             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Nurse">
                                 <Stethoscope size={20} className="text-gray-600" />
-                            </button>
+                        </button>
                             <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Mechanic">
                                 <Wrench size={20} className="text-gray-600" />
-                            </button>
+                        </button>
                             <div className="flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2">
                                 <Search size={16} className="text-gray-400" />
                                 <input
@@ -487,17 +487,17 @@ const YShop = ({ onBack }) => {
                                     placeholder="Search..."
                                     className="outline-none text-sm w-32"
                                 />
-                            </div>
+                    </div>
                             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700">
                                 Search
                             </button>
                             <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-300">
                                 Clear All
-                            </button>
-                        </div>
+                                </button>
+                            </div>
                     </div>
-                </div>
-            </div>
+                            </div>
+                        </div>
 
             {/* Main Content */}
             <div className="w-full px-6 py-6">
@@ -528,16 +528,16 @@ const YShop = ({ onBack }) => {
                                 className="flex-1 outline-none text-sm"
                             />
                         </div>
-                        <select
-                            value={department}
-                            onChange={(e) => setDepartment(e.target.value)}
+                                        <select
+                                            value={department}
+                                            onChange={(e) => setDepartment(e.target.value)}
                             className="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none"
-                        >
+                                        >
                             <option>Office</option>
                             <option>HR</option>
                             <option>IT</option>
-                        </select>
-                        <select
+                                        </select>
+                                        <select
                             value={supplier}
                             onChange={(e) => setSupplier(e.target.value)}
                             className="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none"
@@ -545,24 +545,24 @@ const YShop = ({ onBack }) => {
                             <option>All Suppliers</option>
                             <option>Supplier 1</option>
                             <option>Supplier 2</option>
-                        </select>
-                    </div>
+                                        </select>
+                                    </div>
                     
                     <div className="mb-4">
-                        <select
-                            value={subCategory}
-                            onChange={(e) => setSubCategory(e.target.value)}
+                                        <select
+                                            value={subCategory}
+                                            onChange={(e) => setSubCategory(e.target.value)}
                             className="border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none w-full md:w-auto"
-                        >
+                                        >
                             <option>All Categories</option>
                             <option>Category 1</option>
                             <option>Category 2</option>
-                        </select>
-                    </div>
+                                        </select>
+                                    </div>
 
                     <div className="text-sm text-gray-600">
                         <strong>Total Products:</strong> {totalProducts} Showing results from {dateRange.split(' / ')[0]} to {dateRange.split(' / ')[1]}
-                    </div>
+                                    </div>
                 </div> */}
 
                 {/* Two Column Layout */}
@@ -575,13 +575,13 @@ const YShop = ({ onBack }) => {
                                 <div>
                                     <h3 className="text-lg font-bold text-white">Low Stock Products</h3>
                                     <p className="text-sm text-red-50">{totalLowStock} products need attention</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
+
                         <div className="grid grid-cols-3 gap-4 flex-1">
                             {displayedLowStock.map(product => renderProductCard(product, true))}
-                        </div>
+                                        </div>
 
                         {renderPagination(
                             lowStockPage,
@@ -591,7 +591,7 @@ const YShop = ({ onBack }) => {
                             lowStockStart + 1,
                             Math.min(lowStockEnd, totalLowStock)
                         )}
-                    </div>
+                            </div>
 
                     {/* Healthy Stock Products */}
                     <div className="flex flex-col">
@@ -607,7 +607,7 @@ const YShop = ({ onBack }) => {
                         
                         <div className="grid grid-cols-3 gap-4 flex-1">
                             {displayedHealthyStock.map(product => renderProductCard(product, false))}
-                        </div>
+                            </div>
 
                         {renderPagination(
                             healthyStockPage,
@@ -616,9 +616,9 @@ const YShop = ({ onBack }) => {
                             totalHealthyStock,
                             healthyStockStart + 1,
                             Math.min(healthyStockEnd, totalHealthyStock)
-                        )}
-                    </div>
+                    )}
                 </div>
+            </div>
             </div>
 
             {/* Image Viewer Modal */}
