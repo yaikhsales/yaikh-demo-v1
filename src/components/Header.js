@@ -348,7 +348,7 @@ const Header = () => {
   {/* Image Viewer Modal */}
   {showImageViewer && (
     <ImageViewer 
-      imagePath="/assets/vendor/price.png" 
+      imagePath="/assets/vendor/price-list.jpg" 
       onClose={() => setShowImageViewer(false)} 
     />
   )}
