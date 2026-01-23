@@ -111,7 +111,7 @@ export const DASHBOARD_DATA = [
         title: 'Production',
         modules: [
           { id: 'ce', title: 'CE', image: 'assets/modules-image/new-icons-modules/CE.png?v=1', status: 'active', highlight: true, demoType: 'SUBMENU_CE' },
-          { title: 'YTM', image: 'assets/modules-image/new-icons-modules/ytm.png?v=1', status: 'active' },
+          { title: 'YTPM', image: 'assets/modules-image/new-icons-modules/ytm.png?v=1', status: 'active' },
           { title: 'YTM Shop', image: 'assets/modules-image/new-icons-modules/ytm-shop.png?v=1', status: 'active' },
         ]
       },

@@ -112,7 +112,20 @@ const getSubIconImage = (title) => {
         'Accessories Inspection': 'accessories-inspection.jpg',
         'Accessories Issuing': 'accessories-issuing.jpg',
         'Warehouse Tracking ': 'warehouse-tracking-location.jpg',
+        'Warehouse Tracking Location': 'warehouse-tracking-location.jpg',
         'Delivery Tracking': 'delivery-tracking.jpg',
+        'Consumptions': 'consumption.png',
+        'Calculator': 'calculator.png',
+        // New YQMS modules in IQC, Cut, Sew, Pack
+        'Internal Rolling QC': 'internal-rolling-qc.jpg',
+        'Cutting Inspection': 'cutting-inspection.jpg',
+        'Cut Panel Inspection': 'cut-panel-inspection.jpg',
+        'Printing Inspection': 'printing-inspection.jpg',
+        'Embroidery Inspection': 'embroidery-inspection.jpg',
+        'Garment Check Output': 'garment-check-output.jpg',
+        'Finishing Inspection': 'finishing-inspection.jpg',
+        'Ironing Inspection': 'ironing-inspection.jpg',
+        'Packing Inspection': 'packing-inspection.jpg',
         // YQMS module sub-modules
         'Pre Production Meeting': 'pre-production-meeting.jpg',
         'Material Quality': 'material-quality.jpg',
@@ -162,10 +175,13 @@ const getSubIconImage = (title) => {
     }
     
     if (imageName) {
-        // Check if it's an FC sub-module image (jpg files in fc folder)
+        // Check if it's an FC sub-module image (jpg and png files in fc folder)
         const fcSubModules = ['fabric-receiving.jpg', 'fabric-inspection.jpg', 'fabric-test.jpg', 
                              'fabric-issuing.jpg', 'accessories-receiving.jpg', 'accessories-inspection.jpg', 
-                             'accessories-issuing.jpg', 'warehouse-tracking-location.jpg', 'delivery-tracking.jpg'];
+                             'accessories-issuing.jpg', 'warehouse-tracking-location.jpg', 'delivery-tracking.jpg',
+                             'consumption.png', 'calculator.png', 'internal-rolling-qc.jpg', 'cutting-inspection.jpg',
+                             'cut-panel-inspection.jpg', 'printing-inspection.jpg', 'embroidery-inspection.jpg',
+                             'garment-check-output.jpg', 'finishing-inspection.jpg', 'ironing-inspection.jpg', 'packing-inspection.jpg'];
         if (fcSubModules.includes(imageName)) {
             return `assets/fc/${imageName}`;
         }
@@ -193,10 +209,10 @@ const getSubIconImage = (title) => {
 const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal', isAccountant = false, isPurchaseRequest = false) => {
     const subIconImage = getSubIconImage(card.title);
     // For E-Government, use the image URL directly from card.image (external URL)
-    // If card.image is provided and starts with modules-image or is an external URL, use it directly
+    // If card.image is provided and starts with modules-image, assets/fc, assets/yqms, or is an external URL, use it directly
     // Otherwise, use subIconImage or card.image
     const imageToUse = card.url ? card.image : (
-        (card.image && (card.image.startsWith('modules-image/') || card.image.startsWith('assets/icons/sub-icons/') || card.image.startsWith('http://') || card.image.startsWith('https://'))) 
+        (card.image && (card.image.startsWith('modules-image/') || card.image.startsWith('assets/fc/') || card.image.startsWith('assets/yqms/') || card.image.startsWith('assets/icons/sub-icons/') || card.image.startsWith('http://') || card.image.startsWith('https://'))) 
             ? card.image 
             : (subIconImage || card.image)
     );
