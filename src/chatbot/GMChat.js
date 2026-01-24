@@ -109,6 +109,362 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
         }
     };
 
+    // Helper function to parse and render markdown content (tables, formatting, etc.)
+    const renderMarkdownContent = (text) => {
+        if (!text) return { __html: '' };
+        
+        // More flexible table regex - matches tables with various formats
+        // Pattern 1: Standard markdown table with separator line
+        const tableRegex1 = /(\|[^\n\r]+\|[\r\n]+(?:\|[\s\-:]+\|[\r\n]+)(?:\|[^\n\r]+\|[\r\n]*)+)/g;
+        // Pattern 2: Table without explicit separator (just multiple pipe rows)
+        const tableRegex2 = /((?:\|[^\n\r]+\|[\r\n]+){2,})/g;
+        
+        let processedText = text;
+        let tableIndex = 0;
+        
+        // Replace tables with placeholders first
+        const tables = [];
+        
+        // Try pattern 1 first (with separator)
+        processedText = processedText.replace(tableRegex1, (match) => {
+            const tableId = `__TABLE_${tableIndex}__`;
+            tables.push({ id: tableId, content: match });
+            tableIndex++;
+            return tableId;
+        });
+        
+        // Then try pattern 2 (without separator, but multiple pipe rows)
+        processedText = processedText.replace(tableRegex2, (match) => {
+            // Check if this looks like a table (has at least 2 rows with pipes)
+            const lines = match.split(/\r?\n/).filter(l => l.trim().includes('|'));
+            if (lines.length >= 2 && !tables.some(t => t.content.includes(match))) {
+                const tableId = `__TABLE_${tableIndex}__`;
+                tables.push({ id: tableId, content: match });
+                tableIndex++;
+                return tableId;
+            }
+            return match; // Not a table, keep original
+        });
+        
+        // Pattern 3: Convert numbered lists to tables (especially purchase requests, etc.)
+        const numberedListRegex = /((?:^\d+\.\s+[^\n]+(?:\r?\n|$)){3,})/gm;
+        processedText = processedText.replace(numberedListRegex, (match) => {
+            const lines = match.trim().split(/\r?\n/).filter(l => l.trim());
+            // Check if this looks like structured data (e.g., "1. Request #PR001: "Description"")
+            // More lenient: check if most lines have a colon or hash symbol (indicating structured data)
+            const structuredLines = lines.filter(line => {
+                const trimmed = line.trim();
+                return /^\d+\.\s+.+[#:].+/.test(trimmed) || /^\d+\.\s+Request\s+#/.test(trimmed) || /^\d+\.\s+.+:\s*/.test(trimmed);
+            });
+            const hasStructuredPattern = structuredLines.length >= Math.min(3, Math.max(1, lines.length * 0.5));
+            
+            // Also check if it's a simple numbered list (even without colons/hashes) with 5+ items
+            const isLongList = lines.length >= 5;
+            
+            if ((hasStructuredPattern && lines.length >= 3) || (isLongList && hasStructuredPattern)) {
+                // Try to extract structured data
+                const rows = [];
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    // Match: "1. Request #PR001: "New Office Furniture""
+                    const match1 = trimmed.match(/^\d+\.\s+Request\s+#([A-Z0-9]+):\s*"([^"]+)"(.*)$/);
+                    // Match: "1. Request #PR001: Description" (without quotes)
+                    const match2 = trimmed.match(/^\d+\.\s+Request\s+#([A-Z0-9]+):\s*(.+)$/);
+                    // Match: "1. Item #ID: Description"
+                    const match3 = trimmed.match(/^\d+\.\s+.+?#([A-Z0-9]+):\s*(.+)$/);
+                    // Match: "1. Item: Description"
+                    const match4 = trimmed.match(/^\d+\.\s+(.+?):\s*(.+)$/);
+                    
+                    if (match1) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], id: match1[1], description: match1[2], extra: match1[3] });
+                    } else if (match2) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], id: match2[1], description: match2[2].trim() });
+                    } else if (match3) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], id: match3[1], description: match3[2].trim() });
+                    } else if (match4) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], description: match4[1] + ': ' + match4[2] });
+                    } else {
+                        // Fallback: just extract number and rest of text
+                        const numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
+                        if (numMatch) {
+                            rows.push({ number: numMatch[1], description: numMatch[2] });
+                        }
+                    }
+                });
+                
+                if (rows.length >= 3) {
+                    // Convert to table
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    const hasAnyId = rows.some(r => r.id);
+                    let tableContent = '| No. |';
+                    if (hasAnyId) {
+                        tableContent += ' Request ID |';
+                    }
+                    tableContent += ' Description |\n|';
+                    if (hasAnyId) {
+                        tableContent += ' --- |';
+                    }
+                    tableContent += ' --- | --- |\n';
+                    rows.forEach(row => {
+                        tableContent += `| ${row.number} |`;
+                        if (hasAnyId) {
+                            tableContent += ` ${row.id ? '#' + row.id : ''} |`;
+                        }
+                        tableContent += ` ${(row.description || '').replace(/"/g, '').trim()} |\n`;
+                    });
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return tableId;
+                }
+            }
+            return match; // Not structured enough, keep original
+        });
+        
+        // Process other markdown formatting (but preserve table placeholders)
+        let html = processedText
+            // Bold text
+            .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+            // Italic text (but not if it's part of bold)
+            .replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em class="italic">$1</em>')
+            // Code blocks
+            .replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-100 p-3 rounded-lg my-2 overflow-x-auto border border-gray-200"><code class="text-xs">$1</code></pre>')
+            // Inline code
+            .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">$1</code>')
+            // Line breaks (but preserve table placeholders)
+            .replace(/\n/g, '<br />');
+        
+        // Replace table placeholders with rendered HTML tables
+        tables.forEach(({ id, content }) => {
+            const tableHtml = parseMarkdownTable(content);
+            html = html.replace(id, tableHtml);
+        });
+        
+        return { __html: html };
+    };
+    
+    // Helper function to parse markdown table into HTML
+    const parseMarkdownTable = (markdownTable) => {
+        const lines = markdownTable.trim().split(/\r?\n/).filter(line => line.trim());
+        if (lines.length < 2) return markdownTable; // Not a valid table
+        
+        // Parse header - handle tables with or without leading/trailing pipes
+        const headerLine = lines[0].trim();
+        let headers = headerLine.split('|').map(h => h.trim());
+        
+        // Remove empty first/last elements if table has leading/trailing pipes
+        if (headers[0] === '') headers = headers.slice(1);
+        if (headers[headers.length - 1] === '') headers = headers.slice(0, -1);
+        
+        // Filter out separator-only cells
+        headers = headers.filter(h => h && !h.match(/^[\s\-:]+$/));
+        
+        if (headers.length === 0) return markdownTable; // Invalid table
+        
+        // Check if second line is a separator (contains dashes/colons)
+        const secondLine = lines[1] ? lines[1].trim() : '';
+        const isSeparatorLine = secondLine.match(/^[|\s\-:]+$/);
+        
+        // Skip separator line if present, otherwise start from line 1
+        const dataLines = isSeparatorLine 
+            ? lines.slice(2).filter(line => {
+                const trimmed = line.trim();
+                return trimmed && !trimmed.match(/^[|\s\-:]+$/);
+            })
+            : lines.slice(1).filter(line => {
+                const trimmed = line.trim();
+                return trimmed && !trimmed.match(/^[|\s\-:]+$/);
+            });
+        
+        // Build HTML table with proper styling
+        let tableHtml = '<div class="overflow-x-auto my-4" style="border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background: white;">';
+        tableHtml += '<table class="min-w-full" style="border-collapse: collapse; width: 100%;">';
+        
+        // Header row with gradient background
+        tableHtml += '<thead><tr style="background: linear-gradient(to right, #3b82f6, #4f46e5);">';
+        headers.forEach(header => {
+            const escapedHeader = header.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            tableHtml += `<th style="border-bottom: 2px solid #1e40af; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 0.875rem; color: white;">${escapedHeader}</th>`;
+        });
+        tableHtml += '</tr></thead>';
+        
+        // Data rows
+        tableHtml += '<tbody>';
+        dataLines.forEach((line, rowIndex) => {
+            let cells = line.split('|').map(c => c.trim());
+            
+            // Remove empty first/last elements if table has leading/trailing pipes
+            if (cells[0] === '') cells = cells.slice(1);
+            if (cells[cells.length - 1] === '') cells = cells.slice(0, -1);
+            
+            // Filter out separator-only cells
+            cells = cells.filter(c => c && !c.match(/^[\s\-:]+$/));
+            
+            if (cells.length === 0) return;
+            
+            // Skip rows with just "..." or similar placeholders
+            if (cells.every(cell => cell.match(/^\.{2,}$/))) return;
+            
+            const rowClass = rowIndex % 2 === 0 ? 'table-row-even' : 'table-row-odd';
+            tableHtml += `<tr class="${rowClass}">`;
+            
+            // Ensure we have the right number of cells (pad if needed)
+            const paddedCells = [...cells];
+            while (paddedCells.length < headers.length) {
+                paddedCells.push('');
+            }
+            
+            paddedCells.slice(0, headers.length).forEach((cell, cellIndex) => {
+                // Handle status colors and styling
+                let cellContent = (cell || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                let cellStyle = 'border-bottom: 1px solid #e5e7eb; padding: 12px 16px; font-size: 0.875rem; color: #374151;';
+                
+                const cellLower = cellContent.toLowerCase();
+                if (cellLower.includes('pending') || cellLower.includes('waiting')) {
+                    cellStyle += ' color: #ea580c; font-weight: 600;';
+                } else if (cellLower.includes('approved') || cellLower.includes('completed')) {
+                    cellStyle += ' color: #16a34a; font-weight: 600;';
+                } else if (cellLower.includes('rejected') || cellLower.includes('cancelled')) {
+                    cellStyle += ' color: #dc2626; font-weight: 600;';
+                } else if (cellLower.includes('in progress') || cellLower.includes('processing')) {
+                    cellStyle += ' color: #2563eb; font-weight: 600;';
+                } else if (cellIndex === 0) {
+                    // First column (usually ID) - make it slightly bold
+                    cellStyle += ' font-weight: 500; color: #111827;';
+                }
+                
+                tableHtml += `<td style="${cellStyle}">${cellContent}</td>`;
+            });
+            tableHtml += '</tr>';
+        });
+        tableHtml += '</tbody></table></div>';
+        
+        return tableHtml;
+    };
+
+    // Helper function to stream text like ChatGPT (token/word-based chunks with natural pacing)
+    const streamBotResponse = (fullText) => {
+        // Create initial bot message with empty text
+        const initialMessage = {
+            id: Date.now(),
+            text: '',
+            sender: 'bot',
+            isStreaming: true
+        };
+
+        // Add the initial message to state
+        setMessages(prev => [...prev, initialMessage]);
+        setIsTyping(false);
+
+        // Stream in token/word chunks (like ChatGPT - more natural and faster)
+        // Split text into natural chunks (words with punctuation)
+        const tokens = [];
+        const words = fullText.split(/(\s+)/);
+
+        // Group words into chunks (1-3 words per chunk for natural flow like ChatGPT)
+        let currentChunk = '';
+        for (let i = 0; i < words.length; i++) {
+            currentChunk += words[i];
+            // Create chunk after 1-3 words, or at punctuation, or at sentence end
+            const wordCount = currentChunk.trim().split(/\s+/).filter(w => w).length;
+            const shouldChunk = 
+                (wordCount >= 2 && Math.random() > 0.4) ||
+                /[.!?]\s*$/.test(currentChunk) ||
+                (wordCount >= 3);
+            
+            if (shouldChunk && currentChunk.trim()) {
+                tokens.push(currentChunk);
+                currentChunk = '';
+            }
+        }
+        // Add remaining chunk
+        if (currentChunk.trim()) {
+            tokens.push(currentChunk);
+        }
+
+        // If no tokens created (very short text), split by words
+        if (tokens.length === 0) {
+            tokens.push(...words.filter(w => w.trim()));
+        }
+
+        let currentText = '';
+        let tokenIndex = 0;
+
+        const streamNextChunk = () => {
+            if (tokenIndex >= tokens.length) {
+                // Streaming complete
+                setMessages(prev => {
+                    const updatedMessages = [...prev];
+                    const lastMessage = updatedMessages[updatedMessages.length - 1];
+                    if (lastMessage && lastMessage.sender === 'bot' && lastMessage.isStreaming) {
+                        updatedMessages[updatedMessages.length - 1] = {
+                            ...lastMessage,
+                            text: fullText,
+                            isStreaming: false
+                        };
+                    }
+                    return updatedMessages;
+                });
+                return;
+            }
+
+            const chunk = tokens[tokenIndex];
+            currentText += chunk;
+            tokenIndex++;
+
+            // Calculate delay based on chunk characteristics (like ChatGPT's token streaming)
+            let delay = 20; // Base delay in milliseconds
+            
+            const chunkLength = chunk.trim().length;
+            const hasPunctuation = /[.,!?;:]/.test(chunk);
+            const isSentenceEnd = /[.!?]\s*$/.test(chunk);
+            
+            // Faster for short chunks (common words appear quickly)
+            if (chunkLength <= 5) {
+                delay = 15 + Math.random() * 15; // 15-30ms
+            }
+            // Medium for medium chunks
+            else if (chunkLength <= 15) {
+                delay = 25 + Math.random() * 20; // 25-45ms
+            }
+            // Slightly slower for long chunks
+            else {
+                delay = 35 + Math.random() * 25; // 35-60ms
+            }
+
+            // Add pause for punctuation (thinking time)
+            if (hasPunctuation) {
+                delay += 20 + Math.random() * 15; // Extra 20-35ms
+            }
+
+            // Longer pause after sentence endings (like ChatGPT's natural pause)
+            if (isSentenceEnd) {
+                delay += 40 + Math.random() * 30; // Extra 40-70ms pause after sentences
+            }
+
+            // Add some randomness for natural variation
+            delay += Math.random() * 10;
+
+            // Update the last message with current text
+            setMessages(prev => {
+                const updatedMessages = [...prev];
+                const lastMessage = updatedMessages[updatedMessages.length - 1];
+                if (lastMessage && lastMessage.sender === 'bot' && lastMessage.isStreaming) {
+                    updatedMessages[updatedMessages.length - 1] = {
+                        ...lastMessage,
+                        text: currentText
+                    };
+                }
+                return updatedMessages;
+            });
+
+            // Schedule next chunk
+            setTimeout(streamNextChunk, delay);
+        };
+
+        // Start streaming after a small initial delay (like ChatGPT's thinking time)
+        setTimeout(streamNextChunk, 30 + Math.random() * 20);
+    };
+
     const handleSendMessage = async (e) => {
         e.preventDefault();
         if (newMessage.trim() === '') return;
@@ -123,14 +479,12 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
         // Generate bot response using Gemini API
         try {
             const botResponse = await generateBotResponse(currentMessage);
-            const botMsg = { id: Date.now() + 1, text: botResponse, sender: 'bot' };
-            setMessages(prev => [...prev, botMsg]);
+            // Use streaming for the response
+            streamBotResponse(botResponse);
         } catch (error) {
             console.error('Error generating response:', error);
-            const botMsg = { id: Date.now() + 1, text: "I apologize, but I'm having trouble processing your request right now. Please try again.", sender: 'bot' };
-            setMessages(prev => [...prev, botMsg]);
-        } finally {
-            setIsTyping(false);
+            // Use streaming for error message too
+            streamBotResponse("I apologize, but I'm having trouble processing your request right now. Please try again.");
         }
     };
 
@@ -162,14 +516,12 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
         // Generate bot response using Gemini API
         try {
             const botResponse = await generateBotResponse(actionMessage);
-            const botMsg = { id: Date.now() + 1, text: botResponse, sender: 'bot' };
-            setMessages(prev => [...prev, botMsg]);
+            // Use streaming for the response
+            streamBotResponse(botResponse);
         } catch (error) {
             console.error('Error generating response:', error);
-            const botMsg = { id: Date.now() + 1, text: "I apologize, but I'm having trouble processing your request right now. Please try again.", sender: 'bot' };
-            setMessages(prev => [...prev, botMsg]);
-        } finally {
-            setIsTyping(false);
+            // Use streaming for error message too
+            streamBotResponse("I apologize, but I'm having trouble processing your request right now. Please try again.");
         }
     };
 
@@ -177,6 +529,68 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
     
     return (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-lg z-[100] flex items-center justify-center animate-in fade-in duration-500">
+            {/* Markdown and Table Styling */}
+            <style>{`
+                /* Markdown content styling */
+                .markdown-content {
+                    line-height: 1.6;
+                }
+                
+                .markdown-content strong {
+                    font-weight: 600;
+                    color: inherit;
+                }
+                
+                .markdown-content em {
+                    font-style: italic;
+                }
+                
+                .markdown-content code {
+                    font-family: 'Courier New', monospace;
+                }
+                
+                .markdown-content pre {
+                    font-size: 0.875rem;
+                }
+                
+                .markdown-content table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 1rem 0;
+                }
+                
+                .markdown-content table th {
+                    font-weight: 600;
+                    text-align: left;
+                }
+                
+                .markdown-content table td,
+                .markdown-content table th {
+                    padding: 0.75rem 1rem;
+                    border-bottom: 1px solid #e5e7eb;
+                }
+                
+                .markdown-content table tbody tr:last-child td {
+                    border-bottom: none;
+                }
+                
+                /* Table row hover effects */
+                .table-row-even {
+                    background-color: #ffffff;
+                    transition: background-color 0.15s ease;
+                }
+                
+                .table-row-odd {
+                    background-color: #f9fafb;
+                    transition: background-color 0.15s ease;
+                }
+                
+                .table-row-even:hover,
+                .table-row-odd:hover {
+                    background-color: #dbeafe !important;
+                }
+            `}</style>
+            
             {/* Main UI Frame - Full Screen Responsive Design */}
             <div className="relative bg-black border border-white/10 md:rounded-3xl shadow-2xl w-full h-full md:h-[95vh] md:max-h-[900px] md:w-[95vw] md:max-w-[1400px] overflow-hidden flex flex-col text-white font-sans">
 
@@ -343,7 +757,16 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                                     : 'bg-slate-800/80 text-white/90 rounded-bl-none border border-white/10'
                                             }`}
                                         >
-                                            {message.text}
+                                            {message.sender === 'bot' ? (
+                                                <div className="markdown-content">
+                                                    <div
+                                                        className="prose prose-sm max-w-none"
+                                                        dangerouslySetInnerHTML={renderMarkdownContent(message.text)}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <div className="whitespace-pre-wrap">{message.text}</div>
+                                            )}
                                         </div>
                                         {message.sender === 'user' && (
                                             <div className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">

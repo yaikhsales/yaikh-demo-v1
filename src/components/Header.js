@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {
     Home, Mail, Calendar, MessageCircle,
     Bell, ChevronDown, QrCode, FileText, DollarSign,
-    ShoppingCart, Ticket, Globe, Video, Info, Menu, X, Image
+    ShoppingCart, Ticket, Globe, Video, Info, Menu, X, Image, Smartphone
 } from 'lucide-react';
 import PdfViewer from './PdfViewer';
 import ImageViewer from './ImageViewer';
@@ -20,6 +20,7 @@ const Header = () => {
   const [showPictureViewer, setShowPictureViewer] = useState(false);
   const [showBookViewer, setShowBookViewer] = useState(false);
   const [showAboutUs, setShowAboutUs] = useState(false);
+  const [showAppDownload, setShowAppDownload] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -111,6 +112,13 @@ const Header = () => {
                   aria-label="Pictures"
                 >
                   <Image className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
+                </button>
+                <button
+                  onClick={() => setShowAppDownload(true)}
+                  className="p-1 hover:bg-gray-100 rounded transition-colors"
+                  aria-label="Download App"
+                >
+                  <Smartphone className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
                 </button>
               </>
             )}
@@ -219,10 +227,38 @@ const Header = () => {
                 )}
             </div>
             
-            <div className="hidden 2xl:flex gap-2 ml-2">
+            {/* <div className="hidden 2xl:flex gap-2 ml-2">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play" className="h-8 cursor-pointer hover:opacity-80 transition" />
                 <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" alt="App Store" className="h-8 cursor-pointer hover:opacity-80 transition" />
-            </div>
+            </div> */}
+
+<div className="hidden 2xl:flex gap-2 ml-2">
+    {/* Google Play Store Link */}
+    <a 
+        href="https://play.google.com/store/apps/details?id=com.yorkmars.ymapp&pcampaignid=web_share" 
+        target="_blank" 
+        rel="noopener noreferrer"
+    >
+        <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" 
+            alt="Google Play" 
+            className="h-8 cursor-pointer hover:opacity-80 transition" 
+        />
+    </a>
+
+    {/* Apple App Store Link */}
+    <a 
+        href="https://apps.apple.com/kh/app/yaikh/id6756765341" 
+        target="_blank" 
+        rel="noopener noreferrer"
+    >
+        <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Download_on_the_App_Store_Badge.svg" 
+            alt="App Store" 
+            className="h-8 cursor-pointer hover:opacity-80 transition" 
+        />
+    </a>
+</div>
         </div>
       </header>
 
@@ -275,6 +311,13 @@ const Header = () => {
                 >
                   <Image size={18} />
                   <span>Pictures</span>
+                </button>
+                <button
+                  onClick={() => { setShowAppDownload(true); setShowMobileMenu(false); }}
+                  className="w-full flex items-center gap-2 px-4 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-all font-medium"
+                >
+                  <Smartphone size={18} />
+                  <span>Download App</span>
                 </button>
               </div>
 
@@ -348,7 +391,7 @@ const Header = () => {
   {/* Image Viewer Modal */}
   {showImageViewer && (
     <ImageViewer 
-      imagePath="/assets/vendor/price-list.jpg" 
+      imagePath="/assets/vendor/price1.jpg" 
       onClose={() => setShowImageViewer(false)} 
     />
   )}
@@ -365,6 +408,56 @@ const Header = () => {
     <AboutUs 
       onClose={() => setShowAboutUs(false)} 
     />
+  )}
+  
+  {/* App Download Popup - Image Only */}
+  {showAppDownload && (
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm"
+      onClick={() => setShowAppDownload(false)}
+    >
+      {/* App Image Container with Close Button */}
+      <div className="relative max-w-[95vw] max-h-[95vh] flex items-center justify-center">
+        {/* Close Button - Positioned on top-right, outside image area */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowAppDownload(false);
+          }}
+          className="absolute -top-3 -right-3 p-2 bg-white hover:bg-gray-100 text-gray-700 rounded-full transition-colors z-20 shadow-lg border-2 border-gray-300 flex items-center justify-center"
+          aria-label="Close"
+          style={{ minWidth: '36px', minHeight: '36px' }}
+        >
+          <X size={20} />
+        </button>
+        
+        {/* App Image - Full visibility, no cropping */}
+        <img 
+          src="/app.png" 
+          alt="YaiKH App" 
+          className="max-w-full max-h-[95vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+          style={{ 
+            display: 'block',
+            animation: 'popupFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)'
+          }}
+        />
+      </div>
+      
+      {/* Animation Styles */}
+      <style>{`
+        @keyframes popupFadeIn {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+      `}</style>
+    </div>
   )}
   </>
   );

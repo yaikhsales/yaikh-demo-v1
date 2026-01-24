@@ -245,6 +245,653 @@ const PhoneFrame = ({
     const inputRef = useRef(null);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
     
+    // Helper function to parse and render markdown content (tables, formatting, etc.)
+    const renderMarkdownContent = (text) => {
+        if (!text) return { __html: '' };
+        
+        // More flexible table regex - matches tables with various formats
+        // Pattern 1: Standard markdown table with separator line
+        const tableRegex1 = /(\|[^\n\r]+\|[\r\n]+(?:\|[\s\-:]+\|[\r\n]+)(?:\|[^\n\r]+\|[\r\n]*)+)/g;
+        // Pattern 2: Table without explicit separator (just multiple pipe rows)
+        const tableRegex2 = /((?:\|[^\n\r]+\|[\r\n]+){2,})/g;
+        // Pattern 1b: Table with headers like "Request # | Description | Status" followed by data rows
+        const headerDataTableRegex = /((?:Request\s*#|Request\s+ID|Request|ID|No\.|Number|Request\s+Number)[^|\n]*\|[^|\n]*(?:Description|Desc)[^|\n]*\|[^|\n]*(?:Status|State)[^|\n]*\s*\n(?:(?:PR\d+|#?\w+\d+|\d+)[^|\n]*\|[^|\n]+\|[^|\n]+\s*\n?)+)/gi;
+        
+        // Pattern 3: Numbered lists that look like data (e.g., "1. Request #PR001: "Description"")
+        // This pattern matches numbered lists with at least 3 items that have a structured format
+        // More flexible: handles both \n and \r\n line endings, and also matches lists that might have text before them
+        // Also handles patterns like "PR001 | Description" (pipe-separated format)
+        const numberedListRegex = /((?:^\d+\.\s+[^\n]+(?:\r?\n|$)){3,})/gm;
+        // Also detect pipe-separated format like "PR001 | New Office Furniture" (without numbers)
+        const pipeSeparatedRegex = /((?:^[A-Z0-9]+\s*\|\s*[^\n]+(?:\r?\n|$)){3,})/gm;
+        
+        let processedText = text;
+        let tableIndex = 0;
+        
+        // Replace tables with placeholders first
+        const tables = [];
+        
+        // Try pattern 1b first (header + data rows format like "Request # | Description | Status")
+        processedText = processedText.replace(headerDataTableRegex, (match) => {
+            // Skip if already processed
+            if (match.includes('__TABLE_')) return match;
+            
+            const lines = match.trim().split(/\r?\n/).filter(l => l.trim() && l.includes('|'));
+            if (lines.length >= 2) {
+                // First line should be headers
+                const headerLine = lines[0];
+                const headers = headerLine.split('|').map(h => h.trim()).filter(h => h && !h.match(/^[\s\-:]+$/));
+                
+                if (headers.length >= 2) {
+                    let tableContent = '| ' + headers.join(' | ') + ' |\n|';
+                    headers.forEach(() => {
+                        tableContent += ' --- |';
+                    });
+                    tableContent += '\n';
+                    
+                    // Add data rows
+                    lines.slice(1).forEach(line => {
+                        const parts = line.split('|').map(p => p.trim()).filter(p => p && !p.match(/^[\s\-:]+$/));
+                        if (parts.length > 0) {
+                            // Pad to match header count
+                            while (parts.length < headers.length) {
+                                parts.push('');
+                            }
+                            tableContent += '| ' + parts.slice(0, headers.length).join(' | ') + ' |\n';
+                        }
+                    });
+                    
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return tableId;
+                }
+            }
+            return match;
+        });
+        
+        // Try pattern 1 first (with separator)
+        processedText = processedText.replace(tableRegex1, (match) => {
+            // Skip if already processed
+            if (match.includes('__TABLE_')) return match;
+            const tableId = `__TABLE_${tableIndex}__`;
+            tables.push({ id: tableId, content: match });
+            tableIndex++;
+            return tableId;
+        });
+        
+        // Then try pattern 2 (without separator, but multiple pipe rows)
+        processedText = processedText.replace(tableRegex2, (match) => {
+            // Skip if already processed
+            if (match.includes('__TABLE_')) return match;
+            // Check if this looks like a table (has at least 2 rows with pipes)
+            const lines = match.split(/\r?\n/).filter(l => l.trim().includes('|'));
+            if (lines.length >= 2 && !tables.some(t => t.content.includes(match))) {
+                const tableId = `__TABLE_${tableIndex}__`;
+                tables.push({ id: tableId, content: match });
+                tableIndex++;
+                return tableId;
+            }
+            return match; // Not a table, keep original
+        });
+        
+        // Try pattern 3: Convert numbered lists to tables (especially purchase requests, etc.)
+        processedText = processedText.replace(numberedListRegex, (match) => {
+            const lines = match.trim().split(/\r?\n/).filter(l => l.trim());
+            // Check if this looks like structured data (e.g., "1. Request #PR001: "Description"")
+            // More lenient: check if most lines have a colon or hash symbol (indicating structured data)
+            const structuredLines = lines.filter(line => {
+                const trimmed = line.trim();
+                return /^\d+\.\s+.+[#:].+/.test(trimmed) || /^\d+\.\s+Request\s+#/.test(trimmed) || /^\d+\.\s+.+:\s*/.test(trimmed);
+            });
+            const hasStructuredPattern = structuredLines.length >= Math.min(3, Math.max(1, lines.length * 0.5)); // At least 50% should be structured, or at least 3 lines
+            
+            // Also check if it's a simple numbered list (even without colons/hashes) with 5+ items
+            const isLongList = lines.length >= 5;
+            
+            if ((hasStructuredPattern && lines.length >= 3) || isLongList) {
+                // Try to extract structured data
+                const rows = [];
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    // Match: "1. Request #PR001: "New Office Furniture""
+                    const match1 = trimmed.match(/^\d+\.\s+Request\s+#([A-Z0-9]+):\s*"([^"]+)"(.*)$/);
+                    // Match: "1. Request #PR001: Description" (without quotes)
+                    const match2 = trimmed.match(/^\d+\.\s+Request\s+#([A-Z0-9]+):\s*(.+)$/);
+                    // Match: "1. PR001: Description (Status)" - direct PR format without "Request #"
+                    const match2b = trimmed.match(/^\d+\.\s+PR([A-Z0-9]+):\s*(.+)$/);
+                    // Match: "1. Item #ID: Description"
+                    const match3 = trimmed.match(/^\d+\.\s+.+?#([A-Z0-9]+):\s*(.+)$/);
+                    // Match: "1. Item: Description"
+                    const match4 = trimmed.match(/^\d+\.\s+(.+?):\s*(.+)$/);
+                    
+                    if (match1) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], id: match1[1], description: match1[2], extra: match1[3] });
+                    } else if (match2) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], id: match2[1], description: match2[2].trim() });
+                    } else if (match2b) {
+                        // Handle "1. PR001: Description (Status)" format
+                        const fullDesc = match2b[2].trim();
+                        rows.push({ number: trimmed.match(/^\d+/)[0], id: match2b[1], description: fullDesc });
+                    } else if (match3) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], id: match3[1], description: match3[2].trim() });
+                    } else if (match4) {
+                        rows.push({ number: trimmed.match(/^\d+/)[0], description: match4[1] + ': ' + match4[2] });
+                    } else {
+                        // Fallback: just extract number and rest of text
+                        const numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
+                        if (numMatch) {
+                            rows.push({ number: numMatch[1], description: numMatch[2] });
+                        }
+                    }
+                });
+                
+                if (rows.length >= 3) {
+                    // Convert to table - single column format like the image (all info in one cell)
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    let tableContent = '| Complete List: |\n| --- |\n';
+                    rows.forEach(row => {
+                        // Format: "PR001: New Office Furniture (Pending GM Approval)" - all in one cell
+                        let rowContent = '';
+                        if (row.id) {
+                            // PR code in bold (will be styled as bold blue in CSS)
+                            rowContent += `<strong>PR${row.id}</strong>: `;
+                        }
+                        // Description - extract description and status if status is in parentheses
+                        let description = (row.description || '').replace(/"/g, '').trim();
+                        // Check if description contains status in parentheses (e.g., "New Office Furniture (Pending GM Approval)")
+                        const statusMatch = description.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+                        if (statusMatch) {
+                            // Split description and status
+                            description = statusMatch[1].trim();
+                            const status = statusMatch[2].trim();
+                            rowContent += description;
+                            rowContent += ` (${status})`;
+                        } else {
+                            // No status in description, use as is
+                            rowContent += description;
+                            // Add status if present in extra field
+                            if (row.extra && row.extra.trim()) {
+                                const extraStatusMatch = row.extra.match(/\(([^)]+)\)/);
+                                if (extraStatusMatch) {
+                                    rowContent += ` (${extraStatusMatch[1]})`;
+                                } else {
+                                    rowContent += ` ${row.extra.trim()}`;
+                                }
+                            }
+                        }
+                        tableContent += `| ${rowContent} |\n`;
+                    });
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return tableId;
+                }
+            }
+            return match; // Not structured enough, keep original
+        });
+        
+        // Pattern 3b: Handle pipe-separated format like "PR001 | New Office Furniture | Status" (with multiple columns)
+        processedText = processedText.replace(pipeSeparatedRegex, (match) => {
+            // Skip if already processed
+            if (match.includes('__TABLE_')) return match;
+            
+            const lines = match.trim().split(/\r?\n/).filter(l => l.trim() && l.includes('|') && !l.match(/^[\s\-:]+$/));
+            if (lines.length >= 3) {
+                // Check if it's a multi-column table (e.g., "Request # | Description | Status")
+                const firstLineParts = lines[0].split('|').map(p => p.trim()).filter(p => p);
+                const isMultiColumn = firstLineParts.length >= 3;
+                
+                if (isMultiColumn) {
+                    // Multi-column table - use first line as headers if it looks like headers
+                    const firstLine = lines[0].trim();
+                    const looksLikeHeaders = /request|description|status|id|number|no\./i.test(firstLine);
+                    
+                    if (looksLikeHeaders) {
+                        // First line is headers, rest are data rows
+                        const headers = firstLineParts;
+                        let tableContent = '| ' + headers.join(' | ') + ' |\n|';
+                        headers.forEach(() => {
+                            tableContent += ' --- |';
+                        });
+                        tableContent += '\n';
+                        
+                        lines.slice(1).forEach(line => {
+                            const parts = line.split('|').map(p => p.trim()).filter(p => p);
+                            if (parts.length > 0) {
+                                // Pad to match header count
+                                while (parts.length < headers.length) {
+                                    parts.push('');
+                                }
+                                tableContent += '| ' + parts.slice(0, headers.length).join(' | ') + ' |\n';
+                            }
+                        });
+                        
+                        const tableId = `__TABLE_${tableIndex}__`;
+                        tables.push({ id: tableId, content: tableContent });
+                        tableIndex++;
+                        return tableId;
+                    }
+                }
+                
+                // Fallback: treat as simple ID | Description format
+                const rows = [];
+                lines.forEach(line => {
+                    const parts = line.split('|').map(p => p.trim()).filter(p => p);
+                    if (parts.length >= 2) {
+                        const id = parts[0].trim();
+                        const description = parts.slice(1).join(' | ').trim();
+                        // Check if first part looks like an ID (PR001, PR002, #PR001, etc.)
+                        if (/^[#]?[A-Z]{0,3}[0-9]+$/.test(id) || id.includes('PR') || id.startsWith('#')) {
+                            rows.push({ id: id.replace(/#/g, ''), description: description });
+                        } else {
+                            rows.push({ description: line });
+                        }
+                    } else if (parts.length === 1 && parts[0]) {
+                        rows.push({ description: parts[0] });
+                    }
+                });
+                
+                if (rows.length >= 3) {
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    const hasAnyId = rows.some(r => r.id);
+                    let tableContent = '|';
+                    if (hasAnyId) {
+                        tableContent += ' Request ID |';
+                    }
+                    tableContent += ' Description |\n|';
+                    if (hasAnyId) {
+                        tableContent += ' --- |';
+                    }
+                    tableContent += ' --- |\n';
+                    rows.forEach((row) => {
+                        tableContent += '|';
+                        if (hasAnyId) {
+                            tableContent += ` ${row.id || ''} |`;
+                        }
+                        tableContent += ` ${row.description} |\n`;
+                    });
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return tableId;
+                }
+            }
+            return match;
+        });
+        
+        // Pattern 3c: Handle table format with headers like "Request # | Description | Status" followed by data rows
+        const headerTableRegex = /((?:Request\s*#|Request\s+ID|Request|ID|No\.|Number)[^|\n]*\|[^|\n]*Description[^|\n]*\|[^|\n]*Status[^|\n]*\n(?:(?:PR\d+|#?\w+\d+)[^|\n]*\|[^|\n]+\|[^|\n]+\n?)+)/gi;
+        processedText = processedText.replace(headerTableRegex, (match) => {
+            // Skip if already processed
+            if (match.includes('__TABLE_')) return match;
+            
+            const lines = match.trim().split(/\r?\n/).filter(l => l.trim() && l.includes('|'));
+            if (lines.length >= 2) {
+                // First line should be headers
+                const headerLine = lines[0];
+                const headers = headerLine.split('|').map(h => h.trim()).filter(h => h && !h.match(/^[\s\-:]+$/));
+                
+                if (headers.length >= 2) {
+                    let tableContent = '| ' + headers.join(' | ') + ' |\n|';
+                    headers.forEach(() => {
+                        tableContent += ' --- |';
+                    });
+                    tableContent += '\n';
+                    
+                    // Add data rows
+                    lines.slice(1).forEach(line => {
+                        const parts = line.split('|').map(p => p.trim()).filter(p => p && !p.match(/^[\s\-:]+$/));
+                        if (parts.length > 0) {
+                            // Pad to match header count
+                            while (parts.length < headers.length) {
+                                parts.push('');
+                            }
+                            tableContent += '| ' + parts.slice(0, headers.length).join(' | ') + ' |\n';
+                        }
+                    });
+                    
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return tableId;
+                }
+            }
+            return match;
+        });
+        
+        // Pattern 4: Also handle numbered lists that might be in a single paragraph or have text before them
+        // This pattern looks for sequences like "1. Item 2. Item 3. Item" even in continuous text
+        const inlineNumberedListRegex = /([^|])((?:\d+\.\s+[^0-9\n]+(?:\.\s+|:\s*|$)){5,})/g;
+        processedText = processedText.replace(inlineNumberedListRegex, (prefix, match) => {
+            // Skip if already processed
+            if (match.includes('__TABLE_')) return prefix + match;
+            
+            // Try to split by number patterns
+            const items = match.match(/\d+\.\s+[^0-9]+?(?=\d+\.|$)/g);
+            if (items && items.length >= 5) {
+                const rows = [];
+                let hasIdPattern = false;
+                
+                items.forEach(item => {
+                    const trimmed = item.trim();
+                    const numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
+                    if (numMatch) {
+                        const rest = numMatch[2].trim();
+                        const idMatch = rest.match(/#([A-Z0-9]+)/);
+                        if (idMatch) {
+                            hasIdPattern = true;
+                            let description = rest.replace(/^[^:]*:\s*/, '').replace(/^"/, '').replace(/"$/, '').trim();
+                            if (!description) description = rest.replace(/#[A-Z0-9]+/, '').replace(/^[^:]*:\s*/, '').trim();
+                            rows.push({ number: numMatch[1], id: idMatch[1], description: description || rest });
+                        } else {
+                            const colonMatch = rest.match(/^[^:]+:\s*(.+)$/);
+                            rows.push({ number: numMatch[1], description: colonMatch ? colonMatch[1].replace(/"/g, '').trim() : rest });
+                        }
+                    }
+                });
+                
+                if (rows.length >= 5) {
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    let tableContent = '| No. |';
+                    if (hasIdPattern && rows[0].id) {
+                        tableContent += ' Request ID |';
+                    }
+                    tableContent += ' Description |\n|';
+                    if (hasIdPattern && rows[0].id) {
+                        tableContent += ' --- |';
+                    }
+                    tableContent += ' --- | --- |\n';
+                    rows.forEach(row => {
+                        tableContent += `| ${row.number} |`;
+                        if (hasIdPattern && row.id) {
+                            tableContent += ` #${row.id} |`;
+                        }
+                        tableContent += ` ${row.description.replace(/"/g, '').trim()} |\n`;
+                    });
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return prefix + tableId;
+                }
+            }
+            return prefix + match;
+        });
+        
+        // Pattern 5: Fallback - catch any numbered list with 5+ items and convert to simple table
+        // This is more aggressive and will catch lists that pattern 3 might miss
+        const fallbackNumberedListRegex = /((?:^\d+\.\s+[^\n]+(?:\r?\n|$)){5,})/gm;
+        processedText = processedText.replace(fallbackNumberedListRegex, (match) => {
+            // Skip if already processed as a table
+            if (match.includes('__TABLE_')) return match;
+            
+            const lines = match.trim().split(/\r?\n/).filter(l => l.trim() && /^\d+\./.test(l.trim()));
+            if (lines.length >= 5) {
+                const rows = [];
+                let hasIdPattern = false;
+                
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    const numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
+                    if (numMatch) {
+                        const rest = numMatch[2];
+                        // Check for ID pattern (#PR001, #ID, etc.)
+                        const idMatch = rest.match(/#([A-Z0-9]+)/);
+                        if (idMatch) {
+                            hasIdPattern = true;
+                            // Extract description - remove quotes and clean up
+                            let description = rest.replace(/^[^:]*:\s*/, '').replace(/^"/, '').replace(/"$/, '').trim();
+                            if (!description) {
+                                description = rest.replace(/#[A-Z0-9]+/, '').replace(/^[^:]*:\s*/, '').trim();
+                            }
+                            if (!description) description = rest;
+                            rows.push({ number: numMatch[1], id: idMatch[1], description: description });
+                        } else {
+                            // Extract description after colon
+                            const colonMatch = rest.match(/^[^:]+:\s*(.+)$/);
+                            if (colonMatch) {
+                                let desc = colonMatch[1].replace(/^"/, '').replace(/"$/, '').trim();
+                                rows.push({ number: numMatch[1], description: desc || rest });
+                            } else {
+                                rows.push({ number: numMatch[1], description: rest });
+                            }
+                        }
+                    }
+                });
+                
+                if (rows.length >= 5) {
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    let tableContent = '| No. |';
+                    if (hasIdPattern && rows[0].id) {
+                        tableContent += ' Request ID |';
+                    }
+                    tableContent += ' Description |\n|';
+                    if (hasIdPattern && rows[0].id) {
+                        tableContent += ' --- |';
+                    }
+                    tableContent += ' --- | --- |\n';
+                    rows.forEach(row => {
+                        tableContent += `| ${row.number} |`;
+                        if (hasIdPattern && row.id) {
+                            tableContent += ` #${row.id} |`;
+                        }
+                        tableContent += ` ${row.description.replace(/"/g, '').trim()} |\n`;
+                    });
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return tableId;
+                }
+            }
+            return match;
+        });
+        
+        // Pattern 4: Also detect simple numbered lists without Request prefix (more flexible)
+        // This catches lists that might not have "Request" in them but are still structured
+        const simpleNumberedListRegex = /((?:^\d+\.\s+[^\n]+(?:\r?\n|$)){5,})/gm;
+        processedText = processedText.replace(simpleNumberedListRegex, (match) => {
+            // Skip if already processed as a table
+            if (match.includes('__TABLE_')) return match;
+            
+            const lines = match.trim().split(/\r?\n/).filter(l => l.trim());
+            // Check if it's a simple numbered list (at least 5 items)
+            if (lines.length >= 5) {
+                const rows = [];
+                let hasIdPattern = false;
+                
+                lines.forEach(line => {
+                    const trimmed = line.trim();
+                    // Try to extract number and description
+                    const numMatch = trimmed.match(/^(\d+)\.\s+(.+)$/);
+                    if (numMatch) {
+                        const rest = numMatch[2];
+                        // Check if it has an ID pattern like #PR001, #ID, etc.
+                        const idMatch = rest.match(/#([A-Z0-9]+)/);
+                        if (idMatch) {
+                            hasIdPattern = true;
+                            const description = rest.replace(/^[^:]+:\s*/, '').replace(/^[^"]*"/, '').replace(/"[^"]*$/, '').trim();
+                            rows.push({ number: numMatch[1], id: idMatch[1], description: description || rest });
+                        } else {
+                            // Extract description after colon if present
+                            const colonMatch = rest.match(/^[^:]+:\s*(.+)$/);
+                            if (colonMatch) {
+                                const desc = colonMatch[1].replace(/^"/, '').replace(/"$/, '').trim();
+                                rows.push({ number: numMatch[1], description: desc || rest });
+                            } else {
+                                rows.push({ number: numMatch[1], description: rest });
+                            }
+                        }
+                    }
+                });
+                
+                if (rows.length >= 5) {
+                    // Convert to table
+                    const tableId = `__TABLE_${tableIndex}__`;
+                    let tableContent = '| No. |';
+                    if (hasIdPattern && rows[0].id) {
+                        tableContent += ' Request ID |';
+                    }
+                    tableContent += ' Description |\n|';
+                    if (hasIdPattern && rows[0].id) {
+                        tableContent += ' --- |';
+                    }
+                    tableContent += ' --- | --- |\n';
+                    rows.forEach(row => {
+                        tableContent += `| ${row.number} |`;
+                        if (hasIdPattern && row.id) {
+                            tableContent += ` #${row.id} |`;
+                        }
+                        tableContent += ` ${row.description.replace(/"/g, '')} |\n`;
+                    });
+                    tables.push({ id: tableId, content: tableContent });
+                    tableIndex++;
+                    return tableId;
+                }
+            }
+            return match;
+        });
+        
+        // Process other markdown formatting (but preserve table placeholders)
+        let html = processedText
+            // Bold text
+            .replace(/\*\*(.+?)\*\*/g, '<strong class="font-semibold">$1</strong>')
+            // Italic text (but not if it's part of bold)
+            .replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em class="italic">$1</em>')
+            // Code blocks
+            .replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-100 p-3 rounded-lg my-2 overflow-x-auto border border-gray-200"><code class="text-xs">$1</code></pre>')
+            // Inline code
+            .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">$1</code>')
+            // Line breaks (but preserve table placeholders)
+            .replace(/\n/g, '<br />');
+        
+        // Replace table placeholders with rendered HTML tables
+        tables.forEach(({ id, content }) => {
+            const tableHtml = parseMarkdownTable(content);
+            html = html.replace(id, tableHtml);
+        });
+        
+        return { __html: html };
+    };
+    
+    // Helper function to parse markdown table into HTML
+    const parseMarkdownTable = (markdownTable) => {
+        const lines = markdownTable.trim().split(/\r?\n/).filter(line => line.trim());
+        if (lines.length < 2) return markdownTable; // Not a valid table
+        
+        // Parse header - handle tables with or without leading/trailing pipes
+        const headerLine = lines[0].trim();
+        let headers = headerLine.split('|').map(h => h.trim());
+        
+        // Remove empty first/last elements if table has leading/trailing pipes
+        if (headers[0] === '') headers = headers.slice(1);
+        if (headers[headers.length - 1] === '') headers = headers.slice(0, -1);
+        
+        // Filter out separator-only cells
+        headers = headers.filter(h => h && !h.match(/^[\s\-:]+$/));
+        
+        if (headers.length === 0) return markdownTable; // Invalid table
+        
+        // Check if second line is a separator (contains dashes/colons)
+        const secondLine = lines[1] ? lines[1].trim() : '';
+        const isSeparatorLine = secondLine.match(/^[|\s\-:]+$/);
+        
+        // Skip separator line if present, otherwise start from line 1
+        const dataLines = isSeparatorLine 
+            ? lines.slice(2).filter(line => {
+                const trimmed = line.trim();
+                return trimmed && !trimmed.match(/^[|\s\-:]+$/);
+            })
+            : lines.slice(1).filter(line => {
+                const trimmed = line.trim();
+                return trimmed && !trimmed.match(/^[|\s\-:]+$/);
+            });
+        
+        // Build HTML table with clean, minimalist styling (like the example image - card-like with rounded corners)
+        // Calculate minimum width based on number of columns (150px per column minimum)
+        const minTableWidth = headers.length * 150;
+        let tableHtml = '<div class="table-container-wrapper my-4" style="background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; max-width: 100%; width: 100%; position: relative;">';
+        tableHtml += `<table class="data-table" style="border-collapse: collapse; width: 100%; min-width: ${Math.max(600, minTableWidth)}px; table-layout: auto; margin: 0; background: white; border-spacing: 0; border-radius: 8px; overflow: hidden;">`;
+        
+        // Header row with light gray background (like the example)
+        tableHtml += '<thead><tr>';
+        headers.forEach((header, idx) => {
+            const escapedHeader = header.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            // Set appropriate column widths to prevent truncation
+            let colWidth = '';
+            if (idx === 0) {
+                colWidth = 'min-width: 100px; width: 15%;'; // First column
+            } else if (idx === headers.length - 1) {
+                colWidth = 'min-width: 180px; width: 25%;'; // Last column
+            } else {
+                colWidth = 'min-width: 200px; width: auto;'; // Middle columns - flexible
+            }
+            tableHtml += `<th style="border-bottom: 1px solid #e5e7eb; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 0.875rem; color: #111827; white-space: nowrap; background: #f9fafb; ${colWidth}">${escapedHeader}</th>`;
+        });
+        tableHtml += '</tr></thead>';
+        
+        // Data rows
+        tableHtml += '<tbody>';
+        dataLines.forEach((line, rowIndex) => {
+            let cells = line.split('|').map(c => c.trim());
+            
+            // Remove empty first/last elements if table has leading/trailing pipes
+            if (cells[0] === '') cells = cells.slice(1);
+            if (cells[cells.length - 1] === '') cells = cells.slice(0, -1);
+            
+            // Filter out separator-only cells
+            cells = cells.filter(c => c && !c.match(/^[\s\-:]+$/));
+            
+            if (cells.length === 0) return;
+            
+            // Skip rows with just "..." or similar placeholders
+            if (cells.every(cell => cell.match(/^\.{2,}$/))) return;
+            
+            // Clean row styling - white background with horizontal line only (like the example)
+            tableHtml += '<tr>';
+            
+            // Ensure we have the right number of cells (pad if needed)
+            const paddedCells = [...cells];
+            while (paddedCells.length < headers.length) {
+                paddedCells.push('');
+            }
+            
+            paddedCells.slice(0, headers.length).forEach((cell, cellIndex) => {
+                // Handle cell styling - clean and minimalist (like the example image)
+                let cellContent = cell || '';
+                
+                // For single-column tables (like "Complete List:"), format the content nicely BEFORE escaping
+                if (headers.length === 1 && cellContent) {
+                    // Extract PR codes and make them bold blue, status in parentheses
+                    cellContent = cellContent.replace(/(PR\d+)/g, '<strong style="color: #1e40af; font-weight: 700;">$1</strong>');
+                    // Color code status in parentheses
+                    cellContent = cellContent.replace(/\(([^)]+)\)/g, (match, status) => {
+                        const statusLower = status.toLowerCase();
+                        let statusColor = '#374151';
+                        if (statusLower.includes('pending') || statusLower.includes('pend') || statusLower.includes('waiting')) {
+                            statusColor = '#d97706';
+                        } else if (statusLower.includes('approved') || statusLower.includes('apprn') || statusLower.includes('completed')) {
+                            statusColor = '#059669';
+                        } else if (statusLower.includes('rejected') || statusLower.includes('reject') || statusLower.includes('cancelled')) {
+                            statusColor = '#dc2626';
+                        } else if (statusLower.includes('in progress') || statusLower.includes('processing')) {
+                            statusColor = '#2563eb';
+                        }
+                        return `(<span style="color: ${statusColor};">${status}</span>)`;
+                    });
+                } else {
+                    // For multi-column tables, escape HTML
+                    cellContent = cellContent.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                }
+                
+                // Clean, minimalist cell styling - horizontal line only, no vertical borders (like the example)
+                let cellStyle = `border-bottom: 1px solid #e5e7eb; border-left: none; border-right: none; border-top: none; padding: 12px 16px; font-size: 0.875rem; color: #374151; word-wrap: break-word; overflow-wrap: break-word; white-space: normal; line-height: 1.5; vertical-align: middle; background: white; font-weight: 400;`;
+                
+                // All cells have same clean styling (like the example - no vertical borders)
+                tableHtml += `<td style="${cellStyle}">${cellContent}</td>`;
+            });
+            tableHtml += '</tr>';
+        });
+        tableHtml += '</tbody></table></div>';
+        
+        return tableHtml;
+    };
+    
     // Get suggested actions based on Admin PA module selection
     let suggestedActions = bot.suggestedActions || [
         { text: 'Create image', highlight: true },
@@ -542,7 +1189,14 @@ const PhoneFrame = ({
                                                         : `bg-white border ${bot.borderColor || 'border-gray-200'} ${bot.textColor || 'text-gray-800'} rounded-bl-none shadow-sm`
                                                         }`}
                                                 >
-                                                    {msg.type !== 'social-media' && msg.text}
+                                                    {msg.type !== 'social-media' && (
+                                                        <div className="markdown-content">
+                                                            <div 
+                                                                className="prose prose-sm max-w-none"
+                                                                dangerouslySetInnerHTML={renderMarkdownContent(msg.text)}
+                                                            />
+                                                        </div>
+                                                    )}
                                                     {msg.type === 'button' && msg.buttonText && (
                                                         <button
                                                             onClick={() => {
@@ -1310,6 +1964,67 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     };
 
     // Helper function to map internal module names to API-expected format
+    // Helper function to check if a question is related to the selected module
+    const isQuestionModuleRelated = (botId, moduleName, message) => {
+        if (!moduleName || moduleName === 'global') {
+            return false; // No module selected, use global
+        }
+        
+        const messageLower = message.toLowerCase();
+        
+        // Admin PA module keywords
+        if (botId === 'admin-bot') {
+            const moduleKeywords = {
+                'purchase': ['purchase', 'pr', 'request', 'buy', 'order', 'procurement', 'vendor', 'supplier', 'invoice', 'payment', 'approval', 'approved', 'pending', 'cancelled'],
+                'support_ticket': ['ticket', 'support', 'issue', 'problem', 'help', 'bug', 'error', 'complaint', 'request', 'assistance'],
+                'shop': ['shop', 'stationery', 'supplies', 'items', 'y-shop', 'stationary', 'office supplies'],
+                'gatepass': ['gatepass', 'gate pass', 'visitor', 'entry', 'exit', 'access', 'permit'],
+                'car_booking': ['car', 'vehicle', 'booking', 'reservation', 'driver', 'transport', 'fuel', 'mileage']
+            };
+            
+            const keywords = moduleKeywords[moduleName] || [];
+            return keywords.some(keyword => messageLower.includes(keyword));
+        }
+        
+        // Finance PA module keywords
+        if (botId === 'finance-bot') {
+            const moduleKeywords = {
+                'accounts': ['account', 'financial', 'budget', 'expense', 'revenue', 'transaction', 'balance', 'payment', 'invoice', 'billing', 'accounting']
+            };
+            
+            const keywords = moduleKeywords[moduleName] || [];
+            return keywords.some(keyword => messageLower.includes(keyword));
+        }
+        
+        // CSR PA module keywords
+        if (botId === 'csr-bot') {
+            const moduleKeywords = {
+                'csr': ['csr', 'corporate social responsibility', 'social', 'community', 'induction', 'training', '6s', 'compliance', 'certificate', 'audit', 'checklist'],
+                'air': ['air', 'temperature', 'humidity', 'climate', 'ventilation', 'air quality'],
+                'electricity': ['electricity', 'electric', 'power', 'energy', 'consumption', 'kwh', 'watt', 'voltage'],
+                'water': ['water', 'usage', 'consumption', 'wastewater', 'treatment'],
+                'waste_management': ['waste', 'garbage', 'trash', 'recycling', 'disposal', 'management']
+            };
+            
+            const keywords = moduleKeywords[moduleName] || [];
+            return keywords.some(keyword => messageLower.includes(keyword));
+        }
+        
+        // HR PA module keywords
+        if (botId === 'hr-bot') {
+            const moduleKeywords = {
+                'hr': ['hr', 'human resource', 'employee', 'staff', 'personnel', 'recruitment', 'hiring', 'job', 'application', 'candidate', 'salary', 'payroll'],
+                'training': ['training', 'course', 'learn', 'education', 'skill', 'development', 'workshop', 'seminar']
+            };
+            
+            const keywords = moduleKeywords[moduleName] || [];
+            return keywords.some(keyword => messageLower.includes(keyword));
+        }
+        
+        // Default: if we can't determine, assume it's related to the module
+        return true;
+    };
+
     const mapModuleToAPIFormat = (botId, moduleName) => {
         if (!moduleName || moduleName === 'global') {
             return 'global';
@@ -1369,6 +2084,172 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             localStorage.setItem(storageKey, userId);
         }
         return userId;
+    };
+
+    // Helper function to stream text like ChatGPT (token/word-based chunks with natural pacing)
+    const streamBotResponse = (botId, fullText, messageObj = {}) => {
+        // Create initial bot message with empty text
+        const initialMessage = {
+            from: 'bot',
+            text: '',
+            isStreaming: true,
+            ...messageObj
+        };
+
+        // Add the initial message to state
+        setBotStates(prev => {
+            const botState = prev[botId];
+            if (!botState) return prev;
+            const updatedMessages = [...botState.messages, initialMessage];
+            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+            ) : botState.chatHistory;
+            return {
+                ...prev,
+                [botId]: {
+                    ...prev[botId],
+                    messages: updatedMessages,
+                    isTyping: false,
+                    chatHistory: updatedHistory
+                }
+            };
+        });
+
+        // Stream token-by-token like ChatGPT (tokens can be parts of words, whole words, or punctuation)
+        // Split text into tokens (words, punctuation, spaces) for natural ChatGPT-like streaming
+        const tokenize = (text) => {
+            // Split by word boundaries, keeping punctuation and spaces
+            const tokens = [];
+            const regex = /(\S+|\s+)/g;
+            let match;
+            while ((match = regex.exec(text)) !== null) {
+                tokens.push(match[0]);
+            }
+            return tokens;
+        };
+        
+        const tokens = tokenize(fullText);
+        let currentText = '';
+        let tokenIndex = 0;
+        
+        // For very long responses, batch tokens for faster display
+        const totalTokens = tokens.length;
+        const isVeryLong = totalTokens > 200;
+        const batchSize = isVeryLong ? 2 : 1; // Batch 2 tokens for very long responses
+
+        const streamNextToken = () => {
+            if (tokenIndex >= tokens.length) {
+                // Streaming complete
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    if (!botState) return prev;
+                    const updatedMessages = [...botState.messages];
+                    const lastMessage = updatedMessages[updatedMessages.length - 1];
+                    if (lastMessage && lastMessage.from === 'bot' && lastMessage.isStreaming) {
+                        updatedMessages[updatedMessages.length - 1] = {
+                            ...lastMessage,
+                            text: fullText,
+                            isStreaming: false
+                        };
+                    }
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+                return;
+            }
+
+            // Add next token(s) - batch for very long responses (ChatGPT-like token streaming)
+            const tokensToAdd = Math.min(batchSize, tokens.length - tokenIndex);
+            for (let i = 0; i < tokensToAdd; i++) {
+                if (tokenIndex < tokens.length) {
+                    currentText += tokens[tokenIndex];
+                    tokenIndex++;
+                }
+            }
+
+            // ChatGPT-like token streaming speed (fast and natural)
+            const currentToken = tokens[tokenIndex - 1] || '';
+            let delay = 10; // Base delay: 10ms per token (ChatGPT-like speed)
+            
+            // Faster for spaces/whitespace tokens
+            if (/^\s+$/.test(currentToken)) {
+                delay = 5;
+            }
+            // Slight pause at sentence endings (natural thinking pause)
+            else if (/[.!?]\s*$/.test(currentToken)) {
+                delay = isVeryLong ? 15 : 30;
+            }
+            // Minimal pause at commas and semicolons
+            else if (/[,;]\s*$/.test(currentToken)) {
+                delay = isVeryLong ? 8 : 15;
+            }
+            // Minimal pause for colons
+            else if (/[:]\s*$/.test(currentToken)) {
+                delay = isVeryLong ? 10 : 20;
+            }
+            // Slight pause at newlines
+            else if (currentToken.includes('\n')) {
+                delay = isVeryLong ? 10 : 25;
+            }
+            // Fast for regular word tokens (ChatGPT-like token speed)
+            else {
+                // Shorter tokens appear faster, longer tokens slightly slower
+                const tokenLength = currentToken.length;
+                if (tokenLength <= 3) {
+                    delay = 5 + Math.random() * 5; // 5-10ms for short tokens
+                } else if (tokenLength <= 8) {
+                    delay = 8 + Math.random() * 7; // 8-15ms for medium tokens
+                } else {
+                    delay = 12 + Math.random() * 8; // 12-20ms for long tokens
+                }
+            }
+
+            // Update the last message with current text
+            // Note: Markdown/table formatting will be applied when rendering via renderMarkdownContent
+            setBotStates(prev => {
+                const botState = prev[botId];
+                if (!botState) return prev;
+                const updatedMessages = [...botState.messages];
+                const lastMessage = updatedMessages[updatedMessages.length - 1];
+                if (lastMessage && lastMessage.from === 'bot' && lastMessage.isStreaming) {
+                    updatedMessages[updatedMessages.length - 1] = {
+                        ...lastMessage,
+                        text: currentText,
+                        // Ensure markdown rendering is applied during streaming
+                        needsMarkdown: true
+                    };
+                }
+                const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                    chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                ) : botState.chatHistory;
+                return {
+                    ...prev,
+                    [botId]: {
+                        ...prev[botId],
+                        messages: updatedMessages,
+                        chatHistory: updatedHistory
+                    }
+                };
+            });
+
+            // Schedule next token
+            setTimeout(streamNextToken, delay);
+        };
+
+        // Start streaming token by token immediately (ChatGPT-like instant start)
+        setTimeout(streamNextToken, 0);
+        
+        // Store timeout ID for cleanup if needed (component unmount, etc.)
+        // Note: In a production app, you'd want to clean this up on unmount
     };
 
     // Helper function to clean up technical tool-call messages from API responses
@@ -2377,8 +3258,13 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
             // Finance PA module API calls
             if (botId === 'finance-bot' && financePAModule) {
+                // Check if question is related to the selected module
+                const isModuleRelated = isQuestionModuleRelated(botId, financePAModule, message);
+                // Use "global" if question is not related to the module, otherwise use the selected module
+                const moduleToUse = isModuleRelated ? financePAModule : null;
+                
                 // Mark this action as used immediately if it matches a suggested action
-                if (financePAModules[financePAModule]) {
+                if (financePAModules[financePAModule] && isModuleRelated) {
                     const matchingAction = financePAModules[financePAModule].suggestedActions.find(
                         action => action.text.toLowerCase() === message.toLowerCase().trim()
                     );
@@ -2387,7 +3273,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }
                 }
                 
-                // User is asking a question in a selected module - call API
+                // User is asking a question - call API with appropriate module
                 // Add user message and set typing state
                 setBotStates(prev => {
                     const botState = prev[botId];
@@ -2416,49 +3302,24 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     };
                 });
 
-                // Call API and update with response
-                callFinancePAAPI(message, financePAModule).then(apiResponse => {
-                    setBotStates(prev => {
-                        const botState = prev[botId];
-                        if (!botState) return prev;
-                        const botMsg = { from: 'bot', text: apiResponse };
-                        const updatedMessages = [...botState.messages, botMsg];
-                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                        ) : botState.chatHistory;
-                        return {
-                            ...prev,
-                            [botId]: {
-                                ...prev[botId],
-                                messages: updatedMessages,
-                                isTyping: false,
-                                chatHistory: updatedHistory
-                            }
-                        };
-                    });
+                // Call API with appropriate module (global if not module-related)
+                callFinancePAAPI(message, moduleToUse).then(apiResponse => {
+                    streamBotResponse(botId, apiResponse);
                 }).catch(error => {
-                    setBotStates(prev => {
-                        const botState = prev[botId];
-                        if (!botState) return prev;
-                        const errorMsg = { from: 'bot', text: `Sorry, I encountered an error: ${error.message}. Please try again later.` };
-                        const updatedMessages = [...botState.messages, errorMsg];
-                        return {
-                            ...prev,
-                            [botId]: {
-                                ...prev[botId],
-                                messages: updatedMessages,
-                                isTyping: false
-                            }
-                        };
-                    });
+                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
                 });
                 return; // Exit early - don't process further
             }
 
             // CSR PA module API calls
             if (botId === 'csr-bot' && csrPAModule) {
+                // Check if question is related to the selected module
+                const isModuleRelated = isQuestionModuleRelated(botId, csrPAModule, message);
+                // Use "global" if question is not related to the module, otherwise use the selected module
+                const moduleToUse = isModuleRelated ? csrPAModule : null;
+                
                 // Mark this action as used immediately if it matches a suggested action
-                if (csrPAModules[csrPAModule]) {
+                if (csrPAModules[csrPAModule] && isModuleRelated) {
                     const matchingAction = csrPAModules[csrPAModule].suggestedActions.find(
                         action => action.text.toLowerCase() === message.toLowerCase().trim()
                     );
@@ -2467,7 +3328,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }
                 }
                 
-                // User is asking a question in a selected module - call API
+                // User is asking a question - call API with appropriate module
                 // Add user message and set typing state
                 setBotStates(prev => {
                     const botState = prev[botId];
@@ -2497,49 +3358,24 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     };
                 });
 
-                // Call API and update with response
-                callCsrPAAPI(message, csrPAModule).then(apiResponse => {
-                    setBotStates(prev => {
-                        const botState = prev[botId];
-                        if (!botState) return prev;
-                        const botMsg = { from: 'bot', text: apiResponse };
-                        const updatedMessages = [...botState.messages, botMsg];
-                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                        ) : botState.chatHistory;
-                        return {
-                            ...prev,
-                            [botId]: {
-                                ...prev[botId],
-                                messages: updatedMessages,
-                                isTyping: false,
-                                chatHistory: updatedHistory
-                            }
-                        };
-                    });
+                // Call API with appropriate module (global if not module-related)
+                callCsrPAAPI(message, moduleToUse).then(apiResponse => {
+                    streamBotResponse(botId, apiResponse);
                 }).catch(error => {
-                    setBotStates(prev => {
-                        const botState = prev[botId];
-                        if (!botState) return prev;
-                        const errorMsg = { from: 'bot', text: `Sorry, I encountered an error: ${error.message}. Please try again later.` };
-                        const updatedMessages = [...botState.messages, errorMsg];
-                        return {
-                            ...prev,
-                            [botId]: {
-                                ...prev[botId],
-                                messages: updatedMessages,
-                                isTyping: false
-                            }
-                        };
-                    });
+                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
                 });
                 return; // Exit early - don't process further
             }
 
             // HR PA module API calls
             if (botId === 'hr-bot' && hrPAModule) {
+                // Check if question is related to the selected module
+                const isModuleRelated = isQuestionModuleRelated(botId, hrPAModule, message);
+                // Use "global" if question is not related to the module, otherwise use the selected module
+                const moduleToUse = isModuleRelated ? hrPAModule : null;
+                
                 // Mark this action as used immediately if it matches a suggested action
-                if (hrPAModules[hrPAModule]) {
+                if (hrPAModules[hrPAModule] && isModuleRelated) {
                     const matchingAction = hrPAModules[hrPAModule].suggestedActions.find(
                         action => action.text.toLowerCase() === message.toLowerCase().trim()
                     );
@@ -2548,7 +3384,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }
                 }
                 
-                // User is asking a question in a selected module - call API
+                // User is asking a question - call API with appropriate module
                 // Add user message and set typing state
                 setBotStates(prev => {
                     const botState = prev[botId];
@@ -2578,41 +3414,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     };
                 });
 
-                // Call API and update with response
-                callHrPAAPI(message, hrPAModule).then(apiResponse => {
-                    setBotStates(prev => {
-                        const botState = prev[botId];
-                        if (!botState) return prev;
-                        const botMsg = { from: 'bot', text: apiResponse };
-                        const updatedMessages = [...botState.messages, botMsg];
-                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                        ) : botState.chatHistory;
-                        return {
-                            ...prev,
-                            [botId]: {
-                                ...prev[botId],
-                                messages: updatedMessages,
-                                isTyping: false,
-                                chatHistory: updatedHistory
-                            }
-                        };
-                    });
+                // Call API with appropriate module (global if not module-related)
+                callHrPAAPI(message, moduleToUse).then(apiResponse => {
+                    streamBotResponse(botId, apiResponse);
                 }).catch(error => {
-                    setBotStates(prev => {
-                        const botState = prev[botId];
-                        if (!botState) return prev;
-                        const errorMsg = { from: 'bot', text: `Sorry, I encountered an error: ${error.message}. Please try again later.` };
-                        const updatedMessages = [...botState.messages, errorMsg];
-                        return {
-                            ...prev,
-                            [botId]: {
-                                ...prev[botId],
-                                messages: updatedMessages,
-                                isTyping: false
-                            }
-                        };
-                    });
+                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
                 });
                 return; // Exit early - don't process further
             }
@@ -2801,8 +3607,13 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
                 // Check if a module is selected and handle API calls
                 if (adminPAModule) {
-                    // Mark this action as used immediately if it matches a suggested action
-                    if (adminPAModules[adminPAModule]) {
+                    // Check if question is related to the selected module
+                    const isModuleRelated = isQuestionModuleRelated(botId, adminPAModule, message);
+                    // Use "global" if question is not related to the module, otherwise use the selected module
+                    const moduleToUse = isModuleRelated ? adminPAModule : null;
+                    
+                    // Mark this action as used immediately if it matches a suggested action (only if module-related)
+                    if (adminPAModules[adminPAModule] && isModuleRelated) {
                         const matchingAction = adminPAModules[adminPAModule].suggestedActions.find(
                             action => action.text.toLowerCase() === message.toLowerCase().trim()
                         );
@@ -2811,7 +3622,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                         }
                     }
                     
-                    // User is asking a question in a selected module - call API
+                    // User is asking a question - call API with appropriate module
                     // Add user message and set typing state
                     setBotStates(prev => {
                         const botState = prev[botId];
@@ -2840,42 +3651,11 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                         };
                     });
                     
-                    callAdminPAAPI(message, adminPAModule).then(apiResponse => {
-                        setBotStates(prev => {
-                            const botState = prev[botId];
-                            const botMsg = { from: 'bot', text: apiResponse };
-                            const updatedMessages = [...botState.messages, botMsg];
-                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                            ) : botState.chatHistory;
-                            return {
-                                ...prev,
-                                [botId]: {
-                                    ...prev[botId],
-                                    messages: updatedMessages,
-                                    isTyping: false,
-                                    chatHistory: updatedHistory
-                                }
-                            };
-                        });
+                    // Call API with appropriate module (global if not module-related)
+                    callAdminPAAPI(message, moduleToUse).then(apiResponse => {
+                        streamBotResponse(botId, apiResponse);
                     }).catch(error => {
-                        setBotStates(prev => {
-                            const botState = prev[botId];
-                            const botMsg = { from: 'bot', text: `Error: ${error.message}` };
-                            const updatedMessages = [...botState.messages, botMsg];
-                            const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                                chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                            ) : botState.chatHistory;
-                            return {
-                                ...prev,
-                                [botId]: {
-                                    ...prev[botId],
-                                    messages: updatedMessages,
-                                    isTyping: false,
-                                    chatHistory: updatedHistory
-                                }
-                            };
-                        });
+                        streamBotResponse(botId, `Error: ${error.message}`);
                     });
                     return; // Exit early, API call handles the response
                 }
@@ -3274,20 +4054,152 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
             }
 
-            // For Admin PA, Finance PA, HR PA, CSR PA: if no module is selected and no predefined response, show module selection message
-            // This check must happen BEFORE Gemini API call to prevent incorrect responses
+            // For Admin PA, Finance PA, HR PA, CSR PA: if no module is selected and no predefined response, use "global" module to call API
+            // This allows users to ask general questions without selecting a specific module
             if (botId === 'admin-bot' && !adminPAModule && !hasPredefinedResponse) {
-                botResponse = 'Please select a module first: Purchase Request, Support Ticket, Gatepass, Car Booking, or Y-Shop.';
-                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+                // Add user message and set typing state
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    
+                    // Check for duplicate message before adding
+                    if (botState.messages.length > 0) {
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                            return prev; // Don't add duplicate
+                        }
+                    }
+                    
+                    const userMsg = { from: 'user', text: message };
+                    const updatedMessages = [...botState.messages, userMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: true,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+
+                // Call API with "global" module (will be handled by callAdminPAAPI with null module)
+                callAdminPAAPI(message, null).then(apiResponse => {
+                    streamBotResponse(botId, apiResponse);
+                }).catch(error => {
+                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
+                });
+                return; // Exit early - API call handles the response
             } else if (botId === 'finance-bot' && !financePAModule && !hasPredefinedResponse) {
-                botResponse = 'Please select a module first: Accounts.';
-                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+                // Add user message and set typing state
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    
+                    // Check for duplicate message before adding
+                    if (botState.messages.length > 0) {
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                            return prev; // Don't add duplicate
+                        }
+                    }
+                    
+                    const userMsg = { from: 'user', text: message };
+                    const updatedMessages = [...botState.messages, userMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: true,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+
+                // Call API with "global" module
+                callFinancePAAPI(message, null).then(apiResponse => {
+                    streamBotResponse(botId, apiResponse);
+                }).catch(error => {
+                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
+                });
+                return; // Exit early - API call handles the response
             } else if (botId === 'hr-bot' && !hrPAModule && !hasPredefinedResponse) {
-                botResponse = 'Please select a module first: HR or Training.';
-                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+                // Add user message and set typing state
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    
+                    // Check for duplicate message before adding
+                    if (botState.messages.length > 0) {
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                            return prev; // Don't add duplicate
+                        }
+                    }
+                    
+                    const userMsg = { from: 'user', text: message };
+                    const updatedMessages = [...botState.messages, userMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: true,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+
+                // Call API with "global" module
+                callHrPAAPI(message, null).then(apiResponse => {
+                    streamBotResponse(botId, apiResponse);
+                }).catch(error => {
+                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
+                });
+                return; // Exit early - API call handles the response
             } else if (botId === 'csr-bot' && !csrPAModule && !hasPredefinedResponse) {
-                botResponse = 'Please select a module first: CSR, Air Temperature & Humidity, Electricity, Water, or Waste Management.';
-                hasPredefinedResponse = true; // Mark as predefined to prevent Gemini API call
+                // Add user message and set typing state
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    
+                    // Check for duplicate message before adding
+                    if (botState.messages.length > 0) {
+                        const lastMsg = botState.messages[botState.messages.length - 1];
+                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                            return prev; // Don't add duplicate
+                        }
+                    }
+                    
+                    const userMsg = { from: 'user', text: message };
+                    const updatedMessages = [...botState.messages, userMsg];
+                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
+                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                    ) : botState.chatHistory;
+                    return {
+                        ...prev,
+                        [botId]: {
+                            ...prev[botId],
+                            messages: updatedMessages,
+                            isTyping: true,
+                            chatHistory: updatedHistory
+                        }
+                    };
+                });
+
+                // Call API with "global" module
+                callCsrPAAPI(message, null).then(apiResponse => {
+                    streamBotResponse(botId, apiResponse);
+                }).catch(error => {
+                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
+                });
+                return; // Exit early - API call handles the response
             }
             
             // Check if we should use Gemini API (ONLY when no predefined response found)
@@ -3318,73 +4230,82 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
             }
 
-            setBotStates(prev => {
-                const botState = prev[botId];
-                const messageObj = { from: 'bot', text: botResponse };
-                if (responseType === 'button' && buttonText) {
-                    messageObj.type = 'button';
-                    messageObj.buttonText = buttonText;
-                } else if (responseType === 'dropdown' && dropdownItems) {
-                    messageObj.type = 'dropdown';
-                    messageObj.dropdownItems = dropdownItems;
-                } else if (responseType === 'invoice-list' && dropdownItems) {
-                    messageObj.type = 'invoice-list';
-                    messageObj.dropdownItems = dropdownItems;
-                } else if (responseType === 'invoice-image' && dropdownItems && dropdownItems[0]) {
-                    messageObj.type = 'invoice-image';
-                    messageObj.imageUrl = dropdownItems[0].image;
-                    messageObj.invoiceName = dropdownItems[0].text;
-                } else if (responseType === 'ppc-image' && dropdownItems && dropdownItems[0]) {
-                    messageObj.type = 'ppc-image';
-                    messageObj.imageUrl = dropdownItems[0].image;
-                    messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
-                } else if (responseType === 'ytm-image' && dropdownItems && dropdownItems[0]) {
-                    messageObj.type = 'ytm-image';
-                    messageObj.imageUrl = dropdownItems[0].image;
-                    messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
-                } else if (responseType === 'social-media' && dropdownItems && dropdownItems[0]) {
-                    messageObj.type = 'social-media';
-                    messageObj.iconUrl = dropdownItems[0].iconUrl;
-                    messageObj.platform = dropdownItems[0].platform;
-                    // Keep botResponse as the text content
-                }
-                const updatedMessages = [...botState.messages, messageObj];
+            // For special response types (buttons, dropdowns, images), show instantly
+            // For regular text responses, use streaming effect
+            if (responseType === 'button' || responseType === 'dropdown' || responseType === 'invoice-list' || 
+                responseType === 'invoice-image' || responseType === 'ppc-image' || responseType === 'ytm-image' || 
+                responseType === 'social-media') {
+                // Show special responses instantly (no streaming)
+                setBotStates(prev => {
+                    const botState = prev[botId];
+                    const messageObj = { from: 'bot', text: botResponse };
+                    if (responseType === 'button' && buttonText) {
+                        messageObj.type = 'button';
+                        messageObj.buttonText = buttonText;
+                    } else if (responseType === 'dropdown' && dropdownItems) {
+                        messageObj.type = 'dropdown';
+                        messageObj.dropdownItems = dropdownItems;
+                    } else if (responseType === 'invoice-list' && dropdownItems) {
+                        messageObj.type = 'invoice-list';
+                        messageObj.dropdownItems = dropdownItems;
+                    } else if (responseType === 'invoice-image' && dropdownItems && dropdownItems[0]) {
+                        messageObj.type = 'invoice-image';
+                        messageObj.imageUrl = dropdownItems[0].image;
+                        messageObj.invoiceName = dropdownItems[0].text;
+                    } else if (responseType === 'ppc-image' && dropdownItems && dropdownItems[0]) {
+                        messageObj.type = 'ppc-image';
+                        messageObj.imageUrl = dropdownItems[0].image;
+                        messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
+                    } else if (responseType === 'ytm-image' && dropdownItems && dropdownItems[0]) {
+                        messageObj.type = 'ytm-image';
+                        messageObj.imageUrl = dropdownItems[0].image;
+                        messageObj.imageName = dropdownItems[0].name || dropdownItems[0].text;
+                    } else if (responseType === 'social-media' && dropdownItems && dropdownItems[0]) {
+                        messageObj.type = 'social-media';
+                        messageObj.iconUrl = dropdownItems[0].iconUrl;
+                        messageObj.platform = dropdownItems[0].platform;
+                    }
+                    const updatedMessages = [...botState.messages, messageObj];
 
-                // Update chat in history if currentChatId exists
-                if (botState.currentChatId) {
-                    const firstUserMessage = updatedMessages.find(m => m.from === 'user');
-                    const updatedHistory = botState.chatHistory.map(chat => {
-                        if (chat.id === botState.currentChatId) {
-                            return {
-                                ...chat,
+                    // Update chat in history if currentChatId exists
+                    if (botState.currentChatId) {
+                        const firstUserMessage = updatedMessages.find(m => m.from === 'user');
+                        const updatedHistory = botState.chatHistory.map(chat => {
+                            if (chat.id === botState.currentChatId) {
+                                return {
+                                    ...chat,
+                                    messages: updatedMessages,
+                                    title: firstUserMessage?.text?.substring(0, 50) || 'New Chat',
+                                    updatedAt: new Date().toISOString()
+                                };
+                            }
+                            return chat;
+                        });
+
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
                                 messages: updatedMessages,
-                                title: firstUserMessage?.text?.substring(0, 50) || 'New Chat',
-                                updatedAt: new Date().toISOString()
-                            };
-                        }
-                        return chat;
-                    });
+                                isTyping: false,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    }
 
                     return {
                         ...prev,
                         [botId]: {
                             ...prev[botId],
                             messages: updatedMessages,
-                            isTyping: false,
-                            chatHistory: updatedHistory
+                            isTyping: false
                         }
                     };
-                }
-
-                return {
-                    ...prev,
-                    [botId]: {
-                        ...prev[botId],
-                        messages: updatedMessages,
-                        isTyping: false
-                    }
-                };
-            });
+                });
+            } else {
+                // Use streaming for regular text responses
+                streamBotResponse(botId, botResponse);
+            }
         }, 1000 + Math.random() * 500);
     };
 
@@ -3668,6 +4589,228 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 .custom-scrollbar {
                     scrollbar-width: auto !important;
                     scrollbar-color: #8b5cf6 rgba(255, 255, 255, 0.9) !important;
+                }
+                
+                /* Markdown content styling */
+                .markdown-content {
+                    line-height: 1.6;
+                }
+                
+                .markdown-content strong {
+                    font-weight: 600;
+                    color: inherit;
+                }
+                
+                .markdown-content em {
+                    font-style: italic;
+                }
+                
+                .markdown-content code {
+                    font-family: 'Courier New', monospace;
+                }
+                
+                .markdown-content pre {
+                    font-size: 0.875rem;
+                }
+                
+                /* Table container wrapper - scrollable horizontally to see all columns (left/right) */
+                .table-container-wrapper {
+                    position: relative;
+                    width: 100%;
+                    max-width: 100%;
+                    background: white;
+                    overflow-x: auto !important;
+                    overflow-y: visible;
+                    -webkit-overflow-scrolling: touch;
+                    scroll-behavior: smooth;
+                }
+                
+                /* Custom scrollbar for table container - always visible and easy to use */
+                .table-container-wrapper::-webkit-scrollbar {
+                    height: 14px;
+                    display: block !important;
+                    -webkit-appearance: none;
+                }
+                
+                .table-container-wrapper::-webkit-scrollbar-track {
+                    background: #f1f5f9;
+                    border-radius: 8px;
+                    margin: 6px 10px;
+                    border: 1px solid #e2e8f0;
+                    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.05);
+                }
+                
+                .table-container-wrapper::-webkit-scrollbar-thumb {
+                    background: linear-gradient(90deg, #3b82f6, #2563eb, #1e40af);
+                    border-radius: 8px;
+                    border: 2px solid #f1f5f9;
+                    min-width: 60px;
+                    cursor: pointer;
+                    transition: background 0.2s ease;
+                }
+                
+                .table-container-wrapper::-webkit-scrollbar-thumb:hover {
+                    background: linear-gradient(90deg, #2563eb, #1d4ed8, #1e3a8a);
+                    border: 2px solid #e2e8f0;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+                
+                .table-container-wrapper::-webkit-scrollbar-thumb:active {
+                    background: linear-gradient(90deg, #1e40af, #1e3a8a, #1e3a8a);
+                }
+                
+                /* Firefox scrollbar */
+                .table-container-wrapper {
+                    scrollbar-width: auto;
+                    scrollbar-color: #3b82f6 #f1f5f9;
+                }
+                
+                .markdown-content table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 0;
+                    background: white;
+                }
+                
+                .markdown-content .data-table {
+                    min-width: 600px;
+                    width: auto;
+                }
+                
+                /* Ensure table can expand beyond container width for scrolling */
+                .markdown-content .data-table {
+                    table-layout: auto;
+                }
+                
+                .markdown-content table th {
+                    font-weight: 700;
+                    text-align: left;
+                    background: #f9fafb;
+                    color: #111827;
+                    border-bottom: 1px solid #e5e7eb;
+                    border-right: none !important;
+                    border-left: none !important;
+                    border-top: none !important;
+                }
+                
+                .markdown-content table td,
+                .markdown-content table th {
+                    padding: 12px 16px;
+                    border-bottom: 1px solid #e5e7eb;
+                    border-right: none !important;
+                    border-left: none !important;
+                    border-top: none !important;
+                    vertical-align: middle;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    white-space: normal;
+                    max-width: none;
+                    line-height: 1.5;
+                    background: white;
+                    color: #374151;
+                    font-weight: 400;
+                }
+                
+                /* Ensure table cells don't shrink and hide content */
+                .markdown-content table td {
+                    min-width: fit-content;
+                }
+                
+                /* Clean white background for all rows (like the example) */
+                .markdown-content table tbody tr {
+                    background-color: #ffffff;
+                }
+                
+                /* Remove any outer border from table */
+                .markdown-content table {
+                    border: none !important;
+                }
+                
+                /* Card-like container with rounded corners and subtle shadow */
+                .markdown-content .table-container-wrapper {
+                    border-radius: 8px;
+                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                    background: white;
+                    border: none !important;
+                }
+                
+                /* Remove any borders from the table itself */
+                .markdown-content .data-table {
+                    border: none !important;
+                }
+                
+                /* Responsive adjustments - maintain horizontal scrolling on all devices */
+                @media (max-width: 768px) {
+                    .table-container-wrapper {
+                        border-radius: 10px;
+                    }
+                    
+                    .markdown-content .data-table {
+                        min-width: 500px;
+                    }
+                    
+                    .markdown-content table th,
+                    .markdown-content table td {
+                        padding: 12px 14px;
+                        font-size: 0.8125rem;
+                    }
+                    
+                    .table-container-wrapper::-webkit-scrollbar {
+                        height: 12px;
+                    }
+                }
+                
+                @media (max-width: 640px) {
+                    .markdown-content .data-table {
+                        min-width: 450px;
+                    }
+                    
+                    .markdown-content table th,
+                    .markdown-content table td {
+                        padding: 10px 12px;
+                        font-size: 0.8125rem;
+                    }
+                    
+                    .table-container-wrapper::-webkit-scrollbar {
+                        height: 12px;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .table-container-wrapper {
+                        -webkit-overflow-scrolling: touch;
+                        scroll-behavior: smooth;
+                    }
+                    
+                    .markdown-content .data-table {
+                        min-width: 400px;
+                    }
+                    
+                    .markdown-content table th,
+                    .markdown-content table td {
+                        padding: 10px 10px;
+                        font-size: 0.75rem;
+                    }
+                    
+                    .table-container-wrapper::-webkit-scrollbar {
+                        height: 10px;
+                    }
+                }
+                
+                /* Table row hover effects */
+                .table-row-even {
+                    background-color: #ffffff;
+                    transition: background-color 0.15s ease;
+                }
+                
+                .table-row-odd {
+                    background-color: #f9fafb;
+                    transition: background-color 0.15s ease;
+                }
+                
+                .table-row-even:hover,
+                .table-row-odd:hover {
+                    background-color: #dbeafe !important;
                 }
             `}</style>
 
