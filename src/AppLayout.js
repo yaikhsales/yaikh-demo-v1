@@ -1083,7 +1083,7 @@ const AppLayout = () => {
         navigate("/dashboard/bill-record");
       } else if (module.title === "YTM Shop") {
         navigate("/dashboard/ytm-shop");
-      } else if (module.title === "YTM") {
+      } else if (module.title === "YTM" || module.title === "YTPM") {
         navigate("/dashboard/ytm");
       } else if (module.title === "KANBAN" || module.id === "kanban") {
         navigate("/dashboard/traffic-light");

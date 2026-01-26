@@ -351,8 +351,20 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                     // Encode the image path to handle slashes correctly
                     const encodedPath = encodeURIComponent(card.image);
                     navigate(`/dashboard/image/${encodedPath}`);
+                } else if (card.cards && Array.isArray(card.cards) && card.cards.length > 0) {
+                    // If card has nested cards, navigate to submenu with state
+                    navigate(`/dashboard/submenu/${moduleId}`, { 
+                        state: { 
+                            title: card.title, 
+                            cards: card.cards, 
+                            isGrouped: card.isGrouped || false 
+                        } 
+                    });
                 } else {
-                    navigate(`/dashboard/submenu/${moduleId}`);
+                    // No route defined for this card - log warning and prevent navigation
+                    console.warn(`No route defined for card: "${card.title}". Card data:`, card);
+                    // Optionally show an alert or toast notification
+                    alert(`Module "${card.title}" is not yet implemented.`);
                 }
             }}
             className={`${cardSize} ${isColorfulCard ? 'rounded-xl' : (isEGovModule ? 'rounded-2xl' : 'rounded-lg')} shadow-xl flex flex-col items-center ${isYQMSOrFC && isCompact ? 'justify-start' : 'justify-center'} ${gapSize} ${
@@ -465,6 +477,9 @@ const SubMenuView = () => {
     // Check if this is Purchase Request module (has isPurchaseRequest flag)
     const isPurchaseRequestView = Array.isArray(cards) && cards.length > 0 && cards.some(card => card.isPurchaseRequest === true);
     
+    // Check if there's no data to display
+    const hasNoData = !isGroupedStructure && (!Array.isArray(cards) || cards.length === 0) && (!cards || !cards.groups || cards.groups.length === 0);
+    
     return (
         <div className={`flex flex-col items-center justify-center h-full min-h-[500px] animate-in fade-in zoom-in duration-300 ${isEGovView ? 'relative z-10' : ''}`}>
             <div className={`w-full max-w-4xl ${isGroupedStructure ? 'mb-4' : 'mb-8'} flex flex-col items-center gap-4`}>
@@ -491,7 +506,20 @@ const SubMenuView = () => {
                     {title}
                 </h2>
             </div>
-            {isGroupedStructure ? (
+            {hasNoData ? (
+                <div className="flex flex-col items-center justify-center gap-4 p-8 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                    <p className="text-white text-lg font-semibold">No modules available</p>
+                    <p className="text-white/80 text-sm text-center max-w-md">
+                        This module doesn't have any sub-modules configured yet. Please check the module configuration or contact support.
+                    </p>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
+                    >
+                        Go to Home
+                    </button>
+                </div>
+            ) : isGroupedStructure ? (
                 // Grouped layout (for YQMS and FC) - Column layout (very compact, no big spaces)
                 <div className="w-full max-w-[99vw] px-0.5">
                     <div className="flex gap-0 justify-center items-start">
