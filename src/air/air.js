@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Air = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // Sample device data
     const devices = [
@@ -45,21 +47,21 @@ const Air = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-600 rounded transition-colors flex-shrink-0 bg-slate-700 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-white">Temperature and Humidity Sensor's Device List</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-white">{t('airQualityDetectorDeviceList')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -100,7 +102,7 @@ const Air = ({ onBack }) => {
                                     <div className="flex items-center gap-2">
                                         <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-100 rounded-full">
                                             <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                                            <span className="text-green-700 text-xs font-semibold">{device.status}</span>
+                                            <span className="text-green-700 text-xs font-semibold">{t('online')}</span>
                                         </span>
                                     </div>
                                 </div>

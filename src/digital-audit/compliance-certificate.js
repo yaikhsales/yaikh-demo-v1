@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Calendar, X, Eye, Download, MoreVertical, FileText } from 'lucide-react';
 import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const ComplianceCertificate = ({ onBack }) => {
     const navigate = useNavigate();
-    const [ministryType, setMinistryType] = useState('All');
-    const [auditType, setAuditType] = useState('All');
+    const { t } = useTranslation();
+    const [ministryType, setMinistryType] = useState(t('all'));
+    const [auditType, setAuditType] = useState(t('all'));
     const [searchTerm, setSearchTerm] = useState('');
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
@@ -173,22 +175,22 @@ const ComplianceCertificate = ({ onBack }) => {
     };
 
     const handleReset = () => {
-        setMinistryType('All');
-        setAuditType('All');
+        setMinistryType(t('all'));
+        setAuditType(t('all'));
         setSearchTerm('');
         setFromDate('');
         setToDate('');
     };
 
     const formatDate = (dateString) => {
-        if (!dateString) return 'Pending...';
+        if (!dateString) return t('pending') + '...';
         const date = new Date(dateString);
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
     };
 
     const filteredCertificates = certificates.filter(cert => {
-        if (ministryType !== 'All' && cert.ministry !== ministryType) return false;
+        if (ministryType !== t('all') && cert.ministry !== ministryType) return false;
         if (searchTerm && !cert.name.toLowerCase().includes(searchTerm.toLowerCase()) && !cert.id.toString().includes(searchTerm)) return false;
         if (fromDate && cert.issueDate < fromDate) return false;
         if (toDate && cert.issueDate > toDate) return false;
@@ -196,8 +198,8 @@ const ComplianceCertificate = ({ onBack }) => {
     });
 
     // Calculate summary statistics
-    const validCount = filteredCertificates.filter(c => c.status === 'Valid').length;
-    const expiredCount = filteredCertificates.filter(c => c.status === 'Expired').length;
+    const validCount = filteredCertificates.filter(c => c.status === t('valid')).length;
+    const expiredCount = filteredCertificates.filter(c => c.status === t('expired')).length;
     const expiringSoonCount = 0; // Calculate based on dates if needed
 
     // Pagination logic
@@ -238,7 +240,7 @@ const ComplianceCertificate = ({ onBack }) => {
                     disabled={currentPage === 1}
                     className="px-4 py-2 border border-slate-300 rounded text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Previous
+                    {t('previous')}
                 </button>
                 {pages.map((page, idx) => (
                     <button
@@ -259,7 +261,7 @@ const ComplianceCertificate = ({ onBack }) => {
                     disabled={currentPage === totalPages}
                     className="px-4 py-2 border border-slate-300 rounded text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Next
+                    {t('next')}
                 </button>
             </div>
         );
@@ -277,38 +279,38 @@ const ComplianceCertificate = ({ onBack }) => {
                                 className="flex items-center gap-2 px-4 py-2 hover:bg-slate-800 rounded transition-colors flex-shrink-0 bg-black text-white font-semibold text-sm"
                                 aria-label="Go back"
                             >
-                                <ArrowLeft size={16} /> Back
+                                <ArrowLeft size={16} /> {t('back')}
                             </button>
                             <button
                                 onClick={() => navigate('/')}
                                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                                title="Home"
+                                title={t('home')}
                             >
                                 <img 
                                     src="/logo.jpg" 
-                                    alt="Home" 
+                                    alt={t('home')} 
                                     className="w-full h-full object-cover"
                                 />
                             </button>
                         </div>
-                        <h1 className="text-xl md:text-2xl font-bold text-slate-800">Certificate and Report</h1>
+                        <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('certificateAndReport')}</h1>
                     </div>
                     <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2 flex-shrink-0">
                         <Calendar size={16} />
-                        Calendar
+                        {t('calendar')}
                     </button>
             </div>
 
             {/* Search and Filter Section */}
             <div className="bg-slate-50 p-4 border-b flex items-center gap-4 flex-wrap flex-shrink-0">
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">Type of ministries:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('typeOfMinistries')}:</label>
                     <select
                         value={ministryType}
                         onChange={(e) => setMinistryType(e.target.value)}
                         className="px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="All">All</option>
+                        <option value={t('all')}>{t('all')}</option>
                         <option value="Ministry of Environment">Ministry of Environment</option>
                         <option value="Ministry of Labor">Ministry of Labor</option>
                         <option value="Ministry of Industrial">Ministry of Industrial</option>
@@ -317,29 +319,29 @@ const ComplianceCertificate = ({ onBack }) => {
                     </select>
                 </div>
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">Audit type:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('auditType')}:</label>
                     <select
                         value={auditType}
                         onChange={(e) => setAuditType(e.target.value)}
                         className="px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="All">All</option>
+                        <option value={t('all')}>{t('all')}</option>
                         <option value="Type 1">Type 1</option>
                         <option value="Type 2">Type 2</option>
                     </select>
                 </div>
                 <div className="flex items-center gap-2 flex-1 min-w-[250px]">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">Search:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('search')}:</label>
                     <input
                         type="text"
-                        placeholder="Search by certificate id or name"
+                        placeholder={t('searchByCertificateIdOrName')}
                         className="flex-1 px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">From Date:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('fromDate')}:</label>
                     <div className="flex items-center gap-2 border border-slate-300 rounded-lg px-3 py-2 bg-white">
                         <input
                             type="date"
@@ -352,7 +354,7 @@ const ComplianceCertificate = ({ onBack }) => {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">To Date:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('toDate')}:</label>
                     <div className="flex items-center gap-2 border border-slate-300 rounded-lg px-3 py-2 bg-white">
                         <input
                             type="date"
@@ -368,32 +370,32 @@ const ComplianceCertificate = ({ onBack }) => {
                     onClick={handleSearch}
                     className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
                 >
-                    Search
+                    {t('search')}
                 </button>
                 <button
                     onClick={handleReset}
                     className="bg-white text-slate-700 border border-slate-300 px-6 py-2 rounded-lg font-semibold hover:bg-slate-50 transition-colors text-sm"
                 >
-                    Reset
+                    {t('reset')}
                 </button>
             </div>
 
             {/* Action Buttons Section */}
             <div className="bg-white p-4 border-b flex items-center gap-3 flex-wrap flex-shrink-0">
                 <button className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors text-sm">
-                    Ministry Permits
+                    {t('ministryPermits')}
                 </button>
                 <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm">
-                    Add Certificate
+                    {t('addCertificate')}
                 </button>
                 <button className="bg-purple-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors text-sm">
-                    Import Permits
+                    {t('importPermits')}
                 </button>
                 <button className="bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors text-sm">
-                    History
+                    {t('history')}
                 </button>
                 <button className="bg-orange-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors text-sm flex items-center gap-2">
-                    Export Permits
+                    {t('exportPermits')}
                     <ChevronDown size={16} />
                 </button>
             </div>
@@ -401,26 +403,26 @@ const ComplianceCertificate = ({ onBack }) => {
             {/* Certificates List Title and Summary Cards */}
             <div className="bg-white p-4 border-b flex-shrink-0">
                 <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-lg font-bold text-slate-800">Certificates List</h2>
+                    <h2 className="text-lg font-bold text-slate-800">{t('certificatesList')}</h2>
                     <div className="text-sm text-slate-600">
-                        total: {filteredCertificates.length} certificate(s) | showing: {endItem - startItem + 1} on this page
+                        {t('totalCertificates')}: {filteredCertificates.length} {t('certificate')}(s) | {t('showingOnThisPage')}: {endItem - startItem + 1} {t('onThisPage')}
                     </div>
                 </div>
                 <div className="grid grid-cols-4 gap-4">
                     <div className="bg-green-100 border border-green-300 rounded-lg p-4">
-                        <div className="text-sm text-green-700 font-semibold mb-1">Valid</div>
+                        <div className="text-sm text-green-700 font-semibold mb-1">{t('valid')}</div>
                         <div className="text-2xl font-bold text-green-800">{validCount}</div>
                     </div>
                     <div className="bg-yellow-100 border border-yellow-300 rounded-lg p-4">
-                        <div className="text-sm text-yellow-700 font-semibold mb-1">Expiring soon (30 days / Mth / 60 days)</div>
+                        <div className="text-sm text-yellow-700 font-semibold mb-1">{t('expiringSoon')} (30 {t('days')} / {t('month')} / 60 {t('days')})</div>
                         <div className="text-2xl font-bold text-yellow-800">{expiringSoonCount}</div>
                     </div>
                     <div className="bg-red-100 border border-red-300 rounded-lg p-4">
-                        <div className="text-sm text-red-700 font-semibold mb-1">Expired</div>
+                        <div className="text-sm text-red-700 font-semibold mb-1">{t('expired')}</div>
                         <div className="text-2xl font-bold text-red-800">{expiredCount}</div>
                     </div>
                     <div className="bg-blue-100 border border-blue-300 rounded-lg p-4">
-                        <div className="text-sm text-blue-700 font-semibold mb-1">Total</div>
+                        <div className="text-sm text-blue-700 font-semibold mb-1">{t('total')}</div>
                         <div className="text-2xl font-bold text-blue-800">{filteredCertificates.length}</div>
                     </div>
                 </div>
@@ -433,23 +435,23 @@ const ComplianceCertificate = ({ onBack }) => {
                         <thead className="bg-slate-50 sticky top-0 z-10">
                             <tr>
                                 <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">#</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">CERTIFICATE NAME</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">MINISTRY/SUPPLIER</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">CERTIFICATE IMAGE</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">ISSUE DATE</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">EXPIRED DATE</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">VALIDITY PERIOD</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">RENEWAL DATE</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">RESPONSIBLE PERSON</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">STATUS</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">ACTIONS</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('certificateName')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('ministrySupplier')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('certificateImage')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('issueDate')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('expiredDate')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('validityPeriod')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('renewalDate')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('responsiblePerson')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('status')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {paginatedCertificates.length === 0 ? (
                                 <tr>
                                     <td colSpan={11} className="text-center py-16 text-slate-500">
-                                        No certificates found
+                                        {t('noCertificatesFound')}
                                     </td>
                                 </tr>
                             ) : (
@@ -463,33 +465,33 @@ const ComplianceCertificate = ({ onBack }) => {
                                                 <div className="flex items-center justify-center gap-2">
                                                     <button className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1">
                                                         <Eye size={12} />
-                                                        View PDF
+                                                        {t('viewPdf')}
                                                     </button>
                                                     <button className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1">
                                                         <Download size={12} />
-                                                        Download
+                                                        {t('download')}
                                                     </button>
                                                 </div>
                                             ) : (
-                                                <span className="text-slate-400">n/a</span>
+                                                <span className="text-slate-400">{t('notAvailable')}</span>
                                             )}
                                         </td>
                                         <td className="px-4 py-4 border border-slate-200 text-slate-700">{formatDate(cert.issueDate)}</td>
                                         <td className="px-4 py-4 border border-slate-200 text-slate-700">
-                                            {cert.expiredDate ? formatDate(cert.expiredDate) : <span className="text-red-600">Pending...</span>}
+                                            {cert.expiredDate ? formatDate(cert.expiredDate) : <span className="text-red-600">{t('pending')}...</span>}
                                         </td>
                                         <td className="px-4 py-4 border border-slate-200 text-slate-700">{cert.validityPeriod}</td>
                                         <td className="px-4 py-4 border border-slate-200 text-slate-700">
-                                            {cert.renewalDate ? formatDate(cert.renewalDate) : <span className="text-red-600">Pending...</span>}
+                                            {cert.renewalDate ? formatDate(cert.renewalDate) : <span className="text-red-600">{t('pending')}...</span>}
                                         </td>
                                         <td className="px-4 py-4 border border-slate-200 text-slate-700">{cert.responsiblePerson}</td>
                                         <td className="px-4 py-4 border border-slate-200 text-center">
                                             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                                cert.status === 'Valid' 
+                                                cert.status === 'Valid' || cert.status === t('valid')
                                                     ? 'bg-green-100 text-green-800' 
                                                     : 'bg-red-100 text-red-800'
                                             }`}>
-                                                {cert.status}
+                                                {cert.status === 'Valid' || cert.status === t('valid') ? t('valid') : t('expired')}
                                             </span>
                                         </td>
                                         <td className="px-4 py-4 border border-slate-200 text-center">
@@ -508,7 +510,7 @@ const ComplianceCertificate = ({ onBack }) => {
             {/* Pagination Footer */}
             <div className="bg-white border-t p-4 flex items-center justify-between flex-shrink-0">
                 <div className="text-sm text-slate-600">
-                    Showing {startItem} to {endItem} of {filteredCertificates.length} results
+                    {t('showingResults')} {startItem} {t('to')} {endItem} {t('of')} {filteredCertificates.length} {t('results')}
                 </div>
                 {renderPagination()}
             </div>

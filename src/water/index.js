@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 // Mapping function to match category titles to icon image filenames
 const getWaterIconImage = (title) => {
@@ -21,6 +22,7 @@ const getWaterIconImage = (title) => {
 
 const Water = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     const handleBack = () => {
@@ -45,47 +47,56 @@ const Water = ({ onBack }) => {
 
     const waterCategories = [
         { 
-            title: 'Washing', 
+            title: 'Washing',
+            titleKey: 'washing',
             color: 'bg-gradient-to-br from-blue-500 to-blue-600',
             shadow: 'shadow-blue-200'
         },
         { 
-            title: 'Rain Water Collect', 
+            title: 'Rain Water Collect',
+            titleKey: 'rainWaterCollect',
             color: 'bg-gradient-to-br from-cyan-500 to-cyan-600',
             shadow: 'shadow-cyan-200'
         },
         { 
-            title: 'Building 1', 
+            title: 'Building 1',
+            titleKey: 'building1',
             color: 'bg-gradient-to-br from-green-500 to-green-600',
             shadow: 'shadow-green-200'
         },
         { 
-            title: 'Building 2', 
+            title: 'Building 2',
+            titleKey: 'building2',
             color: 'bg-gradient-to-br from-emerald-500 to-emerald-600',
             shadow: 'shadow-emerald-200'
         },
         { 
-            title: 'Building 3', 
+            title: 'Building 3',
+            titleKey: 'building3',
             color: 'bg-gradient-to-br from-teal-500 to-teal-600',
             shadow: 'shadow-teal-200'
         },
         { 
-            title: 'Boiler', 
+            title: 'Boiler',
+            titleKey: 'boiler',
             color: 'bg-gradient-to-br from-orange-500 to-orange-600',
             shadow: 'shadow-orange-200'
         },
         { 
-            title: 'Canteen', 
+            title: 'Canteen',
+            titleKey: 'canteen',
             color: 'bg-gradient-to-br from-yellow-500 to-yellow-600',
             shadow: 'shadow-yellow-200'
         },
         { 
-            title: 'Office', 
+            title: 'Office',
+            titleKey: 'office',
             color: 'bg-gradient-to-br from-purple-500 to-purple-600',
             shadow: 'shadow-purple-200'
         },
         { 
-            title: 'Staff Room', 
+            title: 'Staff Room',
+            titleKey: 'staffRoom',
             color: 'bg-gradient-to-br from-pink-500 to-pink-600',
             shadow: 'shadow-pink-200'
         }
@@ -107,9 +118,9 @@ const Water = ({ onBack }) => {
                             aria-label="Back"
                         >
                             <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
-                            <span className="font-medium hidden sm:inline">Back</span>
+                            <span className="font-medium hidden sm:inline">{t('back')}</span>
                         </button>
-                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 px-2 sm:px-4">Water</h1>
+                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 px-2 sm:px-4">{t('water')}</h1>
                         <button
                             onClick={() => navigate('/')}
                             className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
@@ -183,7 +194,7 @@ const Water = ({ onBack }) => {
                                         
                                         {/* Text Label */}
                                         <span className="relative z-10 font-bold text-sm sm:text-base text-center leading-tight drop-shadow-md">
-                                            {category.title}
+                                            {category.titleKey ? t(category.titleKey) : category.title}
                                         </span>
                                     </button>
                                 );
@@ -198,9 +209,13 @@ const Water = ({ onBack }) => {
                                 className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
                             >
                                 <ArrowLeft size={20} />
-                                <span>Back</span>
+                                <span>{t('back')}</span>
                             </button>
-                            <h2 className="text-xl font-bold text-gray-800">{selectedCategory}</h2>
+                            <h2 className="text-xl font-bold text-gray-800">
+                                {waterCategories.find(cat => cat.title === selectedCategory)?.titleKey 
+                                    ? t(waterCategories.find(cat => cat.title === selectedCategory).titleKey)
+                                    : selectedCategory}
+                            </h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <button
@@ -211,11 +226,11 @@ const Water = ({ onBack }) => {
                                 <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center bg-white rounded-xl p-4 sm:p-5 shadow-xl">
                                     <img 
                                         src="/assets/icons/sub-icons/water.jpg"
-                                        alt="In"
+                                        alt={t('in')}
                                         className="w-full h-full object-contain"
                                     />
                                 </div>
-                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">In</span>
+                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">{t('in')}</span>
                             </button>
                             <button
                                 onClick={() => handleSubModuleClick(selectedCategory, 'Out')}
@@ -225,11 +240,11 @@ const Water = ({ onBack }) => {
                                 <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center bg-white rounded-xl p-4 sm:p-5 shadow-xl">
                                     <img 
                                         src="/assets/icons/sub-icons/water.jpg"
-                                        alt="Out"
+                                        alt={t('out')}
                                         className="w-full h-full object-contain"
                                     />
                                 </div>
-                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">Out</span>
+                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">{t('out')}</span>
                             </button>
                         </div>
                     </div>

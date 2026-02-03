@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Download, RotateCcw, BarChart3, Users, FileText, Eye } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const SystemAnalyze = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [startDate, setStartDate] = useState('2025-12-01');
     const [endDate, setEndDate] = useState('2025-12-23');
     const [selectedFilter, setSelectedFilter] = useState('');
 
     const moduleData = [
-        { name: 'Gate Pass', requests: 1005, users: 327, details: 3 },
-        { name: 'Shop Management', requests: 5870, users: 900, details: 3 },
-        { name: 'Ticket Management', requests: 241, users: 96, details: 3 },
-        { name: 'Purchase Request', requests: 0, users: 0, details: 0 },
-        { name: 'Car Booking', requests: 99, users: 12, details: 0 },
-        { name: 'Meeting Room', requests: 82, users: 20, details: 0 }
+        { name: t('gatePass'), requests: 1005, users: 327, details: 3 },
+        { name: t('shopManagement'), requests: 5870, users: 900, details: 3 },
+        { name: t('ticketManagement'), requests: 241, users: 96, details: 3 },
+        { name: t('purchaseRequest'), requests: 0, users: 0, details: 0 },
+        { name: t('myCarBooking'), requests: 99, users: 12, details: 0 },
+        { name: t('meetingRoom'), requests: 82, users: 20, details: 0 }
     ];
 
     const totalRequests = moduleData.reduce((sum, mod) => sum + mod.requests, 0);
@@ -22,12 +24,12 @@ const SystemAnalyze = ({ onBack }) => {
 
     // User Distribution data (percentages)
     const userDistributionData = [
-        { name: 'Shop Management', value: 38.2, color: '#3b82f6' },
-        { name: 'Gate Pass', value: 37.6, color: '#10b981' },
-        { name: 'Ticket Management', value: 10.2, color: '#f59e0b' },
-        { name: 'Purchase Request', value: 8.4, color: '#ef4444' },
-        { name: 'Car Booking', value: 3.4, color: '#06b6d4' },
-        { name: 'Meeting Room', value: 2.2, color: '#8b5cf6' }
+        { name: t('shopManagement'), value: 38.2, color: '#3b82f6' },
+        { name: t('gatePass'), value: 37.6, color: '#10b981' },
+        { name: t('ticketManagement'), value: 10.2, color: '#f59e0b' },
+        { name: t('purchaseRequest'), value: 8.4, color: '#ef4444' },
+        { name: t('myCarBooking'), value: 3.4, color: '#06b6d4' },
+        { name: t('meetingRoom'), value: 2.2, color: '#8b5cf6' }
     ];
 
     const handleBack = () => {
@@ -253,7 +255,7 @@ const SystemAnalyze = ({ onBack }) => {
                     fontSize="12"
                     fill="#6b7280"
                 >
-                    Total Users
+                    {t('totalUsers')}
                 </text>
             </svg>
         );
@@ -399,7 +401,7 @@ const SystemAnalyze = ({ onBack }) => {
                     fontWeight="600"
                     transform={`rotate(-90 15 ${height / 2})`}
                 >
-                    Total Requests
+                    {t('totalRequests')}
                 </text>
                 <text
                     x={width - 15}
@@ -410,7 +412,7 @@ const SystemAnalyze = ({ onBack }) => {
                     fontWeight="600"
                     transform={`rotate(90 ${width - 15} ${height / 2})`}
                 >
-                    Unique Users
+                    {t('uniqueUsers')}
                 </text>
             </svg>
         );
@@ -428,23 +430,23 @@ const SystemAnalyze = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
                     <div className="text-center">
-                        <h1 className="text-2xl font-bold text-slate-800">System Analytics Dashboard</h1>
-                        <p className="text-slate-600 text-sm">Real-time insights and performance metrics.</p>
+                        <h1 className="text-2xl font-bold text-slate-800">{t('systemAnalyticsDashboard')}</h1>
+                        <p className="text-slate-600 text-sm">{t('realtimeInsightsAndPerformanceMetrics')}</p>
                     </div>
                 </div>
                 <div className="flex items-center gap-6">
@@ -453,7 +455,7 @@ const SystemAnalyze = ({ onBack }) => {
                             <BarChart3 className="text-purple-600" size={20} />
                         </div>
                         <div>
-                            <div className="text-xs text-slate-600">Total System Requests</div>
+                            <div className="text-xs text-slate-600">{t('totalSystemRequests')}</div>
                             <div className="text-lg font-bold text-slate-800">{totalRequests.toLocaleString()}</div>
                         </div>
                     </div>
@@ -462,12 +464,12 @@ const SystemAnalyze = ({ onBack }) => {
                             <Users className="text-green-600" size={20} />
                         </div>
                         <div>
-                            <div className="text-xs text-slate-600">Unique Active Users</div>
+                            <div className="text-xs text-slate-600">{t('uniqueActiveUsers')}</div>
                             <div className="text-lg font-bold text-slate-800">1,273</div>
                         </div>
                     </div>
                     <div className="text-sm text-slate-600">
-                        <div className="font-semibold">Active Period</div>
+                        <div className="font-semibold">{t('activePeriod')}</div>
                         <div>2025-10-01 - 2025-12-23</div>
                     </div>
                 </div>
@@ -481,7 +483,7 @@ const SystemAnalyze = ({ onBack }) => {
                         <div className="flex flex-wrap items-center gap-4">
                             <div className="flex items-center gap-2">
                                 <Calendar className="text-slate-600" size={18} />
-                                <span className="text-sm text-slate-700 font-semibold">Start Date</span>
+                                <span className="text-sm text-slate-700 font-semibold">{t('startDate')}</span>
                                 <input
                                     type="date"
                                     value={startDate}
@@ -491,7 +493,7 @@ const SystemAnalyze = ({ onBack }) => {
                             </div>
                             <div className="flex items-center gap-2">
                                 <Calendar className="text-slate-600" size={18} />
-                                <span className="text-sm text-slate-700 font-semibold">End Date</span>
+                                <span className="text-sm text-slate-700 font-semibold">{t('endDate')}</span>
                                 <input
                                     type="date"
                                     value={endDate}
@@ -500,7 +502,7 @@ const SystemAnalyze = ({ onBack }) => {
                                 />
                             </div>
                             <div className="flex gap-2 flex-wrap">
-                                {['Today', 'Yesterday', 'Last 7 Days', 'Last 30 Days', 'This Month', 'Last Month'].map((filter) => {
+                                {[t('today'), t('yesterday'), t('last7Days'), t('last30Days'), t('thisMonth'), t('lastMonth')].map((filter) => {
                                     const filterKey = filter.toLowerCase().replace(/\s+/g, '');
                                     return (
                                         <button
@@ -522,21 +524,21 @@ const SystemAnalyze = ({ onBack }) => {
                                     onClick={handleApplyFilter}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                                 >
-                                    Apply Filter
+                                    {t('applyFilter')}
                                 </button>
                                 <button
                                     onClick={handleReset}
                                     className="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-300 transition-colors flex items-center gap-2"
                                 >
                                     <RotateCcw size={16} />
-                                    Reset
+                                    {t('reset')}
                                 </button>
                                 <button
                                     onClick={handleExport}
                                     className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2"
                                 >
                                     <Download size={16} />
-                                    Export Report
+                                    {t('exportReport')}
                                 </button>
                             </div>
                         </div>
@@ -544,11 +546,11 @@ const SystemAnalyze = ({ onBack }) => {
 
                     {/* Charts Section */}
                     <div>
-                        <h2 className="text-xl font-bold text-slate-800 mb-4">Real-Time Analytics Dashboard</h2>
+                        <h2 className="text-xl font-bold text-slate-800 mb-4">{t('realtimeAnalyticsDashboard')}</h2>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                             {/* Module Requests Chart */}
                             <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                                <h3 className="text-lg font-bold text-slate-800 mb-4">Module Requests</h3>
+                                <h3 className="text-lg font-bold text-slate-800 mb-4">{t('moduleRequests')}</h3>
                                 <div className="h-64">
                                     {renderModuleRequestsChart()}
                                 </div>
@@ -556,7 +558,7 @@ const SystemAnalyze = ({ onBack }) => {
 
                             {/* User Distribution Chart */}
                             <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                                <h3 className="text-lg font-bold text-slate-800 mb-4">User Distribution</h3>
+                                <h3 className="text-lg font-bold text-slate-800 mb-4">{t('userDistribution')}</h3>
                                 <div className="h-64 flex items-center justify-center">
                                     {renderDonutChart()}
                                 </div>
@@ -575,18 +577,18 @@ const SystemAnalyze = ({ onBack }) => {
 
                             {/* System Overview Chart */}
                             <div className="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-                                <h3 className="text-lg font-bold text-slate-800 mb-4">System Overview</h3>
+                                <h3 className="text-lg font-bold text-slate-800 mb-4">{t('systemOverview')}</h3>
                                 <div className="h-64">
                                     {renderSystemOverviewChart()}
                                 </div>
                                 <div className="mt-4 flex items-center gap-4 justify-center">
                                     <div className="flex items-center gap-2">
                                         <div className="w-4 h-4 bg-blue-600 rounded"></div>
-                                        <span className="text-sm text-slate-700">Total Requests</span>
+                                        <span className="text-sm text-slate-700">{t('totalRequests')}</span>
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-                                        <span className="text-sm text-slate-700">Unique Users</span>
+                                        <span className="text-sm text-slate-700">{t('uniqueUsers')}</span>
                                     </div>
                                 </div>
                             </div>
@@ -599,10 +601,10 @@ const SystemAnalyze = ({ onBack }) => {
                             <table className="w-full">
                                 <thead className="bg-slate-50 border-b border-slate-200">
                                     <tr>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">MODULE</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">TOTAL REQUESTS</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">UNIQUE USERS</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">DETAILS</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('module')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('totalRequests')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('uniqueUsers')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('details')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -620,7 +622,7 @@ const SystemAnalyze = ({ onBack }) => {
                                         </tr>
                                     ))}
                                     <tr className="bg-blue-50 border-t-2 border-blue-200">
-                                        <td className="px-4 py-3 text-sm font-bold text-slate-800">Total</td>
+                                        <td className="px-4 py-3 text-sm font-bold text-slate-800">{t('total')}</td>
                                         <td className="px-4 py-3 text-sm font-bold text-slate-800">{totalRequests.toLocaleString()}</td>
                                         <td className="px-4 py-3 text-sm font-bold text-slate-800">1,373</td>
                                         <td className="px-4 py-3"></td>

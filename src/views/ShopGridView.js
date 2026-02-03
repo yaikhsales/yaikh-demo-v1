@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Lock, Image as ImageIcon } from 'lucide-react';
 import ProductSelectionModal from './ProductSelectionModal';
+import { useTranslation } from '../translate/TranslationContext';
 
 const ShopGridView = ({ onBack }) => {
+    const { t } = useTranslation();
     const [requests, setRequests] = useState([]);
     const [showProductModal, setShowProductModal] = useState(false);
 
-    const columns = ['PHOTO', 'DEPARTMENT', 'SUBJECT', 'QUANTITY', 'UNIT', 'REQUESTOR', 'REQUEST DATE', 'ACTION'];
+    const columns = [t('photo'), t('department'), t('subject'), t('quantity'), t('unit'), t('requestor'), t('requestDate'), t('action')];
 
     return (
         <>
@@ -17,9 +19,9 @@ const ShopGridView = ({ onBack }) => {
                             onClick={onBack} 
                             className="px-4 py-2 bg-slate-700 text-white rounded-lg hover:bg-slate-800 transition-colors font-semibold"
                         >
-                            Back
+                            {t('back')}
                         </button>
-                        <h2 className="text-2xl font-bold text-slate-800 underline">Y Shop</h2>
+                        <h2 className="text-2xl font-bold text-slate-800 underline">{t('yShop')}</h2>
                     </div>
                 </div>
                 
@@ -31,7 +33,7 @@ const ShopGridView = ({ onBack }) => {
                                 className="bg-blue-600 text-white px-5 py-2.5 rounded-lg font-semibold flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-md"
                             >
                                 <Lock size={18} />
-                                Add New Request
+                                {t('addNewRequest')}
                             </button>
                         </div>
                         
@@ -50,7 +52,7 @@ const ShopGridView = ({ onBack }) => {
                                     {requests.length === 0 ? (
                                         <tr>
                                             <td colSpan={columns.length} className="text-center py-20 text-gray-500">
-                                                No requests yet. Click "Add New Request" to create one.
+                                                {t('noRequestsYetClickAddNewRequest')}
                                             </td>
                                         </tr>
                                     ) : (
@@ -73,7 +75,7 @@ const ShopGridView = ({ onBack }) => {
                                                 <td className="px-4 py-3 text-gray-700">{request.requestDate}</td>
                                                 <td className="px-4 py-3">
                                                     <button className="text-blue-600 hover:text-blue-800 font-semibold text-xs">
-                                                        View
+                                                        {t('view')}
                                                     </button>
                                                 </td>
                                             </tr>

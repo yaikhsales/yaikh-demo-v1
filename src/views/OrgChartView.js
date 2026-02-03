@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ZoomIn, ZoomOut, RotateCcw, Users } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const OrgChartView = ({ onBack }) => {
+    const { t } = useTranslation();
     const [zoom, setZoom] = useState(1);
     const [panX, setPanX] = useState(0);
     const [panY, setPanY] = useState(0);
@@ -164,9 +166,9 @@ const OrgChartView = ({ onBack }) => {
                         onClick={onBack}
                         className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors bg-slate-100"
                     >
-                        <ArrowLeft size={18} /> Back
+                        <ArrowLeft size={18} /> {t('back')}
                     </button>
-                    <h2 className="text-xl font-bold text-slate-800">Master Organization Chart</h2>
+                    <h2 className="text-xl font-bold text-slate-800">{t('masterOrganizationChart')}</h2>
                 </div>
                 
                 {/* Zoom Controls */}
@@ -175,7 +177,7 @@ const OrgChartView = ({ onBack }) => {
                         onClick={handleZoomOut}
                         disabled={zoom <= 0.5}
                         className="p-2 hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        title="Zoom Out"
+                        title={t('zoomOut')}
                     >
                         <ZoomOut size={18} />
                     </button>
@@ -186,14 +188,14 @@ const OrgChartView = ({ onBack }) => {
                         onClick={handleZoomIn}
                         disabled={zoom >= 2}
                         className="p-2 hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        title="Zoom In"
+                        title={t('zoomIn')}
                     >
                         <ZoomIn size={18} />
                     </button>
                     <button
                         onClick={handleReset}
                         className="p-2 hover:bg-slate-100 rounded-lg transition-colors ml-2"
-                        title="Reset View"
+                        title={t('resetView')}
                     >
                         <RotateCcw size={18} />
                     </button>
@@ -225,7 +227,7 @@ const OrgChartView = ({ onBack }) => {
                 {zoom === 1 && panX === 0 && panY === 0 && (
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg border border-slate-200">
                         <p className="text-xs text-slate-600 text-center">
-                            <span className="font-semibold">Tip:</span> Click and drag to pan • Use zoom controls to adjust size
+                            <span className="font-semibold">{t('tip')}:</span> {t('clickAndDragToPan')} • {t('useZoomControlsToAdjustSize')}
                         </p>
                     </div>
                 )}

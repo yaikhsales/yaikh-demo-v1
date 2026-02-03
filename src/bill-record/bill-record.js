@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, X, ChevronDown, Image as ImageIcon, Upload } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const BillRecord = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [bills, setBills] = useState([
         {
@@ -180,21 +182,21 @@ const BillRecord = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Bill Record</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('billRecord')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -211,7 +213,7 @@ const BillRecord = ({ onBack }) => {
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2 border border-black"
                             >
                                 <Plus size={16} />
-                                Add Bill Record
+                                {t('addBillRecord')}
                             </button>
                         </div>
 
@@ -220,22 +222,22 @@ const BillRecord = ({ onBack }) => {
                             <table className="w-full text-sm border-collapse">
                                 <thead className="bg-slate-50">
                                     <tr>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">Nº</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Name</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Department</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Topic</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Category</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Amount</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">Image</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Date</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">Actions</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('no')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('name')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('department')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('topic')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('category')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('amount')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('image')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('date')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('actions')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {bills.length === 0 ? (
                                         <tr>
                                             <td colSpan={9} className="text-center py-16 text-slate-500">
-                                                No bill records found.
+                                                {t('noBillRecordsFound')}
                                             </td>
                                         </tr>
                                     ) : (
@@ -249,7 +251,7 @@ const BillRecord = ({ onBack }) => {
                                                 <td className="px-4 py-4 border border-slate-200 text-slate-700">{typeof bill.amount === 'number' ? `${bill.amount.toFixed(2)} ${bill.currency}` : bill.amount}</td>
                                                 <td className="px-4 py-4 border border-slate-200 text-center">
                                                     {bill.image ? (
-                                                        <img src={bill.image} alt="Bill" className="w-12 h-12 object-cover rounded" />
+                                                        <img src={bill.image} alt={t('bill')} className="w-12 h-12 object-cover rounded" />
                                                     ) : (
                                                         <span className="text-slate-400">-</span>
                                                     )}
@@ -257,7 +259,7 @@ const BillRecord = ({ onBack }) => {
                                                 <td className="px-4 py-4 border border-slate-200 text-slate-700">{bill.date}</td>
                                                 <td className="px-4 py-4 border border-slate-200 text-center">
                                                     <button className="text-blue-600 hover:text-blue-700 font-semibold text-sm">
-                                                        View
+                                                        {t('view')}
                                                     </button>
                                                 </td>
                                             </tr>
@@ -276,11 +278,11 @@ const BillRecord = ({ onBack }) => {
                     <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto animate-in zoom-in duration-300">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between p-6 border-b">
-                            <h2 className="text-xl font-bold text-slate-800">+ Add Bill Record</h2>
+                            <h2 className="text-xl font-bold text-slate-800">+ {t('addBillRecord')}</h2>
                             <button
                                 onClick={handleCloseModal}
                                 className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-                                aria-label="Close"
+                                aria-label={t('close')}
                             >
                                 <X size={20} className="text-slate-600" />
                             </button>
@@ -291,7 +293,7 @@ const BillRecord = ({ onBack }) => {
                             {/* Department */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Department
+                                    {t('department')}
                                 </label>
                                 <div className="relative">
                                     <select
@@ -300,7 +302,7 @@ const BillRecord = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                     >
-                                        <option value="">Select Department</option>
+                                        <option value="">{t('selectDepartment')}</option>
                                         {departments.map((dept) => (
                                             <option key={dept} value={dept}>
                                                 {dept}
@@ -314,7 +316,7 @@ const BillRecord = ({ onBack }) => {
                             {/* Topic */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Topic
+                                    {t('topic')}
                                 </label>
                                 <input
                                     type="text"
@@ -322,14 +324,14 @@ const BillRecord = ({ onBack }) => {
                                     value={formData.topic}
                                     onChange={handleChange}
                                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="Enter topic"
+                                    placeholder={t('enterTopic')}
                                 />
                             </div>
 
                             {/* Category */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Category
+                                    {t('category')}
                                 </label>
                                 <div className="relative">
                                     <select
@@ -338,7 +340,7 @@ const BillRecord = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                     >
-                                        <option value="">Select Category</option>
+                                        <option value="">{t('selectCategory')}</option>
                                         {categories.map((cat) => (
                                             <option key={cat} value={cat}>
                                                 {cat}
@@ -352,7 +354,7 @@ const BillRecord = ({ onBack }) => {
                             {/* Description */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Description
+                                    {t('description')}
                                 </label>
                                 <textarea
                                     name="description"
@@ -360,14 +362,14 @@ const BillRecord = ({ onBack }) => {
                                     onChange={handleChange}
                                     rows={4}
                                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
-                                    placeholder="Enter description"
+                                    placeholder={t('enterDescription')}
                                 />
                             </div>
 
                             {/* Amount */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Amount ($)
+                                    {t('amount')} ($)
                                 </label>
                                 <div className="flex gap-3">
                                     <input
@@ -387,7 +389,7 @@ const BillRecord = ({ onBack }) => {
                                             onChange={handleChange}
                                             className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                         >
-                                            <option value="">Select currency</option>
+                                            <option value="">{t('selectCurrency')}</option>
                                             {currencies.map((curr) => (
                                                 <option key={curr} value={curr}>
                                                     {curr}
@@ -402,7 +404,7 @@ const BillRecord = ({ onBack }) => {
                             {/* Upload Image */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Upload Image
+                                    {t('uploadImage')}
                                 </label>
                                 <div className="border-2 border-dashed border-slate-300 rounded-lg p-8 text-center hover:border-blue-500 transition-colors">
                                     <input
@@ -420,7 +422,7 @@ const BillRecord = ({ onBack }) => {
                                             <div className="space-y-2">
                                                 <img
                                                     src={URL.createObjectURL(formData.image)}
-                                                    alt="Preview"
+                                                    alt={t('preview')}
                                                     className="w-32 h-32 object-cover rounded-lg mx-auto"
                                                 />
                                                 <p className="text-sm text-slate-600">{formData.image.name}</p>
@@ -430,7 +432,7 @@ const BillRecord = ({ onBack }) => {
                                                 <div className="w-16 h-16 bg-slate-200 rounded-lg flex items-center justify-center mx-auto">
                                                     <ImageIcon size={32} className="text-slate-400" />
                                                 </div>
-                                                <p className="text-sm text-slate-600">Click to upload image</p>
+                                                <p className="text-sm text-slate-600">{t('clickToUploadImage')}</p>
                                             </div>
                                         )}
                                     </label>
@@ -444,13 +446,13 @@ const BillRecord = ({ onBack }) => {
                                     onClick={handleCloseModal}
                                     className="px-6 py-2 bg-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-400 transition-colors"
                                 >
-                                    Cancel
+                                    {t('cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                                 >
-                                    Submit
+                                    {t('submit')}
                                 </button>
                             </div>
                         </form>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Gauge } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Meters = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // Sample device data
     const devices = [
@@ -272,34 +274,34 @@ const Meters = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Meter's Device List</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('metersDeviceList')}</h1>
                 </div>
                 <div className="flex items-center gap-2">
                     <button
                         onClick={handleExportAll}
                         className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors text-sm"
                     >
-                        Export all meters Record
+                        {t('exportAllMetersRecord')}
                     </button>
                     <button
                         onClick={handleHourlyReport}
                         className="bg-orange-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-700 transition-colors text-sm"
                     >
-                        Hourly Report
+                        {t('hourlyReport')}
                     </button>
                 </div>
             </div>
@@ -313,11 +315,11 @@ const Meters = ({ onBack }) => {
                             <div className="bg-white border border-slate-300 rounded-lg p-6">
                                 <div className="space-y-4">
                                     <div>
-                                        <div className="text-sm text-slate-600 mb-1">Total Device:</div>
+                                        <div className="text-sm text-slate-600 mb-1">{t('totalDevice')}:</div>
                                         <div className="text-2xl font-bold text-slate-800">{totalDevices}</div>
                                     </div>
                                     <div>
-                                        <div className="text-sm text-slate-600 mb-1">Total Energy Consumed:</div>
+                                        <div className="text-sm text-slate-600 mb-1">{t('totalEnergyConsumed')}:</div>
                                         <div className="text-2xl font-bold text-slate-800">{totalEnergyConsumed.toFixed(1)}Kw.H</div>
                                     </div>
                                 </div>
@@ -348,23 +350,23 @@ const Meters = ({ onBack }) => {
                                         <div className="flex items-center gap-4 mt-2 text-xs">
                                             <div className="flex items-center gap-1">
                                                 <div className="w-3 h-0.5 bg-blue-500"></div>
-                                                <span className="text-slate-600">Energy Consumed A</span>
+                                                <span className="text-slate-600">{t('energyConsumedA')}</span>
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <div className="w-3 h-0.5 bg-orange-500"></div>
-                                                <span className="text-slate-600">Energy Consumed B</span>
+                                                <span className="text-slate-600">{t('energyConsumedB')}</span>
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <div className="w-3 h-0.5 bg-teal-500"></div>
-                                                <span className="text-slate-600">Energy Consumed C</span>
+                                                <span className="text-slate-600">{t('energyConsumedC')}</span>
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <div className="w-3 h-0.5 bg-purple-500"></div>
-                                                <span className="text-slate-600">Energy Consumed D</span>
+                                                <span className="text-slate-600">{t('energyConsumedD')}</span>
                                             </div>
                                             <div className="flex items-center gap-1">
                                                 <div className="w-3 h-3 bg-red-500/20 border border-red-500"></div>
-                                                <span className="text-slate-600">Total Energy Consumed</span>
+                                                <span className="text-slate-600">{t('totalEnergyConsumed')}</span>
                                             </div>
                                         </div>
                                     </div>

@@ -2,27 +2,29 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ArrowLeft, Plus } from 'lucide-react';
 import MapModal from './MapModal';
+import { useTranslation } from '../translate/TranslationContext';
 
 const TableView = ({ onBack }) => {
     const { moduleId } = useParams();
+    const { t } = useTranslation();
     const [showModal, setShowModal] = useState(false);
 
     // Define data based on the route parameter
     const tableConfig = {
         car: {
-            title: 'My Car Bookings',
-            columns: ['ID', 'Destination', 'Date', 'Status'],
+            title: t('myCarBookings'),
+            columns: [t('id'), t('destination'), t('date'), t('status')],
             data: [
                 { id: '#CB-001', destination: 'Suvarnabhumi Airport', date: '2024-11-30', status: 'ACTIVE' },
                 { id: '#CB-002', destination: 'Client Office (Silom)', date: '2024-12-02', status: 'ACTIVE' },
             ],
-            actionLabel: 'New Booking',
+            actionLabel: t('newBooking'),
             showAction: true,
         },
         default: {
-            title: 'Data List',
-            columns: ['ID', 'Name', 'Value'],
-            data: [{ id: 'N/A', name: 'No data available', value: '' }],
+            title: t('dataList'),
+            columns: [t('id'), t('name'), t('value')],
+            data: [{ id: 'N/A', name: t('noDataAvailable'), value: '' }],
             showAction: false,
         }
     };
@@ -35,7 +37,7 @@ const TableView = ({ onBack }) => {
             <div className="bg-slate-100 p-4 border-b flex justify-between items-center">
                 <div className="flex items-center gap-4">
                     <button onClick={onBack} className="flex items-center gap-2 px-4 py-2 hover:bg-slate-300 rounded-lg bg-slate-200">
-                        <ArrowLeft size={18} /> Back
+                        <ArrowLeft size={18} /> {t('back')}
                     </button>
                     <h2 className="text-xl font-bold text-slate-800">{title}</h2>
                 </div>
@@ -66,7 +68,7 @@ const TableView = ({ onBack }) => {
                                     <td key={vIdx} className="px-6 py-4 font-medium text-gray-900">
                                         {val === 'ACTIVE' ? (
                                             <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">
-                                                Active
+                                                {t('active')}
                                             </span>
                                         ) : (
                                             val

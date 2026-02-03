@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, DollarSign, Calendar, FileText, User, Shield } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const PermitFee = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -77,20 +79,20 @@ const PermitFee = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-purple-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Permit Fee</h1>
+                        <h1 className="text-lg font-bold">{t('permitFee')}</h1>
                     </div>
                 </div>
             </div>
@@ -103,12 +105,12 @@ const PermitFee = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <User className="text-purple-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -122,7 +124,7 @@ const PermitFee = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -131,12 +133,12 @@ const PermitFee = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -144,12 +146,12 @@ const PermitFee = ({ onBack }) => {
                                         value={formData.department}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Department name"
+                                        placeholder={t('departmentName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position
+                                        {t('position')}
                                     </label>
                                     <input
                                         type="text"
@@ -157,7 +159,7 @@ const PermitFee = ({ onBack }) => {
                                         value={formData.position}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Job title"
+                                        placeholder={t('jobTitle')}
                                     />
                                 </div>
                             </div>
@@ -167,12 +169,12 @@ const PermitFee = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Shield className="text-purple-600" size={24} />
-                                Permit Information
+                                {t('permitInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Permit Type <span className="text-red-500">*</span>
+                                        {t('permitType')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="permitType"
@@ -181,18 +183,18 @@ const PermitFee = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Permit Type</option>
-                                        <option value="Work Permit">Work Permit</option>
-                                        <option value="Visa">Visa</option>
-                                        <option value="Residence Permit">Residence Permit</option>
-                                        <option value="Business Permit">Business Permit</option>
-                                        <option value="Professional License">Professional License</option>
-                                        <option value="Other">Other</option>
+                                        <option value="">{t('selectPermitType')}</option>
+                                        <option value="Work Permit">{t('workPermit')}</option>
+                                        <option value="Visa">{t('visa')}</option>
+                                        <option value="Residence Permit">{t('residencePermit')}</option>
+                                        <option value="Business Permit">{t('businessPermit')}</option>
+                                        <option value="Professional License">{t('professionalLicense')}</option>
+                                        <option value="Other">{t('other')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Permit Number
+                                        {t('permitNumber')}
                                     </label>
                                     <input
                                         type="text"
@@ -200,13 +202,13 @@ const PermitFee = ({ onBack }) => {
                                         value={formData.permitNumber}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Permit number"
+                                        placeholder={t('permitNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Issue Date
+                                        {t('issueDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -219,7 +221,7 @@ const PermitFee = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Expiry Date
+                                        {t('expiryDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -236,12 +238,12 @@ const PermitFee = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-purple-600" size={24} />
-                                Fee Details
+                                {t('feeDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Permit Fee Amount <span className="text-red-500">*</span>
+                                        {t('permitFeeAmount')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="number"
@@ -256,7 +258,7 @@ const PermitFee = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Processing Fee
+                                        {t('processingFee')}
                                     </label>
                                     <input
                                         type="number"
@@ -270,7 +272,7 @@ const PermitFee = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Renewal Fee
+                                        {t('renewalFee')}
                                     </label>
                                     <input
                                         type="number"
@@ -284,7 +286,7 @@ const PermitFee = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Late Fee (if applicable)
+                                        {t('lateFeeIfApplicable')}
                                     </label>
                                     <input
                                         type="number"
@@ -298,7 +300,7 @@ const PermitFee = ({ onBack }) => {
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Total Fee
+                                        {t('totalFee')}
                                     </label>
                                     <input
                                         type="text"
@@ -316,13 +318,13 @@ const PermitFee = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-purple-600" size={24} />
-                                Payment Details
+                                {t('paymentDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Payment Date <span className="text-red-500">*</span>
+                                        {t('paymentDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -335,7 +337,7 @@ const PermitFee = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Payment Method <span className="text-red-500">*</span>
+                                        {t('paymentMethod')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="paymentMethod"
@@ -344,17 +346,17 @@ const PermitFee = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Method</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="Check">Check</option>
-                                        <option value="Mobile Payment">Mobile Payment</option>
-                                        <option value="Company Paid">Company Paid</option>
+                                        <option value="">{t('selectMethod')}</option>
+                                        <option value="Bank Transfer">{t('bankTransfer')}</option>
+                                        <option value="Cash">{t('cash')}</option>
+                                        <option value="Check">{t('check')}</option>
+                                        <option value="Mobile Payment">{t('mobilePayment')}</option>
+                                        <option value="Company Paid">{t('companyPaid')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Bank Account Number
+                                        {t('bankAccountNumber')}
                                     </label>
                                     <input
                                         type="text"
@@ -362,13 +364,13 @@ const PermitFee = ({ onBack }) => {
                                         value={formData.bankAccount}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Bank account number"
+                                        placeholder={t('bankAccountNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <FileText size={14} />
-                                        Receipt Number
+                                        {t('receiptNumber')}
                                     </label>
                                     <input
                                         type="text"
@@ -376,12 +378,12 @@ const PermitFee = ({ onBack }) => {
                                         value={formData.receiptNumber}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Receipt number"
+                                        placeholder={t('receiptNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Status
+                                        {t('status')}
                                     </label>
                                     <select
                                         name="status"
@@ -389,10 +391,10 @@ const PermitFee = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     >
-                                        <option value="pending">Pending</option>
-                                        <option value="paid">Paid</option>
-                                        <option value="reimbursed">Reimbursed</option>
-                                        <option value="cancelled">Cancelled</option>
+                                        <option value="pending">{t('pending')}</option>
+                                        <option value="paid">{t('paid')}</option>
+                                        <option value="reimbursed">{t('reimbursed')}</option>
+                                        <option value="cancelled">{t('cancelled')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -401,7 +403,7 @@ const PermitFee = ({ onBack }) => {
                         {/* Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -409,7 +411,7 @@ const PermitFee = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                placeholder="Any additional notes about the permit fee payment"
+                                placeholder={t('additionalNotesAboutPermitFeePayment')}
                             />
                         </div>
 
@@ -420,14 +422,14 @@ const PermitFee = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Process Permit Fee
+                                {t('processPermitFee')}
                             </button>
                         </div>
                     </form>

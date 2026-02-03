@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, X, Eye, CheckCircle, FileText, MapPin, Calendar } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const AuditPlan = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
 
     // Sample audit plan data
@@ -73,6 +75,15 @@ const AuditPlan = ({ onBack }) => {
     );
 
     const renderProcessFlow = (stages, isMainFlow = false) => {
+        const stageNameMap = {
+            'Pre-Audit': t('preAudit'),
+            'On-site Audit': t('onSiteAudit'),
+            'Reporting': t('reporting'),
+            'Reporting & Assessment': t('reportingAssessment'),
+            'Post-Audit': t('postAudit'),
+            'Completed': t('completed')
+        };
+        
         const stageColors = {
             'Pre-Audit': isMainFlow ? 'bg-yellow-500' : 'bg-blue-500',
             'On-site Audit': 'bg-blue-500',
@@ -121,7 +132,7 @@ const AuditPlan = ({ onBack }) => {
                                 </div>
                                 <div className="mt-2 text-center max-w-[120px]">
                                     <div className={`text-xs font-semibold ${isActive && !isPending ? 'text-slate-700' : 'text-slate-400'}`}>
-                                        {stage.name}
+                                        {stageNameMap[stage.name] || stage.name}
                                     </div>
                                     {stage.date && (
                                         <div className={`text-xs mt-1 ${isActive && !isPending ? 'text-slate-600' : 'text-slate-400'}`}>
@@ -130,12 +141,12 @@ const AuditPlan = ({ onBack }) => {
                                     )}
                                     {isInProgress && (
                                         <div className="text-xs mt-1 text-green-600 font-semibold">
-                                            In progress
+                                            {t('inProgress')}
                                         </div>
                                     )}
                                     {isCompleted && stage.name === 'Completed' && (
                                         <div className="text-xs mt-1 text-green-600 font-semibold">
-                                            completed
+                                            {t('completed')}
                                         </div>
                                     )}
                                 </div>
@@ -162,32 +173,32 @@ const AuditPlan = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Audit Plan</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('auditPlan')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
 
             {/* Search Section */}
             <div className="bg-slate-50 p-4 border-b flex items-center gap-4 flex-shrink-0">
-                <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">Search:</label>
+                <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('search')}:</label>
                 <div className="flex items-center gap-2 flex-1">
                     <input
                         type="text"
-                        placeholder="Search..."
+                        placeholder={t('search') + '...'}
                         className="flex-1 px-4 py-2 border border-slate-300 rounded-lg bg-white text-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
@@ -197,14 +208,14 @@ const AuditPlan = ({ onBack }) => {
                         className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2"
                     >
                         <Search size={16} />
-                        Search
+                        {t('search')}
                     </button>
                     <button
                         onClick={handleReset}
                         className="bg-white text-slate-700 border border-slate-300 px-6 py-2 rounded-lg font-semibold hover:bg-slate-50 transition-colors text-sm flex items-center gap-2"
                     >
                         <X size={16} />
-                        Reset
+                        {t('reset')}
                     </button>
                 </div>
             </div>
@@ -212,17 +223,17 @@ const AuditPlan = ({ onBack }) => {
             {/* Activity Audit Plan Section */}
             <div className="bg-white p-6 border-b flex-shrink-0">
                 <div className="mb-6">
-                    <h2 className="text-lg font-bold text-slate-800 mb-2">Activity Audit Plan</h2>
-                    <p className="text-sm text-slate-600">Track the progress of audit activities through each stage</p>
+                    <h2 className="text-lg font-bold text-slate-800 mb-2">{t('activityAuditPlan')}</h2>
+                    <p className="text-sm text-slate-600">{t('trackTheProgress')}</p>
                 </div>
                 
                 {/* Main Process Flow */}
                 <div className="mb-6">
                     {renderProcessFlow([
-                        { name: 'Pre-Audit', date: 'Planning & Preparation', status: 'active', icon: FileText },
+                        { name: 'Pre-Audit', date: t('planningPreparation'), status: 'active', icon: FileText },
                         { name: 'On-site Audit', date: '', status: 'pending', icon: MapPin },
                         { name: 'Reporting & Assessment', date: '', status: 'pending', icon: FileText },
-                        { name: 'Post-Audit', date: 'Verification & Final', status: 'pending', icon: MapPin },
+                        { name: 'Post-Audit', date: t('verificationFinal'), status: 'pending', icon: MapPin },
                         { name: 'Completed', date: '', status: 'pending', icon: CheckCircle }
                     ], true)}
                 </div>
@@ -230,10 +241,10 @@ const AuditPlan = ({ onBack }) => {
                 {/* Action Buttons */}
                 <div className="flex items-center gap-3">
                     <button className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors text-sm">
-                        View Audit Plan
+                        {t('viewAuditPlan')}
                     </button>
                     <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm">
-                        Add Audit Plan
+                        {t('addAuditPlan')}
                     </button>
                 </div>
             </div>
@@ -241,13 +252,13 @@ const AuditPlan = ({ onBack }) => {
             {/* Audit Plan List Section */}
             <div className="flex-1 overflow-auto p-6">
                 <div className="mb-4 flex items-center justify-between">
-                    <h2 className="text-lg font-bold text-slate-800">Audit Plan List</h2>
+                    <h2 className="text-lg font-bold text-slate-800">{t('auditPlanList')}</h2>
                     <div className="flex items-center gap-3">
                         <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded text-sm font-semibold">
-                            total: {filteredPlans.length} report(s)
+                            {t('totalReports')}: {filteredPlans.length} {t('reports')}
                         </div>
                         <div className="bg-green-100 text-green-700 px-3 py-1 rounded text-sm font-semibold">
-                            showing: {filteredPlans.length} on this page
+                            {t('showing')}: {filteredPlans.length} {t('onThisPage')}
                         </div>
                     </div>
                 </div>
@@ -256,17 +267,17 @@ const AuditPlan = ({ onBack }) => {
                     <table className="w-full text-sm border-collapse">
                         <thead className="bg-slate-50">
                             <tr>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">AUDIT LOCATION</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">AUDIT FORM</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">ACTIVITY PROCESS FLOW</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">ACTIONS</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('auditLocation')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('auditForm')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('activityProcessFlow')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredPlans.length === 0 ? (
                                 <tr>
                                     <td colSpan={4} className="text-center py-16 text-slate-500">
-                                        No audit plans found
+                                        {t('noAuditPlansFound')}
                                     </td>
                                 </tr>
                             ) : (

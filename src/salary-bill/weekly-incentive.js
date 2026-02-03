@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, DollarSign, Calendar, User, TrendingUp } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const WeeklyIncentive = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -82,20 +84,20 @@ const WeeklyIncentive = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-green-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Weekly Incentive</h1>
+                        <h1 className="text-lg font-bold">{t('weeklyIncentive')}</h1>
                     </div>
                 </div>
             </div>
@@ -108,12 +110,12 @@ const WeeklyIncentive = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <User className="text-green-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -127,7 +129,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -136,12 +138,12 @@ const WeeklyIncentive = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -149,12 +151,12 @@ const WeeklyIncentive = ({ onBack }) => {
                                         value={formData.department}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Department name"
+                                        placeholder={t('departmentName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position
+                                        {t('position')}
                                     </label>
                                     <input
                                         type="text"
@@ -162,7 +164,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                         value={formData.position}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Job title"
+                                        placeholder={t('jobTitle')}
                                     />
                                 </div>
                             </div>
@@ -172,13 +174,13 @@ const WeeklyIncentive = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Calendar className="text-green-600" size={24} />
-                                Week Information
+                                {t('weekInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Week Start Date <span className="text-red-500">*</span>
+                                        {t('weekStartDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -192,7 +194,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Week End Date <span className="text-red-500">*</span>
+                                        {t('weekEndDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -206,7 +208,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Pay Date <span className="text-red-500">*</span>
+                                        {t('payDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -219,7 +221,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Incentive Type <span className="text-red-500">*</span>
+                                        {t('incentiveType')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="incentiveType"
@@ -228,13 +230,13 @@ const WeeklyIncentive = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Type</option>
-                                        <option value="Performance">Performance</option>
-                                        <option value="Production">Production</option>
-                                        <option value="Attendance">Attendance</option>
-                                        <option value="Quality">Quality</option>
-                                        <option value="Team">Team</option>
-                                        <option value="Combined">Combined</option>
+                                        <option value="">{t('selectType')}</option>
+                                        <option value="Performance">{t('performance')}</option>
+                                        <option value="Production">{t('production')}</option>
+                                        <option value="Attendance">{t('attendance')}</option>
+                                        <option value="Quality">{t('quality')}</option>
+                                        <option value="Team">{t('team')}</option>
+                                        <option value="Combined">{t('combined')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -244,12 +246,12 @@ const WeeklyIncentive = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <TrendingUp className="text-green-600" size={24} />
-                                Incentive Details
+                                {t('incentiveDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Base Amount <span className="text-red-500">*</span>
+                                        {t('baseAmount')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="number"
@@ -264,7 +266,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Performance Multiplier
+                                        {t('performanceMultiplier')}
                                     </label>
                                     <input
                                         type="number"
@@ -277,11 +279,11 @@ const WeeklyIncentive = ({ onBack }) => {
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                         placeholder="1.00"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Multiplier for base amount (e.g., 1.0 = 100%, 1.5 = 150%)</p>
+                                    <p className="text-xs text-gray-500 mt-1">{t('multiplierForBaseAmount')}</p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Attendance Bonus
+                                        {t('attendanceBonus')}
                                     </label>
                                     <input
                                         type="number"
@@ -295,7 +297,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Production Bonus
+                                        {t('productionBonus')}
                                     </label>
                                     <input
                                         type="number"
@@ -309,7 +311,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Quality Bonus
+                                        {t('qualityBonus')}
                                     </label>
                                     <input
                                         type="number"
@@ -323,7 +325,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Team Bonus
+                                        {t('teamBonus')}
                                     </label>
                                     <input
                                         type="number"
@@ -337,7 +339,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Total Incentive
+                                        {t('totalIncentive')}
                                     </label>
                                     <input
                                         type="text"
@@ -355,12 +357,12 @@ const WeeklyIncentive = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-green-600" size={24} />
-                                Payment Details
+                                {t('paymentDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Payment Method <span className="text-red-500">*</span>
+                                        {t('paymentMethod')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="paymentMethod"
@@ -369,16 +371,16 @@ const WeeklyIncentive = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Method</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="Check">Check</option>
-                                        <option value="Mobile Payment">Mobile Payment</option>
+                                        <option value="">{t('selectMethod')}</option>
+                                        <option value="Bank Transfer">{t('bankTransfer')}</option>
+                                        <option value="Cash">{t('cash')}</option>
+                                        <option value="Check">{t('check')}</option>
+                                        <option value="Mobile Payment">{t('mobilePayment')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Bank Account Number
+                                        {t('bankAccountNumber')}
                                     </label>
                                     <input
                                         type="text"
@@ -386,12 +388,12 @@ const WeeklyIncentive = ({ onBack }) => {
                                         value={formData.bankAccount}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Bank account number"
+                                        placeholder={t('bankAccountNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Status
+                                        {t('status')}
                                     </label>
                                     <select
                                         name="status"
@@ -399,10 +401,10 @@ const WeeklyIncentive = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
-                                        <option value="pending">Pending</option>
-                                        <option value="approved">Approved</option>
-                                        <option value="processed">Processed</option>
-                                        <option value="paid">Paid</option>
+                                        <option value="pending">{t('pending')}</option>
+                                        <option value="approved">{t('approved')}</option>
+                                        <option value="processed">{t('processed')}</option>
+                                        <option value="paid">{t('paid')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -411,7 +413,7 @@ const WeeklyIncentive = ({ onBack }) => {
                         {/* Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -419,7 +421,7 @@ const WeeklyIncentive = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                placeholder="Any additional notes about the weekly incentive"
+                                placeholder={t('additionalNotesAboutWeeklyIncentive')}
                             />
                         </div>
 
@@ -430,14 +432,14 @@ const WeeklyIncentive = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Process Weekly Incentive
+                                {t('processWeeklyIncentive')}
                             </button>
                         </div>
                     </form>

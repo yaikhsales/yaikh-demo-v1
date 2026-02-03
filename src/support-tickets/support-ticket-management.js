@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BarChart3, MessageSquare, TrendingUp, X } from 'lucide-react';
 import ImageViewer from '../components/ImageViewer';
+import { useTranslation } from '../translate/TranslationContext';
 
 const SupportTicketManagement = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [expandedSections, setExpandedSections] = useState({
         GA: true,
         HR: true,
@@ -205,7 +207,7 @@ const SupportTicketManagement = ({ onBack }) => {
             {/* Left Sidebar */}
             <div className="w-64 bg-gray-200 flex-shrink-0 flex flex-col border-r border-gray-300">
                 <div className="p-4 border-b border-gray-300">
-                    <h2 className="text-lg font-bold text-gray-800">Scheduled Ticket</h2>
+                    <h2 className="text-lg font-bold text-gray-800">{t('scheduledTicket')}</h2>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto p-2">
@@ -330,7 +332,7 @@ const SupportTicketManagement = ({ onBack }) => {
                             onClick={() => onBack ? onBack() : navigate(-1)}
                             className="px-4 py-2 bg-gray-700 text-white rounded-lg font-semibold hover:bg-gray-800 transition-colors"
                         >
-                            Back
+                            {t('back')}
                         </button>
                         
                         {/* Center: View Toggle Buttons */}
@@ -341,7 +343,7 @@ const SupportTicketManagement = ({ onBack }) => {
                                     activeView === 'list' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600 border border-gray-300'
                                 }`}
                             >
-                                List
+                                {t('list')}
                             </button>
                             <button
                                 onClick={() => {
@@ -353,7 +355,7 @@ const SupportTicketManagement = ({ onBack }) => {
                                     activeView === 'calendar' ? 'bg-blue-500 text-white' : 'bg-white text-gray-600 border border-gray-300'
                                 }`}
                             >
-                                Calendar
+                                {t('calendar')}
                             </button>
                             <button
                                 onClick={() => {
@@ -366,7 +368,7 @@ const SupportTicketManagement = ({ onBack }) => {
                                 }`}
                             >
                                 <BarChart3 size={16} />
-                                KPI
+                                {t('kpi')}
                             </button>
                         </div>
                         
@@ -381,46 +383,46 @@ const SupportTicketManagement = ({ onBack }) => {
                     <div className="grid grid-cols-2 gap-6 mb-6">
                         {/* Ticket's Overview */}
                         <div className="bg-white p-6 rounded-lg shadow-sm">
-                            <h3 className="text-lg font-bold text-gray-800 mb-4">Ticket's Overview</h3>
+                            <h3 className="text-lg font-bold text-gray-800 mb-4">{t('ticketsOverview')}</h3>
                             <div className="grid grid-cols-4 gap-4">
                                 <div className="flex flex-col items-center">
                                     <div className="w-20 h-20 rounded bg-green-400 flex items-center justify-center text-white text-2xl font-bold mb-2">
                                         1977
                                     </div>
-                                    <div className="text-sm font-semibold text-gray-700">Total</div>
+                                    <div className="text-sm font-semibold text-gray-700">{t('total')}</div>
                                 </div>
                                 <div className="flex flex-col items-center">
                                     <div className="w-20 h-20 rounded bg-red-400 flex items-center justify-center text-white text-2xl font-bold mb-2">
                                         0
                                     </div>
-                                    <div className="text-sm font-semibold text-gray-700">Assign</div>
+                                    <div className="text-sm font-semibold text-gray-700">{t('assign')}</div>
                                 </div>
                                 <div className="flex flex-col items-center">
                                     <div className="w-20 h-20 rounded bg-red-500 flex items-center justify-center text-white text-2xl font-bold mb-2">
                                         687
                                     </div>
                                     <button className="text-sm font-semibold text-gray-700 underline hover:text-blue-600">
-                                        Requested
+                                        {t('requested')}
                                     </button>
                                 </div>
                                 <div className="flex flex-col items-center">
                                     <div className="w-20 h-20 rounded bg-blue-400 flex items-center justify-center text-white text-2xl font-bold mb-2">
                                         1290
                                     </div>
-                                    <div className="text-sm font-semibold text-gray-700">Scheduled</div>
+                                    <div className="text-sm font-semibold text-gray-700">{t('scheduled')}</div>
                                 </div>
                             </div>
                         </div>
 
                         {/* GA Main Team's progress */}
                         <div className="bg-white p-6 rounded-lg shadow-sm">
-                            <h3 className="text-lg font-bold text-gray-800 mb-4">GA Main Team's progress</h3>
+                            <h3 className="text-lg font-bold text-gray-800 mb-4">{t('gaMainTeamProgress')}</h3>
                             <div className="grid grid-cols-4 gap-4">
                                 {[
-                                    { label: 'To Do', value: 5, color: 'bg-gray-400' },
-                                    { label: 'Planned', value: 10, color: 'bg-teal-400' },
-                                    { label: 'In Progress', value: 11, color: 'bg-yellow-400' },
-                                    { label: 'Done', value: 1923, color: 'bg-green-400' }
+                                    { label: t('toDo'), value: 5, color: 'bg-gray-400' },
+                                    { label: t('planned'), value: 10, color: 'bg-teal-400' },
+                                    { label: t('inProgress'), value: 11, color: 'bg-yellow-400' },
+                                    { label: t('done'), value: 1923, color: 'bg-green-400' }
                                 ].map((item, idx) => (
                                     <div key={idx} className="flex flex-col items-center">
                                         <div className={`w-20 h-20 rounded ${item.color} flex items-center justify-center text-white text-2xl font-bold mb-2`}>
@@ -436,7 +438,7 @@ const SupportTicketManagement = ({ onBack }) => {
                     {/* My Tickets Button - Positioned in content area */}
                     <div className="flex justify-end mb-6">
                         <button className="px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors">
-                            My Tickets
+                            {t('myTickets')}
                         </button>
                     </div>
 
@@ -445,11 +447,11 @@ const SupportTicketManagement = ({ onBack }) => {
                         <table className="w-full text-sm">
                             <thead className="bg-gray-50 border-b border-gray-200">
                                 <tr>
-                                    <th className="px-4 py-3 text-left font-bold text-gray-700">NO</th>
-                                    <th className="px-4 py-3 text-left font-bold text-gray-700">IMAGE</th>
-                                    <th className="px-4 py-3 text-left font-bold text-gray-700">SUBJECT</th>
-                                    <th className="px-4 py-3 text-left font-bold text-gray-700">Assigned to</th>
-                                    <th className="px-4 py-3 text-left font-bold text-gray-700">STATUS</th>
+                                    <th className="px-4 py-3 text-left font-bold text-gray-700">{t('no')}</th>
+                                    <th className="px-4 py-3 text-left font-bold text-gray-700">{t('image')}</th>
+                                    <th className="px-4 py-3 text-left font-bold text-gray-700">{t('subject')}</th>
+                                    <th className="px-4 py-3 text-left font-bold text-gray-700">{t('assignedTo')}</th>
+                                    <th className="px-4 py-3 text-left font-bold text-gray-700">{t('status')}</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
@@ -503,14 +505,14 @@ const SupportTicketManagement = ({ onBack }) => {
                                                     className="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-semibold flex items-center gap-1 hover:bg-green-200 w-fit"
                                                 >
                                                     <TrendingUp size={10} />
-                                                    Timeline
+                                                    {t('timeline')}
                                                 </button>
                                                 <button 
                                                     onClick={() => handleFeedback(ticket)}
                                                     className="px-2 py-1 bg-blue-100 text-blue-700 rounded-lg text-xs font-semibold flex items-center gap-1 hover:bg-blue-200 w-fit"
                                                 >
                                                     <MessageSquare size={10} />
-                                                    Feedback
+                                                    {t('feedback')}
                                                 </button>
                                             </div>
                                         </td>
@@ -528,7 +530,7 @@ const SupportTicketManagement = ({ onBack }) => {
                     <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                            <h2 className="text-xl font-bold text-gray-800">Timeline</h2>
+                            <h2 className="text-xl font-bold text-gray-800">{t('timeline')}</h2>
                             <button
                                 onClick={() => {
                                     setShowTimeline(false);
@@ -570,7 +572,7 @@ const SupportTicketManagement = ({ onBack }) => {
                     <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl overflow-hidden flex flex-col">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                            <h2 className="text-xl font-bold text-gray-800">Feedback</h2>
+                            <h2 className="text-xl font-bold text-gray-800">{t('feedback')}</h2>
                             <button
                                 onClick={() => {
                                     setShowFeedback(false);
@@ -588,7 +590,7 @@ const SupportTicketManagement = ({ onBack }) => {
                             <textarea
                                 value={feedbackText}
                                 onChange={(e) => setFeedbackText(e.target.value)}
-                                placeholder="Enter your feedback..."
+                                placeholder={t('enterYourFeedback')}
                                 className="w-full h-64 p-4 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                             
@@ -598,7 +600,7 @@ const SupportTicketManagement = ({ onBack }) => {
                                     onClick={handleSubmitFeedback}
                                     className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors"
                                 >
-                                    Submit
+                                    {t('submit')}
                                 </button>
                             </div>
                         </div>

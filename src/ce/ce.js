@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 // Mapping function to match module titles to sub-icon image filenames
 const getCEIconImage = (title) => {
@@ -24,6 +25,7 @@ const getCEIconImage = (title) => {
 
 const CE = ({ onBack }) => {
     const navigate = useNavigate();
+    const { translateModuleTitle } = useTranslation();
 
     const handleBack = () => {
         if (onBack) {
@@ -196,7 +198,7 @@ const CE = ({ onBack }) => {
                                     
                                     {/* Text Label */}
                                     <span className="relative z-10 font-bold text-sm sm:text-base text-center leading-tight drop-shadow-md">
-                                        {module.title}
+                                        {translateModuleTitle(module.title)}
                                     </span>
                                 </button>
                             );

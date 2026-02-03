@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Ticket as TicketIcon, Image as ImageIcon, X } from 'lucide-react';
 import SupportTicketForm from '../support-tickets/form';
+import { useTranslation } from '../translate/TranslationContext';
 
 const SupportTicketView = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [requests, setRequests] = useState([
         {
             id: 1,
@@ -123,7 +125,7 @@ const SupportTicketView = ({ onBack }) => {
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [showImage, setShowImage] = useState(false);
 
-    const columns = ['REF', 'Type', 'Subject', 'Image', 'Details', 'Created Date', 'Plan Date', 'Finish Date', 'Status'];
+    const columns = [t('ref'), t('type'), t('subject'), t('image'), t('details'), t('createdDate'), t('planDate'), t('finishDate'), t('status')];
 
     const handleRowClick = (request) => {
         setSelectedRequest(request);
@@ -140,31 +142,31 @@ const SupportTicketView = ({ onBack }) => {
                             <button
                                 onClick={onBack}
                                 className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors bg-slate-100"
-                                aria-label="Go back"
+                                aria-label={t('goBack')}
                             >
-                                <ArrowLeft size={18} /> Back
+                                <ArrowLeft size={18} /> {t('back')}
                             </button>
                             <button
                                 onClick={() => navigate('/')}
                                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                                title="Home"
+                                title={t('home')}
                             >
                                 <img 
                                     src="/logo.jpg" 
-                                    alt="Home" 
+                                    alt={t('home')} 
                                     className="w-full h-full object-cover"
                                 />
                             </button>
                         </div>
-                        <h2 className="text-xl font-bold text-slate-800">Support Ticket</h2>
+                        <h2 className="text-xl font-bold text-slate-800">{t('supportTicket')}</h2>
                     </div>
                     <div className="flex items-center gap-3">
                         <button
                             onClick={() => setShowImage(true)}
                             className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-green-700 transition-colors shadow-md hover:shadow-lg"
-                            aria-label="View support ticket image"
+                            aria-label={t('viewSupportTicketImage')}
                         >
-                            <ImageIcon size={16} /> View Image
+                            <ImageIcon size={16} /> {t('viewImage')}
                         </button>
                         <button
                             onClick={() => {
@@ -172,9 +174,9 @@ const SupportTicketView = ({ onBack }) => {
                                 setShowForm(true);
                             }}
                             className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold text-sm flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
-                            aria-label="Add new support request"
+                            aria-label={t('addNewSupportRequest')}
                         >
-                            <Plus size={16} /> Add Request
+                            <Plus size={16} /> {t('addRequest')}
                         </button>
                     </div>
                 </div>
@@ -197,10 +199,10 @@ const SupportTicketView = ({ onBack }) => {
                                             <div className="flex flex-col items-center justify-center">
                                                 <TicketIcon size={64} className="text-slate-300 mb-6" />
                                                 <h3 className="text-2xl font-bold text-slate-700 mb-2">
-                                                    Looks like you have no requests yet!
+                                                    {t('looksLikeYouHaveNoRequestsYet')}
                                                 </h3>
                                                 <p className="text-slate-500 text-lg">
-                                                    Need help? Submit a ticket, and we'll be happy to assist you.
+                                                    {t('needHelpSubmitTicket')}
                                                 </p>
                                             </div>
                                         </td>
@@ -215,7 +217,7 @@ const SupportTicketView = ({ onBack }) => {
                                             <td className="px-6 py-4 font-medium text-gray-900">{request.ref || `#${idx + 1}`}</td>
                                             <td className="px-6 py-4 text-gray-700">{request.type}</td>
                                             <td className="px-6 py-4 text-gray-700">{request.subject}</td>
-                                            <td className="px-6 py-4 text-gray-700">{request.image ? 'Yes' : 'No'}</td>
+                                            <td className="px-6 py-4 text-gray-700">{request.image ? t('yes') : t('no')}</td>
                                             <td className="px-6 py-4 text-gray-700 truncate max-w-xs">{request.details}</td>
                                             <td className="px-6 py-4 text-gray-700">{request.createdDate}</td>
                                             <td className="px-6 py-4 text-gray-700">{request.planDate}</td>
@@ -227,7 +229,7 @@ const SupportTicketView = ({ onBack }) => {
                                                     request.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' :
                                                     'bg-gray-100 text-gray-800'
                                                 }`}>
-                                                    {request.status || 'Pending'}
+                                                    {request.status || t('pending')}
                                                 </span>
                                             </td>
                                         </tr>
@@ -282,7 +284,7 @@ const SupportTicketView = ({ onBack }) => {
                         </button>
                         <img
                             src="/assets/icons/sub-icons/support-ticket.png"
-                            alt="Support Ticket"
+                            alt={t('supportTicket')}
                             className="max-w-full max-h-full object-contain"
                             style={{ 
                                 imageRendering: 'high-quality',

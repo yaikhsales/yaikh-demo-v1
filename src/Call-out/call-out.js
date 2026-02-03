@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RefreshCw, X } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const CallOut = ({ onBack }) => {
     const navigate = useNavigate();
-    const [selectedLocation, setSelectedLocation] = useState('All Location');
+    const { t } = useTranslation();
+    const [selectedLocation, setSelectedLocation] = useState(t('allLocation'));
 
     const handleBack = () => {
         if (onBack) {
@@ -30,6 +32,15 @@ const CallOut = ({ onBack }) => {
             ];
         }
         return data;
+    };
+    
+    // Helper function to translate line titles
+    const translateLineTitle = (title) => {
+        if (title.startsWith('Line ')) {
+            const lineNum = title.replace('Line ', '');
+            return t(`line${lineNum}`);
+        }
+        return title;
     };
 
     // Sample data for Sewing (Lines 1-30)
@@ -129,7 +140,7 @@ const CallOut = ({ onBack }) => {
             </div>
             {/* Line Header Row */}
             <div className="bg-gray-800 border-b border-gray-600 p-2 text-center min-h-[40px] flex items-center justify-center">
-                <span className="text-white font-semibold text-sm whitespace-nowrap">{title}</span>
+                <span className="text-white font-semibold text-sm whitespace-nowrap">{translateLineTitle(title)}</span>
             </div>
             {/* Data Rows */}
             <div className={`flex-1 ${dataBgColor}`}>
@@ -197,7 +208,7 @@ const CallOut = ({ onBack }) => {
                             className="px-3 py-1.5 rounded text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition-colors flex items-center gap-1"
                         >
                             <X size={16} />
-                            Exit
+                            {t('exit')}
                         </button>
                     </div>
                 </div>
@@ -210,16 +221,16 @@ const CallOut = ({ onBack }) => {
                     onChange={(e) => setSelectedLocation(e.target.value)}
                     className="px-4 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 border border-gray-600 focus:outline-none focus:border-blue-500"
                 >
-                    <option>All Location</option>
-                    <option>Location 1</option>
-                    <option>Location 2</option>
+                    <option>{t('allLocation')}</option>
+                    <option>{t('allLocation')} 1</option>
+                    <option>{t('allLocation')} 2</option>
                 </select>
                 <button
                     onClick={handleRefresh}
                     className="px-4 py-1.5 rounded text-sm font-medium bg-gray-700 text-gray-300 hover:bg-gray-600 transition-colors flex items-center gap-1.5"
                 >
                     <RefreshCw size={16} />
-                    Refresh
+                    {t('refresh')}
                 </button>
             </div>
 
@@ -227,7 +238,7 @@ const CallOut = ({ onBack }) => {
             <div className="flex-1 overflow-y-auto bg-gray-900 p-4">
                 {/* Sewing Section */}
                 <div className="mb-5">
-                    <div className="text-white font-bold text-base mb-2 px-1">Sewing</div>
+                    <div className="text-white font-bold text-base mb-2 px-1">{t('sewing')}</div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
                             {renderEmptyColumn(Math.max(...Object.values(sewingData).map(items => items.length)))}
@@ -261,7 +272,7 @@ const CallOut = ({ onBack }) => {
 
                 {/* Packing Section */}
                 <div className="mb-5">
-                    <div className="text-white font-bold text-base mb-2 px-1">Packing</div>
+                    <div className="text-white font-bold text-base mb-2 px-1">{t('packing')}</div>
                     <div className="bg-gray-800 border border-gray-700 overflow-hidden">
                         <div className="flex overflow-x-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
                             {renderEmptyColumn(Math.max(...Object.values(packingData).map(items => items.length)))}

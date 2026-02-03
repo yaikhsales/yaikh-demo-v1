@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Eye, Download, FileText } from 'lucide-react';
 import ImageViewer from '../components/ImageViewer';
 import PdfViewer from '../components/PdfViewer';
+import { useTranslation } from '../translate/TranslationContext';
 
 const ShowListRequest = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [showImageViewer, setShowImageViewer] = useState(false);
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [selectedImagePath, setSelectedImagePath] = useState('');
@@ -205,21 +207,21 @@ const ShowListRequest = ({ onBack }) => {
                             aria-label="Go back"
                         >
                             <ArrowLeft size={18} className="inline mr-1" />
-                            Back
+                            {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-lg font-bold text-slate-800">Purchase Request</h1>
+                    <h1 className="text-lg font-bold text-slate-800">{t('purchaseRequest')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -672,7 +674,7 @@ const ShowListRequest = ({ onBack }) => {
                                                     onClick={() => handleReturn(req.code)}
                                                     className="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-700 transition-colors min-w-[60px]"
                                                 >
-                                                    Return
+                                                    {t('return')}
                                                 </button>
                                             </div>
                                         </td>
@@ -682,14 +684,14 @@ const ShowListRequest = ({ onBack }) => {
                                             {req.headOfDept.status === 'approved' ? (
                                                 <div className="flex flex-col gap-1 items-center">
                                                     <button className="bg-green-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-700 transition-colors min-w-[60px]">
-                                                        Approved
+                                                        {t('approved')}
                                                     </button>
                                                     <div className="text-[10px] text-black font-bold leading-tight">{req.headOfDept.approvedBy}</div>
                                                     <div className="text-[10px] text-black font-bold leading-tight">{req.headOfDept.approvedDate}</div>
                                                 </div>
                                             ) : (
                                                 <button className="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-700 transition-colors min-w-[60px]">
-                                                    Pending
+                                                    {t('pending')}
                                                 </button>
                                             )}
                                         </td>
@@ -699,14 +701,14 @@ const ShowListRequest = ({ onBack }) => {
                                             {req.gmReqApprove.status === 'approved' ? (
                                                 <div className="flex flex-col gap-1 items-center">
                                                     <button className="bg-green-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-700 transition-colors min-w-[60px]">
-                                                        Approved
+                                                        {t('approved')}
                                                     </button>
                                                     <button
                                                         onClick={() => handleDetail(req.code)}
                                                         className="bg-transparent text-blue-400 border-[1px] border-blue-400 px-2 py-1 rounded-2xl text-[10px] font-bold hover:bg-blue-50 transition-colors flex items-center justify-center gap-1 min-w-[55px]"
                                                     >
                                                         <Eye size={10} className="text-blue-400" />
-                                                        Detail
+                                                        {t('detail')}
                                                     </button>
                                                     <div className="text-[10px] text-black font-bold leading-tight">{req.gmReqApprove.approvedBy}</div>
                                                     <div className="text-[10px] text-black font-bold leading-tight">{req.gmReqApprove.approvedDate}</div>
@@ -714,7 +716,7 @@ const ShowListRequest = ({ onBack }) => {
                                             ) : (
                                                 <div className="flex flex-col gap-1 items-center">
                                                     <button className="bg-gray-400 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-gray-500 transition-colors min-w-[60px]">
-                                                        Pending
+                                                        {t('pending')}
                                                     </button>
                                                 </div>
                                             )}
@@ -725,21 +727,21 @@ const ShowListRequest = ({ onBack }) => {
                                             {req.gmPaymentApprove.status === 'approved' ? (
                                                 <div className="flex flex-col gap-1 items-center">
                                                     <button className="bg-green-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-700 transition-colors min-w-[60px]">
-                                                        Approved
+                                                        {t('approved')}
                                                     </button>
                                                     <button
                                                         onClick={() => handleInvoice(req.code)}
                                                         className="bg-transparent text-blue-400 border-[1px] border-blue-400 px-2 py-1 rounded-2xl text-[10px] font-bold hover:bg-blue-50 transition-colors flex items-center justify-center gap-1 min-w-[55px]"
                                                     >
                                                         <FileText size={10} className="text-blue-400" />
-                                                        Invoice
+                                                        {t('invoice')}
                                                     </button>
                                                     <div className="text-[10px] text-black font-bold leading-tight">{req.gmPaymentApprove.approvedBy}</div>
                                                     <div className="text-[10px] text-black font-bold leading-tight">{req.gmPaymentApprove.approvedDate}</div>
                                                 </div>
                                             ) : (
                                                 <button className="bg-gray-400 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-gray-500 transition-colors min-w-[60px]">
-                                                    Pending
+                                                    {t('pending')}
                                                 </button>
                                             )}
                                         </td>
@@ -751,11 +753,11 @@ const ShowListRequest = ({ onBack }) => {
                                                     {req.payment.status === 'paid' ? (
                                                         <>
                                                             <button className="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-700 transition-colors min-w-[60px]">
-                                                                Pending
+                                                                {t('pending')}
                                                             </button>
                                                             <div className="flex flex-col gap-0.5 items-center">
                                                                 <button className="bg-green-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-700 transition-colors min-w-[60px]">
-                                                                    Paid
+                                                                    {t('paid')}
                                                                 </button>
                                                                 {req.payment.paidDate && (
                                                                     <div className="text-[10px] text-black font-bold leading-tight">{req.payment.paidDate}</div>
@@ -766,19 +768,19 @@ const ShowListRequest = ({ onBack }) => {
                                                         <>
                                                             {req.code === 1931 ? (
                                                                 <button className="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-700 transition-colors min-w-[60px]">
-                                                                    Pending
+                                                                    {t('pending')}
                                                                 </button>
                                                             ) : req.purchaser.status === 'pending' ? (
                                                                 <button className="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-700 transition-colors min-w-[60px]">
-                                                                    Pending
+                                                                    {t('pending')}
                                                                 </button>
                                                             ) : (
                                                                 <button className="bg-gray-400 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-gray-500 transition-colors min-w-[60px]">
-                                                                    Pending
+                                                                    {t('pending')}
                                                                 </button>
                                                             )}
                                                             <button className="bg-red-600 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-red-700 transition-colors min-w-[60px]">
-                                                                Pending
+                                                                {t('pending')}
                                                             </button>
                                                         </>
                                                     )}
@@ -828,21 +830,21 @@ const ShowListRequest = ({ onBack }) => {
                                         {/* ATTACH DOCUMENTS */}
                                         <td className="px-2 py-2 text-center">
                                             <div className="flex flex-col gap-1 items-center">
-                                                <div className="text-[10px] text-black font-semibold border border-slate-300 px-2 py-0.5 rounded bg-slate-50">Request Form</div>
+                                                <div className="text-[10px] text-black font-semibold border border-slate-300 px-2 py-0.5 rounded bg-slate-50">{t('requestForm')}</div>
                                                 <div className="flex flex-col gap-1 items-center">
                                                     <button
                                                         onClick={() => handlePDF(req.code)}
                                                         className="bg-green-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-1 min-w-[50px]"
                                                     >
                                                         <Download size={10} />
-                                                        PDF
+                                                        {t('pdf')}
                                                     </button>
                                                     <button
                                                         onClick={() => handleViewForm(req.code)}
                                                         className="bg-blue-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-1 min-w-[50px]"
                                                     >
                                                         <Eye size={10} />
-                                                        View
+                                                        {t('view')}
                                                     </button>
                                                 </div>
                                             </div>
@@ -854,7 +856,7 @@ const ShowListRequest = ({ onBack }) => {
                                                 onClick={() => handleDetails(req.code)}
                                                 className="bg-blue-500 text-white px-2 py-1 rounded text-[10px] font-semibold hover:bg-blue-600 transition-colors min-w-[60px]"
                                             >
-                                                Details
+                                                {t('details')}
                                             </button>
                                         </td>
                                     </tr>
@@ -864,12 +866,12 @@ const ShowListRequest = ({ onBack }) => {
                                             <td colSpan={12} className="px-3 py-2 bg-orange-50">
                                                 <div className="flex items-center gap-2 text-[10px]">
                                                     <span className="text-orange-600 font-bold">▲</span>
-                                                    <span className="text-black font-medium">Return Message: {req.returnMessage}</span>
+                                                    <span className="text-black font-medium">{t('returnMessage')}: {req.returnMessage}</span>
                                                     <button
                                                         onClick={() => handleViewReturnDetails(req.code)}
                                                         className="text-blue-600 hover:underline ml-2 font-medium"
                                                     >
-                                                        View Return Details
+                                                        {t('viewReturnDetails')}
                                                     </button>
                                                 </div>
                                             </td>

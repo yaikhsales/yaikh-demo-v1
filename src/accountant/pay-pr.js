@@ -405,7 +405,7 @@ const PayPR = ({ onBack }) => {
                                                 }}
                                                 className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
                                             >
-                                                Req Details
+                                                {t('requestDetails')}
                                             </button>
                                         </td>
                                     </tr>

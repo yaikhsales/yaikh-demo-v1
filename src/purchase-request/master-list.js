@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const MasterList = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('new');
     const [currentPage, setCurrentPage] = useState(6);
     const itemsPerPage = 26;
@@ -187,11 +189,11 @@ const MasterList = ({ onBack }) => {
 
     const renderProgress = (progress) => {
         const stages = [
-            { key: 'requester', label: 'Requester' },
-            { key: 'head', label: 'Head' },
-            { key: 'gm', label: 'GM' },
-            { key: 'purchaser', label: 'Purchaser' },
-            { key: 'accountant', label: 'Accountant' }
+            { key: 'requester', label: t('requester') },
+            { key: 'head', label: t('head') },
+            { key: 'gm', label: t('gm') },
+            { key: 'purchaser', label: t('purchaser') },
+            { key: 'accountant', label: t('accountant') }
         ];
 
         return (
@@ -220,21 +222,21 @@ const MasterList = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Purchase Request - Master List</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('purchaseRequest')} - {t('masterList')}</h1>
                 </div>
                 <div className="flex items-center gap-1">
                     <button
@@ -245,7 +247,7 @@ const MasterList = ({ onBack }) => {
                                 : 'border-transparent text-slate-500 hover:text-slate-700'
                         }`}
                     >
-                        Old Data
+                        {t('oldData')}
                     </button>
                     <button
                         onClick={() => {
@@ -258,7 +260,7 @@ const MasterList = ({ onBack }) => {
                                 : 'border-transparent text-slate-500 hover:text-slate-700'
                         }`}
                     >
-                        New Data
+                        {t('newData')}
                     </button>
                     <button
                         onClick={() => setActiveTab('my')}
@@ -268,7 +270,7 @@ const MasterList = ({ onBack }) => {
                                 : 'border-transparent text-slate-500 hover:text-slate-700'
                         }`}
                     >
-                        My Request
+                        {t('myRequest')}
                     </button>
                 </div>
             </div>
@@ -279,18 +281,18 @@ const MasterList = ({ onBack }) => {
                     <table className="w-full text-sm border-collapse">
                         <thead className="bg-slate-50 sticky top-0 z-10">
                             <tr>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">CODE</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">NAME</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DEPARTMENT</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">TOPIC</th>
-                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">PROGRESS</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('code')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('name')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('department')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('topic')}</th>
+                                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('progress')}</th>
                             </tr>
                         </thead>
                         <tbody>
                             {paginatedRequests.length === 0 ? (
                                 <tr>
                                     <td colSpan={5} className="text-center py-16 text-slate-500">
-                                        No requests found
+                                        {t('noRequestsFound')}
                                     </td>
                                 </tr>
                             ) : (
@@ -321,7 +323,7 @@ const MasterList = ({ onBack }) => {
             {/* Pagination Footer */}
             <div className="bg-white border-t p-4 flex items-center justify-between flex-shrink-0">
                 <div className="text-sm text-slate-600">
-                    showing {startItem} to {endItem} of {filteredRequests.length} results
+                    {t('showing')} {startItem} {t('to')} {endItem} {t('of')} {filteredRequests.length} {t('results')}
                 </div>
                 {renderPagination()}
             </div>

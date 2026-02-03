@@ -322,7 +322,7 @@ const ApprovalPR = ({ onBack }) => {
                                         </td>
                                         <td className="px-4 py-4">
                                             <button className="bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors">
-                                                {t('approved')} & {t('paid')}
+                                                {t('approvedAndPaid')}
                                             </button>
                                             <div className="text-xs text-slate-600 mt-1">{item.accApprovePayDate}</div>
                                         </td>
@@ -402,7 +402,7 @@ const ApprovalPR = ({ onBack }) => {
                                                 onClick={handleReqDetailsAction}
                                                 className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
                                             >
-                                                Req Details
+                                                {t('requestDetails')}
                                             </button>
                                         </td>
                                     </tr>

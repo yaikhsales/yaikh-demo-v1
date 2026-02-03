@@ -16,7 +16,7 @@ const GatePass = ({ onBack }) => {
             supervisor: 'Jane Smith',
             requestType: 'personal',
             requestReason: 'Office Duty',
-            whereToGo: 'YM to WH12000',
+            whereToGo: t('ymToWh12000'),
             departureTime: '09:00 AM',
             returnTime: '12:00 PM',
             status: 'pending',
@@ -30,7 +30,7 @@ const GatePass = ({ onBack }) => {
             supervisor: 'Mike Brown',
             requestType: 'material',
             requestReason: 'Purchase Goods',
-            whereToGo: 'YM to Sub Factory',
+            whereToGo: t('ymToSubFactory'),
             departureTime: '02:00 PM',
             returnTime: '04:30 PM',
             status: 'pending',
@@ -44,7 +44,7 @@ const GatePass = ({ onBack }) => {
             supervisor: 'Emily Chen',
             requestType: 'assets',
             requestReason: 'Repair Device',
-            whereToGo: 'YM to Other',
+            whereToGo: t('ymToOther'),
             departureTime: '10:30 AM',
             returnTime: '01:00 PM',
             status: 'pending',
@@ -84,12 +84,12 @@ const GatePass = ({ onBack }) => {
     ];
 
     const whereToGoOptions = [
-        'YM to WH12000',
-        'YM to Sub Factory',
-        'YM to Other',
-        'WH12000 to YM',
-        'WH to Sub Factory',
-        'WH to Other'
+        t('ymToWh12000'),
+        t('ymToSubFactory'),
+        t('ymToOther'),
+        t('wh12000ToYm'),
+        t('whToSubFactory'),
+        t('whToOther')
     ];
 
     const hours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));

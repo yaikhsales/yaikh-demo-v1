@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Download, FileText, Calendar, BarChart3, Mail } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Waste = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [fromDate, setFromDate] = useState('2020-11-21');
     const [toDate, setToDate] = useState('2020-11-21');
 
@@ -42,18 +44,18 @@ const Waste = ({ onBack }) => {
 
     // Donut chart data
     const donutData = [
-        { name: 'Direct Production Waste', value: 1084, color: '#3b82f6' },
-        { name: 'General Waste', value: 70, color: '#ec4899' }
+        { name: t('directProductionWaste'), value: 1084, color: '#3b82f6' },
+        { name: t('generalWaste'), value: 70, color: '#ec4899' }
     ];
 
     const totalWaste = donutData.reduce((sum, item) => sum + item.value, 0);
 
     // Horizontal bar chart data
     const barChartData = [
-        { name: 'Direct Production Waste (Cutting)', value: 950, color: '#3b82f6' },
-        { name: 'Direct Production Waste (Sewing)', value: 120, color: '#ec4899' },
-        { name: 'General Waste (Organic Waste)', value: 70, color: '#eab308' },
-        { name: 'General Waste (Confused)', value: 25, color: '#14b8a6' }
+        { name: t('directProductionWasteCutting'), value: 950, color: '#3b82f6' },
+        { name: t('directProductionWasteSewing'), value: 120, color: '#ec4899' },
+        { name: t('generalWasteOrganicWaste'), value: 70, color: '#eab308' },
+        { name: t('generalWasteConfused'), value: 25, color: '#14b8a6' }
     ];
 
     const maxBarValue = Math.max(...barChartData.map(d => d.value));
@@ -206,7 +208,7 @@ const Waste = ({ onBack }) => {
                     fill="#6b7280"
                     fontWeight="600"
                 >
-                    Quantity (kg)
+                    {t('quantityKg')}
                 </text>
             </svg>
         );
@@ -264,7 +266,7 @@ const Waste = ({ onBack }) => {
                     fontWeight="600"
                     transform={`rotate(-90, 15, ${height / 2})`}
                 >
-                    Waste (kg)
+                    {t('wasteKg')}
                 </text>
                 
                 {/* X-axis */}
@@ -286,7 +288,7 @@ const Waste = ({ onBack }) => {
                     fill="#6b7280"
                     fontWeight="600"
                 >
-                    Date
+                    {t('date')}
                 </text>
             </svg>
         );
@@ -304,21 +306,21 @@ const Waste = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Waste Product Analytics</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('wasteProductAnalytics')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -335,41 +337,34 @@ const Waste = ({ onBack }) => {
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                             >
                                 <Plus size={16} />
-                                Add Waste
+                                {t('addWaste')}
                             </button>
                             <button
                                 onClick={handleUseWaste}
                                 className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
                             >
                                 <Plus size={16} />
-                                Use Waste
+                                {t('useWaste')}
                             </button>
                             <button
                                 onClick={handleExport}
                                 className="px-4 py-2 bg-slate-600 text-white rounded-lg font-semibold hover:bg-slate-700 transition-colors flex items-center gap-2"
                             >
                                 <Download size={16} />
-                                Export
+                                {t('export')}
                             </button>
                             <button
                                 onClick={handleExportPDF}
                                 className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors flex items-center gap-2"
                             >
                                 <FileText size={16} />
-                                Export as PDF
-                            </button>
-                            <button
-                                onClick={handleAddWaste}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
-                            >
-                                <Plus size={16} />
-                                Add Waste
+                                {t('exportAsPDF')}
                             </button>
                         </div>
 
                         {/* Date Range Selector */}
                         <div className="flex items-center gap-3 mb-6">
-                            <span className="text-slate-700 font-semibold">From</span>
+                            <span className="text-slate-700 font-semibold">{t('from')}</span>
                             <div className="relative">
                                 <input
                                     type="date"
@@ -379,7 +374,7 @@ const Waste = ({ onBack }) => {
                                 />
                                 <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
                             </div>
-                            <span className="text-slate-700 font-semibold">To</span>
+                            <span className="text-slate-700 font-semibold">{t('to')}</span>
                             <div className="relative">
                                 <input
                                     type="date"
@@ -393,13 +388,13 @@ const Waste = ({ onBack }) => {
                                 onClick={handleApply}
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                             >
-                                Apply
+                                {t('apply')}
                             </button>
                             <button
                                 onClick={handleClear}
                                 className="px-4 py-2 bg-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-400 transition-colors"
                             >
-                                Clear
+                                {t('clear')}
                             </button>
                         </div>
 

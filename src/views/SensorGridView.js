@@ -1,9 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Wind, Thermometer, Droplets } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const SensorGridView = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleBack = () => {
         if (onBack) {
@@ -20,11 +22,11 @@ const SensorGridView = ({ onBack }) => {
                 <button 
                     onClick={handleBack} 
                     className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
-                    aria-label="Go back"
+                    aria-label={t('goBack')}
                 >
-                    <ArrowLeft size={16} /> Back
+                    <ArrowLeft size={16} /> {t('back')}
                 </button>
-                <h1 className="text-xl md:text-2xl font-bold text-slate-800 flex-1">Air Quality Sensors</h1>
+                <h1 className="text-xl md:text-2xl font-bold text-slate-800 flex-1">{t('airQualitySensors')}</h1>
             </div>
 
             {/* Main Content */}
@@ -38,20 +40,20 @@ const SensorGridView = ({ onBack }) => {
                                         <Wind size={24} />
                                     </div>
                                     <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-bold">
-                                        Online
+                                        {t('online')}
                                     </span>
                                 </div>
-                                <h3 className="font-bold text-lg mb-4">Sensor Node #{s}</h3>
+                                <h3 className="font-bold text-lg mb-4">{t('sensorNode')} #{s}</h3>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="bg-slate-50 p-3 rounded-lg text-center">
                                         <Thermometer className="mx-auto text-red-400 mb-1" size={20} />
                                         <div className="text-xl font-bold">24°C</div>
-                                        <div className="text-xs text-gray-500">Temp</div>
+                                        <div className="text-xs text-gray-500">{t('temp')}</div>
                                     </div>
                                     <div className="bg-slate-50 p-3 rounded-lg text-center">
                                         <Droplets className="mx-auto text-blue-400 mb-1" size={20} />
                                         <div className="text-xl font-bold">60%</div>
-                                        <div className="text-xs text-gray-500">Humidity</div>
+                                        <div className="text-xs text-gray-500">{t('humidity')}</div>
                                     </div>
                                 </div>
                             </div>

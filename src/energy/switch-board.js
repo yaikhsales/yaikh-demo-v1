@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Download, Plus, Zap, Leaf, Calculator, Eye } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const SwitchBoard = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // Sample switch board data
     const switchBoards = [
@@ -62,21 +64,21 @@ const SwitchBoard = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Switch Board List</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('switchBoardList')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -88,8 +90,8 @@ const SwitchBoard = ({ onBack }) => {
                     <div className="mb-6">
                         <div className="flex items-center justify-between mb-4">
                             <div>
-                                <h2 className="text-2xl font-bold text-slate-800 mb-2">Switch Boards</h2>
-                                <p className="text-slate-600">Monitor all registered switch boards and their connected equipment at a glance.</p>
+                                <h2 className="text-2xl font-bold text-slate-800 mb-2">{t('switchBoards')}</h2>
+                                <p className="text-slate-600">{t('monitorAllRegisteredSwitchBoards')}</p>
                             </div>
                             <div className="flex items-center gap-3">
                                 <button
@@ -97,7 +99,7 @@ const SwitchBoard = ({ onBack }) => {
                                     className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2"
                                 >
                                     <Download size={16} />
-                                    Import Excel
+                                    {t('importExcel')}
                                 </button>
                                 <button
                                     onClick={handleAddSwitchBoard}
@@ -182,7 +184,7 @@ const SwitchBoard = ({ onBack }) => {
 
                                 {/* Equipment Count */}
                                 <div className="text-center text-slate-600 mb-4">
-                                    {board.equipmentCount} equipments
+                                    {board.equipmentCount} {t('equipmentCount')}
                                 </div>
 
                                 {/* View Details Link */}
@@ -192,7 +194,7 @@ const SwitchBoard = ({ onBack }) => {
                                         className="text-blue-600 hover:text-blue-700 font-semibold text-sm flex items-center gap-1 mx-auto hover:underline"
                                     >
                                         <Eye size={14} />
-                                        View details
+                                        {t('viewDetails')}
                                     </button>
                                 </div>
                             </div>

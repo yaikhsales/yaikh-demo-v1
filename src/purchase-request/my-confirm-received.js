@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Eye } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const MyConfirmReceived = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('pending');
 
     // Sample data - pending requests
@@ -90,21 +92,21 @@ const MyConfirmReceived = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Confirm Received Product/Service</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('confirmReceivedProductService')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -113,7 +115,7 @@ const MyConfirmReceived = ({ onBack }) => {
             <div className="flex-1 p-6 overflow-auto">
                 <div className="max-w-7xl mx-auto bg-white rounded-lg border-2 border-dashed border-slate-300 p-6 min-h-full">
                     {/* Title */}
-                    <h2 className="text-xl font-bold text-slate-800 mb-6">Confirm Received Product/Service List</h2>
+                    <h2 className="text-xl font-bold text-slate-800 mb-6">{t('confirmReceivedProductServiceList')}</h2>
 
                     {/* Tabs */}
                     <div className="flex gap-2 mb-6">
@@ -125,7 +127,7 @@ const MyConfirmReceived = ({ onBack }) => {
                                     : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
                             }`}
                         >
-                            Pending
+                            {t('pending')}
                         </button>
                         <button
                             onClick={() => setActiveTab('my')}
@@ -135,7 +137,7 @@ const MyConfirmReceived = ({ onBack }) => {
                                     : 'bg-white text-slate-700 border border-slate-300 hover:bg-slate-50'
                             }`}
                         >
-                            My Received
+                            {t('myReceived')}
                         </button>
                     </div>
 
@@ -145,20 +147,20 @@ const MyConfirmReceived = ({ onBack }) => {
                             <thead className="bg-slate-50">
                                 <tr>
                                     <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">№</th>
-                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Code</th>
-                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Requested By</th>
-                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Department</th>
-                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Topic</th>
-                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">Request Date</th>
-                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">Detail</th>
-                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">Received</th>
+                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('code')}</th>
+                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('requestedBy')}</th>
+                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('department')}</th>
+                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('topic')}</th>
+                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('requestDate')}</th>
+                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('detail')}</th>
+                                    <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('received')}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {currentData.length === 0 ? (
                                     <tr>
                                         <td colSpan={8} className="text-center py-16 text-slate-500">
-                                            No approved requests found.
+                                            {t('noApprovedRequestsFound')}
                                         </td>
                                     </tr>
                                 ) : (
@@ -176,7 +178,7 @@ const MyConfirmReceived = ({ onBack }) => {
                                                     className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors flex items-center gap-1 mx-auto"
                                                 >
                                                     <Eye size={12} />
-                                                    Detail
+                                                    {t('detail')}
                                                 </button>
                                             </td>
                                             <td className="px-4 py-4 border border-slate-200 text-center">
@@ -185,10 +187,10 @@ const MyConfirmReceived = ({ onBack }) => {
                                                         onClick={() => handleReceived(req.code)}
                                                         className="bg-green-600 text-white px-4 py-2 rounded text-xs font-semibold hover:bg-green-700 transition-colors"
                                                     >
-                                                        Received
+                                                        {t('received')}
                                                     </button>
                                                 ) : (
-                                                    <span className="text-green-600 font-semibold text-sm">Confirmed</span>
+                                                    <span className="text-green-600 font-semibold text-sm">{t('confirmed')}</span>
                                                 )}
                                             </td>
                                         </tr>
