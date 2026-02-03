@@ -1,7 +1,9 @@
 import React from 'react';
 import ModuleCard from './ModuleCard';
+import { useTranslation } from '../translate/TranslationContext';
 
 const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModuleClick, isDropdownOpen = false, isLightOn = false, isAdministration = false, isOperations = false, theme = 'normal' }) => {
+  const { translateModuleTitle } = useTranslation();
   // Check if this group should have orange styling (QA, Internal Logistics/FC, Production, DT Sync)
   const isOrangeGroup = group.id === 'qa' || group.id === 'internal-logistics' || group.id === 'prod' || group.id === 'dtsync';
   // Check if this group should have white styling (PRE PRO, Production Materials)
@@ -12,7 +14,7 @@ const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModule
       {/* Sub Label - Always show frame, even if title is empty - Big label size matching QA but rounded */}
       <div className="mb-6 flex justify-center h-[38px] items-center">
         <div className={`w-full text-center py-2 rounded-full uppercase tracking-widest text-sm font-bold h-[38px] flex items-center justify-center transition-all duration-300 ${isDropdownOpen ? 'bg-slate-800/60 backdrop-blur-md border border-slate-600 shadow-xl' : 'glass-effect-strong shadow-xl hover:shadow-2xl'} ${group.title ? 'text-white' : 'text-transparent'}`}>
-            {group.title || ''}
+            {group.title ? translateModuleTitle(group.title) : ''}
         </div>
       </div>
       

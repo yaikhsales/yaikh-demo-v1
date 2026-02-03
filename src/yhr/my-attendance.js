@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Search, Filter, ChevronDown } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const MyAttendance = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
     const [fromDate, setFromDate] = useState('2025-12-01');
     const [toDate, setToDate] = useState('2025-12-23');
@@ -122,23 +124,23 @@ const MyAttendance = ({ onBack }) => {
                             aria-label="Go back"
                         >
                             <ArrowLeft size={18} className="inline mr-2" />
-                            Back
+                            {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
                     <div className="text-center">
-                        <h1 className="text-xl md:text-2xl font-bold text-blue-900 leading-tight">TEXLINK TECHNOLOGIES CO., LTD.</h1>
-                        <p className="text-sm md:text-base text-slate-600 mt-1">បញ្ជីស្រង់វត្តមានប្រចាំថ្ងៃ</p>
+                        <h1 className="text-xl md:text-2xl font-bold text-blue-900 leading-tight">{t('texlinkTechnologies')}</h1>
+                        <p className="text-sm md:text-base text-slate-600 mt-1">{t('dailyAttendanceList')}</p>
                     </div>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
@@ -161,7 +163,7 @@ const MyAttendance = ({ onBack }) => {
                         <Search size={18} className="text-slate-400" />
                         <input
                             type="text"
-                            placeholder="Search by ID or Name..."
+                            placeholder={t('searchByIDOrName')}
                             className="flex-1 bg-transparent outline-none text-slate-700 placeholder:text-slate-400"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -171,11 +173,11 @@ const MyAttendance = ({ onBack }) => {
                         onClick={handleSearch}
                         className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
                     >
-                        Search
+                        {t('search')}
                     </button>
                 </div>
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">From</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('from')}</label>
                     <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-lg px-3 py-2">
                         <input
                             type="date"
@@ -184,7 +186,7 @@ const MyAttendance = ({ onBack }) => {
                             className="bg-transparent outline-none text-slate-700 text-sm"
                         />
                     </div>
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">to</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('to')}</label>
                     <div className="flex items-center gap-2 bg-white border border-slate-300 rounded-lg px-3 py-2">
                         <input
                             type="date"
@@ -198,7 +200,7 @@ const MyAttendance = ({ onBack }) => {
                         className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2"
                     >
                         <Filter size={16} />
-                        Filter
+                        {t('filter')}
                     </button>
                 </div>
             </div>
@@ -210,14 +212,14 @@ const MyAttendance = ({ onBack }) => {
                         <thead className="bg-slate-50 sticky top-0 z-10">
                             <tr>
                                 {/* Employee Info Columns */}
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-center sticky left-0 bg-slate-50 z-20">NO</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-12 bg-slate-50 z-20 min-w-[120px]">ID</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-36 bg-slate-50 z-20 min-w-[60px]">Photo</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-48 bg-slate-50 z-20 min-w-[150px]">Name</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-60 bg-slate-50 z-20 min-w-[80px]">Sex</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-72 bg-slate-50 z-20 min-w-[150px]">Position</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-84 bg-slate-50 z-20 min-w-[120px]">Start Date</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-center sticky left-96 bg-slate-50 z-20 min-w-[80px]">Time</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-center sticky left-0 bg-slate-50 z-20">{t('no')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-12 bg-slate-50 z-20 min-w-[120px]">{t('employeeId')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-36 bg-slate-50 z-20 min-w-[60px]">{t('photo')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-48 bg-slate-50 z-20 min-w-[150px]">{t('name')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-60 bg-slate-50 z-20 min-w-[80px]">{t('sex')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-72 bg-slate-50 z-20 min-w-[150px]">{t('position')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-84 bg-slate-50 z-20 min-w-[120px]">{t('startDate')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-center sticky left-96 bg-slate-50 z-20 min-w-[80px]">{t('time')}</th>
                                 
                                 {/* Date Columns */}
                                 {dates.map((date, idx) => (

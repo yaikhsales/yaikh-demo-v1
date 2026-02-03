@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, UtensilsCrossed, Calendar, Users, DollarSign, FileText, CheckCircle } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Canteen = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -109,20 +111,20 @@ const Canteen = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-cyan-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Canteen Meal Management</h1>
+                        <h1 className="text-lg font-bold">{t('canteenMealManagement')}</h1>
                     </div>
                 </div>
             </div>
@@ -135,12 +137,12 @@ const Canteen = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Users className="text-cyan-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -154,7 +156,7 @@ const Canteen = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -163,12 +165,12 @@ const Canteen = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -176,7 +178,7 @@ const Canteen = ({ onBack }) => {
                                         value={formData.department}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                                        placeholder="Department name"
+                                        placeholder={t('departmentName')}
                                     />
                                 </div>
                             </div>
@@ -186,13 +188,13 @@ const Canteen = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <UtensilsCrossed className="text-cyan-600" size={24} />
-                                Meal Details
+                                {t('mealDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Meal Date <span className="text-red-500">*</span>
+                                        {t('mealDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -205,7 +207,7 @@ const Canteen = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Meal Type <span className="text-red-500">*</span>
+                                        {t('mealType')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="mealType"
@@ -214,17 +216,17 @@ const Canteen = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Meal Type</option>
-                                        <option value="breakfast">Breakfast</option>
-                                        <option value="lunch">Lunch</option>
-                                        <option value="dinner">Dinner</option>
+                                        <option value="">{t('selectMealType')}</option>
+                                        <option value="breakfast">{t('breakfast')}</option>
+                                        <option value="lunch">{t('lunch')}</option>
+                                        <option value="dinner">{t('dinner')}</option>
                                     </select>
                                 </div>
                                 {formData.mealType && (
                                     <>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Meal Option <span className="text-red-500">*</span>
+                                                {t('mealOption')} <span className="text-red-500">*</span>
                                             </label>
                                             <select
                                                 name="mealOption"
@@ -233,7 +235,7 @@ const Canteen = ({ onBack }) => {
                                                 required
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                             >
-                                                <option value="">Select Meal</option>
+                                                <option value="">{t('selectMeal')}</option>
                                                 {mealOptions[formData.mealType]?.map((option, idx) => (
                                                     <option key={idx} value={option.name}>
                                                         {option.name} - ${option.price.toFixed(2)}
@@ -243,7 +245,7 @@ const Canteen = ({ onBack }) => {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Quantity <span className="text-red-500">*</span>
+                                                {t('quantity')} <span className="text-red-500">*</span>
                                             </label>
                                             <input
                                                 type="number"
@@ -259,7 +261,7 @@ const Canteen = ({ onBack }) => {
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <DollarSign size={14} />
-                                                Unit Price
+                                                {t('unitPrice')}
                                             </label>
                                             <input
                                                 type="text"
@@ -273,7 +275,7 @@ const Canteen = ({ onBack }) => {
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <DollarSign size={14} />
-                                                Total Amount
+                                                {t('totalAmount')}
                                             </label>
                                             <input
                                                 type="text"
@@ -292,7 +294,7 @@ const Canteen = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <CheckCircle className="text-cyan-600" size={24} />
-                                Dietary Restrictions & Preferences
+                                {t('dietaryRestrictionsPreferences')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {[
@@ -314,7 +316,7 @@ const Canteen = ({ onBack }) => {
                                             onChange={() => handleCheckboxChange(restriction)}
                                             className="w-4 h-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500"
                                         />
-                                        <span className="text-sm text-gray-700">{restriction}</span>
+                                        <span className="text-sm text-gray-700">{t(restriction.toLowerCase().replace(/\s+/g, '')) || restriction}</span>
                                     </label>
                                 ))}
                             </div>
@@ -324,12 +326,12 @@ const Canteen = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-cyan-600" size={24} />
-                                Payment & Status
+                                {t('paymentStatus')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Payment Method <span className="text-red-500">*</span>
+                                        {t('paymentMethod')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="paymentMethod"
@@ -338,16 +340,16 @@ const Canteen = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Payment Method</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="Meal Card">Meal Card</option>
-                                        <option value="Monthly Deduction">Monthly Deduction</option>
-                                        <option value="Company Subsidy">Company Subsidy</option>
+                                        <option value="">{t('selectPaymentMethod')}</option>
+                                        <option value="Cash">{t('cash')}</option>
+                                        <option value="Meal Card">{t('mealCard')}</option>
+                                        <option value="Monthly Deduction">{t('monthlyDeduction')}</option>
+                                        <option value="Company Subsidy">{t('companySubsidy')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Status <span className="text-red-500">*</span>
+                                        {t('status')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="status"
@@ -356,17 +358,17 @@ const Canteen = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     >
-                                        <option value="pending">Pending</option>
-                                        <option value="confirmed">Confirmed</option>
-                                        <option value="prepared">Prepared</option>
-                                        <option value="collected">Collected</option>
-                                        <option value="cancelled">Cancelled</option>
+                                        <option value="pending">{t('pending')}</option>
+                                        <option value="confirmed">{t('confirmed')}</option>
+                                        <option value="prepared">{t('prepared')}</option>
+                                        <option value="collected">{t('collected')}</option>
+                                        <option value="cancelled">{t('cancelled')}</option>
                                     </select>
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <FileText size={14} />
-                                        Special Requests
+                                        {t('specialRequests')}
                                     </label>
                                     <textarea
                                         name="specialRequests"
@@ -374,7 +376,7 @@ const Canteen = ({ onBack }) => {
                                         onChange={handleChange}
                                         rows="3"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                                        placeholder="Any special requests or instructions for the meal"
+                                        placeholder={t('anySpecialRequests')}
                                     />
                                 </div>
                             </div>
@@ -383,7 +385,7 @@ const Canteen = ({ onBack }) => {
                         {/* Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -391,7 +393,7 @@ const Canteen = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                                placeholder="Any additional notes about the meal order"
+                                placeholder={t('anyAdditionalNotesMeal')}
                             />
                         </div>
 
@@ -402,14 +404,14 @@ const Canteen = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-cyan-600 text-white rounded-lg hover:bg-cyan-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Place Order
+                                {t('placeOrder')}
                             </button>
                         </div>
                     </form>

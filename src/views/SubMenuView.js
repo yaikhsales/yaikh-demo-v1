@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { IconRenderer } from '../components/IconRenderer';
+import { useTranslation } from '../translate/TranslationContext';
 
 // Mapping function to match card titles to sub-icon image filenames
 const getSubIconImage = (title) => {
@@ -206,7 +207,7 @@ const getSubIconImage = (title) => {
 };
 
 // Render card component (extracted for reuse)
-const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal', isAccountant = false, isPurchaseRequest = false) => {
+const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal', isAccountant = false, isPurchaseRequest = false, translateModuleTitle = (title) => title) => {
     const subIconImage = getSubIconImage(card.title);
     // For E-Government, use the image URL directly from card.image (external URL)
     // If card.image is provided and starts with modules-image, assets/fc, assets/yqms, or is an external URL, use it directly
@@ -432,7 +433,7 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                 })()}
             </div>
             <span className={`font-bold text-center px-1 ${isYQMSOrFC && isCompact ? 'leading-[1.1]' : 'leading-tight'} ${textSize} break-words w-full flex-shrink-0 ${textColorClass || (card.color && card.color.includes('text-white') ? 'text-white' : card.color && card.color.includes('text-black') ? 'text-black' : 'text-slate-800')}`} style={{ wordWrap: 'break-word', overflowWrap: 'break-word', display: 'block', maxHeight: isYQMSOrFC && isCompact ? '36px' : 'none', overflow: 'hidden' }}>
-                {card.title}
+                {translateModuleTitle(card.title)}
             </span>
         </CardComponent>
     );
@@ -444,6 +445,7 @@ const SubMenuView = () => {
     const { state } = useLocation();
     const { title = 'Submenu', cards = [], isGrouped = false } = state || {};
     const theme = 'normal'; // Default theme
+    const { translateModuleTitle, t } = useTranslation();
     
     // Determine if cards is grouped structure
     const isGroupedStructure = isGrouped || (cards && cards.grouped === true);
@@ -488,7 +490,7 @@ const SubMenuView = () => {
                         onClick={() => navigate(-1)}
                         className={`flex items-center text-white hover:text-cyan-400 gap-2 font-bold ${theme === 'normal' ? 'bg-slate-800/70' : 'bg-slate-800/50'} ${isGroupedStructure ? 'px-3 py-1.5 text-sm' : 'px-4 py-2'} rounded-lg backdrop-blur-sm transition-colors`}
                     >
-                        <ArrowLeft size={isGroupedStructure ? 16 : 20} /> Back
+                        <ArrowLeft size={isGroupedStructure ? 16 : 20} /> {t('back')}
                     </button>
                     <button
                         onClick={() => navigate('/')}
@@ -503,7 +505,7 @@ const SubMenuView = () => {
                     </button>
                 </div>
                 <h2 className={`text-white font-bold uppercase tracking-wider drop-shadow-lg ${isGroupedStructure ? 'text-xl' : 'text-3xl'}`}>
-                    {title}
+                    {translateModuleTitle(title)}
                 </h2>
             </div>
             {hasNoData ? (
@@ -545,7 +547,7 @@ const SubMenuView = () => {
                                         : 'flex flex-col gap-0.5 items-center'
                                     }>
                                         {group.cards.map((card, idx) => {
-                                            return renderCard(card, idx, navigate, moduleId, isTrainingModule, true, theme);
+                                            return renderCard(card, idx, navigate, moduleId, isTrainingModule, true, theme, false, false, translateModuleTitle);
                                         })}
                                     </div>
                                 </div>
@@ -560,7 +562,7 @@ const SubMenuView = () => {
                         {/* Top row: First 3 cards (Verify PR, Approval PR, Pay PR) */}
                         {cards.slice(0, 3).map((card, idx) => (
                             <div key={idx} className="w-full max-w-[280px]">
-                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, true)}
+                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, true, false, translateModuleTitle)}
                             </div>
                         ))}
                         
@@ -568,12 +570,12 @@ const SubMenuView = () => {
                         <div className="w-full max-w-[280px] flex flex-col gap-6">
                             {cards[3] && (
                                 <div className="w-full">
-                                    {renderCard(cards[3], 3, navigate, moduleId, isTrainingModule, false, theme, true)}
+                                    {renderCard(cards[3], 3, navigate, moduleId, isTrainingModule, false, theme, true, false, translateModuleTitle)}
                                 </div>
                             )}
                             {cards[6] && (
                                 <div className="w-full">
-                                    {renderCard(cards[6], 6, navigate, moduleId, isTrainingModule, false, theme, true)}
+                                    {renderCard(cards[6], 6, navigate, moduleId, isTrainingModule, false, theme, true, false, translateModuleTitle)}
 
                                 </div>
                             )}
@@ -582,14 +584,14 @@ const SubMenuView = () => {
                         {/* Second row, Column 2: TOI */}
                         {cards[4] && (
                             <div className="w-full max-w-[280px]">
-                                {renderCard(cards[4], 4, navigate, moduleId, isTrainingModule, false, theme, true)}
+                                {renderCard(cards[4], 4, navigate, moduleId, isTrainingModule, false, theme, true, false, translateModuleTitle)}
                             </div>
                         )}
                         
                         {/* Second row, Column 3: Factory Accounting */}
                         {cards[5] && (
                             <div className="w-full max-w-[280px]">
-                                {renderCard(cards[5], 5, navigate, moduleId, isTrainingModule, false, theme, true)}
+                                {renderCard(cards[5], 5, navigate, moduleId, isTrainingModule, false, theme, true, false, translateModuleTitle)}
                             </div>
                         )}
                     </div>
@@ -601,14 +603,14 @@ const SubMenuView = () => {
                         {/* Top row: First 3 cards */}
                         {cards.slice(0, 3).map((card, idx) => (
                             <div key={idx} className="w-full max-w-[280px]">
-                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, false, true)}
+                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, false, true, translateModuleTitle)}
                             </div>
                         ))}
                         
                         {/* Bottom row: Last 3 cards */}
                         {cards.slice(3, 6).map((card, idx) => (
                             <div key={idx + 3} className="w-full max-w-[280px]">
-                                {renderCard(card, idx + 3, navigate, moduleId, isTrainingModule, false, theme, false, true)}
+                                {renderCard(card, idx + 3, navigate, moduleId, isTrainingModule, false, theme, false, true, translateModuleTitle)}
                             </div>
                         ))}
                     </div>
@@ -616,7 +618,7 @@ const SubMenuView = () => {
             ) : (
                 // Regular flat layout
                 <div className="flex gap-8 flex-wrap justify-center">
-                    {cards.map((card, idx) => renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme))}
+                    {cards.map((card, idx) => renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, false, false, translateModuleTitle))}
                 </div>
             )}
         </div>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, User, Briefcase, FileText, Calendar, CheckSquare, Building } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Onboarding = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         employeeName: '',
         employeeId: '',
@@ -68,20 +70,20 @@ const Onboarding = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-purple-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Employee Onboarding</h1>
+                        <h1 className="text-lg font-bold">{t('employeeOnboarding')}</h1>
                     </div>
                 </div>
             </div>
@@ -94,12 +96,12 @@ const Onboarding = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <User className="text-purple-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -108,12 +110,12 @@ const Onboarding = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -127,7 +129,7 @@ const Onboarding = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Email Address <span className="text-red-500">*</span>
+                                        {t('emailAddress')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="email"
@@ -136,12 +138,12 @@ const Onboarding = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="employee@company.com"
+                                        placeholder={t('employeeAtCompany')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Phone Number <span className="text-red-500">*</span>
+                                        {t('phoneNumber')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="tel"
@@ -160,12 +162,12 @@ const Onboarding = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Briefcase className="text-purple-600" size={24} />
-                                Job Details
+                                {t('jobDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department <span className="text-red-500">*</span>
+                                        {t('department')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="department"
@@ -174,18 +176,18 @@ const Onboarding = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Department</option>
+                                        <option value="">{t('selectDepartment')}</option>
                                         <option value="IT">IT</option>
                                         <option value="HR">HR</option>
-                                        <option value="Finance">Finance</option>
-                                        <option value="Operations">Operations</option>
-                                        <option value="Production">Production</option>
-                                        <option value="QA">QA</option>
+                                        <option value="Finance">{t('financial')}</option>
+                                        <option value="Operations">{t('operations')}</option>
+                                        <option value="Production">{t('production')}</option>
+                                        <option value="QA">{t('qa')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position <span className="text-red-500">*</span>
+                                        {t('position')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -194,12 +196,12 @@ const Onboarding = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Job title"
+                                        placeholder={t('jobTitle')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Reporting Manager <span className="text-red-500">*</span>
+                                        {t('reportingManager')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -208,13 +210,13 @@ const Onboarding = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Manager name"
+                                        placeholder={t('managerName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Start Date <span className="text-red-500">*</span>
+                                        {t('startDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -227,7 +229,7 @@ const Onboarding = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employment Type <span className="text-red-500">*</span>
+                                        {t('employmentType')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="employmentType"
@@ -236,17 +238,17 @@ const Onboarding = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Type</option>
-                                        <option value="Full-time">Full-time</option>
-                                        <option value="Part-time">Part-time</option>
-                                        <option value="Contract">Contract</option>
-                                        <option value="Temporary">Temporary</option>
+                                        <option value="">{t('selectType')}</option>
+                                        <option value="Full-time">{t('fullTime')}</option>
+                                        <option value="Part-time">{t('partTime')}</option>
+                                        <option value="Contract">{t('contract')}</option>
+                                        <option value="Temporary">{t('temporary')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Building size={14} />
-                                        Work Location <span className="text-red-500">*</span>
+                                        {t('workLocation')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -255,12 +257,12 @@ const Onboarding = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                        placeholder="Office location"
+                                        placeholder={t('officeLocation')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Work Schedule
+                                        {t('workSchedule')}
                                     </label>
                                     <select
                                         name="workSchedule"
@@ -268,16 +270,16 @@ const Onboarding = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Schedule</option>
-                                        <option value="Monday-Friday 8AM-5PM">Monday-Friday 8AM-5PM</option>
-                                        <option value="Monday-Saturday 8AM-5PM">Monday-Saturday 8AM-5PM</option>
-                                        <option value="Shift Work">Shift Work</option>
-                                        <option value="Flexible">Flexible</option>
+                                        <option value="">{t('selectSchedule')}</option>
+                                        <option value="Monday-Friday 8AM-5PM">{t('mondayFriday')}</option>
+                                        <option value="Monday-Saturday 8AM-5PM">{t('mondaySaturday')}</option>
+                                        <option value="Shift Work">{t('shiftWork')}</option>
+                                        <option value="Flexible">{t('flexible')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Salary
+                                        {t('salary')}
                                     </label>
                                     <input
                                         type="number"
@@ -295,12 +297,12 @@ const Onboarding = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <CheckSquare className="text-purple-600" size={24} />
-                                Benefits & Equipment
+                                {t('benefitsEquipment')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Benefits Package
+                                        {t('benefitsPackage')}
                                     </label>
                                     <div className="space-y-2">
                                         {['Health Insurance', 'Dental Insurance', 'Life Insurance', 'Retirement Plan', 'Paid Time Off', 'Transportation Allowance', 'Meal Allowance'].map(benefit => (
@@ -311,14 +313,14 @@ const Onboarding = ({ onBack }) => {
                                                     onChange={() => handleCheckboxChange('benefits', benefit)}
                                                     className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                                                 />
-                                                <span className="text-sm text-gray-700">{benefit}</span>
+                                                <span className="text-sm text-gray-700">{t(benefit.toLowerCase().replace(/\s+/g, '')) || benefit}</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Equipment & Access
+                                        {t('equipmentAccess')}
                                     </label>
                                     <div className="space-y-2">
                                         {['Laptop', 'Desktop Computer', 'Mobile Phone', 'Email Account', 'System Access', 'ID Card', 'Access Card', 'Uniform'].map(equipment => (
@@ -329,7 +331,7 @@ const Onboarding = ({ onBack }) => {
                                                     onChange={() => handleCheckboxChange('equipment', equipment)}
                                                     className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                                                 />
-                                                <span className="text-sm text-gray-700">{equipment}</span>
+                                                <span className="text-sm text-gray-700">{t(equipment.toLowerCase().replace(/\s+/g, '')) || equipment}</span>
                                             </label>
                                         ))}
                                     </div>
@@ -341,12 +343,12 @@ const Onboarding = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <FileText className="text-purple-600" size={24} />
-                                Documents & Checklist
+                                {t('documentsChecklist')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Required Documents
+                                        {t('requiredDocuments')}
                                     </label>
                                     <div className="space-y-2">
                                         {['ID Card Copy', 'Resume/CV', 'Educational Certificates', 'Previous Employment Letter', 'Medical Certificate', 'Bank Account Details', 'Emergency Contact Form'].map(doc => (
@@ -357,14 +359,14 @@ const Onboarding = ({ onBack }) => {
                                                     onChange={() => handleCheckboxChange('documents', doc)}
                                                     className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                                                 />
-                                                <span className="text-sm text-gray-700">{doc}</span>
+                                                <span className="text-sm text-gray-700">{t(doc.toLowerCase().replace(/[\/\s]+/g, '')) || doc}</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                        Onboarding Checklist
+                                        {t('onboardingChecklist')}
                                     </label>
                                     <div className="space-y-3">
                                         <label className="flex items-center gap-2 cursor-pointer">
@@ -375,10 +377,10 @@ const Onboarding = ({ onBack }) => {
                                                 onChange={handleChange}
                                                 className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                                             />
-                                            <span className="text-sm text-gray-700">Orientation Completed</span>
+                                            <span className="text-sm text-gray-700">{t('orientationCompleted')}</span>
                                         </label>
                                         <div className="ml-6">
-                                            <label className="block text-xs text-gray-600 mb-1">Orientation Date</label>
+                                            <label className="block text-xs text-gray-600 mb-1">{t('orientationDate')}</label>
                                             <input
                                                 type="date"
                                                 name="orientationDate"
@@ -395,7 +397,7 @@ const Onboarding = ({ onBack }) => {
                                                 onChange={handleChange}
                                                 className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                                             />
-                                            <span className="text-sm text-gray-700">Training Completed</span>
+                                            <span className="text-sm text-gray-700">{t('trainingCompleted')}</span>
                                         </label>
                                         <label className="flex items-center gap-2 cursor-pointer">
                                             <input
@@ -405,7 +407,7 @@ const Onboarding = ({ onBack }) => {
                                                 onChange={handleChange}
                                                 className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                                             />
-                                            <span className="text-sm text-gray-700">System Access Granted</span>
+                                            <span className="text-sm text-gray-700">{t('systemAccessGranted')}</span>
                                         </label>
                                     </div>
                                 </div>
@@ -415,7 +417,7 @@ const Onboarding = ({ onBack }) => {
                         {/* Additional Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -423,7 +425,7 @@ const Onboarding = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                                placeholder="Any additional notes or special instructions"
+                                placeholder={t('anyAdditionalNotes')}
                             />
                         </div>
 
@@ -434,14 +436,14 @@ const Onboarding = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Complete Onboarding
+                                {t('completeOnboarding')}
                             </button>
                         </div>
                     </form>

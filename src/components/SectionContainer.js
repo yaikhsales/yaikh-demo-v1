@@ -1,7 +1,9 @@
 import React from 'react';
 import ColumnGroup from './ColumnGroup';
+import { useTranslation } from '../translate/TranslationContext';
 
 const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 'default', onBotModuleClick, isDropdownOpen = false, isLightOn = false, theme = 'normal' }) => {
+  const { translateModuleTitle, t } = useTranslation();
   // Central Section (Management Dashboard)
   if (section.isCentral) {
       return (
@@ -19,7 +21,7 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
 
              {/* Big Label - Aligned at same level as other sections */}
              <div className={`w-full text-white font-bold text-center py-2 rounded-lg mb-6 uppercase tracking-widest text-sm h-[38px] flex items-center justify-center transition-all duration-300 ${isDropdownOpen ? 'bg-slate-600/40 backdrop-blur-md border border-slate-500/50 shadow-lg' : 'glass-effect rounded-2xl shadow-xl hover:shadow-2xl'}`}>
-                {section.title}
+                {translateModuleTitle(section.title)}
              </div>
              
              {/* Column or Separator */}
@@ -52,7 +54,7 @@ const SectionContainer = ({ section, onModuleClick, onGMChatClick, botVersion = 
     <div className={`flex flex-col mx-2 ${isDropdownOpen ? '' : 'apple-fade-in-delay-2'}`}>
        {/* Big Section Label (Spans all children) */}
        <div className={`w-full text-white font-bold text-center py-2 rounded-lg mb-6 uppercase tracking-widest text-sm h-[38px] flex items-center justify-center transition-all duration-300 ${isDropdownOpen ? 'bg-slate-800/60 backdrop-blur-md border border-slate-600 shadow-xl' : 'glass-effect-strong rounded-2xl shadow-xl hover:shadow-2xl'}`}>
-          {section.title}
+          {translateModuleTitle(section.title)}
        </div>
        
        {/* Container for Columns */}

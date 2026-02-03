@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 // Mapping function to match module titles to sub-icon image filenames
 const getSalaryBillIconImage = (title) => {
@@ -16,6 +17,7 @@ const getSalaryBillIconImage = (title) => {
 
 const SalaryBill = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
 
     const handleBack = () => {
         if (onBack) {
@@ -80,9 +82,9 @@ const SalaryBill = ({ onBack }) => {
                             aria-label="Back"
                         >
                             <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
-                            <span className="font-medium hidden sm:inline">Back</span>
+                            <span className="font-medium hidden sm:inline">{t('back')}</span>
                         </button>
-                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 px-2 sm:px-4">Salary Bill</h1>
+                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 px-2 sm:px-4">{t('salaryBill')}</h1>
                         <button
                             onClick={() => navigate('/')}
                             className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
@@ -155,7 +157,7 @@ const SalaryBill = ({ onBack }) => {
                                     
                                     {/* Text Label */}
                                     <span className="relative z-10 font-bold text-sm sm:text-base text-center leading-tight drop-shadow-md">
-                                        {module.title}
+                                        {translateModuleTitle(module.title)}
                                     </span>
                                 </button>
                             );

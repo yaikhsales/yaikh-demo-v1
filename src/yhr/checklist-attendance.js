@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, HelpCircle } from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const ChecklistAttendance = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [sectionName, setSectionName] = useState('All Sc');
     const [fromDate, setFromDate] = useState('2025-12-01');
     const [toDate, setToDate] = useState('2025-12-23');
@@ -158,7 +160,7 @@ const ChecklistAttendance = ({ onBack }) => {
                     disabled={currentPage === 1}
                     className="px-3 py-1 border border-slate-300 rounded text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    &lt;&lt; Previous
+                    &lt;&lt; {t('previous')}
                 </button>
                 {pages.map((page, idx) => (
                     <button
@@ -179,7 +181,7 @@ const ChecklistAttendance = ({ onBack }) => {
                     disabled={currentPage === totalPages}
                     className="px-3 py-1 border border-slate-300 rounded text-sm font-semibold hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Next &gt;&gt;
+                    {t('next')} &gt;&gt;
                 </button>
             </div>
         );
@@ -232,23 +234,23 @@ const ChecklistAttendance = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors flex-shrink-0 bg-slate-100"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={18} className="text-slate-700" /> Back
+                            <ArrowLeft size={18} className="text-slate-700" /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
                     <div className="text-center">
-                        <h1 className="text-xl md:text-2xl font-bold text-slate-800 leading-tight">TEXLINK TECHNOLOGIES CO., LTD.</h1>
-                        <p className="text-sm md:text-base text-slate-600 mt-1">បញ្ជីស្រង់វត្តមានប្រចាំថ្ងៃតាមស្តេខទម្រង់មុខ</p>
+                        <h1 className="text-xl md:text-2xl font-bold text-slate-800 leading-tight">{t('texlinkTechnologies')}</h1>
+                        <p className="text-sm md:text-base text-slate-600 mt-1">{t('dailyAttendanceList')}</p>
                     </div>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
@@ -257,7 +259,7 @@ const ChecklistAttendance = ({ onBack }) => {
             {/* Filter and Search Controls */}
             <div className="bg-slate-50 p-4 border-b flex items-center gap-4 flex-shrink-0">
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">Section Name:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('sectionName')}:</label>
                     <select
                         value={sectionName}
                         onChange={(e) => setSectionName(e.target.value)}
@@ -270,7 +272,7 @@ const ChecklistAttendance = ({ onBack }) => {
                     </select>
                 </div>
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">From:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('from')}:</label>
                     <input
                         type="date"
                         value={fromDate}
@@ -279,7 +281,7 @@ const ChecklistAttendance = ({ onBack }) => {
                     />
                 </div>
                 <div className="flex items-center gap-2">
-                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">To:</label>
+                    <label className="text-sm font-semibold text-slate-700 whitespace-nowrap">{t('to')}:</label>
                     <input
                         type="date"
                         value={toDate}
@@ -291,13 +293,13 @@ const ChecklistAttendance = ({ onBack }) => {
                     onClick={handleFilter}
                     className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
                 >
-                    Filter
+                    {t('filter')}
                 </button>
                 <button
                     onClick={handleShowAttendance}
                     className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors text-sm"
                 >
-                    Show Attendance
+                    {t('showAttendance')}
                 </button>
             </div>
 
@@ -308,13 +310,13 @@ const ChecklistAttendance = ({ onBack }) => {
                         <thead className="bg-slate-50 sticky top-0 z-10">
                             <tr>
                                 {/* Employee Info Columns */}
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-0 bg-slate-50 z-20">NO</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-12 bg-slate-50 z-20">ID</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-24 bg-slate-50 z-20">Photo</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-36 bg-slate-50 z-20 min-w-[150px]">Name</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-48 bg-slate-50 z-20 min-w-[80px]">Sex</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-60 bg-slate-50 z-20 min-w-[200px]">Position</th>
-                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-72 bg-slate-50 z-20 min-w-[120px]">Start Date</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-0 bg-slate-50 z-20">{t('no')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-12 bg-slate-50 z-20">{t('employeeId')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-24 bg-slate-50 z-20">{t('photo')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-36 bg-slate-50 z-20 min-w-[150px]">{t('name')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-48 bg-slate-50 z-20 min-w-[80px]">{t('sex')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-60 bg-slate-50 z-20 min-w-[200px]">{t('position')}</th>
+                                <th className="px-3 py-2 border border-slate-200 text-slate-600 font-bold text-xs text-left sticky left-72 bg-slate-50 z-20 min-w-[120px]">{t('startDate')}</th>
                                 
                                 {/* Date Columns */}
                                 {dates.map((date, idx) => (
@@ -364,7 +366,7 @@ const ChecklistAttendance = ({ onBack }) => {
             {/* Pagination Footer */}
             <div className="bg-white border-t p-4 flex items-center justify-end gap-4 flex-shrink-0">
                 <div className="text-sm text-slate-600">
-                    Showing {startItem} to {endItem} of {totalEmployees} results
+                    {t('showing')} {startItem} {t('to')} {endItem} {t('of')} {totalEmployees} {t('results')}
                 </div>
                 {renderPagination()}
             </div>

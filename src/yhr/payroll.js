@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, DollarSign, Calculator, FileText, Calendar, Receipt } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Payroll = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -143,20 +145,20 @@ const Payroll = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-yellow-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Payroll Management</h1>
+                        <h1 className="text-lg font-bold">{t('payrollManagement')}</h1>
                     </div>
                 </div>
             </div>
@@ -169,12 +171,12 @@ const Payroll = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <FileText className="text-yellow-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -188,7 +190,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -197,12 +199,12 @@ const Payroll = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -210,12 +212,12 @@ const Payroll = ({ onBack }) => {
                                         value={formData.department}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                        placeholder="Department name"
+                                        placeholder={t('departmentName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position
+                                        {t('position')}
                                     </label>
                                     <input
                                         type="text"
@@ -223,13 +225,13 @@ const Payroll = ({ onBack }) => {
                                         value={formData.position}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                        placeholder="Job title"
+                                        placeholder={t('jobTitle')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Pay Period <span className="text-red-500">*</span>
+                                        {t('payPeriod')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="payPeriod"
@@ -238,16 +240,16 @@ const Payroll = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Period</option>
-                                        <option value="Monthly">Monthly</option>
-                                        <option value="Bi-weekly">Bi-weekly</option>
-                                        <option value="Weekly">Weekly</option>
+                                        <option value="">{t('selectPeriod')}</option>
+                                        <option value="Monthly">{t('monthly')}</option>
+                                        <option value="Bi-weekly">{t('biWeekly')}</option>
+                                        <option value="Weekly">{t('weekly')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Pay Date <span className="text-red-500">*</span>
+                                        {t('payDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -265,12 +267,12 @@ const Payroll = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-yellow-600" size={24} />
-                                Earnings
+                                {t('earnings')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Basic Salary <span className="text-red-500">*</span>
+                                        {t('basicSalary')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="number"
@@ -285,7 +287,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Transportation Allowance
+                                        {t('transportationAllowance')}
                                     </label>
                                     <input
                                         type="number"
@@ -299,7 +301,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Meal Allowance
+                                        {t('mealAllowance')}
                                     </label>
                                     <input
                                         type="number"
@@ -313,7 +315,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Housing Allowance
+                                        {t('housingAllowance')}
                                     </label>
                                     <input
                                         type="number"
@@ -327,7 +329,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Other Allowances
+                                        {t('otherAllowance')}
                                     </label>
                                     <input
                                         type="number"
@@ -346,12 +348,12 @@ const Payroll = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Calculator className="text-yellow-600" size={24} />
-                                Overtime
+                                {t('overtime')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Overtime Hours
+                                        {t('overtimeHours')}
                                     </label>
                                     <input
                                         type="number"
@@ -366,7 +368,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Overtime Rate (per hour)
+                                        {t('overtimeRate')} ({t('perHour')})
                                     </label>
                                     <input
                                         type="number"
@@ -381,7 +383,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Overtime Amount
+                                        {t('overtimeAmount')}
                                     </label>
                                     <input
                                         type="number"
@@ -399,12 +401,12 @@ const Payroll = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Receipt className="text-yellow-600" size={24} />
-                                Bonuses
+                                {t('bonuses')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Performance Bonus
+                                        {t('performanceBonus')}
                                     </label>
                                     <input
                                         type="number"
@@ -418,7 +420,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Attendance Bonus
+                                        {t('attendanceBonus')}
                                     </label>
                                     <input
                                         type="number"
@@ -432,7 +434,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Other Bonuses
+                                        {t('otherBonus')}
                                     </label>
                                     <input
                                         type="number"
@@ -451,12 +453,12 @@ const Payroll = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Calculator className="text-red-600" size={24} />
-                                Deductions
+                                {t('deductions')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Tax
+                                        {t('tax')}
                                     </label>
                                     <input
                                         type="number"
@@ -470,7 +472,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Social Security
+                                        {t('socialSecurity')}
                                     </label>
                                     <input
                                         type="number"
@@ -484,7 +486,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Health Insurance
+                                        {t('healthInsurance')}
                                     </label>
                                     <input
                                         type="number"
@@ -498,7 +500,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Other Deductions
+                                        {t('otherDeduction')}
                                     </label>
                                     <input
                                         type="number"
@@ -517,12 +519,12 @@ const Payroll = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-green-600" size={24} />
-                                Net Pay & Payment Details
+                                {t('netPayPaymentDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Net Pay <span className="text-red-500">*</span>
+                                        {t('netPay')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="number"
@@ -535,7 +537,7 @@ const Payroll = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Payment Method <span className="text-red-500">*</span>
+                                        {t('paymentMethod')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="paymentMethod"
@@ -544,16 +546,16 @@ const Payroll = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Method</option>
-                                        <option value="Bank Transfer">Bank Transfer</option>
-                                        <option value="Cash">Cash</option>
-                                        <option value="Check">Check</option>
-                                        <option value="Mobile Payment">Mobile Payment</option>
+                                        <option value="">{t('selectPaymentMethod')}</option>
+                                        <option value="Bank Transfer">{t('bankTransfer')}</option>
+                                        <option value="Cash">{t('cash')}</option>
+                                        <option value="Check">{t('check')}</option>
+                                        <option value="Mobile Payment">{t('mobilePayment')}</option>
                                     </select>
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Bank Account Number
+                                        {t('bankAccountNumber')}
                                     </label>
                                     <input
                                         type="text"
@@ -561,7 +563,7 @@ const Payroll = ({ onBack }) => {
                                         value={formData.bankAccount}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                        placeholder="Bank account number"
+                                        placeholder={t('bankAccountNumberPlaceholder')}
                                     />
                                 </div>
                             </div>
@@ -570,7 +572,7 @@ const Payroll = ({ onBack }) => {
                         {/* Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -578,7 +580,7 @@ const Payroll = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                                placeholder="Any additional notes about payroll"
+                                placeholder={t('anyAdditionalNotesPayroll')}
                             />
                         </div>
 
@@ -589,14 +591,14 @@ const Payroll = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Process Payroll
+                                {t('processPayroll')}
                             </button>
                         </div>
                     </form>

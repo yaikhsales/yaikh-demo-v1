@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { X, Upload, ChevronDown } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         type: initialData?.type || 'GA - Main',
         subject: initialData?.subject || '',
@@ -83,10 +85,11 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
             >
                 {/* Header */}
                 <div className="p-6 border-b flex justify-between items-center bg-white flex-shrink-0">
-                    <h2 className="text-xl font-bold text-slate-800">Support Ticket</h2>
+                    <h2 className="text-xl font-bold text-slate-800">{t('supportTicket')}</h2>
                     <button
                         onClick={onClose}
                         className="p-1.5 hover:bg-slate-100 rounded-full transition-colors"
+                        aria-label={t('close')}
                     >
                         <X size={20} className="text-slate-600" />
                     </button>
@@ -100,7 +103,7 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                             {/* Type Dropdown */}
                             <div>
                                 <label className="text-sm font-semibold text-gray-700 block mb-2">
-                                    Type
+                                    {t('type')}
                                 </label>
                                 <div className="relative">
                                     <select
@@ -125,14 +128,14 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                             {/* Subject Input */}
                             <div>
                                 <label className="text-sm font-semibold text-gray-700 block mb-2">
-                                    Subject
+                                    {t('subject')}
                                 </label>
                                 <input
                                     type="text"
                                     name="subject"
                                     value={formData.subject}
                                     onChange={handleInputChange}
-                                    placeholder="Type"
+                                    placeholder={t('type')}
                                     className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                 />
                             </div>
@@ -143,7 +146,7 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                             {/* Nature Dropdown */}
                             <div>
                                 <label className="text-sm font-semibold text-gray-700 block mb-2">
-                                    Nature
+                                    {t('nature')}
                                 </label>
                                 <div className="relative">
                                     <select
@@ -168,7 +171,7 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                             {/* Keyword Toggle */}
                             <div>
                                 <label className="text-sm font-semibold text-gray-700 block mb-2">
-                                    Keyword
+                                    {t('keyword')}
                                 </label>
                                 <div className="flex items-center h-[48px]">
                                     <label className="relative inline-flex items-center cursor-pointer">
@@ -188,14 +191,14 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                         {/* Details Textarea */}
                         <div>
                             <label className="text-sm font-semibold text-gray-700 block mb-2">
-                                Details
+                                {t('details')}
                             </label>
                             <textarea
                                 name="details"
                                 value={formData.details}
                                 onChange={handleInputChange}
                                 rows="6"
-                                placeholder="Write your thoughts here..."
+                                placeholder={t('writeYourThoughts')}
                                 className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none resize-y"
                             />
                         </div>
@@ -203,7 +206,7 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                         {/* Image Upload */}
                         <div>
                             <label className="text-sm font-semibold text-gray-700 block mb-2">
-                                Image
+                                {t('image')}
                             </label>
                             <input
                                 type="file"
@@ -240,10 +243,10 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                                     <>
                                         <Upload size={32} className="text-gray-400 mb-2" />
                                         <p className="text-sm font-medium text-gray-600 mb-1">
-                                            Upload image
+                                            {t('uploadImage')}
                                         </p>
                                         <p className="text-xs text-gray-500 text-center px-4">
-                                            Choose photo size should be less than <strong>5mb</strong> and should be in <strong>JPG, PNG, or GIF</strong> format.
+                                            {t('imageSizeWarning')} <strong>5mb</strong> {t('imageFormatWarning')} <strong>JPG, PNG, {t('or')} GIF</strong> {t('format')}.
                                         </p>
                                     </>
                                 )}
@@ -256,7 +259,7 @@ const SupportTicketForm = ({ onClose, onSubmit, initialData = null }) => {
                                 type="submit"
                                 className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-md"
                             >
-                                Submit
+                                {t('submit')}
                             </button>
                         </div>
                     </form>

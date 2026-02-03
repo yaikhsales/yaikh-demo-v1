@@ -10,11 +10,13 @@ import ImageViewer from './ImageViewer';
 import BookViewer from './BookViewer';
 import AboutUs from './AboutUs';
 import { useWindowSize, useIsMobile } from '../device-responsive/responsive';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Header = () => {
   const navigate = useNavigate();
   const { width } = useWindowSize();
   const isMobile = useIsMobile();
+  const { t, language, changeLanguage, getLanguageName } = useTranslation();
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [showImageViewer, setShowImageViewer] = useState(false);
   const [showPictureViewer, setShowPictureViewer] = useState(false);
@@ -25,7 +27,19 @@ const Header = () => {
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('AT');
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  
+  // Get current language name for display
+  const selectedLanguage = getLanguageName(language);
+  
+  // Get flag image based on current language
+  const getFlagImage = (langCode) => {
+    const flags = {
+      'en': 'https://flagcdn.com/w20/gb.png',
+      'km': 'https://flagcdn.com/w20/kh.png',
+      'zh': 'https://flagcdn.com/w20/cn.png'
+    };
+    return flags[langCode] || flags['en'];
+  };
 
   return (
     <>
@@ -184,8 +198,8 @@ const Header = () => {
                     }}
                 >
                     <img 
-                        src="https://flagcdn.com/w20/gb.png" 
-                        alt="English" 
+                        src={getFlagImage(language)} 
+                        alt={selectedLanguage} 
                         className="w-3 h-2.5 sm:w-4 sm:h-3 object-cover rounded"
                     />
                     <span className="text-xs sm:text-sm text-gray-700 hidden md:inline">{selectedLanguage}</span>
@@ -207,11 +221,11 @@ const Header = () => {
                                 <button
                                     key={lang.code}
                                     onClick={() => {
-                                        setSelectedLanguage(lang.name);
+                                        changeLanguage(lang.code);
                                         setShowLanguageDropdown(false);
                                     }}
                                     className={`w-full text-left px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-gray-50 text-xs sm:text-sm flex items-center gap-2 ${
-                                        selectedLanguage === lang.name ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-700'
+                                        language === lang.code ? 'bg-blue-50 text-blue-600 font-semibold' : 'text-gray-700'
                                     }`}
                                 >
                                     <img 
@@ -269,7 +283,7 @@ const Header = () => {
             <div className="p-4 space-y-2">
               {/* Mobile Menu Header */}
               <div className="flex items-center justify-between mb-4 pb-4 border-b">
-                <h3 className="font-bold text-gray-800">Menu</h3>
+                <h3 className="font-bold text-gray-800">{t('menu')}</h3>
                 <button onClick={() => setShowMobileMenu(false)} className="p-1 rounded hover:bg-gray-100">
                   <X size={20} />
                 </button>
@@ -282,77 +296,77 @@ const Header = () => {
                   className="w-full flex items-center gap-2 px-4 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-all font-medium"
                 >
                   <Video size={18} />
-                  <span>Video</span>
+                  <span>{t('video')}</span>
                 </button>
                 <button
                   onClick={() => { setShowAboutUs(true); setShowMobileMenu(false); }}
                   className="w-full flex items-center gap-2 px-4 py-3 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-all font-medium"
                 >
                   <Info size={18} />
-                  <span>About Us</span>
+                  <span>{t('aboutUs')}</span>
                 </button>
                 <button
                   onClick={() => { setShowPdfViewer(true); setShowMobileMenu(false); }}
                   className="w-full flex items-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all font-medium"
                 >
                   <FileText size={18} />
-                  <span>Vendor</span>
+                  <span>{t('vendor')}</span>
                 </button>
                 <button
                   onClick={() => { setShowImageViewer(true); setShowMobileMenu(false); }}
                   className="w-full flex items-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-all font-medium"
                 >
                   <DollarSign size={18} />
-                  <span>Price</span>
+                  <span>{t('price')}</span>
                 </button>
                 <button
                   onClick={() => { setShowBookViewer(true); setShowMobileMenu(false); }}
                   className="w-full flex items-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all font-medium"
                 >
                   <Image size={18} />
-                  <span>Pictures</span>
+                  <span>{t('pictures')}</span>
                 </button>
                 <button
                   onClick={() => { setShowAppDownload(true); setShowMobileMenu(false); }}
                   className="w-full flex items-center gap-2 px-4 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-all font-medium"
                 >
                   <Smartphone size={18} />
-                  <span>Download App</span>
+                  <span>{t('downloadApp')}</span>
                 </button>
               </div>
 
               {/* Quick Actions */}
               <div className="space-y-2 mb-4">
-                <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">Quick Actions</h4>
+                <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2">{t('quickActions')}</h4>
                 <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition">
                   <Home size={18} className="text-gray-600" />
-                  <span className="text-sm text-gray-700">Home</span>
+                  <span className="text-sm text-gray-700">{t('home')}</span>
                 </button>
                 <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition">
                   <Mail size={18} className="text-gray-600" />
-                  <span className="text-sm text-gray-700">Mail</span>
+                  <span className="text-sm text-gray-700">{t('mail')}</span>
                 </button>
                 <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition">
                   <Calendar size={18} className="text-gray-600" />
-                  <span className="text-sm text-gray-700">Calendar</span>
+                  <span className="text-sm text-gray-700">{t('calendar')}</span>
                 </button>
                 <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition">
                   <MessageCircle size={18} className="text-gray-600" />
-                  <span className="text-sm text-gray-700">Chat</span>
+                  <span className="text-sm text-gray-700">{t('chat')}</span>
                 </button>
                 <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition">
                   <ShoppingCart size={18} className="text-gray-600" />
-                  <span className="text-sm text-gray-700">Cart</span>
+                  <span className="text-sm text-gray-700">{t('cart')}</span>
                 </button>
                 <button className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 rounded-lg transition">
                   <Ticket size={18} className="text-gray-600" />
-                  <span className="text-sm text-gray-700">Tickets</span>
+                  <span className="text-sm text-gray-700">{t('tickets')}</span>
                 </button>
               </div>
 
               {/* Language Selector for Mobile */}
               <div className="border-t pt-4">
-                <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 mb-2">Language</h4>
+                <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-2 mb-2">{t('language')}</h4>
                 <div className="space-y-1">
                   {[
                     { code: 'en', name: 'English', flag: 'https://flagcdn.com/w20/gb.png' },
@@ -362,11 +376,11 @@ const Header = () => {
                     <button
                       key={lang.code}
                       onClick={() => {
-                        setSelectedLanguage(lang.name);
+                        changeLanguage(lang.code);
                         setShowMobileMenu(false);
                       }}
                       className={`w-full flex items-center gap-3 px-4 py-2 rounded-lg transition ${
-                        selectedLanguage === lang.name ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50 text-gray-700'
+                        language === lang.code ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50 text-gray-700'
                       }`}
                     >
                       <img src={lang.flag} alt={lang.name} className="w-4 h-3 object-cover rounded" />
@@ -425,7 +439,7 @@ const Header = () => {
             setShowAppDownload(false);
           }}
           className="absolute -top-3 -right-3 p-2 bg-white hover:bg-gray-100 text-gray-700 rounded-full transition-colors z-20 shadow-lg border-2 border-gray-300 flex items-center justify-center"
-          aria-label="Close"
+          aria-label={t('close')}
           style={{ minWidth: '36px', minHeight: '36px' }}
         >
           <X size={20} />

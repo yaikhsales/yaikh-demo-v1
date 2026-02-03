@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from '../translate/TranslationContext';
 
 const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropdownOpen = false, isLightOn = false, isAdministration = false, isOrangeGroup = false, isWhiteGroup = false, theme = 'normal' }) => {
+  const { translateModuleTitle } = useTranslation();
   const isComingSoon = data.status === "coming-soon";
 
   const handleCardClick = () => {
@@ -132,7 +134,7 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
             : isWhiteGroup || isOrangeGroup || (!isAdministration && !isOrangeGroup && !isWhiteGroup) ? 'text-slate-800 drop-shadow-sm' 
             : 'text-white drop-shadow-lg'
           }`}>
-            {data.title}
+            {translateModuleTitle(data.title)}
           </span>
         </div>
       )}

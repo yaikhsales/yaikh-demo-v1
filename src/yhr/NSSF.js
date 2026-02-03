@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Shield, Calendar, DollarSign, FileText, User, Building, CheckCircle } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const NSSF = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -133,20 +135,20 @@ const NSSF = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-teal-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">NSSF Management</h1>
+                        <h1 className="text-lg font-bold">{t('nssfManagement')}</h1>
                     </div>
                 </div>
             </div>
@@ -159,12 +161,12 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <User className="text-teal-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -178,7 +180,7 @@ const NSSF = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -187,12 +189,12 @@ const NSSF = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -200,12 +202,12 @@ const NSSF = ({ onBack }) => {
                                         value={formData.department}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Department name"
+                                        placeholder={t('departmentName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position
+                                        {t('position')}
                                     </label>
                                     <input
                                         type="text"
@@ -213,7 +215,7 @@ const NSSF = ({ onBack }) => {
                                         value={formData.position}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                        placeholder="Job title"
+                                        placeholder={t('jobTitle')}
                                     />
                                 </div>
                             </div>
@@ -223,12 +225,12 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Shield className="text-teal-600" size={24} />
-                                NSSF Registration
+                                {t('nssfRegistration')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        NSSF Member Number <span className="text-red-500">*</span>
+                                        {t('nssfMemberNumber')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -243,7 +245,7 @@ const NSSF = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Registration Date <span className="text-red-500">*</span>
+                                        {t('registrationDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -256,7 +258,7 @@ const NSSF = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Status <span className="text-red-500">*</span>
+                                        {t('status')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="status"
@@ -265,15 +267,15 @@ const NSSF = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     >
-                                        <option value="active">Active</option>
-                                        <option value="suspended">Suspended</option>
-                                        <option value="terminated">Terminated</option>
-                                        <option value="pending">Pending</option>
+                                        <option value="active">{t('active')}</option>
+                                        <option value="suspended">{t('suspended')}</option>
+                                        <option value="terminated">{t('terminated')}</option>
+                                        <option value="pending">{t('pending')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Contribution Period
+                                        {t('contributionPeriod')}
                                     </label>
                                     <select
                                         name="contributionPeriod"
@@ -281,10 +283,10 @@ const NSSF = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Period</option>
-                                        <option value="Monthly">Monthly</option>
-                                        <option value="Quarterly">Quarterly</option>
-                                        <option value="Annually">Annually</option>
+                                        <option value="">{t('selectPeriod')}</option>
+                                        <option value="Monthly">{t('monthly')}</option>
+                                        <option value="Quarterly">{t('quarterly')}</option>
+                                        <option value="Annually">{t('annually')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -294,12 +296,12 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-teal-600" size={24} />
-                                Contribution Details
+                                {t('contributionDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Salary Base <span className="text-red-500">*</span>
+                                        {t('salaryBase')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="number"
@@ -314,7 +316,7 @@ const NSSF = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Contribution Rate (%) <span className="text-red-500">*</span>
+                                        {t('contributionRatePercent')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="number"
@@ -331,7 +333,7 @@ const NSSF = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Contribution
+                                        {t('employeeContribution')}
                                     </label>
                                     <input
                                         type="text"
@@ -344,7 +346,7 @@ const NSSF = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employer Contribution
+                                        {t('employerContribution')}
                                     </label>
                                     <input
                                         type="text"
@@ -357,7 +359,7 @@ const NSSF = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Total Contribution
+                                        {t('totalContribution')}
                                     </label>
                                     <input
                                         type="text"
@@ -370,7 +372,7 @@ const NSSF = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Payment Status
+                                        {t('paymentStatus')}
                                     </label>
                                     <select
                                         name="paymentStatus"
@@ -378,16 +380,16 @@ const NSSF = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                                     >
-                                        <option value="current">Current</option>
-                                        <option value="overdue">Overdue</option>
-                                        <option value="paid">Paid</option>
-                                        <option value="pending">Pending</option>
+                                        <option value="current">{t('current')}</option>
+                                        <option value="overdue">{t('overdue')}</option>
+                                        <option value="paid">{t('paid')}</option>
+                                        <option value="pending">{t('pending')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Last Payment Date
+                                        {t('lastPaymentDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -400,7 +402,7 @@ const NSSF = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Next Payment Date
+                                        {t('nextPaymentDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -417,7 +419,7 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Shield className="text-teal-600" size={24} />
-                                Medical Benefits
+                                {t('medicalBenefits')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -429,14 +431,14 @@ const NSSF = ({ onBack }) => {
                                             onChange={handleChange}
                                             className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Eligible for Medical Benefits</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('eligibleForMedicalBenefits')}</span>
                                     </label>
                                 </div>
                                 {formData.benefits.medical.eligible && (
                                     <>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Coverage Start Date
+                                                {t('coverageStartDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -448,7 +450,7 @@ const NSSF = ({ onBack }) => {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Coverage End Date
+                                                {t('coverageEndDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -467,7 +469,7 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Building className="text-teal-600" size={24} />
-                                Retirement Benefits
+                                {t('retirementBenefits')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -479,7 +481,7 @@ const NSSF = ({ onBack }) => {
                                             onChange={handleChange}
                                             className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Eligible for Retirement Benefits</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('eligibleForRetirementBenefits')}</span>
                                     </label>
                                 </div>
                                 {formData.benefits.retirement.eligible && (
@@ -487,7 +489,7 @@ const NSSF = ({ onBack }) => {
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <DollarSign size={14} />
-                                                Account Balance
+                                                {t('accountBalance')}
                                             </label>
                                             <input
                                                 type="number"
@@ -502,7 +504,7 @@ const NSSF = ({ onBack }) => {
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <Calendar size={14} />
-                                                Projected Retirement Date
+                                                {t('projectedRetirementDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -515,7 +517,7 @@ const NSSF = ({ onBack }) => {
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <DollarSign size={14} />
-                                                Estimated Monthly Benefit
+                                                {t('estimatedMonthlyBenefit')}
                                             </label>
                                             <input
                                                 type="number"
@@ -536,7 +538,7 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <CheckCircle className="text-teal-600" size={24} />
-                                Disability Benefits
+                                {t('disabilityBenefits')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -548,7 +550,7 @@ const NSSF = ({ onBack }) => {
                                             onChange={handleChange}
                                             className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Eligible for Disability Benefits</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('eligibleForDisability')}</span>
                                     </label>
                                 </div>
                                 {formData.benefits.disability.eligible && (
@@ -556,7 +558,7 @@ const NSSF = ({ onBack }) => {
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <DollarSign size={14} />
-                                                Coverage Amount
+                                                {t('coverageAmount')}
                                             </label>
                                             <input
                                                 type="number"
@@ -565,13 +567,13 @@ const NSSF = ({ onBack }) => {
                                                 onChange={handleChange}
                                                 step="0.01"
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                                placeholder="0.00"
+                                                placeholder={t('coverageAmountPlaceholder')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <Calendar size={14} />
-                                                Start Date
+                                                {t('startDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -590,7 +592,7 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Shield className="text-teal-600" size={24} />
-                                Death Benefits
+                                {t('deathBenefits')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -602,14 +604,14 @@ const NSSF = ({ onBack }) => {
                                             onChange={handleChange}
                                             className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Eligible for Death Benefits</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('eligibleForDeath')}</span>
                                     </label>
                                 </div>
                                 {formData.benefits.death.eligible && (
                                     <>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Beneficiary Name
+                                                {t('beneficiary')}
                                             </label>
                                             <input
                                                 type="text"
@@ -617,13 +619,13 @@ const NSSF = ({ onBack }) => {
                                                 value={formData.benefits.death.beneficiary}
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                                placeholder="Beneficiary name"
+                                                placeholder={t('beneficiaryNamePlaceholder')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <DollarSign size={14} />
-                                                Coverage Amount
+                                                {t('coverageAmount')}
                                             </label>
                                             <input
                                                 type="number"
@@ -632,7 +634,7 @@ const NSSF = ({ onBack }) => {
                                                 onChange={handleChange}
                                                 step="0.01"
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                                placeholder="0.00"
+                                                placeholder={t('coverageAmountPlaceholder')}
                                             />
                                         </div>
                                     </>
@@ -644,7 +646,7 @@ const NSSF = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <FileText className="text-teal-600" size={24} />
-                                Documents Checklist
+                                {t('nssfDocumentsChecklist')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {[
@@ -664,7 +666,7 @@ const NSSF = ({ onBack }) => {
                                             onChange={() => handleCheckboxChange('documents', doc)}
                                             className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                                         />
-                                        <span className="text-sm text-gray-700">{doc}</span>
+                                        <span className="text-sm text-gray-700">{t(doc.toLowerCase().replace(/[\/\s]+/g, '')) || doc}</span>
                                     </label>
                                 ))}
                             </div>
@@ -673,7 +675,7 @@ const NSSF = ({ onBack }) => {
                         {/* Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -681,7 +683,7 @@ const NSSF = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                                placeholder="Any additional notes about NSSF registration and benefits"
+                                placeholder={t('anyAdditionalNotesNssfRegistration')}
                             />
                         </div>
 
@@ -692,14 +694,14 @@ const NSSF = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Save NSSF Information
+                                {t('saveNssfInformation')}
                             </button>
                         </div>
                     </form>

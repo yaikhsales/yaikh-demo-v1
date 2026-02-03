@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Calendar, Clock, User, Users, FileText, CheckCircle } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Interview = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         candidateName: '',
         position: '',
@@ -56,20 +58,20 @@ const Interview = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-green-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Interview Arrangement</h1>
+                        <h1 className="text-lg font-bold">{t('interviewArrangement')}</h1>
                     </div>
                 </div>
             </div>
@@ -82,12 +84,12 @@ const Interview = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Calendar className="text-green-600" size={24} />
-                                Interview Details
+                                {t('interviewDetails')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Candidate Name <span className="text-red-500">*</span>
+                                        {t('candidateName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -96,12 +98,12 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Enter candidate name"
+                                        placeholder={t('enterCandidateName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position Applied <span className="text-red-500">*</span>
+                                        {t('positionApplied')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -116,7 +118,7 @@ const Interview = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Interview Date <span className="text-red-500">*</span>
+                                        {t('interviewDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="date"
@@ -130,7 +132,7 @@ const Interview = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Clock size={14} />
-                                        Interview Time <span className="text-red-500">*</span>
+                                        {t('interviewTime')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="time"
@@ -143,7 +145,7 @@ const Interview = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Interview Type <span className="text-red-500">*</span>
+                                        {t('interviewType')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="interviewType"
@@ -152,18 +154,18 @@ const Interview = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Type</option>
-                                        <option value="Phone Screening">Phone Screening</option>
-                                        <option value="Video Interview">Video Interview</option>
-                                        <option value="In-Person">In-Person</option>
-                                        <option value="Panel Interview">Panel Interview</option>
-                                        <option value="Technical Interview">Technical Interview</option>
-                                        <option value="Final Interview">Final Interview</option>
+                                        <option value="">{t('selectType')}</option>
+                                        <option value="Phone Screening">{t('phoneScreening')}</option>
+                                        <option value="Video Interview">{t('videoInterview')}</option>
+                                        <option value="In-Person">{t('inPerson')}</option>
+                                        <option value="Panel Interview">{t('panelInterview')}</option>
+                                        <option value="Technical Interview">{t('technicalInterview')}</option>
+                                        <option value="Final Interview">{t('finalInterview')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Location/Venue
+                                        {t('locationVenue')}
                                     </label>
                                     <input
                                         type="text"
@@ -171,13 +173,13 @@ const Interview = ({ onBack }) => {
                                         value={formData.location}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Meeting room or video link"
+                                        placeholder={t('meetingRoomOrVideoLink')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <User size={14} />
-                                        Primary Interviewer <span className="text-red-500">*</span>
+                                        {t('primaryInterviewer')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -186,13 +188,13 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Interviewer name"
+                                        placeholder={t('interviewerName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Users size={14} />
-                                        Additional Interviewers
+                                        {t('additionalInterviewers')}
                                     </label>
                                     <input
                                         type="text"
@@ -200,7 +202,7 @@ const Interview = ({ onBack }) => {
                                         value={formData.interviewers}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Comma separated names"
+                                        placeholder={t('commaSeparatedNames')}
                                     />
                                 </div>
                             </div>
@@ -210,12 +212,12 @@ const Interview = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <CheckCircle className="text-green-600" size={24} />
-                                Interview Evaluation
+                                {t('interviewEvaluation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Technical Skills (1-10)
+                                        {t('technicalSkills')}
                                     </label>
                                     <input
                                         type="number"
@@ -230,7 +232,7 @@ const Interview = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Communication Skills (1-10)
+                                        {t('communicationSkills')}
                                     </label>
                                     <input
                                         type="number"
@@ -245,7 +247,7 @@ const Interview = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Cultural Fit (1-10)
+                                        {t('culturalFit')}
                                     </label>
                                     <input
                                         type="number"
@@ -260,7 +262,7 @@ const Interview = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Overall Rating
+                                        {t('overallRating')}
                                     </label>
                                     <select
                                         name="overallRating"
@@ -268,17 +270,17 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Rating</option>
-                                        <option value="Excellent">Excellent</option>
-                                        <option value="Good">Good</option>
-                                        <option value="Average">Average</option>
-                                        <option value="Below Average">Below Average</option>
-                                        <option value="Poor">Poor</option>
+                                        <option value="">{t('selectRating')}</option>
+                                        <option value="Excellent">{t('excellent')}</option>
+                                        <option value="Good">{t('good')}</option>
+                                        <option value="Average">{t('average')}</option>
+                                        <option value="Below Average">{t('belowAverage')}</option>
+                                        <option value="Poor">{t('poor')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Status
+                                        {t('status')}
                                     </label>
                                     <select
                                         name="status"
@@ -286,15 +288,15 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
-                                        <option value="scheduled">Scheduled</option>
-                                        <option value="completed">Completed</option>
-                                        <option value="cancelled">Cancelled</option>
-                                        <option value="rescheduled">Rescheduled</option>
+                                        <option value="scheduled">{t('scheduled')}</option>
+                                        <option value="completed">{t('completed')}</option>
+                                        <option value="cancelled">{t('cancelled')}</option>
+                                        <option value="rescheduled">{t('rescheduled')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Recommendation
+                                        {t('recommendation')}
                                     </label>
                                     <select
                                         name="recommendation"
@@ -302,16 +304,16 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Recommendation</option>
-                                        <option value="Strong Hire">Strong Hire</option>
-                                        <option value="Hire">Hire</option>
-                                        <option value="Maybe">Maybe</option>
-                                        <option value="No Hire">No Hire</option>
+                                        <option value="">{t('selectRecommendation')}</option>
+                                        <option value="Strong Hire">{t('strongHire')}</option>
+                                        <option value="Hire">{t('hire')}</option>
+                                        <option value="Maybe">{t('maybe')}</option>
+                                        <option value="No Hire">{t('doNotHire')}</option>
                                     </select>
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Strengths
+                                        {t('strengths')}
                                     </label>
                                     <textarea
                                         name="strengths"
@@ -319,12 +321,12 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         rows="2"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="List candidate strengths"
+                                        placeholder={t('listCandidateStrengths')}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Areas for Improvement
+                                        {t('areasForImprovement')}
                                     </label>
                                     <textarea
                                         name="weaknesses"
@@ -332,13 +334,13 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         rows="2"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="List areas for improvement"
+                                        placeholder={t('listAreasForImprovement')}
                                     />
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <FileText size={14} />
-                                        Interview Notes
+                                        {t('interviewNotes')}
                                     </label>
                                     <textarea
                                         name="notes"
@@ -346,7 +348,7 @@ const Interview = ({ onBack }) => {
                                         onChange={handleChange}
                                         rows="4"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="Detailed interview notes and observations"
+                                        placeholder={t('detailedInterviewNotes')}
                                     />
                                 </div>
                             </div>
@@ -359,14 +361,14 @@ const Interview = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Save Interview
+                                {t('saveInterview')}
                             </button>
                         </div>
                     </form>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, X, Car, Truck, Calendar, Search, MapPin, User, Clock, CheckCircle, XCircle, AlertCircle, List, Maximize2, Minus, Plus as PlusIcon } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const CarBooking = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [vehicleType, setVehicleType] = useState('car');
     
@@ -134,14 +136,14 @@ const CarBooking = ({ onBack }) => {
             return (
                 <span className="px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700 flex items-center gap-1">
                     <XCircle size={12} />
-                    {status}
+                    {status === 'Rejected' ? t('rejected') : t('cancelled')}
                 </span>
             );
         } else if (status === 'Approved & Relooking') {
             return (
                 <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 flex items-center gap-1">
                     <CheckCircle size={12} />
-                    {status}
+                    {t('approved')}
                 </span>
             );
         }
@@ -152,13 +154,13 @@ const CarBooking = ({ onBack }) => {
         if (status === 'In Progress') {
             return (
                 <span className="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
-                    {status}
+                    {t('inProgress')}
                 </span>
             );
         } else if (status === 'Completed') {
             return (
                 <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                    {status}
+                    {t('completed')}
                 </span>
             );
         }
@@ -177,23 +179,23 @@ const CarBooking = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
                     <div className="flex items-center gap-2">
                         <Car className="text-blue-600" size={24} />
-                        <h1 className="text-xl md:text-2xl font-bold text-slate-800">My Car Booking</h1>
+                        <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('myCarBooking')}</h1>
                     </div>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
@@ -206,28 +208,28 @@ const CarBooking = ({ onBack }) => {
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
                         <div className="bg-white rounded-lg p-6 shadow-sm border-t-4 border-green-500 flex items-center justify-between">
                             <div>
-                                <div className="text-sm text-slate-600 mb-1 font-semibold">TOTAL</div>
+                                <div className="text-sm text-slate-600 mb-1 font-semibold">{t('total')}</div>
                                 <div className="text-3xl font-bold text-slate-800">8</div>
                             </div>
                             <List className="text-green-500" size={24} />
                         </div>
                         <div className="bg-white rounded-lg p-6 shadow-sm border-t-4 border-orange-500 flex items-center justify-between">
                             <div>
-                                <div className="text-sm text-slate-600 mb-1 font-semibold">REQUEST</div>
+                                <div className="text-sm text-slate-600 mb-1 font-semibold">{t('request')}</div>
                                 <div className="text-3xl font-bold text-slate-800">0</div>
                             </div>
                             <div className="w-3 h-3 rounded-full bg-orange-500"></div>
                         </div>
                         <div className="bg-white rounded-lg p-6 shadow-sm border-t-4 border-blue-500 flex items-center justify-between">
                             <div>
-                                <div className="text-sm text-slate-600 mb-1 font-semibold">APPROVED</div>
+                                <div className="text-sm text-slate-600 mb-1 font-semibold">{t('approved')}</div>
                                 <div className="text-3xl font-bold text-slate-800">5</div>
                             </div>
                             <CheckCircle className="text-blue-500" size={24} />
                         </div>
                         <div className="bg-white rounded-lg p-6 shadow-sm border-t-4 border-red-500 flex items-center justify-between">
                             <div>
-                                <div className="text-sm text-slate-600 mb-1 font-semibold">CANCELLED</div>
+                                <div className="text-sm text-slate-600 mb-1 font-semibold">{t('cancelled')}</div>
                                 <div className="text-3xl font-bold text-slate-800">1</div>
                             </div>
                             <XCircle className="text-red-500" size={24} />
@@ -241,7 +243,7 @@ const CarBooking = ({ onBack }) => {
                             className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                         >
                             <Plus size={16} />
-                            Booking for Old People
+                            {t('bookingForOldPeople')}
                         </button>
                     </div>
 
@@ -251,13 +253,13 @@ const CarBooking = ({ onBack }) => {
                             <table className="w-full">
                                 <thead className="bg-slate-50 border-b border-slate-200">
                                     <tr>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">NO</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">DATE/TIME</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">NUMBER OF PEOPLE</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">DESTINATION</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">DRIVER</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">STATUS</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">DRIVER STATUS</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('no')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('dateTime')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('numberOfPeople')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('destination')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('driver')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('status')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('driverStatus')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -302,13 +304,13 @@ const CarBooking = ({ onBack }) => {
                                                                 <div className="text-xs text-slate-600">{booking.driver.phone}</div>
                                                             )}
                                                             {booking.driver.share && (
-                                                                <div className="text-xs text-blue-600">Share</div>
+                                                                <div className="text-xs text-blue-600">{t('share')}</div>
                                                             )}
                                                         </div>
                                                     </div>
                                                 ) : (
                                                     <span className="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-semibold">
-                                                        No driver assigned yet
+                                                        {t('noDriverAssignedYet')}
                                                     </span>
                                                 )}
                                             </td>
@@ -334,7 +336,7 @@ const CarBooking = ({ onBack }) => {
                         {/* Modal Header */}
                         <div className="sticky top-0 bg-white border-b border-slate-200 p-6 z-10">
                             <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-2xl font-bold text-slate-800">New Booking</h2>
+                                <h2 className="text-2xl font-bold text-slate-800">{t('newBooking')}</h2>
                                 <button
                                     onClick={handleCloseModal}
                                     className="p-2 hover:bg-slate-100 rounded-full transition-colors"
@@ -342,7 +344,7 @@ const CarBooking = ({ onBack }) => {
                                     <X size={20} className="text-slate-600" />
                                 </button>
                             </div>
-                            <p className="text-slate-600">Plan your route using the interactive map</p>
+                            <p className="text-slate-600">{t('planYourRoute')}</p>
                         </div>
 
                         {/* Modal Content */}
@@ -359,7 +361,7 @@ const CarBooking = ({ onBack }) => {
                                     }`}
                                 >
                                     <Car size={20} />
-                                    Car
+                                    {t('car')}
                                 </button>
                                 <button
                                     type="button"
@@ -371,19 +373,19 @@ const CarBooking = ({ onBack }) => {
                                     }`}
                                 >
                                     <Truck size={20} />
-                                    Truck
+                                    {t('truck')}
                                 </button>
                             </div>
 
                             {/* Your Information Section */}
                             <div>
-                                <h3 className="text-lg font-bold text-slate-800 mb-2">Your Information</h3>
-                                <p className="text-sm text-slate-600 mb-4">Select User Booking</p>
+                                <h3 className="text-lg font-bold text-slate-800 mb-2">{t('yourInformation')}</h3>
+                                <p className="text-sm text-slate-600 mb-4">{t('selectUserBooking')}</p>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div>
                                         <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                             <User size={16} />
-                                            User
+                                            {t('user')}
                                         </label>
                                         <input
                                             type="text"
@@ -393,13 +395,13 @@ const CarBooking = ({ onBack }) => {
                                         />
                                         <div className="mt-2 text-sm text-slate-600">
                                             <div>{formData.userName}</div>
-                                            <div>Code: {formData.code}</div>
+                                            <div>{t('code')} {formData.code}</div>
                                         </div>
                                     </div>
                                     <div>
                                         <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                             <Calendar size={16} />
-                                            Date
+                                            {t('date')}
                                         </label>
                                         <div className="relative">
                                             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
@@ -414,7 +416,7 @@ const CarBooking = ({ onBack }) => {
                                     <div>
                                         <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                             <User size={16} />
-                                            number_of_people
+                                            {t('numberOfPeople')}
                                         </label>
                                         <input
                                             type="number"
@@ -428,7 +430,7 @@ const CarBooking = ({ onBack }) => {
 
                             {/* Route Planning Section */}
                             <div>
-                                <h3 className="text-lg font-bold text-slate-800 mb-4">Route Planning</h3>
+                                <h3 className="text-lg font-bold text-slate-800 mb-4">{t('routePlanning')}</h3>
                                 <div className="border border-slate-300 rounded-lg overflow-hidden">
                                     {/* Map Controls */}
                                     <div className="bg-slate-100 p-4 flex items-center justify-between flex-wrap gap-4">
@@ -437,19 +439,19 @@ const CarBooking = ({ onBack }) => {
                                                 type="button"
                                                 className="px-4 py-2 bg-white border border-slate-300 rounded-lg font-semibold text-slate-700 hover:bg-slate-50"
                                             >
-                                                Map
+                                                {t('map')}
                                             </button>
                                             <button
                                                 type="button"
                                                 className="px-4 py-2 bg-slate-200 border border-slate-300 rounded-lg font-semibold text-slate-600 hover:bg-slate-50"
                                             >
-                                                Satellite
+                                                {t('satellite')}
                                             </button>
                                         </div>
                                         <div className="flex items-center gap-4">
                                             <div className="flex items-center gap-2 bg-green-100 px-3 py-1 rounded-lg">
                                                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                                                <span className="text-xs font-semibold text-green-700">GPS: 0 - Min: 10s</span>
+                                                <span className="text-xs font-semibold text-green-700">{t('gps')} 0 - {t('min')} 10s</span>
                                             </div>
                                             <button
                                                 type="button"
@@ -466,7 +468,7 @@ const CarBooking = ({ onBack }) => {
                                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
                                             <input
                                                 type="text"
-                                                placeholder="Q Search Pick Up"
+                                                placeholder={t('qSearchPickUp')}
                                                 value={formData.pickupLocation}
                                                 onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
                                                 className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -482,25 +484,25 @@ const CarBooking = ({ onBack }) => {
                                                 type="button"
                                                 className="px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 text-sm"
                                             >
-                                                Clear Route
+                                                {t('clearRoute')}
                                             </button>
                                             <button
                                                 type="button"
                                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 text-sm"
                                             >
-                                                Center Map
+                                                {t('centerMap')}
                                             </button>
                                             <button
                                                 type="button"
                                                 className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 text-sm"
                                             >
-                                                Show Selected
+                                                {t('showSelected')}
                                             </button>
                                             <button
                                                 type="button"
                                                 className="px-4 py-2 bg-green-800 text-white rounded-lg font-semibold hover:bg-green-900 text-sm"
                                             >
-                                                Show Car
+                                                {t('showCar')}
                                             </button>
                                             <div className="px-4 py-2 bg-blue-800 text-white rounded-lg font-semibold text-sm text-center">
                                                 126/126
@@ -527,8 +529,8 @@ const CarBooking = ({ onBack }) => {
                                         <div className="w-full h-full flex items-center justify-center text-slate-500">
                                             <div className="text-center">
                                                 <MapPin size={48} className="mx-auto mb-2 text-slate-400" />
-                                                <p className="text-sm">Interactive map will be displayed here</p>
-                                                <p className="text-xs text-slate-400 mt-1">Phnom Penh area with location pins</p>
+                                                <p className="text-sm">{t('interactiveMapDisplayed')}</p>
+                                                <p className="text-xs text-slate-400 mt-1">{t('phnomPenhArea')}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -542,14 +544,14 @@ const CarBooking = ({ onBack }) => {
                                     onClick={handleCloseModal}
                                     className="px-6 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-300 transition-colors"
                                 >
-                                    Cancel
+                                    {t('cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                                 >
                                     <CheckCircle size={16} />
-                                    Book
+                                    {t('book')}
                                 </button>
                             </div>
                         </form>

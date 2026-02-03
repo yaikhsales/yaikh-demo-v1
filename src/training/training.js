@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { ArrowLeft, BookOpen, FileText, Calendar } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Training = ({ onBack }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const { department } = useParams();
     const { state } = location;
+    const { t, translateModuleTitle } = useTranslation();
     const departmentName = state?.departmentName || decodeURIComponent(department || '') || 'Training';
     const [activeView, setActiveView] = useState('main'); // 'main', 'course', 'lessons', 'activity'
     const [viewMode, setViewMode] = useState('list'); // 'list' or 'calendar' for activity view
@@ -167,21 +169,21 @@ const Training = ({ onBack }) => {
                             className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
                         >
                             <ArrowLeft size={20} />
-                            Back
+                            {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-3xl font-bold text-center flex-1 underline">{departmentName}</h1>
+                    <h1 className="text-3xl font-bold text-center flex-1 underline">{translateModuleTitle(departmentName)}</h1>
                     <div className="w-24"></div>
                 </div>
                 
@@ -198,7 +200,7 @@ const Training = ({ onBack }) => {
                                 className="bg-white border-2 border-black rounded-lg p-8 hover:shadow-lg transition-shadow flex flex-col items-center gap-4"
                             >
                                 <BookOpen size={64} className="text-black" />
-                                <span className="text-xl font-semibold text-black">Course</span>
+                                <span className="text-xl font-semibold text-black">{t('course')}</span>
                             </button>
 
                             {/* Lessons (PDF) Card */}
@@ -207,7 +209,7 @@ const Training = ({ onBack }) => {
                                 className="bg-white border-2 border-black rounded-lg p-8 hover:shadow-lg transition-shadow flex flex-col items-center gap-4"
                             >
                                 <FileText size={64} className="text-black" />
-                                <span className="text-xl font-semibold text-black">Lessons (PDF)</span>
+                                <span className="text-xl font-semibold text-black">{t('lessons')}</span>
                             </button>
 
                             {/* Activity Card */}
@@ -216,7 +218,7 @@ const Training = ({ onBack }) => {
                                 className="bg-white border-2 border-black rounded-lg p-8 hover:shadow-lg transition-shadow flex flex-col items-center gap-4"
                             >
                                 <Calendar size={64} className="text-black" />
-                                <span className="text-xl font-semibold text-black">Activity</span>
+                                <span className="text-xl font-semibold text-black">{t('activity')}</span>
                             </button>
                         </div>
                     </div>
@@ -242,21 +244,21 @@ const Training = ({ onBack }) => {
                                 className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
                             >
                                 <ArrowLeft size={20} />
-                                Back
+                                {t('back')}
                             </button>
                             <button
                                 onClick={() => navigate('/')}
                                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                                title="Home"
+                                title={t('home')}
                             >
                                 <img 
                                     src="/logo.jpg" 
-                                    alt="Home" 
+                                    alt={t('home')} 
                                     className="w-full h-full object-cover"
                                 />
                             </button>
                         </div>
-                        <h1 className="text-3xl font-bold">Training Course</h1>
+                        <h1 className="text-3xl font-bold">{t('trainingCourse')}</h1>
                     </div>
                     <div className="w-32"></div> {/* Right spacer */}
                 </div>
@@ -267,7 +269,7 @@ const Training = ({ onBack }) => {
 
                     {/* Video Grid */}
                     <div className="bg-white rounded-lg p-8">
-                        <h2 className="text-2xl font-bold mb-6">Dashboard Video Training</h2>
+                        <h2 className="text-2xl font-bold mb-6">{t('dashboardVideoTraining')}</h2>
                         <div className="grid grid-cols-3 gap-6">
                             {videos.map((video, index) => (
                                 <div key={index} className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow">
@@ -321,21 +323,21 @@ const Training = ({ onBack }) => {
                                 className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
                             >
                                 <ArrowLeft size={20} />
-                                Back
+                                {t('back')}
                             </button>
                             <button
                                 onClick={() => navigate('/')}
                                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                                title="Home"
+                                title={t('home')}
                             >
                                 <img 
                                     src="/logo.jpg" 
-                                    alt="Home" 
+                                    alt={t('home')} 
                                     className="w-full h-full object-cover"
                                 />
                             </button>
                         </div>
-                        <h1 className="text-3xl font-bold">Training Lesson</h1>
+                        <h1 className="text-3xl font-bold">{t('trainingLesson')}</h1>
                     </div>
                     <div className="w-32"></div> {/* Right spacer */}
                 </div>
@@ -396,21 +398,21 @@ const Training = ({ onBack }) => {
                                 className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 flex items-center gap-2"
                             >
                                 <ArrowLeft size={20} />
-                                Back
+                                {t('back')}
                             </button>
                             <button
                                 onClick={() => navigate('/')}
                                 className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                                title="Home"
+                                title={t('home')}
                             >
                                 <img 
                                     src="/logo.jpg" 
-                                    alt="Home" 
+                                    alt={t('home')} 
                                     className="w-full h-full object-cover"
                                 />
                             </button>
                         </div>
-                        <h1 className="text-3xl font-bold underline">Training Activity</h1>
+                        <h1 className="text-3xl font-bold underline">{t('activity')}</h1>
                     </div>
                     <div className="w-32"></div> {/* Right spacer */}
                 </div>
@@ -421,7 +423,7 @@ const Training = ({ onBack }) => {
 
                     {/* Main Content Card */}
                     <div className="bg-white rounded-lg shadow-lg p-8">
-                        <h2 className="text-2xl font-bold text-center mb-6">List and Schedule Training Course</h2>
+                        <h2 className="text-2xl font-bold text-center mb-6">{t('listAndScheduleTrainingCourse')}</h2>
                         
                         {/* Tabs */}
                         <div className="flex gap-2 mb-6 border-b">
@@ -433,7 +435,7 @@ const Training = ({ onBack }) => {
                                         : 'text-gray-600 hover:text-gray-800'
                                 }`}
                             >
-                                List
+                                {t('list')}
                             </button>
                             <button
                                 onClick={() => setViewMode('calendar')}
@@ -443,7 +445,7 @@ const Training = ({ onBack }) => {
                                         : 'text-gray-600 hover:text-gray-800'
                                 }`}
                             >
-                                Calendar
+                                {t('calendar')}
                             </button>
                         </div>
 

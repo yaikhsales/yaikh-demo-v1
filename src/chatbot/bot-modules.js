@@ -4,7 +4,7 @@ import {
     Wallet, UserCog, HeartHandshake, Megaphone, Factory,
     BarChart3, Lightbulb, Handshake, ClipboardCheck, MessageCircle,
     Copy, Edit2, RefreshCw, MoreVertical,
-    Menu, Trash2, ChevronRight
+    Menu, Trash2, ChevronRight, ChevronDown
 } from 'lucide-react';
 import { generateGeminiResponse, shouldUseGemini } from './gemini-api';
 
@@ -239,11 +239,48 @@ const PhoneFrame = ({
     onResetAdminPAModule,
     onResetFinancePAModule,
     onResetCsrPAModule,
-    onResetHrPAModule
+    onResetHrPAModule,
+    botLanguage,
+    languages,
+    onUpdateBotLanguage
 }) => {
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+    const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+    
+    // Track current language - update when botLanguage prop changes
+    const [currentLanguageCode, setCurrentLanguageCode] = useState(() => botLanguage?.code || 'en');
+    const [currentLanguageName, setCurrentLanguageName] = useState(() => botLanguage?.name || 'English');
+    
+    // Update local state when botLanguage prop changes
+    useEffect(() => {
+        if (botLanguage?.code) {
+            console.log(`PhoneFrame ${botId} - botLanguage prop changed:`, botLanguage);
+            setCurrentLanguageCode(botLanguage.code);
+            setCurrentLanguageName(botLanguage.name);
+        }
+    }, [botId, botLanguage]);
+    
+    // Get current language info - use local state for reactivity
+    const selectedLanguageCode = currentLanguageCode;
+    const selectedLanguageObj = languages.find(lang => lang.code === selectedLanguageCode) || languages[0];
+    const selectedLanguage = currentLanguageName || selectedLanguageObj.name;
+    
+    // Ensure flag image updates when language changes
+    const flagImage = selectedLanguageObj.flagImage || languages[0].flagImage;
+    
+    // Debug: Log language changes to help troubleshoot
+    useEffect(() => {
+        console.log(`PhoneFrame ${botId} - Language state:`, {
+            botLanguage,
+            currentLanguageCode,
+            currentLanguageName,
+            selectedLanguageCode,
+            selectedLanguage,
+            flagImage
+        });
+    }, [botId, botLanguage, currentLanguageCode, currentLanguageName, selectedLanguageCode, selectedLanguage, flagImage]);
     
     // Helper function to parse and render markdown content (tables, formatting, etc.)
     const renderMarkdownContent = (text) => {
@@ -1041,6 +1078,14 @@ const PhoneFrame = ({
                                 onClick={() => setIsHistoryOpen(false)}
                             />
                         )}
+                        
+                        {/* Overlay when language dropdown is open */}
+                        {isLanguageDropdownOpen && (
+                            <div
+                                className="fixed inset-0 z-30"
+                                onClick={() => setIsLanguageDropdownOpen(false)}
+                            />
+                        )}
 
                         {/* Header with Bot Name and Avatar */}
                         <div className={`flex-shrink-0 flex items-center justify-between px-4 pt-12 pb-3 border-b ${bot.borderColor || 'border-gray-200'} relative z-10`}>
@@ -1099,9 +1144,77 @@ const PhoneFrame = ({
                             <div className="absolute left-1/2 transform -translate-x-1/2">
                                 <span className={`text-sm font-semibold ${bot.textColor || 'text-gray-800'}`}>{bot.name}</span>
                             </div>
-                            {/* Bot Avatar - Right Side */}
-                            <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${bot.bgGradient} flex items-center justify-center border-2 border-white/20 shadow-md`}>
-                                <bot.icon size={20} className="text-white" />
+                            {/* Right Side - Language Selector and Bot Avatar */}
+                            <div className="flex items-center gap-2">
+                                {/* Language Selector */}
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setIsLanguageDropdownOpen(!isLanguageDropdownOpen)}
+                                        className={`flex items-center gap-1 px-1.5 py-1.5 rounded-lg hover:bg-black/5 transition ${bot.textColor || 'text-gray-600'}`}
+                                        title="Select Language"
+                                    >
+                                        <img 
+                                            key={`flag-${selectedLanguageCode}-${botId}`}
+                                            src={flagImage}
+                                            alt={selectedLanguage}
+                                            className="w-6 h-6 object-contain rounded-sm"
+                                            onError={(e) => {
+                                                console.error('Flag image failed to load:', flagImage);
+                                                e.target.src = languages[0].flagImage;
+                                            }}
+                                        />
+                                        <ChevronDown 
+                                            size={10} 
+                                            className={`${bot.textColor || 'text-gray-500'} transition-transform ${isLanguageDropdownOpen ? 'rotate-180' : ''}`} 
+                                        />
+                                    </button>
+                                    
+                                    {/* Language Dropdown */}
+                                    {isLanguageDropdownOpen && (
+                                        <div className={`absolute right-0 top-full mt-1 w-36 bg-white rounded-lg shadow-lg border ${bot.borderColor || 'border-gray-200'} z-50 overflow-hidden`}>
+                                            <div className="max-h-64 overflow-y-auto">
+                                                {languages.map((lang) => (
+                                                    <button
+                                                        key={lang.code}
+                                                        onClick={() => {
+                                                            console.log(`Language selected: ${lang.code} (${lang.name}) for bot ${botId}`);
+                                                            if (onUpdateBotLanguage) {
+                                                                onUpdateBotLanguage(botId, lang.code);
+                                                                // Update local state immediately for instant UI feedback
+                                                                setCurrentLanguageCode(lang.code);
+                                                                setCurrentLanguageName(lang.name);
+                                                            }
+                                                            setIsLanguageDropdownOpen(false);
+                                                        }}
+                                                        className={`w-full flex items-center gap-2 px-3 py-2 text-left hover:bg-black/5 transition ${
+                                                            selectedLanguageCode === lang.code 
+                                                                ? `bg-gradient-to-r ${bot.lightAccent || 'from-gray-100 to-gray-200'}` 
+                                                                : ''
+                                                        } ${bot.textColor || 'text-gray-700'}`}
+                                                    >
+                                                        <img 
+                                                            src={lang.flagImage}
+                                                            alt={lang.name}
+                                                            className="w-5 h-5 object-contain rounded-sm flex-shrink-0"
+                                                            onError={(e) => {
+                                                                e.target.style.display = 'none';
+                                                            }}
+                                                        />
+                                                        <span className="text-xs font-medium flex-1">{lang.name}</span>
+                                                        {selectedLanguageCode === lang.code && (
+                                                            <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${bot.bgGradient}`}></div>
+                                                        )}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                                
+                                {/* Bot Avatar */}
+                                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${bot.bgGradient} flex items-center justify-center border-2 border-white/20 shadow-md`}>
+                                    <bot.icon size={20} className="text-white" />
+                                </div>
                             </div>
                         </div>
 
@@ -1558,6 +1671,55 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     const [isDragging, setIsDragging] = useState(false);
     const [thumbPosition, setThumbPosition] = useState(0);
     const [thumbWidth, setThumbWidth] = useState(100);
+    
+    // Language options with flag images - only 3 languages (in order: en, kh, ch)
+    const languages = [
+        { code: 'en', name: 'English', flagImage: '/assets/flags/en.svg' },
+        { code: 'kh', name: 'Khmer', flagImage: '/assets/flags/kh.svg' },
+        { code: 'ch', name: 'Chinese', flagImage: '/assets/flags/ch.svg' }
+    ];
+    
+    // Language state per bot - initialize from localStorage or default to English
+    const [botLanguages, setBotLanguages] = useState(() => {
+        const languagesState = {};
+        PREDEFINED_BOTS.forEach(bot => {
+            const savedCode = localStorage.getItem(`bot-language-${bot.id}`) || 'en';
+            languagesState[bot.id] = {
+                code: savedCode,
+                name: languages.find(lang => lang.code === savedCode)?.name || 'English'
+            };
+        });
+        return languagesState;
+    });
+    
+    // Function to update bot language
+    // When language changes, all future API calls will use the new language code
+    // The API endpoint (https://dev.yaikh.com/api/ai-agent) will translate responses based on the language parameter
+    // Language codes: 'en' (English), 'kh' (Khmer), 'ch' (Chinese)
+    const updateBotLanguage = (botId, languageCode) => {
+        const language = languages.find(lang => lang.code === languageCode);
+        if (!language) {
+            console.error(`Language code ${languageCode} not found`);
+            return;
+        }
+        
+        console.log(`Updating language for bot ${botId} to ${languageCode} (${language.name})`);
+        
+        setBotLanguages(prev => {
+            const updated = {
+                ...prev,
+                [botId]: {
+                    code: languageCode,
+                    name: language.name
+                }
+            };
+            console.log('Updated botLanguages:', updated);
+            return updated;
+        });
+        localStorage.setItem(`bot-language-${botId}`, languageCode);
+        // All future API calls will automatically use the new language code
+        // The backend API translates the response based on the 'language' parameter in the request body
+    };
     
     // State for Admin PA module selection
     const [adminPAModule, setAdminPAModule] = useState(null); // 'purchase', 'support_ticket', 'shop', or null
@@ -2345,7 +2507,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     };
 
     // API call function for Admin PA modules
-    const callAdminPAAPI = async (message, module) => {
+    // The languageCode parameter is sent to the API endpoint for translation
+    // API endpoint: https://dev.yaikh.com/api/ai-agent
+    // The backend translates the response based on the 'language' parameter ('en', 'kh', or 'ch')
+    const callAdminPAAPI = async (message, module, languageCode = 'en') => {
         try {
             // Use "global" if no module is selected, otherwise use the module name
             const internalModule = module ? module : 'global';
@@ -2362,7 +2527,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 body: JSON.stringify({
                     message: message,
                     module: moduleParam,
-                    user_id: userId
+                    user_id: userId,
+                    language: languageCode // Language code for translation: 'en', 'kh', or 'ch'
                 })
             });
 
@@ -2398,7 +2564,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     };
 
     // API call function for Finance PA modules
-    const callFinancePAAPI = async (message, module) => {
+    // The languageCode parameter is sent to the API endpoint for translation
+    // API endpoint: https://dev.yaikh.com/api/ai-agent
+    // The backend translates the response based on the 'language' parameter ('en', 'kh', or 'ch')
+    const callFinancePAAPI = async (message, module, languageCode = 'en') => {
         try {
             // Use "global" if no module is selected, otherwise use the module name
             const internalModule = module ? module : 'global';
@@ -2415,7 +2584,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 body: JSON.stringify({
                     message: message,
                     module: moduleParam,
-                    user_id: userId
+                    user_id: userId,
+                    language: languageCode // Language code for translation: 'en', 'kh', or 'ch'
                 })
             });
 
@@ -2443,7 +2613,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     };
 
     // API call function for CSR PA modules
-    const callCsrPAAPI = async (message, module) => {
+    // The languageCode parameter is sent to the API endpoint for translation
+    // API endpoint: https://dev.yaikh.com/api/ai-agent
+    // The backend translates the response based on the 'language' parameter ('en', 'kh', or 'ch')
+    const callCsrPAAPI = async (message, module, languageCode = 'en') => {
         try {
             // Use "global" if no module is selected, otherwise use the module name
             const internalModule = module ? module : 'global';
@@ -2460,7 +2633,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 body: JSON.stringify({
                     message: message,
                     module: moduleParam,
-                    user_id: userId
+                    user_id: userId,
+                    language: languageCode // Language code for translation: 'en', 'kh', or 'ch'
                 })
             });
 
@@ -2488,7 +2662,10 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
     };
 
     // API call function for HR PA modules
-    const callHrPAAPI = async (message, module) => {
+    // The languageCode parameter is sent to the API endpoint for translation
+    // API endpoint: https://dev.yaikh.com/api/ai-agent
+    // The backend translates the response based on the 'language' parameter ('en', 'kh', or 'ch')
+    const callHrPAAPI = async (message, module, languageCode = 'en') => {
         try {
             // Use "global" if no module is selected, otherwise use the module name
             const internalModule = module ? module : 'global';
@@ -2505,7 +2682,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 body: JSON.stringify({
                     message: message,
                     module: moduleParam,
-                    user_id: userId
+                    user_id: userId,
+                    language: languageCode // Language code for translation: 'en', 'kh', or 'ch'
                 })
             });
 
@@ -3303,7 +3481,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 });
 
                 // Call API with appropriate module (global if not module-related)
-                callFinancePAAPI(message, moduleToUse).then(apiResponse => {
+                const languageCode = botLanguages[botId]?.code || 'en';
+                callFinancePAAPI(message, moduleToUse, languageCode).then(apiResponse => {
                     streamBotResponse(botId, apiResponse);
                 }).catch(error => {
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
@@ -3359,7 +3538,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 });
 
                 // Call API with appropriate module (global if not module-related)
-                callCsrPAAPI(message, moduleToUse).then(apiResponse => {
+                const languageCode = botLanguages[botId]?.code || 'en';
+                callCsrPAAPI(message, moduleToUse, languageCode).then(apiResponse => {
                     streamBotResponse(botId, apiResponse);
                 }).catch(error => {
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
@@ -3415,7 +3595,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 });
 
                 // Call API with appropriate module (global if not module-related)
-                callHrPAAPI(message, moduleToUse).then(apiResponse => {
+                const languageCode = botLanguages[botId]?.code || 'en';
+                callHrPAAPI(message, moduleToUse, languageCode).then(apiResponse => {
                     streamBotResponse(botId, apiResponse);
                 }).catch(error => {
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
@@ -3652,7 +3833,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     });
                     
                     // Call API with appropriate module (global if not module-related)
-                    callAdminPAAPI(message, moduleToUse).then(apiResponse => {
+                    const languageCode = botLanguages[botId]?.code || 'en';
+                    callAdminPAAPI(message, moduleToUse, languageCode).then(apiResponse => {
                         streamBotResponse(botId, apiResponse);
                     }).catch(error => {
                         streamBotResponse(botId, `Error: ${error.message}`);
@@ -4086,7 +4268,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 });
 
                 // Call API with "global" module (will be handled by callAdminPAAPI with null module)
-                callAdminPAAPI(message, null).then(apiResponse => {
+                const languageCode = botLanguages[botId]?.code || 'en';
+                callAdminPAAPI(message, null, languageCode).then(apiResponse => {
                     streamBotResponse(botId, apiResponse);
                 }).catch(error => {
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
@@ -4122,7 +4305,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 });
 
                 // Call API with "global" module
-                callFinancePAAPI(message, null).then(apiResponse => {
+                const languageCode = botLanguages[botId]?.code || 'en';
+                callFinancePAAPI(message, null, languageCode).then(apiResponse => {
                     streamBotResponse(botId, apiResponse);
                 }).catch(error => {
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
@@ -4158,7 +4342,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 });
 
                 // Call API with "global" module
-                callHrPAAPI(message, null).then(apiResponse => {
+                const languageCode = botLanguages[botId]?.code || 'en';
+                callHrPAAPI(message, null, languageCode).then(apiResponse => {
                     streamBotResponse(botId, apiResponse);
                 }).catch(error => {
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
@@ -4194,7 +4379,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 });
 
                 // Call API with "global" module
-                callCsrPAAPI(message, null).then(apiResponse => {
+                const languageCode = botLanguages[botId]?.code || 'en';
+                callCsrPAAPI(message, null, languageCode).then(apiResponse => {
                     streamBotResponse(botId, apiResponse);
                 }).catch(error => {
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
@@ -5096,6 +5282,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                                     {/* Phone Frame Wrapper */}
                                     <div className="phone-frame-wrapper">
                                         <PhoneFrame
+                                            key={`phoneframe-${bot.id}-${botLanguages[bot.id]?.code || 'en'}`}
                                             bot={bot}
                                             messages={botState.messages}
                                             onSendMessage={(msg) => handleSendMessage(bot.id, msg)}
@@ -5128,6 +5315,9 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                                             onResetFinancePAModule={bot.id === 'finance-bot' ? resetFinancePAModule : null}
                                             onResetCsrPAModule={bot.id === 'csr-bot' ? resetCsrPAModule : null}
                                             onResetHrPAModule={bot.id === 'hr-bot' ? resetHrPAModule : null}
+                                            botLanguage={botLanguages[bot.id]}
+                                            languages={languages}
+                                            onUpdateBotLanguage={updateBotLanguage}
                                             onShowInvoice={(item) => {
                                                 // Directly add invoice image message
                                                 setBotStates(prev => {

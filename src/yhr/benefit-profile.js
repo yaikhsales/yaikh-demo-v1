@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, Heart, Shield, Calendar, DollarSign, FileText } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const BenefitProfile = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -110,20 +112,20 @@ const BenefitProfile = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-indigo-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Benefit Profile</h1>
+                        <h1 className="text-lg font-bold">{t('benefitProfile')}</h1>
                     </div>
                 </div>
             </div>
@@ -136,12 +138,12 @@ const BenefitProfile = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <FileText className="text-indigo-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -155,7 +157,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -164,12 +166,12 @@ const BenefitProfile = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -177,12 +179,12 @@ const BenefitProfile = ({ onBack }) => {
                                         value={formData.department}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="Department name"
+                                        placeholder={t('departmentName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position
+                                        {t('position')}
                                     </label>
                                     <input
                                         type="text"
@@ -190,13 +192,13 @@ const BenefitProfile = ({ onBack }) => {
                                         value={formData.position}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="Job title"
+                                        placeholder={t('jobTitle')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Enrollment Date
+                                        {t('enrollmentDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -213,12 +215,12 @@ const BenefitProfile = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Heart className="text-indigo-600" size={24} />
-                                Health Insurance
+                                {t('healthInsurance')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Insurance Provider
+                                        {t('insuranceProvider')}
                                     </label>
                                     <input
                                         type="text"
@@ -226,12 +228,12 @@ const BenefitProfile = ({ onBack }) => {
                                         value={formData.healthInsurance.provider}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="Insurance company name"
+                                        placeholder={t('insuranceCompanyName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Policy Number
+                                        {t('policyNumber')}
                                     </label>
                                     <input
                                         type="text"
@@ -239,12 +241,12 @@ const BenefitProfile = ({ onBack }) => {
                                         value={formData.healthInsurance.policyNumber}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                        placeholder="Policy number"
+                                        placeholder={t('policyNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Coverage Type
+                                        {t('coverageType')}
                                     </label>
                                     <select
                                         name="healthInsurance.coverageType"
@@ -252,16 +254,16 @@ const BenefitProfile = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Coverage</option>
-                                        <option value="Individual">Individual</option>
-                                        <option value="Family">Family</option>
-                                        <option value="Employee + Spouse">Employee + Spouse</option>
-                                        <option value="Employee + Children">Employee + Children</option>
+                                        <option value="">{t('selectCoverage')}</option>
+                                        <option value="Individual">{t('individual')}</option>
+                                        <option value="Family">{t('family')}</option>
+                                        <option value="Employee + Spouse">{t('employeeSpouse')}</option>
+                                        <option value="Employee + Children">{t('employeeChildren')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Start Date
+                                        {t('startDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -273,7 +275,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        End Date
+                                        {t('endDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -290,7 +292,7 @@ const BenefitProfile = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Shield className="text-indigo-600" size={24} />
-                                Dental Insurance
+                                {t('dentalInsurance')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -301,14 +303,14 @@ const BenefitProfile = ({ onBack }) => {
                                             onChange={(e) => handleNestedCheckbox('dentalInsurance', 'covered', e.target.checked)}
                                             className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Dental Insurance Covered</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('dentalInsuranceCovered')}</span>
                                     </label>
                                 </div>
                                 {formData.dentalInsurance.covered && (
                                     <>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Provider
+                                                {t('provider')}
                                             </label>
                                             <input
                                                 type="text"
@@ -316,12 +318,12 @@ const BenefitProfile = ({ onBack }) => {
                                                 value={formData.dentalInsurance.provider}
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                                placeholder="Insurance company"
+                                                placeholder={t('insuranceCompany')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Policy Number
+                                                {t('policyNumber')}
                                             </label>
                                             <input
                                                 type="text"
@@ -329,12 +331,12 @@ const BenefitProfile = ({ onBack }) => {
                                                 value={formData.dentalInsurance.policyNumber}
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                                placeholder="Policy number"
+                                                placeholder={t('policyNumberPlaceholder')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Start Date
+                                                {t('startDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -346,7 +348,7 @@ const BenefitProfile = ({ onBack }) => {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                End Date
+                                                {t('endDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -365,7 +367,7 @@ const BenefitProfile = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Shield className="text-indigo-600" size={24} />
-                                Life Insurance
+                                {t('lifeInsurance')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -376,14 +378,14 @@ const BenefitProfile = ({ onBack }) => {
                                             onChange={(e) => handleNestedCheckbox('lifeInsurance', 'covered', e.target.checked)}
                                             className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Life Insurance Covered</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('lifeInsuranceCovered')}</span>
                                     </label>
                                 </div>
                                 {formData.lifeInsurance.covered && (
                                     <>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Provider
+                                                {t('provider')}
                                             </label>
                                             <input
                                                 type="text"
@@ -391,12 +393,12 @@ const BenefitProfile = ({ onBack }) => {
                                                 value={formData.lifeInsurance.provider}
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                                placeholder="Insurance company"
+                                                placeholder={t('insuranceCompany')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Policy Number
+                                                {t('policyNumber')}
                                             </label>
                                             <input
                                                 type="text"
@@ -404,13 +406,13 @@ const BenefitProfile = ({ onBack }) => {
                                                 value={formData.lifeInsurance.policyNumber}
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                                placeholder="Policy number"
+                                                placeholder={t('policyNumberPlaceholder')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                                 <DollarSign size={14} />
-                                                Coverage Amount
+                                                {t('coverageAmount')}
                                             </label>
                                             <input
                                                 type="number"
@@ -423,7 +425,7 @@ const BenefitProfile = ({ onBack }) => {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Beneficiary
+                                                {t('beneficiary')}
                                             </label>
                                             <input
                                                 type="text"
@@ -431,12 +433,12 @@ const BenefitProfile = ({ onBack }) => {
                                                 value={formData.lifeInsurance.beneficiary}
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                                placeholder="Beneficiary name"
+                                                placeholder={t('beneficiaryNamePlaceholder')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Start Date
+                                                {t('startDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -455,7 +457,7 @@ const BenefitProfile = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-indigo-600" size={24} />
-                                Retirement Plan
+                                {t('retirementPlan')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -466,14 +468,14 @@ const BenefitProfile = ({ onBack }) => {
                                             onChange={(e) => handleNestedCheckbox('retirementPlan', 'enrolled', e.target.checked)}
                                             className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Enrolled in Retirement Plan</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('enrolledInRetirementPlan')}</span>
                                     </label>
                                 </div>
                                 {formData.retirementPlan.enrolled && (
                                     <>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Plan Type
+                                                {t('planType')}
                                             </label>
                                             <select
                                                 name="retirementPlan.planType"
@@ -481,16 +483,16 @@ const BenefitProfile = ({ onBack }) => {
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                                             >
-                                                <option value="">Select Plan</option>
+                                                <option value="">{t('selectPlan')}</option>
                                                 <option value="401(k)">401(k)</option>
-                                                <option value="Pension Plan">Pension Plan</option>
-                                                <option value="Provident Fund">Provident Fund</option>
-                                                <option value="Other">Other</option>
+                                                <option value="Pension Plan">{t('pensionPlan')}</option>
+                                                <option value="Provident Fund">{t('providentFund')}</option>
+                                                <option value="Other">{t('other')}</option>
                                             </select>
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Employee Contribution Rate (%)
+                                                {t('employeeContributionRate')}
                                             </label>
                                             <input
                                                 type="number"
@@ -505,7 +507,7 @@ const BenefitProfile = ({ onBack }) => {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Employer Match (%)
+                                                {t('employerMatch')}
                                             </label>
                                             <input
                                                 type="number"
@@ -520,7 +522,7 @@ const BenefitProfile = ({ onBack }) => {
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Account Number
+                                                {t('accountNumber')}
                                             </label>
                                             <input
                                                 type="text"
@@ -528,12 +530,12 @@ const BenefitProfile = ({ onBack }) => {
                                                 value={formData.retirementPlan.accountNumber}
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                                placeholder="Account number"
+                                                placeholder={t('accountNumberPlaceholder')}
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                                Start Date
+                                                {t('startDate')}
                                             </label>
                                             <input
                                                 type="date"
@@ -552,12 +554,12 @@ const BenefitProfile = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Calendar className="text-indigo-600" size={24} />
-                                Paid Time Off
+                                {t('paidTimeOff')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Total Days Allocated
+                                        {t('totalDaysAllocated')}
                                     </label>
                                     <input
                                         type="number"
@@ -570,7 +572,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Days Used
+                                        {t('daysUsed')}
                                     </label>
                                     <input
                                         type="number"
@@ -583,7 +585,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Remaining Days
+                                        {t('remainingDays')}
                                     </label>
                                     <input
                                         type="number"
@@ -596,7 +598,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Carry Over Days
+                                        {t('carryOverDays')}
                                     </label>
                                     <input
                                         type="number"
@@ -614,12 +616,12 @@ const BenefitProfile = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <DollarSign className="text-indigo-600" size={24} />
-                                Allowances
+                                {t('allowances')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Transportation Allowance
+                                        {t('transportationAllowance')}
                                     </label>
                                     <input
                                         type="number"
@@ -632,7 +634,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Meal Allowance
+                                        {t('mealAllowance')}
                                     </label>
                                     <input
                                         type="number"
@@ -645,7 +647,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Housing Allowance
+                                        {t('housingAllowance')}
                                     </label>
                                     <input
                                         type="number"
@@ -658,7 +660,7 @@ const BenefitProfile = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Other Allowances
+                                        {t('otherAllowances')}
                                     </label>
                                     <input
                                         type="number"
@@ -675,7 +677,7 @@ const BenefitProfile = ({ onBack }) => {
                         {/* Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -683,7 +685,7 @@ const BenefitProfile = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                                placeholder="Any additional notes about benefits"
+                                placeholder={t('anyAdditionalNotesBenefits')}
                             />
                         </div>
 
@@ -694,14 +696,14 @@ const BenefitProfile = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Save Benefit Profile
+                                {t('saveBenefitProfile')}
                             </button>
                         </div>
                     </form>

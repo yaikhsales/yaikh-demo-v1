@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, ChevronDown } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const RequestWorkerForm = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     
     const [formData, setFormData] = useState({
         requestor: 'Testuser',
@@ -74,13 +76,13 @@ const RequestWorkerForm = ({ onBack }) => {
         
         // Validation
         const newErrors = {};
-        if (!formData.department) newErrors.department = 'Department is required';
-        if (!formData.gender) newErrors.gender = 'Gender is required';
-        if (!formData.shift) newErrors.shift = 'Shift is required';
-        if (!formData.workerType) newErrors.workerType = 'Worker Type is required';
-        if (!formData.startDate) newErrors.startDate = 'Start Date is required';
-        if (!formData.endDate) newErrors.endDate = 'End Date is required';
-        if (!formData.reason) newErrors.reason = 'Reason is required';
+        if (!formData.department) newErrors.department = t('departmentRequired');
+        if (!formData.gender) newErrors.gender = t('genderRequired');
+        if (!formData.shift) newErrors.shift = t('shiftRequired');
+        if (!formData.workerType) newErrors.workerType = t('workerTypeRequired');
+        if (!formData.startDate) newErrors.startDate = t('startDateRequired');
+        if (!formData.endDate) newErrors.endDate = t('endDateRequired');
+        if (!formData.reason) newErrors.reason = t('reasonRequired');
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -104,21 +106,21 @@ const RequestWorkerForm = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Temporary Worker Request</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('temporaryWorkerRequest')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -132,7 +134,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Requestor */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Requestor <span className="text-red-500">*</span>
+                                    {t('requestor')} <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
@@ -147,7 +149,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Department */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Department <span className="text-red-500">*</span>
+                                    {t('department')} <span className="text-red-500">*</span>
                                 </label>
                                 <div className="relative">
                                     <select
@@ -157,10 +159,10 @@ const RequestWorkerForm = ({ onBack }) => {
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                         required
                                     >
-                                        <option value="">Select Department</option>
+                                        <option value="">{t('selectDepartment')}</option>
                                         {departments.map((dept) => (
                                             <option key={dept} value={dept}>
-                                                {dept}
+                                                {translateModuleTitle(dept)}
                                             </option>
                                         ))}
                                     </select>
@@ -174,7 +176,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Gender of Worker */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Gender of Worker <span className="text-red-500">*</span>
+                                    {t('genderOfWorker')} <span className="text-red-500">*</span>
                                 </label>
                                 <div className="relative">
                                     <select
@@ -184,10 +186,10 @@ const RequestWorkerForm = ({ onBack }) => {
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                         required
                                     >
-                                        <option value="">Select Gender</option>
+                                        <option value="">{t('selectGender')}</option>
                                         {genders.map((gender) => (
                                             <option key={gender} value={gender}>
-                                                {gender}
+                                                {t(gender.toLowerCase())}
                                             </option>
                                         ))}
                                     </select>
@@ -201,7 +203,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Shift */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Shift <span className="text-red-500">*</span>
+                                    {t('shift')} <span className="text-red-500">*</span>
                                 </label>
                                 <div className="relative">
                                     <select
@@ -211,10 +213,10 @@ const RequestWorkerForm = ({ onBack }) => {
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                         required
                                     >
-                                        <option value="">-- Select Option --</option>
+                                        <option value="">{t('selectOption')}</option>
                                         {shifts.map((shift) => (
                                             <option key={shift} value={shift}>
-                                                {shift}
+                                                {t(shift.toLowerCase().replace(/\s+/g, ''))}
                                             </option>
                                         ))}
                                     </select>
@@ -228,7 +230,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Worker Type */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Worker Type <span className="text-red-500">*</span>
+                                    {t('workerType')} <span className="text-red-500">*</span>
                                 </label>
                                 <div className="relative">
                                     <select
@@ -238,10 +240,10 @@ const RequestWorkerForm = ({ onBack }) => {
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                         required
                                     >
-                                        <option value="">-- Select Option --</option>
+                                        <option value="">{t('selectOption')}</option>
                                         {workerTypes.map((type) => (
                                             <option key={type} value={type}>
-                                                {type}
+                                                {t(type.toLowerCase().replace(/-/g, ''))}
                                             </option>
                                         ))}
                                     </select>
@@ -255,7 +257,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Hourly Rate */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Hourly Rate
+                                    {t('hourlyRate')}
                                 </label>
                                 <input
                                     type="number"
@@ -270,7 +272,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Start Date */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Start Date <span className="text-red-500">*</span>
+                                    {t('startDate')} <span className="text-red-500">*</span>
                                 </label>
                                 <div className="relative">
                                     <input
@@ -292,7 +294,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* End Date */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    End Date <span className="text-red-500">*</span>
+                                    {t('endDate')} <span className="text-red-500">*</span>
                                 </label>
                                 <div className="relative">
                                     <input
@@ -314,7 +316,7 @@ const RequestWorkerForm = ({ onBack }) => {
                             {/* Reason */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Reason <span className="text-red-500">*</span>
+                                    {t('reason')} <span className="text-red-500">*</span>
                                 </label>
                                 <textarea
                                     name="reason"
@@ -322,7 +324,7 @@ const RequestWorkerForm = ({ onBack }) => {
                                     onChange={handleChange}
                                     rows={4}
                                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
-                                    placeholder="Enter reason"
+                                    placeholder={t('enterReason')}
                                     required
                                 />
                                 {errors.reason && (
@@ -336,7 +338,7 @@ const RequestWorkerForm = ({ onBack }) => {
                                     type="submit"
                                     className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                                 >
-                                    Submit
+                                    {t('submit')}
                                 </button>
                             </div>
                         </form>

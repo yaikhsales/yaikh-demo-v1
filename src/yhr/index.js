@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 // Mapping function to match module titles to sub-icon image filenames
 const getYHRIconImage = (title) => {
@@ -22,6 +23,7 @@ const getYHRIconImage = (title) => {
 
 const YHR = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [showAttendantSubMenu, setShowAttendantSubMenu] = useState(false);
     const [showFWCMSSubMenu, setShowFWCMSSubMenu] = useState(false);
 
@@ -128,9 +130,9 @@ const YHR = ({ onBack }) => {
                             aria-label="Back"
                         >
                             <ArrowLeft size={16} className="sm:w-5 sm:h-5" />
-                            <span className="font-medium hidden sm:inline">Back</span>
+                            <span className="font-medium hidden sm:inline">{t('back')}</span>
                         </button>
-                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 px-2 sm:px-4">YHR</h1>
+                        <h1 className="text-xl sm:text-2xl font-bold text-gray-800 px-2 sm:px-4">{t('yhr')}</h1>
                         <button
                             onClick={() => navigate('/')}
                             className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-gray-300 hover:border-gray-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
@@ -230,7 +232,7 @@ const YHR = ({ onBack }) => {
                                         
                                         {/* Text Label */}
                                         <span className="relative z-10 font-bold text-sm sm:text-base text-center leading-tight drop-shadow-md">
-                                            {module.title}
+                                            {translateModuleTitle(module.title)}
                                         </span>
                                     </button>
                                 );
@@ -245,9 +247,9 @@ const YHR = ({ onBack }) => {
                                 className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
                             >
                                 <ArrowLeft size={20} />
-                                <span>Back </span>
+                                <span>{t('back')} </span>
                             </button>
-                            <h2 className="text-xl font-bold text-gray-800">Attendant</h2>
+                            <h2 className="text-xl font-bold text-gray-800">{t('attendant')}</h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <button
@@ -262,7 +264,7 @@ const YHR = ({ onBack }) => {
                                         className="w-full h-full object-contain drop-shadow-2xl"
                                     />
                                 </div>
-                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">Checklist Attendant</span>
+                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">{translateModuleTitle('Checklist Attendant')}</span>
                             </button>
                             <button
                                 onClick={() => handleAttendantSubModule('My Attendant')}
@@ -272,11 +274,11 @@ const YHR = ({ onBack }) => {
                                 <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center">
                                     <img 
                                         src="/assets/icons/sub-icons/my-attendant.jpg"
-                                        alt="My Attendant"
+                                        alt={translateModuleTitle('My Attendant')}
                                         className="w-full h-full object-contain drop-shadow-2xl"
                                     />
                                 </div>
-                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">My Attendant</span>
+                                <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">{translateModuleTitle('My Attendant')}</span>
                             </button>
                         </div>
                     </div>
@@ -288,9 +290,9 @@ const YHR = ({ onBack }) => {
                                 className="flex items-center gap-2 text-black-600 hover:text-gray-800 mb-4"
                             >
                                 <ArrowLeft size={20} />
-                                <span>Back </span>
+                                <span>{t('back')} </span>
                             </button>
-                            <h2 className="text-xl font-bold text-gray-800">FWCMS</h2>
+                            <h2 className="text-xl font-bold text-gray-800">{t('fwcms')}</h2>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <button

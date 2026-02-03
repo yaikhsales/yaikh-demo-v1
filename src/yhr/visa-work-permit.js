@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, FileText, Calendar, Globe, User, CheckCircle, AlertCircle } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const VisaWorkPermit = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -83,20 +85,20 @@ const VisaWorkPermit = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-red-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Visa & Work Permit</h1>
+                        <h1 className="text-lg font-bold">{t('visaWorkPermit')}</h1>
                     </div>
                 </div>
             </div>
@@ -109,12 +111,12 @@ const VisaWorkPermit = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <User className="text-red-600" size={24} />
-                                Employee Information
+                                {t('employeeInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee ID <span className="text-red-500">*</span>
+                                        {t('employeeId')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -128,7 +130,7 @@ const VisaWorkPermit = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employee Name <span className="text-red-500">*</span>
+                                        {t('employeeName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -137,12 +139,12 @@ const VisaWorkPermit = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -150,12 +152,12 @@ const VisaWorkPermit = ({ onBack }) => {
                                         value={formData.department}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        placeholder="Department name"
+                                        placeholder={t('departmentName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position
+                                        {t('position')}
                                     </label>
                                     <input
                                         type="text"
@@ -163,13 +165,13 @@ const VisaWorkPermit = ({ onBack }) => {
                                         value={formData.position}
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        placeholder="Job title"
+                                        placeholder={t('jobTitle')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Globe size={14} />
-                                        Nationality <span className="text-red-500">*</span>
+                                        {t('nationality')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -178,7 +180,7 @@ const VisaWorkPermit = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        placeholder="e.g., Cambodian, Thai, Vietnamese"
+                                        placeholder={t('nationalityPlaceholder')}
                                     />
                                 </div>
                             </div>
@@ -188,12 +190,12 @@ const VisaWorkPermit = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <FileText className="text-red-600" size={24} />
-                                Passport Information
+                                {t('passportInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Passport Number <span className="text-red-500">*</span>
+                                        {t('passportNumber')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -202,13 +204,13 @@ const VisaWorkPermit = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        placeholder="Passport number"
+                                        placeholder={t('passportNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Issue Date
+                                        {t('passportIssueDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -221,7 +223,7 @@ const VisaWorkPermit = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Expiry Date <span className="text-red-500">*</span>
+                                        {t('passportExpiryDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <div className="relative">
                                         <input
@@ -241,13 +243,13 @@ const VisaWorkPermit = ({ onBack }) => {
                                         {isExpired(formData.passportExpiryDate) && (
                                             <div className="absolute right-2 top-2 flex items-center gap-1 text-red-600">
                                                 <AlertCircle size={16} />
-                                                <span className="text-xs font-semibold">Expired</span>
+                                                <span className="text-xs font-semibold">{t('expired')}</span>
                                             </div>
                                         )}
                                         {isExpiringSoon(formData.passportExpiryDate) && !isExpired(formData.passportExpiryDate) && (
                                             <div className="absolute right-2 top-2 flex items-center gap-1 text-yellow-600">
                                                 <AlertCircle size={16} />
-                                                <span className="text-xs font-semibold">Expiring Soon</span>
+                                                <span className="text-xs font-semibold">{t('expiringSoon')}</span>
                                             </div>
                                         )}
                                     </div>
@@ -259,12 +261,12 @@ const VisaWorkPermit = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Globe className="text-red-600" size={24} />
-                                Visa Information
+                                {t('visaInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Visa Type <span className="text-red-500">*</span>
+                                        {t('visaType')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="visaType"
@@ -273,17 +275,17 @@ const VisaWorkPermit = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Visa Type</option>
-                                        <option value="Business Visa">Business Visa</option>
-                                        <option value="Work Visa">Work Visa</option>
-                                        <option value="Tourist Visa">Tourist Visa</option>
-                                        <option value="Diplomatic Visa">Diplomatic Visa</option>
-                                        <option value="Student Visa">Student Visa</option>
+                                        <option value="">{t('selectVisaType')}</option>
+                                        <option value="Business Visa">{t('businessVisa')}</option>
+                                        <option value="Work Visa">{t('workVisa')}</option>
+                                        <option value="Tourist Visa">{t('touristVisa')}</option>
+                                        <option value="Diplomatic Visa">{t('diplomaticVisa')}</option>
+                                        <option value="Student Visa">{t('studentVisa')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Visa Number <span className="text-red-500">*</span>
+                                        {t('visaNumber')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -292,13 +294,13 @@ const VisaWorkPermit = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        placeholder="Visa number"
+                                        placeholder={t('visaNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Issue Date
+                                        {t('visaIssueDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -311,7 +313,7 @@ const VisaWorkPermit = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Expiry Date <span className="text-red-500">*</span>
+                                        {t('visaExpiryDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <div className="relative">
                                         <input
@@ -331,13 +333,13 @@ const VisaWorkPermit = ({ onBack }) => {
                                         {isExpired(formData.visaExpiryDate) && (
                                             <div className="absolute right-2 top-2 flex items-center gap-1 text-red-600">
                                                 <AlertCircle size={16} />
-                                                <span className="text-xs font-semibold">Expired</span>
+                                                <span className="text-xs font-semibold">{t('expired')}</span>
                                             </div>
                                         )}
                                         {isExpiringSoon(formData.visaExpiryDate) && !isExpired(formData.visaExpiryDate) && (
                                             <div className="absolute right-2 top-2 flex items-center gap-1 text-yellow-600">
                                                 <AlertCircle size={16} />
-                                                <span className="text-xs font-semibold">Expiring Soon</span>
+                                                <span className="text-xs font-semibold">{t('expiringSoon')}</span>
                                             </div>
                                         )}
                                     </div>
@@ -349,12 +351,12 @@ const VisaWorkPermit = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <CheckCircle className="text-red-600" size={24} />
-                                Work Permit Information
+                                {t('workPermitInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Work Permit Number <span className="text-red-500">*</span>
+                                        {t('workPermitNumber')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -363,13 +365,13 @@ const VisaWorkPermit = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                        placeholder="Work permit number"
+                                        placeholder={t('workPermitNumberPlaceholder')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Issue Date
+                                        {t('workPermitIssueDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -382,7 +384,7 @@ const VisaWorkPermit = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Expiry Date <span className="text-red-500">*</span>
+                                        {t('workPermitExpiryDate')} <span className="text-red-500">*</span>
                                     </label>
                                     <div className="relative">
                                         <input
@@ -402,20 +404,20 @@ const VisaWorkPermit = ({ onBack }) => {
                                         {isExpired(formData.workPermitExpiryDate) && (
                                             <div className="absolute right-2 top-2 flex items-center gap-1 text-red-600">
                                                 <AlertCircle size={16} />
-                                                <span className="text-xs font-semibold">Expired</span>
+                                                <span className="text-xs font-semibold">{t('expired')}</span>
                                             </div>
                                         )}
                                         {isExpiringSoon(formData.workPermitExpiryDate) && !isExpired(formData.workPermitExpiryDate) && (
                                             <div className="absolute right-2 top-2 flex items-center gap-1 text-yellow-600">
                                                 <AlertCircle size={16} />
-                                                <span className="text-xs font-semibold">Expiring Soon</span>
+                                                <span className="text-xs font-semibold">{t('expiringSoon')}</span>
                                             </div>
                                         )}
                                     </div>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Status <span className="text-red-500">*</span>
+                                        {t('status')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="status"
@@ -424,11 +426,11 @@ const VisaWorkPermit = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                                     >
-                                        <option value="active">Active</option>
-                                        <option value="pending">Pending</option>
-                                        <option value="expired">Expired</option>
-                                        <option value="renewed">Renewed</option>
-                                        <option value="cancelled">Cancelled</option>
+                                        <option value="active">{t('active')}</option>
+                                        <option value="pending">{t('pending')}</option>
+                                        <option value="expired">{t('expired')}</option>
+                                        <option value="renewed">{t('renewed')}</option>
+                                        <option value="cancelled">{t('cancelled')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -438,7 +440,7 @@ const VisaWorkPermit = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Calendar className="text-red-600" size={24} />
-                                Renewal Information
+                                {t('renewalInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -450,14 +452,14 @@ const VisaWorkPermit = ({ onBack }) => {
                                             onChange={handleChange}
                                             className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
                                         />
-                                        <span className="text-sm font-semibold text-gray-700">Renewal Required</span>
+                                        <span className="text-sm font-semibold text-gray-700">{t('renewalRequired')}</span>
                                     </label>
                                 </div>
                                 {formData.renewalRequired && (
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                             <Calendar size={14} />
-                                            Renewal Date
+                                            {t('renewalDate')}
                                         </label>
                                         <input
                                             type="date"
@@ -475,7 +477,7 @@ const VisaWorkPermit = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <FileText className="text-red-600" size={24} />
-                                Documents Checklist
+                                {t('documentsChecklist')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {[
@@ -495,7 +497,7 @@ const VisaWorkPermit = ({ onBack }) => {
                                             onChange={() => handleCheckboxChange(doc)}
                                             className="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500"
                                         />
-                                        <span className="text-sm text-gray-700">{doc}</span>
+                                        <span className="text-sm text-gray-700">{t(doc.toLowerCase().replace(/[\/\s]+/g, '')) || doc}</span>
                                     </label>
                                 ))}
                             </div>
@@ -504,7 +506,7 @@ const VisaWorkPermit = ({ onBack }) => {
                         {/* Notes */}
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                Additional Notes
+                                {t('additionalNotes')}
                             </label>
                             <textarea
                                 name="notes"
@@ -512,7 +514,7 @@ const VisaWorkPermit = ({ onBack }) => {
                                 onChange={handleChange}
                                 rows="4"
                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                                placeholder="Any additional notes about visa and work permit"
+                                placeholder={t('anyAdditionalNotesVisa')}
                             />
                         </div>
 
@@ -523,14 +525,14 @@ const VisaWorkPermit = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Save Visa & Work Permit
+                                {t('saveVisaWorkPermit')}
                             </button>
                         </div>
                     </form>

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, X, Calendar, Upload } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const PurchaseRequisitionForm = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         requestBy: 'Khun',
         department: 'CSR',
@@ -135,7 +137,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                                     className="flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
                                 >
                                     <ArrowLeft size={18} />
-                                    <span>Back</span>
+                                    <span>{t('back')}</span>
                                 </button>
                                 <button
                                     onClick={() => navigate('/')}
@@ -150,14 +152,14 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                                 </button>
                             </div>
                             <h2 className="text-lg md:text-xl font-semibold text-gray-800">
-                                Purchase Request
+                                {t('purchaseRequest')}
                             </h2>
                         </div>
                         <button
                             onClick={() => navigate('/dashboard/show-list-request')}
                             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
                         >
-                            Purchase List
+                            {t('purchaseList')}
                         </button>
                     </div>
                     
@@ -166,7 +168,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                             TexLink Technologies
                         </h1>
                         <h2 className="text-xl md:text-2xl font-semibold text-gray-700">
-                            Purchase Requisition Form
+                            {t('purchaseRequisitionForm')}
                         </h2>
                     </div>
                 </div>
@@ -179,7 +181,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Request by:
+                                    {t('requestBy')}:
                                 </label>
                                 <input
                                     type="text"
@@ -191,7 +193,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Department:
+                                    {t('department')}:
                                 </label>
                                 <select
                                     name="department"
@@ -208,7 +210,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Expect Delivery Date:
+                                    {t('expectDeliveryDate')}:
                                 </label>
                                 <div className="relative">
                                     <input
@@ -227,7 +229,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Reference:
+                                    {t('reference')}:
                                 </label>
                                 <input
                                     type="text"
@@ -239,7 +241,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Purchase Type:
+                                    {t('purchaseType')}:
                                 </label>
                                 <select
                                     name="purchaseType"
@@ -247,9 +249,9 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 >
-                                    <option value="Local Purchase">Local Purchase</option>
-                                    <option value="Import Purchase">Import Purchase</option>
-                                    <option value="Both">Both</option>
+                                    <option value="Local Purchase">{t('localPurchase')}</option>
+                                    <option value="Import Purchase">{t('importPurchase')}</option>
+                                    <option value="Both">{t('both')}</option>
                                 </select>
                             </div>
                         </div>
@@ -258,7 +260,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Topic:
+                                    {t('topic')}:
                                 </label>
                                 <select
                                     name="topic"
@@ -266,14 +268,14 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 >
-                                    <option value="New Purchase">New Purchase</option>
-                                    <option value="Replacement">Replacement</option>
-                                    <option value="Repair">Repair</option>
+                                    <option value="New Purchase">{t('newPurchase')}</option>
+                                    <option value="Replacement">{t('replacement')}</option>
+                                    <option value="Repair">{t('repair')}</option>
                                 </select>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Payment Type:
+                                    {t('paymentType')}:
                                 </label>
                                 <select
                                     name="paymentType"
@@ -281,8 +283,8 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                                     onChange={handleInputChange}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 >
-                                    <option value="Pre-Paid">Pre-Paid</option>
-                                    <option value="Post-Paid">Post-Paid</option>
+                                    <option value="Pre-Paid">{t('prePaid')}</option>
+                                    <option value="Post-Paid">{t('postPaid')}</option>
                                     <option value="COD">COD</option>
                                 </select>
                             </div>
@@ -291,44 +293,44 @@ const PurchaseRequisitionForm = ({ onBack }) => {
 
                     {/* Product Details Table */}
                     <div className="mb-6 md:mb-8">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Product Details</h3>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('productDetails')}</h3>
                         <div className="overflow-x-auto -mx-4 md:mx-0">
                             <div className="inline-block min-w-full align-middle">
                                 <table className="w-full border-collapse">
                                 <thead>
                                     <tr className="bg-gray-50">
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Product Name<span className="text-red-500">*</span>
+                                            {t('productName')}<span className="text-red-500">*</span>
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Product Details, etc.
+                                            {t('productDetails')}, etc.
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Brand
+                                            {t('brand')}
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Qty<span className="text-red-500">*</span>
+                                            {t('qty')}<span className="text-red-500">*</span>
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            UoM<span className="text-red-500">*</span>
+                                            {t('uom')}<span className="text-red-500">*</span>
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Supplier
+                                            {t('supplier')}
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Unit Price<span className="text-red-500">*</span>
+                                            {t('unitPrice')}<span className="text-red-500">*</span>
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Unit Type<span className="text-red-500">*</span>
+                                            {t('unit')} {t('type')}<span className="text-red-500">*</span>
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Total Amount<span className="text-red-500">*</span>
+                                            {t('total')}<span className="text-red-500">*</span>
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-left text-sm font-medium text-gray-700">
-                                            Remark
+                                            {t('remarks')}
                                         </th>
                                         <th className="border border-gray-300 px-3 py-2 text-center text-sm font-medium text-gray-700">
-                                            Action
+                                            {t('actions')}
                                         </th>
                                     </tr>
                                 </thead>
@@ -515,7 +517,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                             Add Support Quotation
                         </button>
                         <div className="flex items-center gap-4">
-                            <span className="text-sm font-medium text-gray-700">Purchase by:</span>
+                            <span className="text-sm font-medium text-gray-700">{t('purchaseBy')}:</span>
                             <label className="flex items-center gap-2">
                                 <input
                                     type="radio"
@@ -525,7 +527,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                                     onChange={handleInputChange}
                                     className="text-blue-600"
                                 />
-                                <span className="text-sm text-gray-700">Buy By Myself</span>
+                                <span className="text-sm text-gray-700">{t('buyByMyself')}</span>
                             </label>
                             <label className="flex items-center gap-2">
                                 <input
@@ -536,14 +538,14 @@ const PurchaseRequisitionForm = ({ onBack }) => {
                                     onChange={handleInputChange}
                                     className="text-blue-600"
                                 />
-                                <span className="text-sm text-gray-700">Buy By Purchaser</span>
+                                <span className="text-sm text-gray-700">{t('buyByCompany')}</span>
                             </label>
                         </div>
                         <button
                             type="submit"
                             className="px-8 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium"
                         >
-                            Submit
+                            {t('submit')}
                         </button>
                     </div>
                 </form>

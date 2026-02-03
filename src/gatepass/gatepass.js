@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, History, Users, Plus, X, Building, User, Hash, FileText, Clock, Rocket, ArrowLeft as ReturnIcon, Send, MapPin } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const GatePass = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pendingRequests, setPendingRequests] = useState([
         {
@@ -66,19 +68,19 @@ const GatePass = ({ onBack }) => {
     });
 
     const requestTypes = [
-        { value: 'personal', label: 'Personal Request', icon: 'User' },
-        { value: 'material', label: 'Material Transport', icon: 'Package' },
-        { value: 'assets', label: 'Fixed Assets Transport', icon: 'Wrench' }
+        { value: 'personal', label: t('personalRequest'), icon: 'User' },
+        { value: 'material', label: t('materialTransport'), icon: 'Package' },
+        { value: 'assets', label: t('fixedAssetsTransport'), icon: 'Wrench' }
     ];
 
     const requestReasons = [
-        'Office Duty',
-        'Audit Duty',
-        'Purchase Goods',
-        'Repair Device',
-        'Health Issue',
-        'Personal Emergency',
-        'Other'
+        t('officeDuty'),
+        t('auditDuty'),
+        t('purchaseGoods'),
+        t('repairDevice'),
+        t('healthIssue'),
+        t('personalEmergency'),
+        t('other')
     ];
 
     const whereToGoOptions = [
@@ -158,21 +160,21 @@ const GatePass = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Gate Pass</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('gatePass')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -191,14 +193,14 @@ const GatePass = ({ onBack }) => {
                                     className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                                 >
                                     <History size={16} />
-                                    My History
+                                    {t('myHistory')}
                                 </button>
                                 <button
                                     onClick={handleGPAdmin}
                                     className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
                                 >
                                     <Users size={16} />
-                                    GP-Admin
+                                    {t('gpAdmin')}
                                 </button>
                             </div>
 
@@ -208,7 +210,7 @@ const GatePass = ({ onBack }) => {
                                 className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                             >
                                 <Plus size={16} />
-                                Add New Request
+                                {t('addNewRequest')}
                             </button>
                         </div>
 
@@ -220,25 +222,25 @@ const GatePass = ({ onBack }) => {
                                         <FileText size={64} className="text-orange-600" />
                                     </div>
                                 </div>
-                                <h3 className="text-xl font-bold text-slate-800 mb-2">No pending request to approve</h3>
-                                <p className="text-slate-600">All requests have been processed</p>
+                                <h3 className="text-xl font-bold text-slate-800 mb-2">{t('noPendingRequest')}</h3>
+                                <p className="text-slate-600">{t('allRequestsProcessed')}</p>
                             </div>
                         ) : (
                             <div className="overflow-x-auto">
                                 <table className="w-full text-sm border-collapse">
                                     <thead className="bg-slate-50">
                                         <tr>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">N°</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">EMPLOYEE ID</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">NAME</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DEPARTMENT</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">SUPERVISOR</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">REQUEST TYPE</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">REASON</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DESTINATION</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DEPARTURE</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">RETURN</th>
-                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">ACTIONS</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('no')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('employeeIdHeader')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('nameHeader')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('departmentHeader')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('supervisorHeader')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('requestTypeHeader')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('reasonHeader')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('destination')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('departure')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('return')}</th>
+                                            <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('actions')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -257,10 +259,10 @@ const GatePass = ({ onBack }) => {
                                                 <td className="px-4 py-3 border border-slate-200 text-center">
                                                     <div className="flex items-center justify-center gap-2">
                                                         <button className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 text-sm">
-                                                            Approve
+                                                            {t('approve')}
                                                         </button>
                                                         <button className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-sm">
-                                                            Reject
+                                                            {t('reject')}
                                                         </button>
                                                     </div>
                                                 </td>
@@ -282,12 +284,12 @@ const GatePass = ({ onBack }) => {
                         <div className="bg-gradient-to-r from-purple-600 to-blue-600 p-6 flex items-center justify-between rounded-t-lg">
                             <div className="flex items-center gap-2">
                                 <Building size={20} className="text-yellow-300" />
-                                <h2 className="text-xl font-bold text-white">Gate Pass Request</h2>
+                                <h2 className="text-xl font-bold text-white">{t('gatePassRequest')}</h2>
                             </div>
                             <button
                                 onClick={handleCloseModal}
                                 className="p-2 hover:bg-white/20 rounded-full transition-colors"
-                                aria-label="Close"
+                                aria-label={t('close')}
                             >
                                 <X size={20} className="text-white" />
                             </button>
@@ -299,14 +301,14 @@ const GatePass = ({ onBack }) => {
                             <div>
                                 <div className="flex items-center gap-2 mb-4">
                                     <User size={18} className="text-blue-600" />
-                                    <h3 className="text-lg font-bold text-slate-800">Employee Information</h3>
+                                    <h3 className="text-lg font-bold text-slate-800">{t('employeeInformation')}</h3>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     {/* Employee ID */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <Hash size={14} className="text-blue-600" />
-                                            Employee ID
+                                            {t('employeeId')}
                                         </label>
                                         <input
                                             type="text"
@@ -321,7 +323,7 @@ const GatePass = ({ onBack }) => {
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <User size={14} className="text-yellow-500" />
-                                            Your Name
+                                            {t('yourName')}
                                         </label>
                                         <input
                                             type="text"
@@ -336,7 +338,7 @@ const GatePass = ({ onBack }) => {
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <Building size={14} className="text-blue-600" />
-                                            Department
+                                            {t('department')}
                                         </label>
                                         <input
                                             type="text"
@@ -351,14 +353,14 @@ const GatePass = ({ onBack }) => {
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <Hash size={14} className="text-blue-600" />
-                                            Supervisor Code
+                                            {t('supervisorCode')}
                                         </label>
                                         <input
                                             type="text"
                                             name="supervisorCode"
                                             value={formData.supervisorCode}
                                             onChange={handleChange}
-                                            placeholder="Authorized Person Code"
+                                            placeholder={t('authorizedPersonCode')}
                                             className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         />
                                     </div>
@@ -367,7 +369,7 @@ const GatePass = ({ onBack }) => {
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <User size={14} className="text-yellow-500" />
-                                            Supervisor
+                                            {t('supervisor')}
                                         </label>
                                         <input
                                             type="text"
@@ -382,7 +384,7 @@ const GatePass = ({ onBack }) => {
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <Hash size={14} className="text-blue-600" />
-                                            Request Type
+                                            {t('requestType')}
                                         </label>
                                         <div className="relative">
                                             <select
@@ -391,7 +393,7 @@ const GatePass = ({ onBack }) => {
                                                 onChange={handleChange}
                                                 className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                             >
-                                                <option value="">--Select request type--</option>
+                                                <option value="">{t('selectRequestType')}</option>
                                                 {requestTypes.map((type) => (
                                                     <option key={type.value} value={type.value}>
                                                         {type.label}
@@ -408,7 +410,7 @@ const GatePass = ({ onBack }) => {
                             <div>
                                 <div className="flex items-center gap-2 mb-4">
                                     <FileText size={18} className="text-yellow-500" />
-                                    <h3 className="text-lg font-bold text-slate-800">Request Reason</h3>
+                                    <h3 className="text-lg font-bold text-slate-800">{t('requestReason')}</h3>
                                 </div>
                                 <div className="relative">
                                     <select
@@ -417,7 +419,7 @@ const GatePass = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none bg-white"
                                     >
-                                        <option value="">--Select reason--</option>
+                                        <option value="">{t('selectReason')}</option>
                                         {requestReasons.map((reason) => (
                                             <option key={reason} value={reason}>
                                                 {reason}
@@ -433,7 +435,7 @@ const GatePass = ({ onBack }) => {
                                 <div>
                                     <div className="flex items-center gap-2 mb-4">
                                         <MapPin size={18} className="text-blue-600" />
-                                        <h3 className="text-lg font-bold text-slate-800">Where to Go</h3>
+                                        <h3 className="text-lg font-bold text-slate-800">{t('whereToGo')}</h3>
                                     </div>
                                     <div className="space-y-2">
                                         {whereToGoOptions.map((option) => (
@@ -460,14 +462,14 @@ const GatePass = ({ onBack }) => {
                             <div>
                                 <div className="flex items-center gap-2 mb-4">
                                     <Clock size={18} className="text-green-600" />
-                                    <h3 className="text-lg font-bold text-slate-800">Time Schedule</h3>
+                                    <h3 className="text-lg font-bold text-slate-800">{t('timeSchedule')}</h3>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     {/* Departure Time */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <Rocket size={14} className="text-red-500" />
-                                            Departure Time
+                                            {t('departureTime')}
                                         </label>
                                         <div className="flex gap-2">
                                             <div className="relative flex-1">
@@ -505,7 +507,7 @@ const GatePass = ({ onBack }) => {
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
                                             <ReturnIcon size={14} className="text-blue-500" />
-                                            Return Time <span className="text-red-500">*</span>
+                                            {t('returnTime')} <span className="text-red-500">*</span>
                                         </label>
                                         <div className="flex gap-2">
                                             <div className="relative flex-1">
@@ -549,14 +551,14 @@ const GatePass = ({ onBack }) => {
                                     className="px-6 py-2 bg-slate-300 text-slate-700 rounded-lg font-semibold hover:bg-slate-400 transition-colors flex items-center gap-2"
                                 >
                                     <X size={16} className="text-red-500" />
-                                    Cancel
+                                    {t('cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                                 >
                                     <Send size={16} />
-                                    Submit Request
+                                    {t('submitRequest')}
                                 </button>
                             </div>
                         </form>

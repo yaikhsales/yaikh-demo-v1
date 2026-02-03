@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save, FileText, User, Mail, Phone, Calendar, MapPin, Briefcase, GraduationCap } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Recruitment = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [formData, setFormData] = useState({
         position: '',
         department: '',
@@ -56,20 +58,20 @@ const Recruitment = ({ onBack }) => {
                             className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-blue-700 rounded transition-colors"
                         >
                             <ArrowLeft size={18} />
-                            <span className="font-medium">Back</span>
+                            <span className="font-medium">{t('back')}</span>
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
-                        <h1 className="text-lg font-bold">Recruitment</h1>
+                        <h1 className="text-lg font-bold">{t('recruitment')}</h1>
                     </div>
                 </div>
             </div>
@@ -82,12 +84,12 @@ const Recruitment = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <Briefcase className="text-blue-600" size={24} />
-                                Position Information
+                                {t('positionInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Position Title <span className="text-red-500">*</span>
+                                        {t('positionTitle')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -101,7 +103,7 @@ const Recruitment = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Department <span className="text-red-500">*</span>
+                                        {t('department')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="department"
@@ -110,18 +112,18 @@ const Recruitment = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Department</option>
+                                        <option value="">{t('selectDepartment')}</option>
                                         <option value="IT">IT</option>
                                         <option value="HR">HR</option>
-                                        <option value="Finance">Finance</option>
-                                        <option value="Operations">Operations</option>
-                                        <option value="Production">Production</option>
-                                        <option value="QA">QA</option>
+                                        <option value="Finance">{t('financial')}</option>
+                                        <option value="Operations">{t('operations')}</option>
+                                        <option value="Production">{t('production')}</option>
+                                        <option value="QA">{t('qa')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Employment Type <span className="text-red-500">*</span>
+                                        {t('employmentType')} <span className="text-red-500">*</span>
                                     </label>
                                     <select
                                         name="employmentType"
@@ -130,16 +132,16 @@ const Recruitment = ({ onBack }) => {
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Type</option>
-                                        <option value="Full-time">Full-time</option>
-                                        <option value="Part-time">Part-time</option>
-                                        <option value="Contract">Contract</option>
-                                        <option value="Temporary">Temporary</option>
+                                        <option value="">{t('selectType')}</option>
+                                        <option value="Full-time">{t('fullTime')}</option>
+                                        <option value="Part-time">{t('partTime')}</option>
+                                        <option value="Contract">{t('contract')}</option>
+                                        <option value="Temporary">{t('temporary')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Recruitment Source
+                                        {t('recruitmentSource')}
                                     </label>
                                     <select
                                         name="source"
@@ -147,12 +149,12 @@ const Recruitment = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Source</option>
-                                        <option value="Job Portal">Job Portal</option>
-                                        <option value="Referral">Referral</option>
-                                        <option value="Social Media">Social Media</option>
-                                        <option value="Recruitment Agency">Recruitment Agency</option>
-                                        <option value="Walk-in">Walk-in</option>
+                                        <option value="">{t('selectSource')}</option>
+                                        <option value="Job Portal">{t('jobPortal')}</option>
+                                        <option value="Referral">{t('referral')}</option>
+                                        <option value="Social Media">{t('socialMedia')}</option>
+                                        <option value="Recruitment Agency">{t('recruitmentAgency')}</option>
+                                        <option value="Walk-in">{t('walkIn')}</option>
                                     </select>
                                 </div>
                             </div>
@@ -162,12 +164,12 @@ const Recruitment = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <User className="text-blue-600" size={24} />
-                                Candidate Information
+                                {t('candidateInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Full Name <span className="text-red-500">*</span>
+                                        {t('fullName')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="text"
@@ -176,12 +178,12 @@ const Recruitment = ({ onBack }) => {
                                         onChange={handleChange}
                                         required
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Enter full name"
+                                        placeholder={t('enterFullName')}
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Date of Birth
+                                        {t('dateOfBirth')}
                                     </label>
                                     <input
                                         type="date"
@@ -194,7 +196,7 @@ const Recruitment = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Mail size={14} />
-                                        Email Address <span className="text-red-500">*</span>
+                                        {t('emailAddress')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="email"
@@ -209,7 +211,7 @@ const Recruitment = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Phone size={14} />
-                                        Phone Number <span className="text-red-500">*</span>
+                                        {t('phoneNumber')} <span className="text-red-500">*</span>
                                     </label>
                                     <input
                                         type="tel"
@@ -224,7 +226,7 @@ const Recruitment = ({ onBack }) => {
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <MapPin size={14} />
-                                        Address
+                                        {t('address')}
                                     </label>
                                     <textarea
                                         name="address"
@@ -232,7 +234,7 @@ const Recruitment = ({ onBack }) => {
                                         onChange={handleChange}
                                         rows="2"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Enter address"
+                                        placeholder={t('enterAddress')}
                                     />
                                 </div>
                             </div>
@@ -242,12 +244,12 @@ const Recruitment = ({ onBack }) => {
                         <div className="border-b border-gray-200 pb-4">
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <GraduationCap className="text-blue-600" size={24} />
-                                Qualifications & Experience
+                                {t('qualificationsExperience')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Education
+                                        {t('education')}
                                     </label>
                                     <select
                                         name="education"
@@ -255,17 +257,17 @@ const Recruitment = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
-                                        <option value="">Select Education Level</option>
-                                        <option value="High School">High School</option>
-                                        <option value="Associate Degree">Associate Degree</option>
-                                        <option value="Bachelor's Degree">Bachelor's Degree</option>
-                                        <option value="Master's Degree">Master's Degree</option>
-                                        <option value="PhD">PhD</option>
+                                        <option value="">{t('selectEducationLevel')}</option>
+                                        <option value="High School">{t('highSchool')}</option>
+                                        <option value="Associate Degree">{t('associateDegree')}</option>
+                                        <option value="Bachelor's Degree">{t('bachelorsDegree')}</option>
+                                        <option value="Master's Degree">{t('mastersDegree')}</option>
+                                        <option value="PhD">{t('phd')}</option>
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Years of Experience
+                                        {t('yearsOfExperience')}
                                     </label>
                                     <input
                                         type="number"
@@ -279,7 +281,7 @@ const Recruitment = ({ onBack }) => {
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Skills & Competencies
+                                        {t('skillsCompetencies')}
                                     </label>
                                     <textarea
                                         name="skills"
@@ -287,7 +289,7 @@ const Recruitment = ({ onBack }) => {
                                         onChange={handleChange}
                                         rows="3"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="List relevant skills and competencies"
+                                        placeholder={t('listRelevantSkills')}
                                     />
                                 </div>
                             </div>
@@ -297,13 +299,13 @@ const Recruitment = ({ onBack }) => {
                         <div>
                             <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                                 <FileText className="text-blue-600" size={24} />
-                                Additional Information
+                                {t('additionalInformation')}
                             </h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Expected Salary
+                                        {t('expectedSalary')}
                                     </label>
                                     <input
                                         type="number"
@@ -317,7 +319,7 @@ const Recruitment = ({ onBack }) => {
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
                                         <Calendar size={14} />
-                                        Availability Date
+                                        {t('availabilityDate')}
                                     </label>
                                     <input
                                         type="date"
@@ -329,7 +331,7 @@ const Recruitment = ({ onBack }) => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Status
+                                        {t('status')}
                                     </label>
                                     <select
                                         name="status"
@@ -337,17 +339,17 @@ const Recruitment = ({ onBack }) => {
                                         onChange={handleChange}
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
-                                        <option value="pending">Pending</option>
-                                        <option value="screening">Screening</option>
-                                        <option value="interview">Interview</option>
-                                        <option value="shortlisted">Shortlisted</option>
-                                        <option value="rejected">Rejected</option>
-                                        <option value="hired">Hired</option>
+                                        <option value="pending">{t('pending')}</option>
+                                        <option value="screening">{t('screening')}</option>
+                                        <option value="interview">{t('interview')}</option>
+                                        <option value="shortlisted">{t('shortlisted')}</option>
+                                        <option value="rejected">{t('rejected')}</option>
+                                        <option value="hired">{t('hired')}</option>
                                     </select>
                                 </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        Notes & Comments
+                                        {t('notesComments')}
                                     </label>
                                     <textarea
                                         name="notes"
@@ -355,7 +357,7 @@ const Recruitment = ({ onBack }) => {
                                         onChange={handleChange}
                                         rows="4"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Additional notes or comments about the candidate"
+                                        placeholder={t('additionalNotes')}
                                     />
                                 </div>
                             </div>
@@ -368,14 +370,14 @@ const Recruitment = ({ onBack }) => {
                                 onClick={handleBack}
                                 className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
                             >
-                                Cancel
+                                {t('cancel')}
                             </button>
                             <button
                                 type="submit"
                                 className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center gap-2"
                             >
                                 <Save size={18} />
-                                Save Recruitment
+                                {t('saveRecruitment')}
                             </button>
                         </div>
                     </form>

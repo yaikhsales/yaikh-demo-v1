@@ -5,9 +5,11 @@ import RequestDetailModal from '../components/RequestDetailModal';
 import InvoiceModal from '../components/InvoiceModal';
 import ImageViewer from '../components/ImageViewer';
 import PdfViewer from '../components/PdfViewer';
+import { useTranslation } from '../translate/TranslationContext';
 
 const VerifyPR = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t, translateModuleTitle } = useTranslation();
     const [activeTab, setActiveTab] = useState('new');
     const [searchCode, setSearchCode] = useState('');
     const [selectedRequest, setSelectedRequest] = useState(null);
@@ -133,26 +135,26 @@ const VerifyPR = ({ onBack }) => {
                         className="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 rounded-lg transition-colors bg-slate-100"
                         aria-label="Go back"
                     >
-                        <ArrowLeft size={18} /> Back
+                        <ArrowLeft size={18} /> {t('back')}
                     </button>
                     <button
                         onClick={() => navigate('/')}
                         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                        title="Home"
+                        title={t('home')}
                     >
                         <img 
                             src="/logo.jpg" 
-                            alt="Home" 
+                            alt={t('home')} 
                             className="w-full h-full object-cover"
                         />
                     </button>
                     <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <span>Accountant</span>
+                        <span>{t('accountant')}</span>
                         <span className="text-slate-400">/</span>
-                        <span className="font-semibold text-slate-800">Purchase Request</span>
+                        <span className="font-semibold text-slate-800">{t('purchaseRequest')}</span>
                     </div>
                 </div>
-                <h2 className="text-xl font-bold text-slate-800 text-center">Check Request Lists - Purchase Request</h2>
+                <h2 className="text-xl font-bold text-slate-800 text-center">{t('checkRequestLists')} - {t('purchaseRequest')}</h2>
             </div>
 
             {/* Search Bar */}
@@ -202,26 +204,26 @@ const VerifyPR = ({ onBack }) => {
                     <table className="w-full text-sm text-left border-collapse">
                         <thead className="bg-slate-50 text-slate-600 uppercase font-bold text-xs sticky top-0 z-10">
                             <tr>
-                                <th className="px-4 py-3 border-b border-slate-200">CODE</th>
-                                <th className="px-4 py-3 border-b border-slate-200">RETURN</th>
-                                <th className="px-4 py-3 border-b border-slate-200">APPROVE STATUS</th>
-                                <th className="px-4 py-3 border-b border-slate-200">DETAILS</th>
-                                <th className="px-4 py-3 border-b border-slate-200">INVOICE</th>
-                                <th className="px-4 py-3 border-b border-slate-200">ACC CHECK</th>
-                                <th className="px-4 py-3 border-b border-slate-200">GM</th>
-                                <th className="px-4 py-3 border-b border-slate-200">NAME</th>
-                                <th className="px-4 py-3 border-b border-slate-200">DEPARTMENT</th>
-                                <th className="px-4 py-3 border-b border-slate-200">PRODUCT/SERVICE</th>
-                                <th className="px-4 py-3 border-b border-slate-200">REQUEST DATE</th>
-                                <th className="px-4 py-3 border-b border-slate-200">ATTACH DOCUMENTS</th>
-                                <th className="px-4 py-3 border-b border-slate-200">ACTIONS</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('code')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('return')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('approveStatus')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('details')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('invoice')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('accCheck')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('gm')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('nameHeader')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('departmentHeader')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('productService')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('requestDate')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('attachDocuments')}</th>
+                                <th className="px-4 py-3 border-b border-slate-200">{t('actions')}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {data.length === 0 ? (
                                 <tr>
                                     <td colSpan={13} className="text-center py-16 text-slate-500">
-                                        No data found
+                                        {t('noData')}
                                     </td>
                                 </tr>
                             ) : (
@@ -233,26 +235,26 @@ const VerifyPR = ({ onBack }) => {
                                                 onClick={() => handleReject(item.code)}
                                                 className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
                                             >
-                                                Reject
+                                                {t('reject')}
                                             </button>
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="flex items-center gap-2">
                                                 <div className="flex flex-col gap-1">
                                                     <div className="flex items-center gap-1">
-                                                        <span className="text-xs text-slate-600">Head:</span>
+                                                        <span className="text-xs text-slate-600">{t('head')}:</span>
                                                         <div className={`w-2 h-2 rounded-full ${
                                                             item.headStatus === 'approved' ? 'bg-green-500' : 'bg-red-500'
                                                         }`}></div>
                                                     </div>
                                                     <div className="flex items-center gap-1">
-                                                        <span className="text-xs text-slate-600">GM:</span>
+                                                        <span className="text-xs text-slate-600">{t('gm')}:</span>
                                                         <div className={`w-2 h-2 rounded-full ${
                                                             item.gmStatus === 'approved' ? 'bg-green-500' : 'bg-red-500'
                                                         }`}></div>
                                                     </div>
                                                     <div className="flex items-center gap-1">
-                                                        <span className="text-xs text-slate-600">Purchaser:</span>
+                                                        <span className="text-xs text-slate-600">{t('purchaser')}:</span>
                                                         <div className={`w-2 h-2 rounded-full ${
                                                             item.purchaserStatus === 'approved' ? 'bg-green-500' : 'bg-red-500'
                                                         }`}></div>
@@ -266,7 +268,7 @@ const VerifyPR = ({ onBack }) => {
                                                 className="bg-white text-blue-600 border-2 border-blue-600 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-50 transition-colors flex items-center gap-1"
                                             >
                                                 <Eye size={12} />
-                                                Details
+                                                {t('details')}
                                             </button>
                                         </td>
                                         <td className="px-4 py-4">
@@ -275,26 +277,26 @@ const VerifyPR = ({ onBack }) => {
                                                 className="bg-white text-blue-600 border-2 border-blue-600 px-3 py-1 rounded text-xs font-semibold hover:bg-blue-50 transition-colors flex items-center gap-1"
                                             >
                                                 <Eye size={12} />
-                                                Invoice
+                                                {t('invoice')}
                                             </button>
                                         </td>
                                         <td className="px-4 py-4">
                                             {item.accCheck === 'checked' ? (
                                                 <>
                                                     <button className="bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors">
-                                                        Checked
+                                                        {t('checked')}
                                                     </button>
                                                     <div className="text-xs text-slate-600 mt-1">{item.accCheckDate}</div>
                                                 </>
                                             ) : (
                                                 <button className="bg-red-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-red-600 transition-colors">
-                                                    Pending
+                                                    {t('pending')}
                                                 </button>
                                             )}
                                         </td>
                                         <td className="px-4 py-4">
                                             <button className="bg-green-500 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors">
-                                                Approved
+                                                {t('approved')}
                                             </button>
                                             <div className="text-xs text-slate-600 mt-1">{item.gmDate}</div>
                                         </td>
@@ -331,7 +333,7 @@ const VerifyPR = ({ onBack }) => {
                                                     onClick={handleViewRequestForm}
                                                     className="text-xs text-slate-600 hover:text-slate-800 transition-colors text-left"
                                                 >
-                                                    Request Form
+                                                    {t('requestForm')}
                                                 </button>
                                                 <div className="flex items-center gap-2">
                                                     <button
@@ -339,7 +341,7 @@ const VerifyPR = ({ onBack }) => {
                                                         className="bg-green-500 text-white px-2 py-1 rounded text-xs font-semibold hover:bg-green-600 transition-colors flex items-center gap-1"
                                                     >
                                                         <FileText size={12} />
-                                                        PDF
+                                                        {t('pdf')}
                                                     </button>
                                                     <button
                                                         onClick={handleViewPdf}

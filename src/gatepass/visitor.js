@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, Printer, X, Calendar } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const Visitor = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [visitors, setVisitors] = useState([
         {
@@ -193,21 +195,21 @@ const Visitor = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Visitor Log</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('visitorLog')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -219,21 +221,21 @@ const Visitor = ({ onBack }) => {
                     <div className="bg-white rounded-lg shadow-md p-6 h-full">
                         {/* Title and Action Buttons */}
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold text-slate-800">Visitor Log</h2>
+                            <h2 className="text-2xl font-bold text-slate-800">{t('visitorLog')}</h2>
                             <div className="flex items-center gap-3">
                                 <button
                                     onClick={handleOpenModal}
                                     className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                                 >
                                     <Plus size={16} />
-                                    Add New Visitor
+                                    {t('addNewVisitor')}
                                 </button>
                                 <button
                                     onClick={handlePrintRecords}
                                     className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
                                 >
                                     <Printer size={16} />
-                                    Print Records
+                                    {t('printRecords')}
                                 </button>
                             </div>
                         </div>
@@ -243,27 +245,27 @@ const Visitor = ({ onBack }) => {
                             <table className="w-full text-sm border-collapse">
                                 <thead className="bg-slate-50">
                                     <tr>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">NO.</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">DATE</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">VISITOR'S NAME</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">ID CARD NO.</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">COMPANY</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">CONTACT PERSON</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">PURPOSE</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">VISITOR ID NUMBER</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">CAR/MOTOR PLATE</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">CAR CHECK</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">TIME IN</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">TIME OUT</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">PHOTOS</th>
-                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">REMARKS</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('no')}.</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('date')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('visitorsName')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('idCardNo')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('company')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('contactPerson')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('purpose')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('visitorIdNumber')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('carMotorPlate')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('carCheck')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('timeIn')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('timeOut')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-center">{t('photos')}</th>
+                                        <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">{t('remarks')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {visitors.length === 0 ? (
                                         <tr>
                                             <td colSpan={14} className="text-center py-16 text-slate-500">
-                                                No visitor records found.
+                                                {t('noVisitorRecordsFound')}
                                             </td>
                                         </tr>
                                     ) : (
@@ -288,13 +290,13 @@ const Visitor = ({ onBack }) => {
                                                             onClick={() => handleCheckOut(visitor.id)}
                                                             className="bg-blue-600 text-white px-3 py-1 rounded text-xs font-semibold hover:bg-blue-700 transition-colors"
                                                         >
-                                                            Check Out
+                                                            {t('checkOut')}
                                                         </button>
                                                     )}
                                                 </td>
                                                 <td className="px-4 py-4 border border-slate-200 text-center">
                                                     {visitor.photos ? (
-                                                        <img src={visitor.photos} alt="Visitor" className="w-12 h-12 object-cover rounded mx-auto" />
+                                                        <img src={visitor.photos} alt={t('visitor')} className="w-12 h-12 object-cover rounded mx-auto" />
                                                     ) : (
                                                         <span className="text-slate-400">-</span>
                                                     )}
@@ -316,11 +318,11 @@ const Visitor = ({ onBack }) => {
                     <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto animate-in zoom-in duration-300">
                         {/* Modal Header */}
                         <div className="bg-white p-6 border-b flex items-center justify-between">
-                            <h2 className="text-xl font-bold text-slate-800">Visitor Log - New Entry</h2>
+                            <h2 className="text-xl font-bold text-slate-800">{t('visitorLogNewEntry')}</h2>
                             <button
                                 onClick={handleCloseModal}
                                 className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-                                aria-label="Close"
+                                aria-label={t('close')}
                             >
                                 <X size={20} className="text-slate-600" />
                             </button>
@@ -334,7 +336,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Visitor's Name */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Visitor's Name <span className="text-slate-500 text-xs">(ឈ្មោះអ្នកមក)</span>
+                                            {t('visitorsName')}
                                         </label>
                                         <input
                                             type="text"
@@ -349,7 +351,7 @@ const Visitor = ({ onBack }) => {
                                     {/* ID Card No. */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            ID Card No. <span className="text-slate-500 text-xs">(អត្តសញ្ញាណប័ណ្ណ)</span>
+                                            {t('idCardNo')}
                                         </label>
                                         <input
                                             type="text"
@@ -364,7 +366,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Contact Person */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Contact Person <span className="text-slate-500 text-xs">(ឈ្មោះអ្នកដែលត្រូវជួប)</span>
+                                            {t('contactPerson')}
                                         </label>
                                         <input
                                             type="text"
@@ -379,7 +381,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Purpose of Visiting */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Purpose of Visiting <span className="text-slate-500 text-xs">(គោលបំណង)</span>
+                                            {t('purposeOfVisiting')}
                                         </label>
                                         <input
                                             type="text"
@@ -394,7 +396,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Date */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Date <span className="text-slate-500 text-xs">(កាលបរិច្ឆេទ)</span>
+                                            {t('date')}
                                         </label>
                                         <div className="relative">
                                             <input
@@ -411,7 +413,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Visitor Card No. */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Visitor Card No. <span className="text-slate-500 text-xs">(លេខកាត)</span>
+                                            {t('visitorCardNo')}
                                         </label>
                                         <input
                                             type="text"
@@ -426,7 +428,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Car check */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Car check
+                                            {t('carCheck')}
                                         </label>
                                         <input
                                             type="text"
@@ -441,7 +443,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Remarks */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Remarks <span className="text-slate-500 text-xs">(ផ្សេងៗ)</span>
+                                            {t('remarks')}
                                         </label>
                                         <textarea
                                             name="remarks"
@@ -459,7 +461,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Company Name */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Company Name <span className="text-slate-500 text-xs">(ឈ្មោះក្រុមហ៊ុន)</span>
+                                            {t('companyName')}
                                         </label>
                                         <input
                                             type="text"
@@ -474,7 +476,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Phone Number */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Phone Number <span className="text-slate-500 text-xs">(ទូរស័ព្ទ)</span>
+                                            {t('phoneNumber')}
                                         </label>
                                         <input
                                             type="text"
@@ -489,7 +491,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Time In */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Time In <span className="text-slate-500 text-xs">(ម៉ោងចូល)</span>
+                                            {t('timeIn')}
                                         </label>
                                         <input
                                             type="text"
@@ -504,7 +506,7 @@ const Visitor = ({ onBack }) => {
                                     {/* Car/Motor plate */}
                                     <div>
                                         <label className="flex items-center gap-1 text-sm font-semibold text-slate-700 mb-2">
-                                            Car/Motor plate
+                                            {t('carMotorPlate')}
                                         </label>
                                         <input
                                             type="text"
@@ -524,7 +526,7 @@ const Visitor = ({ onBack }) => {
                                     type="submit"
                                     className="px-6 py-2 bg-slate-600 text-white rounded-lg font-semibold hover:bg-slate-700 transition-colors"
                                 >
-                                    LOG VISITOR
+                                    {t('logVisitor')}
                                 </button>
                             </div>
                         </form>

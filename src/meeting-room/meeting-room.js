@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, X, Calendar, Video, Clock, Filter, ChevronUp, ChevronDown, Search, Building, User, Users, Briefcase, Hash, Link2, Check } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const MeetingRoom = ({ onBack }) => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('my-history');
     const [filterStatus, setFilterStatus] = useState('all');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,12 +26,12 @@ const MeetingRoom = ({ onBack }) => {
     });
 
     const meetingTypes = [
-        'Team Meeting',
-        'Client Presentation',
-        'Training Session',
-        'Interview',
-        'Project Review',
-        'Other'
+        t('teamMeeting'),
+        t('clientPresentation'),
+        t('trainingSession'),
+        t('interview'),
+        t('projectReview'),
+        t('other')
     ];
 
     const hours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
@@ -114,7 +116,7 @@ const MeetingRoom = ({ onBack }) => {
     };
 
     const handleAddMeetingLink = () => {
-        const link = prompt('Enter meeting link:');
+        const link = prompt(t('enterMeetingLink'));
         if (link) {
             setFormData({ ...formData, meetingLink: link });
         }
@@ -132,28 +134,28 @@ const MeetingRoom = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">Meeting Room Booking</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('meetingRoomBooking')}</h1>
                 </div>
                 <button
                     onClick={handleOpenModal}
                     className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                 >
                     <Plus size={16} />
-                    New Booking
+                    {t('newBooking')}
                 </button>
             </div>
 
@@ -170,7 +172,7 @@ const MeetingRoom = ({ onBack }) => {
                                     : 'bg-blue-100 text-blue-700'
                             }`}
                         >
-                            My History
+                            {t('myHistory')}
                         </button>
                         <button
                             onClick={() => setActiveTab('all-booking')}
@@ -180,7 +182,7 @@ const MeetingRoom = ({ onBack }) => {
                                     : 'bg-blue-100 text-blue-700'
                             }`}
                         >
-                            All Booking
+                            {t('allBooking')}
                         </button>
                     </div>
 
@@ -191,7 +193,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <Calendar className="text-blue-600" size={24} />
                             </div>
                             <div>
-                                <div className="text-sm text-slate-600 mb-1">Total Meetings</div>
+                                <div className="text-sm text-slate-600 mb-1">{t('totalMeetings')}</div>
                                 <div className="text-2xl font-bold text-slate-800">0</div>
                             </div>
                         </div>
@@ -200,7 +202,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <Video className="text-green-600" size={24} />
                             </div>
                             <div>
-                                <div className="text-sm text-slate-600 mb-1">Ongoing</div>
+                                <div className="text-sm text-slate-600 mb-1">{t('ongoing')}</div>
                                 <div className="text-2xl font-bold text-slate-800">0</div>
                             </div>
                         </div>
@@ -209,7 +211,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <Clock className="text-yellow-600" size={24} />
                             </div>
                             <div>
-                                <div className="text-sm text-slate-600 mb-1">Upcoming</div>
+                                <div className="text-sm text-slate-600 mb-1">{t('upcoming')}</div>
                                 <div className="text-2xl font-bold text-slate-800">0</div>
                             </div>
                         </div>
@@ -218,7 +220,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <Calendar className="text-purple-600" size={24} />
                             </div>
                             <div>
-                                <div className="text-sm text-slate-600 mb-1">Today</div>
+                                <div className="text-sm text-slate-600 mb-1">{t('today')}</div>
                                 <div className="text-2xl font-bold text-slate-800">0</div>
                             </div>
                         </div>
@@ -228,7 +230,7 @@ const MeetingRoom = ({ onBack }) => {
                     <div className="bg-white rounded-lg p-4 mb-6 shadow-sm border border-slate-200 flex items-center justify-between flex-wrap gap-4">
                         <div className="flex items-center gap-3">
                             <Filter className="text-slate-600" size={20} />
-                            <span className="text-slate-700 font-semibold">Filter by status:</span>
+                            <span className="text-slate-700 font-semibold">{t('filterByStatus')}:</span>
                             <div className="flex gap-2">
                                 {['all', 'ongoing', 'upcoming', 'today'].map((status) => (
                                     <button
@@ -240,13 +242,13 @@ const MeetingRoom = ({ onBack }) => {
                                                 : 'bg-slate-200 text-slate-700'
                                         }`}
                                     >
-                                        {status.charAt(0).toUpperCase() + status.slice(1)}
+                                        {t(status === 'all' ? 'all' : status)}
                                     </button>
                                 ))}
                             </div>
                         </div>
                         <div className="text-slate-600 text-sm">
-                            Showing {meetings.length} meetings
+                            {t('showing')} {meetings.length} {t('meetings')}
                         </div>
                     </div>
 
@@ -256,15 +258,15 @@ const MeetingRoom = ({ onBack }) => {
                             <table className="w-full">
                                 <thead className="bg-slate-50 border-b border-slate-200">
                                     <tr>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">MEETING INFO</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">ORGANIZER</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">SCHEDULE</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">STATUS</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">PARTICIPANTS</th>
-                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">MEETING LINK</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('meetingInfo')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('organizer')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('schedule')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('status')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('participants')}</th>
+                                        <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">{t('meetingLink')}</th>
                                         <th className="px-4 py-3 text-left text-sm font-semibold text-slate-700">
                                             <div className="flex items-center gap-2">
-                                                ACTIONS
+                                                {t('actions')}
                                                 <div className="flex flex-col">
                                                     <ChevronUp size={12} className="text-slate-400" />
                                                     <ChevronDown size={12} className="text-slate-400" />
@@ -294,7 +296,7 @@ const MeetingRoom = ({ onBack }) => {
                                                     meeting.status === 'upcoming' ? 'bg-yellow-100 text-yellow-700' :
                                                     'bg-slate-100 text-slate-700'
                                                 }`}>
-                                                    {meeting.status.charAt(0).toUpperCase() + meeting.status.slice(1)}
+                                                    {t(meeting.status === 'ongoing' ? 'ongoing' : meeting.status === 'upcoming' ? 'upcoming' : 'completed')}
                                                 </span>
                                             </td>
                                             <td className="px-4 py-3">
@@ -306,12 +308,12 @@ const MeetingRoom = ({ onBack }) => {
                                             <td className="px-4 py-3">
                                                 <a href={meeting.meetingLink} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm flex items-center gap-1">
                                                     <Link2 size={14} />
-                                                    Join
+                                                    {t('join')}
                                                 </a>
                                             </td>
                                             <td className="px-4 py-3">
                                                 <button className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">
-                                                    View
+                                                    {t('view')}
                                                 </button>
                                             </td>
                                         </tr>
@@ -331,7 +333,7 @@ const MeetingRoom = ({ onBack }) => {
                         <div className="sticky top-0 bg-white border-b border-slate-200 p-4 flex items-center justify-between z-10">
                             <div className="flex items-center gap-2">
                                 <Users size={20} className="text-slate-600" />
-                                <h2 className="text-xl font-bold text-slate-800">Meeting Room Booking Form</h2>
+                                <h2 className="text-xl font-bold text-slate-800">{t('meetingRoomBookingForm')}</h2>
                             </div>
                             <button
                                 onClick={handleCloseModal}
@@ -348,7 +350,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                         <Briefcase size={16} />
-                                        Employee ID
+                                        {t('employeeId')}
                                     </label>
                                     <input
                                         type="text"
@@ -360,7 +362,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                         <User size={16} />
-                                        Your Name
+                                        {t('yourName')}
                                     </label>
                                     <input
                                         type="text"
@@ -372,7 +374,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                         <Building size={16} />
-                                        Department
+                                        {t('department')}
                                     </label>
                                     <input
                                         type="text"
@@ -387,14 +389,14 @@ const MeetingRoom = ({ onBack }) => {
                             <div>
                                 <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                     <Users size={16} />
-                                    Meeting Type
+                                    {t('meetingType')}
                                 </label>
                                 <select
                                     value={formData.meetingType}
                                     onChange={(e) => setFormData({ ...formData, meetingType: e.target.value })}
                                     className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
-                                    <option value="">--Select meeting type--</option>
+                                    <option value="">{t('selectMeetingType')}</option>
                                     {meetingTypes.map((type) => (
                                         <option key={type} value={type}>{type}</option>
                                     ))}
@@ -405,7 +407,7 @@ const MeetingRoom = ({ onBack }) => {
                             <div>
                                 <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                     <User size={16} />
-                                    Mention Person (Optional)
+                                    {t('mentionPersonOptional')}
                                 </label>
                                 <div className="relative">
                                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
@@ -413,7 +415,7 @@ const MeetingRoom = ({ onBack }) => {
                                         type="text"
                                         value={formData.mentionPerson}
                                         onChange={(e) => setFormData({ ...formData, mentionPerson: e.target.value })}
-                                        placeholder="Search by Employee Name or"
+                                        placeholder={t('searchByEmployeeName')}
                                         className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
@@ -424,7 +426,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                         <Calendar size={16} />
-                                        Meeting Date
+                                        {t('meetingDate')}
                                     </label>
                                     <div className="relative">
                                         <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={18} />
@@ -439,7 +441,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                         <Clock size={16} />
-                                        Start Time*
+                                        {t('startTime')}*
                                     </label>
                                     <div className="flex gap-2">
                                         <select
@@ -465,7 +467,7 @@ const MeetingRoom = ({ onBack }) => {
                                 <div>
                                     <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                         <Clock size={16} />
-                                        End Time*
+                                        {t('endTime')}*
                                     </label>
                                     <div className="flex gap-2">
                                         <select
@@ -494,7 +496,7 @@ const MeetingRoom = ({ onBack }) => {
                             <div>
                                 <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
                                     <Link2 size={16} />
-                                    Meeting Link (Optional)
+                                    {t('meetingLinkOptional')}
                                 </label>
                                 {formData.meetingLink ? (
                                     <div className="flex items-center gap-2">
@@ -509,7 +511,7 @@ const MeetingRoom = ({ onBack }) => {
                                             onClick={() => setFormData({ ...formData, meetingLink: '' })}
                                             className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg"
                                         >
-                                            Remove
+                                            {t('remove')}
                                         </button>
                                     </div>
                                 ) : (
@@ -519,7 +521,7 @@ const MeetingRoom = ({ onBack }) => {
                                         className="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                                     >
                                         <Plus size={16} />
-                                        Add Meeting Link
+                                        {t('addMeetingLink')}
                                     </button>
                                 )}
                             </div>
@@ -528,7 +530,7 @@ const MeetingRoom = ({ onBack }) => {
                             <div>
                                 <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-4">
                                     <Building size={16} />
-                                    Select Meeting Room
+                                    {t('selectMeetingRoom')}
                                 </label>
                                 <div className="flex gap-4 overflow-x-auto pb-4">
                                     {meetingRooms.map((room) => (
@@ -555,7 +557,7 @@ const MeetingRoom = ({ onBack }) => {
                                                     {formData.selectedRoom === room.id && (
                                                         <div className="mt-2 flex items-center gap-1 text-blue-600">
                                                             <Check size={16} />
-                                                            <span className="text-xs">Selected</span>
+                                                            <span className="text-xs">{t('selected')}</span>
                                                         </div>
                                                     )}
                                                 </div>
@@ -572,14 +574,14 @@ const MeetingRoom = ({ onBack }) => {
                                     onClick={handleCloseModal}
                                     className="px-6 py-2 bg-slate-200 text-slate-700 rounded-lg font-semibold hover:bg-slate-300 transition-colors"
                                 >
-                                    Cancel
+                                    {t('cancel')}
                                 </button>
                                 <button
                                     type="submit"
                                     className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center gap-2"
                                 >
                                     <Check size={16} />
-                                    Book
+                                    {t('book')}
                                 </button>
                             </div>
                         </form>
