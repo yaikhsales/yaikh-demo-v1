@@ -1556,7 +1556,20 @@ const translations = {
     certificate: "វិញ្ញាបនបត្រ",
     certificates: "វិញ្ញាបនបត្រ",
     board: "ក្តារ",
-    equipments: "ឧបករណ៍"
+    equipments: "ឧបករណ៍",
+    
+    // Water Module
+    waterProductList: "បញ្ជីផលិតផលទឹក",
+    totalWaterConsumed: "ទឹកប្រើប្រាស់សរុប",
+    waterMeter: "ម៉ែត្រទឹក",
+    
+    // Phone Viewer
+    phoneScreenshots: "រូបភាពអេក្រង់ទូរស័ព្ទ",
+    images: "រូបភាព",
+    useArrowKeys: "ប្រើប្រាស់គ្រាប់ចុចព្រួញ ឬប៊ូតុងដើម្បីរុករក",
+    homePage: "ទំព័រដើម",
+    web: "វេប",
+    selectModule: "ជ្រើសរើសម៉ូឌុលមួយដើម្បីមើលរូបភាពអេក្រង់ទូរស័ព្ទ"
 };
 
 export default translations;

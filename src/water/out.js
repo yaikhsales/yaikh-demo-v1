@@ -1,10 +1,12 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from '../translate/TranslationContext';
 
 const WaterOut = ({ onBack }) => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { t } = useTranslation();
     
     // Get category from navigation state, default to 'Washing'
     const category = location.state?.category || 'Washing';
@@ -150,21 +152,21 @@ const WaterOut = ({ onBack }) => {
                             className="flex items-center gap-2 px-4 py-2 hover:bg-slate-700 rounded transition-colors flex-shrink-0 bg-slate-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
-                            <ArrowLeft size={16} /> Back
+                            <ArrowLeft size={16} /> {t('back')}
                         </button>
                         <button
                             onClick={() => navigate('/')}
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title="Home"
+                            title={t('home')}
                         >
                             <img 
                                 src="/logo.jpg" 
-                                alt="Home" 
+                                alt={t('home')} 
                                 className="w-full h-full object-cover"
                             />
                         </button>
                     </div>
-                    <h1 className="text-xl md:text-2xl font-bold text-slate-800 underline">Water Product List</h1>
+                    <h1 className="text-xl md:text-2xl font-bold text-slate-800 underline">{t('waterProductList')}</h1>
                 </div>
                 <div className="w-32"></div> {/* Right spacer */}
             </div>
@@ -181,11 +183,11 @@ const WaterOut = ({ onBack }) => {
                                 <div className="bg-white rounded-lg border border-slate-300 p-6">
                                     <div className="space-y-4">
                                         <div>
-                                            <div className="text-sm text-slate-600 mb-1">Total Device:</div>
+                                            <div className="text-sm text-slate-600 mb-1">{t('totalDevice')}:</div>
                                             <div className="text-2xl font-bold text-slate-800">1</div>
                                         </div>
                                         <div>
-                                            <div className="text-sm text-slate-600 mb-1">Total Water Consumed:</div>
+                                            <div className="text-sm text-slate-600 mb-1">{t('totalWaterConsumed')}:</div>
                                             <div className="text-2xl font-bold text-slate-800">{device.totalWaterConsumed} m³</div>
                                         </div>
                                     </div>
@@ -197,7 +199,7 @@ const WaterOut = ({ onBack }) => {
                                     <div className="w-48 h-48 bg-slate-800 rounded-lg flex items-center justify-center mb-4 relative overflow-hidden">
                                         <img 
                                             src="/assets/icons/sub-icons/water.jpg"
-                                            alt="Water Meter"
+                                            alt={t('waterMeter')}
                                             className="w-full h-full object-contain"
                                             onError={(e) => {
                                                 console.error('Failed to load water meter image');

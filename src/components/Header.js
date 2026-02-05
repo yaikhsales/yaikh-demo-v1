@@ -9,6 +9,7 @@ import PdfViewer from './PdfViewer';
 import ImageViewer from './ImageViewer';
 import BookViewer from './BookViewer';
 import AboutUs from './AboutUs';
+import PhoneViewer from './PhoneViewer';
 import { useWindowSize, useIsMobile } from '../device-responsive/responsive';
 import { useTranslation } from '../translate/TranslationContext';
 
@@ -23,6 +24,7 @@ const Header = () => {
   const [showBookViewer, setShowBookViewer] = useState(false);
   const [showAboutUs, setShowAboutUs] = useState(false);
   const [showAppDownload, setShowAppDownload] = useState(false);
+  const [showPhoneViewer, setShowPhoneViewer] = useState(false);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -128,9 +130,9 @@ const Header = () => {
                   <Image className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
                 </button>
                 <button
-                  onClick={() => setShowAppDownload(true)}
+                  onClick={() => setShowPhoneViewer(true)}
                   className="p-1 hover:bg-gray-100 rounded transition-colors"
-                  aria-label="Download App"
+                  aria-label="Phone Screenshots"
                 >
                   <Smartphone className="w-4 h-4 sm:w-5 sm:h-5 text-gray-700 cursor-pointer hover:text-blue-600" strokeWidth={1.5} />
                 </button>
@@ -327,11 +329,11 @@ const Header = () => {
                   <span>{t('pictures')}</span>
                 </button>
                 <button
-                  onClick={() => { setShowAppDownload(true); setShowMobileMenu(false); }}
+                  onClick={() => { setShowPhoneViewer(true); setShowMobileMenu(false); }}
                   className="w-full flex items-center gap-2 px-4 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-all font-medium"
                 >
                   <Smartphone size={18} />
-                  <span>{t('downloadApp')}</span>
+                  <span>{t('phoneScreenshots') || 'Phone Screenshots'}</span>
                 </button>
               </div>
 
@@ -472,6 +474,13 @@ const Header = () => {
         }
       `}</style>
     </div>
+  )}
+
+  {/* Phone Viewer Modal */}
+  {showPhoneViewer && (
+    <PhoneViewer 
+      onClose={() => setShowPhoneViewer(false)} 
+    />
   )}
   </>
   );

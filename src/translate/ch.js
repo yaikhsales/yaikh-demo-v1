@@ -1556,7 +1556,20 @@ const translations = {
     certificate: "证书",
     certificates: "证书",
     board: "板",
-    equipments: "设备"
+    equipments: "设备",
+    
+    // Water Module
+    waterProductList: "水产品列表",
+    totalWaterConsumed: "总耗水量",
+    waterMeter: "水表",
+    
+    // Phone Viewer
+    phoneScreenshots: "手机截图",
+    images: "图片",
+    useArrowKeys: "使用箭头键或按钮导航",
+    homePage: "首页",
+    web: "网页",
+    selectModule: "选择一个模块查看手机截图"
 };
 
 export default translations;

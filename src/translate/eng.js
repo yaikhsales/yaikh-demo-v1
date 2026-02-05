@@ -1345,7 +1345,20 @@ const translations = {
     certificate: "certificate",
     certificates: "certificates",
     board: "Board",
-    equipments: "equipments"
+    equipments: "equipments",
+    
+    // Water Module
+    waterProductList: "Water Product List",
+    totalWaterConsumed: "Total Water Consumed",
+    waterMeter: "Water Meter",
+    
+    // Phone Viewer
+    phoneScreenshots: "Phone Screenshots",
+    images: "images",
+    useArrowKeys: "Use arrow keys or buttons to navigate",
+    homePage: "Home Page",
+    web: "Web",
+    selectModule: "Select a Module to View Phone Screenshots"
 };
 
 export default translations;
