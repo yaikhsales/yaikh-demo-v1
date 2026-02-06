@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from './translate/TranslationContext';
 
 const WelcomePage = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [currentVideoIndex, setCurrentVideoIndex] = useState(null); // No video selected initially
     const [isPlaying, setIsPlaying] = useState(false);
     const [videoPlayingStates, setVideoPlayingStates] = useState([false, false, false, false]); // Track playing state for each video
+    const [videoLoadedStates, setVideoLoadedStates] = useState([false, false, false, false]); // Track if videos are loaded
     const [audioEnabled, setAudioEnabled] = useState(true); // Audio enabled by default
     const [volume, setVolume] = useState(0.7); // Default volume (70%)
     const [videoMuted, setVideoMuted] = useState([false, false, false, false]); // Individual mute state for each video
+    const [videoLanguage, setVideoLanguage] = useState('en'); // 'en' for English, 'zh' for Chinese
     const videoRefs = [
         useRef(null),
         useRef(null),
@@ -16,12 +20,34 @@ const WelcomePage = () => {
         useRef(null)
     ];
 
-    const videos = [
-        '/assets/videos/ot-cost.mp4',
-        '/assets/videos/Support-Ticket-System.mp4',
-        '/assets/videos/Yai-Purhcase.mp4',
-        '/assets/videos/Production.mp4'
+    // English video filenames
+    const englishVideoFilenames = [
+        'ot-cost.mp4',
+        'Support-Ticket-System.mp4',
+        'Yai-Purhcase.mp4',
+        'Production.mp4'
     ];
+
+    // Chinese video filenames (different naming convention)
+    const chineseVideoFilenames = [
+        'ot-cost-chinese.mp4',
+        'support-ticket-chinese.mp4',
+        'purchase-request-chinese.mp4',
+        'production-chinese.mp4'
+    ];
+
+    // Get video paths based on selected language
+    const getVideoPaths = () => {
+        if (videoLanguage === 'zh') {
+            const basePath = '/assets/videos/chinese/';
+            return chineseVideoFilenames.map(filename => `${basePath}${filename}`);
+        } else {
+            const basePath = '/assets/videos/';
+            return englishVideoFilenames.map(filename => `${basePath}${filename}`);
+        }
+    };
+
+    const videos = getVideoPaths();
 
     const videoTitles = [
         'OT Cost',
@@ -128,6 +154,25 @@ const WelcomePage = () => {
         }
     }, [currentVideoIndex]);
 
+    // Update videos when language changes
+    useEffect(() => {
+        // Stop all videos and reset when language changes
+        videoRefs.forEach((ref, index) => {
+            if (ref.current) {
+                ref.current.pause();
+                ref.current.currentTime = 0;
+            }
+        });
+        setCurrentVideoIndex(null);
+        setIsPlaying(false);
+        setVideoPlayingStates([false, false, false, false]);
+        setVideoLoadedStates([false, false, false, false]); // Reset loaded states when language changes
+    }, [videoLanguage]);
+
+    const toggleVideoLanguage = () => {
+        setVideoLanguage(prev => prev === 'en' ? 'zh' : 'en');
+    };
+
     const handleBack = () => {
         // Stop all videos
         videoRefs.forEach(ref => {
@@ -139,8 +184,13 @@ const WelcomePage = () => {
         navigate('/', { replace: true });
     };
 
+    // Background color based on video language
+    const backgroundClass = videoLanguage === 'zh' 
+        ? 'bg-gradient-to-br from-red-600 via-red-500 to-pink-500' 
+        : 'bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500';
+
     return (
-        <div className="fixed inset-0 bg-gradient-to-br from-orange-600 via-orange-500 to-amber-500 flex items-center justify-center overflow-hidden p-6">
+        <div className={`fixed inset-0 ${backgroundClass} flex items-center justify-center overflow-hidden p-6 transition-colors duration-500`}>
             {/* Home and Back Buttons - Centered at Top */}
             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-30 flex items-center gap-4">
                 
@@ -163,6 +213,15 @@ const WelcomePage = () => {
                         alt="Home" 
                         className="w-full h-full object-cover"
                     />
+                </button>
+                
+                {/* Video Language Switcher Button */}
+                <button
+                    onClick={toggleVideoLanguage}
+                    className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white px-4 py-2 rounded-lg text-sm font-semibold shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2 border border-white/20"
+                    title={videoLanguage === 'en' ? t('switchToChinese') : t('switchToEnglish')}
+                >
+                    <span>{videoLanguage === 'en' ? t('english') : t('chinese')}</span>
                 </button>
              
                 
@@ -203,28 +262,30 @@ const WelcomePage = () => {
                                 background: 'linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%)'
                             }}
                         >
-                            {/* Preview Image Background */}
-                            <img
-                                src={panelImages[index] || video}
-                                alt={videoTitles[index]}
-                                className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
-                                    isActive ? 'opacity-0' : 'opacity-100'
-                                }`}
-                                style={{
-                                    objectFit: 'cover',
-                                    width: '100%',
-                                    height: '100%'
-                                }}
-                                onError={(e) => {
-                                    e.target.style.display = 'none';
-                                }}
-                            />
+                            {/* Preview Image Background - Show as fallback when video not playing */}
+                            {!videoPlayingStates[index] && (
+                                <img
+                                    src={panelImages[index] || video}
+                                    alt={videoTitles[index]}
+                                    className="absolute inset-0 w-full h-full transition-opacity duration-500 opacity-100 z-0"
+                                    style={{
+                                        objectFit: 'cover',
+                                        width: '100%',
+                                        height: '100%'
+                                    }}
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                    }}
+                                />
+                            )}
                             
                             {/* Video - All videos visible, only active one plays */}
                             <video
                                 ref={videoRefs[index]}
-                                className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
-                                    isActive ? 'opacity-100 z-10' : 'opacity-30'
+                                src={video}
+                                poster={panelImages[index]}
+                                className={`absolute inset-0 w-full h-full transition-opacity duration-500 opacity-100 ${
+                                    isActive && videoPlayingStates[index] ? 'z-10' : 'z-5'
                                 } ${videoPlayingStates[index] ? 'cursor-pointer' : ''}`}
                                 onEnded={handleVideoEnd}
                                 onPlay={() => {
@@ -247,26 +308,41 @@ const WelcomePage = () => {
                                 }}
                                 onLoadedData={() => {
                                     // Set up video properties when loaded
+                                    const newLoadedStates = [...videoLoadedStates];
+                                    newLoadedStates[index] = true;
+                                    setVideoLoadedStates(newLoadedStates);
                                     if (videoRefs[index].current) {
                                         videoRefs[index].current.muted = volume === 0 || videoMuted[index];
                                         videoRefs[index].current.volume = volume;
                                     }
+                                }}
+                                onLoadedMetadata={() => {
+                                    // Mark video as loaded when metadata is available
+                                    const newLoadedStates = [...videoLoadedStates];
+                                    newLoadedStates[index] = true;
+                                    setVideoLoadedStates(newLoadedStates);
+                                }}
+                                onError={(e) => {
+                                    console.error(`Error loading video: ${video}`, e);
+                                    // Even if video fails to load, mark it as "loaded" so UI doesn't break
+                                    const newLoadedStates = [...videoLoadedStates];
+                                    newLoadedStates[index] = true;
+                                    setVideoLoadedStates(newLoadedStates);
                                 }}
                                 controls={false}
                                 muted={volume === 0 || videoMuted[index]}
                                 autoPlay={false}
                                 loop={false}
                                 playsInline
-                                preload="metadata"
+                                preload="auto"
+                                key={`video-${index}-${videoLanguage}`}
                                 style={{
                                     objectFit: 'contain',
                                     width: '100%',
                                     height: '100%',
                                     display: 'block'
                                 }}
-                            >
-                                <source src={video} type="video/mp4" />
-                            </video>
+                            />
 
 
 
@@ -274,15 +350,23 @@ const WelcomePage = () => {
                             {!videoPlayingStates[index] && (
                                 <div 
                                     className="absolute inset-0 bg-black/30 hover:bg-black/20 transition-colors flex items-center justify-center cursor-pointer z-30"
-                                    onClick={() => {
+                                    onClick={async (e) => {
+                                        e.stopPropagation();
                                         setCurrentVideoIndex(index);
                                         setAudioEnabled(true); // Enable audio when user clicks
                                         if (videoRefs[index].current) {
-                                            videoRefs[index].current.muted = volume === 0 || videoMuted[index];
-                                            videoRefs[index].current.volume = volume;
-                                            videoRefs[index].current.play().then(() => {
+                                            try {
+                                                // Ensure video is loaded
+                                                if (videoRefs[index].current.readyState < 2) {
+                                                    await videoRefs[index].current.load();
+                                                }
+                                                videoRefs[index].current.muted = volume === 0 || videoMuted[index];
+                                                videoRefs[index].current.volume = volume;
+                                                await videoRefs[index].current.play();
                                                 setIsPlaying(true);
-                                            }).catch(console.error);
+                                            } catch (error) {
+                                                console.error(`Error playing video ${video}:`, error);
+                                            }
                                         }
                                     }}
                                 >

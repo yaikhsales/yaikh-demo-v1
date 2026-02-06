@@ -105,9 +105,9 @@ const AppLayout = () => {
           id === "digital-audit"
             ? [
                 {
-                  title: "Checklist 6s",
-                  icon: "CheckSquare",
-                  color: "bg-cyan-500 text-white",
+                  title: "Audit Plan",
+                  icon: "Layout",
+                  color: "bg-indigo-500 text-white",
                 },
                 {
                   title: "Digital Audit",
@@ -120,9 +120,9 @@ const AppLayout = () => {
                   color: "bg-emerald-500 text-white",
                 },
                 {
-                  title: "Audit Plan",
-                  icon: "Layout",
-                  color: "bg-indigo-500 text-white",
+                  title: "Checklist 6s",
+                  icon: "CheckSquare",
+                  color: "bg-cyan-500 text-white",
                 },
               ]
             : id === "pr-admin"

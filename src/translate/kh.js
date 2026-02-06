@@ -75,6 +75,8 @@ const translations = {
     english: "English",
     khmer: "ខ្មែរ",
     chinese: "ចិន",
+    switchToEnglish: "ប្តូរទៅកំណែភាសាអង់គ្លេស",
+    switchToChinese: "ប្តូរទៅកំណែភាសាចិន",
     
     // Sections
     administration: "រដ្ឋបាល",

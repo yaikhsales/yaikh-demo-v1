@@ -75,6 +75,8 @@ const translations = {
     english: "英语",
     khmer: "高棉语",
     chinese: "中文",
+    switchToEnglish: "切换到英文版本",
+    switchToChinese: "切换到中文版本",
     
     // Sections
     administration: "行政管理",

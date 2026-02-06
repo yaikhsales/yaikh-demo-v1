@@ -300,6 +300,14 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                     navigate('/dashboard/checklist-attendance');
                 } else if (card.title === 'My Attendant') {
                     navigate('/dashboard/my-attendance');
+                } else if (card.title === 'Checklist 6s') {
+                    // Show Checklist 6s image
+                    const encodedPath = encodeURIComponent('assets/checklist-6s.jpg');
+                    navigate(`/dashboard/image/${encodedPath}`);
+                } else if (card.title === 'Digital Audit') {
+                    // Show Digital Audit image
+                    const encodedPath = encodeURIComponent('assets/digital-audit.jpg');
+                    navigate(`/dashboard/image/${encodedPath}`);
                 } else if (card.title === 'Compliance Certificate') {
                     navigate('/dashboard/compliance-certificate');
                 } else if (card.title === 'Audit Plan') {
