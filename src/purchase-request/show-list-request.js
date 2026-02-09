@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Eye, Download, FileText } from 'lucide-react';
+import { ArrowLeft, Eye, Download, FileText, MessageCircle } from 'lucide-react';
 import ImageViewer from '../components/ImageViewer';
 import PdfViewer from '../components/PdfViewer';
+import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
 const ShowListRequest = ({ onBack }) => {
@@ -12,6 +13,7 @@ const ShowListRequest = ({ onBack }) => {
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [selectedImagePath, setSelectedImagePath] = useState('');
     const [selectedPdfPath, setSelectedPdfPath] = useState('');
+    const [isBotOpen, setIsBotOpen] = useState(false);
     // Removed unused filter states - keeping for potential future use
 
     // Sample purchase request data matching the image exactly
@@ -903,6 +905,24 @@ const ShowListRequest = ({ onBack }) => {
                         setSelectedPdfPath('');
                     }}
                     pdfPath={selectedPdfPath}
+                />
+            )}
+            
+            {/* Bot Button - Bottom Right */}
+            <button
+                onClick={() => setIsBotOpen(true)}
+                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                aria-label="Ask Show List Request bot"
+                title="Ask Show List Request bot"
+            >
+                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+            </button>
+            
+            {/* Bot Modal */}
+            {isBotOpen && (
+                <GeneralAIAgent 
+                    onClose={() => setIsBotOpen(false)}
+                    moduleContext="Show List Request"
                 />
             )}
         </div>

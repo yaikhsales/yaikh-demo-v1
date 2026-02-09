@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, X, Car, Truck, Calendar, Search, MapPin, User, Clock, CheckCircle, XCircle, AlertCircle, List, Maximize2, Minus, Plus as PlusIcon } from 'lucide-react';
+import { ArrowLeft, Plus, X, Car, Truck, Calendar, Search, MapPin, User, Clock, CheckCircle, XCircle, AlertCircle, List, Maximize2, Minus, Plus as PlusIcon, MessageCircle } from 'lucide-react';
+import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
 const CarBooking = ({ onBack }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [isBotOpen, setIsBotOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [vehicleType, setVehicleType] = useState('car');
     
@@ -557,6 +559,24 @@ const CarBooking = ({ onBack }) => {
                         </form>
                     </div>
                 </div>
+            )}
+            
+            {/* Bot Button - Bottom Right */}
+            <button
+                onClick={() => setIsBotOpen(true)}
+                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                aria-label="Ask Car Booking bot"
+                title="Ask Car Booking bot"
+            >
+                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+            </button>
+            
+            {/* Bot Modal */}
+            {isBotOpen && (
+                <GeneralAIAgent 
+                    onClose={() => setIsBotOpen(false)}
+                    moduleContext="Car Booking"
+                />
             )}
         </div>
     );

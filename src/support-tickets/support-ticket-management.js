@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BarChart3, MessageSquare, TrendingUp, X } from 'lucide-react';
+import { BarChart3, MessageSquare, TrendingUp, X, MessageCircle } from 'lucide-react';
 import ImageViewer from '../components/ImageViewer';
+import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
 const SupportTicketManagement = ({ onBack }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [isBotOpen, setIsBotOpen] = useState(false);
     const [expandedSections, setExpandedSections] = useState({
         GA: true,
         HR: true,
@@ -617,6 +619,24 @@ const SupportTicketManagement = ({ onBack }) => {
                         setSelectedImagePath('');
                         setActiveView('list');
                     }}
+                />
+            )}
+            
+            {/* Bot Button - Bottom Right */}
+            <button
+                onClick={() => setIsBotOpen(true)}
+                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                aria-label="Ask Support Ticket Management bot"
+                title="Ask Support Ticket Management bot"
+            >
+                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+            </button>
+            
+            {/* Bot Modal */}
+            {isBotOpen && (
+                <GeneralAIAgent 
+                    onClose={() => setIsBotOpen(false)}
+                    moduleContext="Support Ticket Management"
                 />
             )}
         </div>

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Search, FileText, Eye, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Search, FileText, Eye, ChevronLeft, ChevronRight, MessageCircle } from 'lucide-react';
 import RequestDetailModal from '../components/RequestDetailModal';
 import InvoiceModal from '../components/InvoiceModal';
 import ImageViewer from '../components/ImageViewer';
 import PdfViewer from '../components/PdfViewer';
+import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
 const PayPR = ({ onBack }) => {
@@ -21,6 +22,7 @@ const PayPR = ({ onBack }) => {
     const [showPdfViewer, setShowPdfViewer] = useState(false);
     const [selectedImagePath, setSelectedImagePath] = useState('');
     const [selectedPdfPath, setSelectedPdfPath] = useState('');
+    const [isBotOpen, setIsBotOpen] = useState(false);
     
     // Sample data - replace with actual data from API
     const sampleData = [

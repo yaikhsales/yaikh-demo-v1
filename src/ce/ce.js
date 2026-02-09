@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageCircle } from 'lucide-react';
+import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
 // Mapping function to match module titles to sub-icon image filenames
@@ -26,6 +27,7 @@ const getCEIconImage = (title) => {
 const CE = ({ onBack }) => {
     const navigate = useNavigate();
     const { translateModuleTitle } = useTranslation();
+    const [isBotOpen, setIsBotOpen] = useState(false);
 
     const handleBack = () => {
         if (onBack) {
@@ -206,6 +208,24 @@ const CE = ({ onBack }) => {
                     </div>
                 </div>
             </div>
+            
+            {/* Bot Button - Bottom Right */}
+            <button
+                onClick={() => setIsBotOpen(true)}
+                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                aria-label="Ask CE bot"
+                title="Ask CE bot"
+            >
+                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+            </button>
+            
+            {/* Bot Modal */}
+            {isBotOpen && (
+                <GeneralAIAgent 
+                    onClose={() => setIsBotOpen(false)}
+                    moduleContext="CE"
+                />
+            )}
         </div>
     );
 };

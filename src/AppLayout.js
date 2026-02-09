@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
-import { Search, Database, ChevronRight, Lightbulb } from "lucide-react";
+import { Search, Database, ChevronRight, Lightbulb, Sparkles } from "lucide-react";
 
 import Header from "./components/Header";
 import SectionContainer from "./components/SectionContainer";
@@ -10,6 +10,7 @@ import DragonAnimation from "./components/DragonAnimation";
 import { ThemeBackground } from "./thems";
 
 import GMChat from "./chatbot/GMChat";
+import GeneralAIAgent from "./general-ag";
 
 // A new layout component to hold the shared UI (Header, Background)
 const AppLayout = () => {
@@ -19,6 +20,7 @@ const AppLayout = () => {
   const [isGMChatOpen, setGMChatOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isYaiDataBotOpen, setYaiDataBotOpen] = useState(false);
+  const [isGeneralAIAgentOpen, setGeneralAIAgentOpen] = useState(false);
   const [yaiVersion, setYaiVersion] = useState("yai1"); // 'yai1' or 'yai2'
   const [botModuleContext, setBotModuleContext] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -1645,11 +1647,27 @@ const AppLayout = () => {
                 />
               </div>
             </div>
+            
+            {/* General AI Agent Button - Right Side Bottom */}
+            {location.pathname === '/' && (
+              <button
+                onClick={() => setGeneralAIAgentOpen(true)}
+                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                aria-label="General AI Agent"
+              >
+                <Sparkles className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+              </button>
+            )}
           </>
         ) : (
           <Outlet />
         )}
       </main>
+      
+      {/* General AI Agent Modal */}
+      {isGeneralAIAgentOpen && (
+        <GeneralAIAgent onClose={() => setGeneralAIAgentOpen(false)} />
+      )}
     </div>
   );
 };

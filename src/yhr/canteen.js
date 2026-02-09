@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, UtensilsCrossed, Calendar, Users, DollarSign, FileText, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Save, UtensilsCrossed, Calendar, Users, DollarSign, FileText, CheckCircle, MessageCircle } from 'lucide-react';
+import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
 const Canteen = ({ onBack }) => {
     const navigate = useNavigate();
     const { t, translateModuleTitle } = useTranslation();
+    const [isBotOpen, setIsBotOpen] = useState(false);
     const [formData, setFormData] = useState({
         employeeId: '',
         employeeName: '',
@@ -417,6 +419,24 @@ const Canteen = ({ onBack }) => {
                     </form>
                 </div>
             </div>
+            
+            {/* Bot Button - Bottom Right */}
+            <button
+                onClick={() => setIsBotOpen(true)}
+                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                aria-label="Ask Canteen bot"
+                title="Ask Canteen bot"
+            >
+                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+            </button>
+            
+            {/* Bot Modal */}
+            {isBotOpen && (
+                <GeneralAIAgent 
+                    onClose={() => setIsBotOpen(false)}
+                    moduleContext="Canteen"
+                />
+            )}
         </div>
     );
 };

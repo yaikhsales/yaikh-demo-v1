@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, History, Users, Plus, X, Building, User, Hash, FileText, Clock, Rocket, ArrowLeft as ReturnIcon, Send, MapPin } from 'lucide-react';
+import { ArrowLeft, History, Users, Plus, X, Building, User, Hash, FileText, Clock, Rocket, ArrowLeft as ReturnIcon, Send, MapPin, MessageCircle } from 'lucide-react';
+import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
 const GatePass = ({ onBack }) => {
     const navigate = useNavigate();
     const { t, translateModuleTitle } = useTranslation();
+    const [isBotOpen, setIsBotOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [pendingRequests, setPendingRequests] = useState([
         {
@@ -564,6 +566,24 @@ const GatePass = ({ onBack }) => {
                         </form>
                     </div>
                 </div>
+            )}
+            
+            {/* Bot Button - Bottom Right */}
+            <button
+                onClick={() => setIsBotOpen(true)}
+                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                aria-label="Ask Gate Pass bot"
+                title="Ask Gate Pass bot"
+            >
+                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+            </button>
+            
+            {/* Bot Modal */}
+            {isBotOpen && (
+                <GeneralAIAgent 
+                    onClose={() => setIsBotOpen(false)}
+                    moduleContext="Gate Pass"
+                />
             )}
         </div>
     );

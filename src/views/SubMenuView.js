@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, MessageCircle } from 'lucide-react';
 import { IconRenderer } from '../components/IconRenderer';
 import { useTranslation } from '../translate/TranslationContext';
+import GeneralAIAgent from '../general-ag';
 
 // Mapping function to match card titles to sub-icon image filenames
 const getSubIconImage = (title) => {
@@ -207,7 +208,7 @@ const getSubIconImage = (title) => {
 };
 
 // Render card component (extracted for reuse)
-const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal', isAccountant = false, isPurchaseRequest = false, translateModuleTitle = (title) => title) => {
+const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact = false, theme = 'normal', isAccountant = false, isPurchaseRequest = false, translateModuleTitle = (title) => title, onSubModuleBotClick = null) => {
     const subIconImage = getSubIconImage(card.title);
     // For E-Government, use the image URL directly from card.image (external URL)
     // If card.image is provided and starts with modules-image, assets/fc, assets/yqms, or is an external URL, use it directly
@@ -272,8 +273,8 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
     const gapSize = isColorfulCard ? 'gap-4' : (isEGovModule ? 'gap-2' : (isCompact ? (isYQMSOrFC ? 'gap-1.5' : 'gap-0.5') : 'gap-3'));
     
     return (
+        <div key={idx} className="relative">
         <CardComponent
-            key={idx}
             onClick={isNonClickableModule ? undefined : () => {
                 // Handle E-Government sub-modules - open URL in new tab
                 if (card.url) {
@@ -444,6 +445,7 @@ const renderCard = (card, idx, navigate, moduleId, isTrainingModule, isCompact =
                 {translateModuleTitle(card.title)}
             </span>
         </CardComponent>
+        </div>
     );
 };
 
@@ -454,6 +456,8 @@ const SubMenuView = () => {
     const { title = 'Submenu', cards = [], isGrouped = false } = state || {};
     const theme = 'normal'; // Default theme
     const { translateModuleTitle, t } = useTranslation();
+    const [selectedBotModule, setSelectedBotModule] = useState(null);
+    const [isBotOpen, setIsBotOpen] = useState(false);
     
     // Determine if cards is grouped structure
     const isGroupedStructure = isGrouped || (cards && cards.grouped === true);
@@ -570,7 +574,10 @@ const SubMenuView = () => {
                         {/* Top row: First 3 cards (Verify PR, Approval PR, Pay PR) */}
                         {cards.slice(0, 3).map((card, idx) => (
                             <div key={idx} className="w-full max-w-[280px]">
-                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, true, false, translateModuleTitle)}
+                                {renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, true, false, translateModuleTitle, (moduleTitle) => {
+                                    setSelectedBotModule(moduleTitle);
+                                    setIsBotOpen(true);
+                                })}
                             </div>
                         ))}
                         
@@ -628,6 +635,32 @@ const SubMenuView = () => {
                 <div className="flex gap-8 flex-wrap justify-center">
                     {cards.map((card, idx) => renderCard(card, idx, navigate, moduleId, isTrainingModule, false, theme, false, false, translateModuleTitle))}
                 </div>
+            )}
+            
+            {/* Bot Button - Bottom Right for All Modules */}
+            {!hasNoData && (
+                <button
+                    onClick={() => {
+                        setSelectedBotModule(title);
+                        setIsBotOpen(true);
+                    }}
+                    className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
+                    aria-label={`Ask ${title} bot`}
+                    title={`Ask ${title} bot`}
+                >
+                    <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+                </button>
+            )}
+            
+            {/* Bot Modal for All Modules */}
+            {isBotOpen && selectedBotModule && (
+                <GeneralAIAgent 
+                    onClose={() => {
+                        setIsBotOpen(false);
+                        setSelectedBotModule(null);
+                    }}
+                    moduleContext={selectedBotModule}
+                />
             )}
         </div>
     );
