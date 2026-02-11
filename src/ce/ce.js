@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MessageCircle } from 'lucide-react';
+import { ArrowLeft, MessageCircle, X, ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
 import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
 
@@ -24,10 +24,28 @@ const getCEIconImage = (title) => {
     return titleToImageMap[title] || null;
 };
 
+// Mapping function to match module titles to CE folder image filenames
+const getCEModuleImage = (title) => {
+    const titleToImageMap = {
+        'ST Standard Time': 'ST.png',
+        'Garment Analysis': 'garment-analysis.png'
+    };
+    
+    return titleToImageMap[title] || null;
+};
+
 const CE = ({ onBack }) => {
     const navigate = useNavigate();
     const { translateModuleTitle } = useTranslation();
     const [isBotOpen, setIsBotOpen] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    const [scale, setScale] = useState(1);
+    const [rotation, setRotation] = useState(0);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const imageRef = useRef(null);
+    const containerRef = useRef(null);
 
     const handleBack = () => {
         if (onBack) {
@@ -37,10 +55,92 @@ const CE = ({ onBack }) => {
         }
     };
 
-    const handleSubModuleClick = (module) => {
-        console.log('CE Sub-module clicked:', module);
-        // Add navigation logic here if needed
+    const handleSubModuleClick = (moduleTitle) => {
+        console.log('CE Sub-module clicked:', moduleTitle);
+        // Get the image path for this module
+        const imageName = getCEModuleImage(moduleTitle);
+        if (imageName) {
+            setSelectedImage(`/assets/ce/${imageName}`);
+        }
     };
+
+    const handleCloseImage = () => {
+        setSelectedImage(null);
+        setScale(1);
+        setRotation(0);
+        setPosition({ x: 0, y: 0 });
+    };
+
+    // Reset zoom and position when image changes
+    useEffect(() => {
+        if (selectedImage) {
+            setScale(1);
+            setRotation(0);
+            setPosition({ x: 0, y: 0 });
+        }
+    }, [selectedImage]);
+
+    const handleZoomIn = () => {
+        setScale(prev => Math.min(prev + 0.25, 5));
+    };
+
+    const handleZoomOut = () => {
+        setScale(prev => Math.max(prev - 0.25, 0.5));
+    };
+
+    const handleReset = () => {
+        setScale(1);
+        setRotation(0);
+        setPosition({ x: 0, y: 0 });
+    };
+
+    const handleRotate = () => {
+        setRotation(prev => (prev + 90) % 360);
+    };
+
+    // Mouse wheel zoom
+    const handleWheel = (e) => {
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -0.1 : 0.1;
+        setScale(prev => Math.max(0.5, Math.min(5, prev + delta)));
+    };
+
+    // Mouse drag to pan
+    const handleMouseDown = (e) => {
+        if (scale > 1) {
+            setIsDragging(true);
+            setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+        }
+    };
+
+    const handleMouseMove = (e) => {
+        if (isDragging && scale > 1) {
+            setPosition({
+                x: e.clientX - dragStart.x,
+                y: e.clientY - dragStart.y
+            });
+        }
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    // Keyboard shortcuts
+    useEffect(() => {
+        if (!selectedImage) return;
+
+        const handleKeyPress = (e) => {
+            if (e.key === 'Escape') handleCloseImage();
+            if (e.key === '+' || e.key === '=') handleZoomIn();
+            if (e.key === '-') handleZoomOut();
+            if (e.key === 'r' || e.key === 'R') handleRotate();
+            if (e.key === '0') handleReset();
+        };
+
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [selectedImage, scale]);
 
     const ceModules = [
         { 
@@ -225,6 +325,134 @@ const CE = ({ onBack }) => {
                     onClose={() => setIsBotOpen(false)}
                     moduleContext="CE"
                 />
+            )}
+
+            {/* Image Viewer Modal - Full Screen with Zoom */}
+            {selectedImage && (
+                <div 
+                    ref={containerRef}
+                    className="fixed inset-0 z-[200] bg-black flex items-center justify-center overflow-hidden"
+                    onClick={handleCloseImage}
+                    onWheel={handleWheel}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                    style={{ width: '100vw', height: '100vh', cursor: isDragging ? 'grabbing' : scale > 1 ? 'grab' : 'default' }}
+                >
+                    {/* Control Buttons - Top Right */}
+                    <div className="absolute top-4 right-4 z-50 flex items-center gap-2">
+                        {/* Zoom In */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleZoomIn();
+                            }}
+                            className="p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all backdrop-blur-sm border border-white/20 shadow-lg"
+                            aria-label="Zoom In"
+                            title="Zoom In (+)"
+                        >
+                            <ZoomIn size={20} />
+                        </button>
+                        
+                        {/* Zoom Out */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleZoomOut();
+                            }}
+                            className="p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all backdrop-blur-sm border border-white/20 shadow-lg"
+                            aria-label="Zoom Out"
+                            title="Zoom Out (-)"
+                        >
+                            <ZoomOut size={20} />
+                        </button>
+                        
+                        {/* Rotate */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleRotate();
+                            }}
+                            className="p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all backdrop-blur-sm border border-white/20 shadow-lg"
+                            aria-label="Rotate"
+                            title="Rotate (R)"
+                        >
+                            <RotateCw size={20} />
+                        </button>
+                        
+                        {/* Reset */}
+                        <button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleReset();
+                            }}
+                            className="p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all backdrop-blur-sm border border-white/20 shadow-lg text-xs font-semibold"
+                            aria-label="Reset"
+                            title="Reset (0)"
+                        >
+                            1:1
+                        </button>
+                        
+                        {/* Close Button */}
+                        <button
+                            onClick={handleCloseImage}
+                            className="p-3 bg-black/50 hover:bg-black/70 text-white rounded-full transition-all backdrop-blur-sm border border-white/20 shadow-lg"
+                            aria-label="Close"
+                            title="Close (ESC)"
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    {/* Zoom Indicator - Top Left */}
+                    <div className="absolute top-4 left-4 z-50 px-4 py-2 bg-black/50 text-white rounded-lg backdrop-blur-sm border border-white/20 shadow-lg text-sm font-medium">
+                        {Math.round(scale * 100)}%
+                    </div>
+
+                    {/* Image Container - Full Screen with proper scaling */}
+                    <div 
+                        className="relative w-full h-full flex items-center justify-center"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{ width: '100vw', height: '100vh' }}
+                    >
+                        <div
+                            ref={imageRef}
+                            className="relative transition-transform duration-200 ease-out"
+                            style={{
+                                transform: `translate(${position.x}px, ${position.y}px) scale(${scale}) rotate(${rotation}deg)`,
+                                transformOrigin: 'center center',
+                                cursor: isDragging ? 'grabbing' : scale > 1 ? 'grab' : 'default'
+                            }}
+                            onMouseDown={handleMouseDown}
+                        >
+                            <img
+                                src={selectedImage}
+                                alt="CE Module"
+                                className="w-auto h-auto max-w-full max-h-full object-contain select-none"
+                                style={{
+                                    width: 'auto',
+                                    height: 'auto',
+                                    maxWidth: '100vw',
+                                    maxHeight: '100vh',
+                                    objectFit: 'contain',
+                                    userSelect: 'none',
+                                    pointerEvents: 'none'
+                                }}
+                                draggable={false}
+                                onError={(e) => {
+                                    console.error('Failed to load image:', selectedImage);
+                                    e.target.style.display = 'none';
+                                }}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Instructions - Bottom */}
+                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 bg-black/50 text-white rounded-lg backdrop-blur-sm border border-white/20 shadow-lg text-xs text-center">
+                        <div>Use mouse wheel to zoom • Drag to pan when zoomed • Press ESC to close</div>
+                        <div className="mt-1">+ / - to zoom • R to rotate • 0 to reset</div>
+                    </div>
+                </div>
             )}
         </div>
     );
