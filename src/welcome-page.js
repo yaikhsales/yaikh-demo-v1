@@ -25,7 +25,7 @@ const WelcomePage = () => {
         'ot-cost.mp4',
         'Support-Ticket-System.mp4',
         'Yai-Purhcase.mp4',
-        'Production.mp4'
+        'production-record.mp4'
     ];
 
     // Chinese video filenames (different naming convention)
