@@ -118,14 +118,14 @@ const AppLayout = () => {
                   color: "bg-indigo-500 text-white",
                 },
                 {
-                  title: "Digital Audit",
-                  icon: "MonitorPlay",
-                  color: "bg-blue-500 text-white",
-                },
-                {
                   title: "Compliance Certificate",
                   icon: "FileCheck",
                   color: "bg-emerald-500 text-white",
+                },
+                {
+                  title: "Digital Audit",
+                  icon: "MonitorPlay",
+                  color: "bg-blue-500 text-white",
                 },
                 {
                   title: "Checklist 6s",
@@ -537,6 +537,9 @@ const AppLayout = () => {
                                                   "bg-blue-500/30 text-white",
                                                 image:
                                                   "assets/fc/internal-rolling-qc.jpg",
+                                                galleryImages: [
+                                                  "assets/yqms/internal-rolling-qc/internal-qc-rolling.png",
+                                                ],
                                               },
                                             ],
                                           },
@@ -600,6 +603,13 @@ const AppLayout = () => {
                                                   "bg-teal-500/30 text-white",
                                                 image:
                                                   "assets/fc/finishing-inspection.jpg",
+                                                galleryImages: [
+                                                  "assets/yqms/finishing-inspection/fin-check-report.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-inspection.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-setting.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-template.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-upload.png",
+                                                ],
                                               },
                                               {
                                                 title: "Ironing Inspection",
@@ -608,6 +618,9 @@ const AppLayout = () => {
                                                   "bg-cyan-500/30 text-white",
                                                 image:
                                                   "assets/fc/ironing-inspection.jpg",
+                                                galleryImages: [
+                                                  "assets/yqms/irroning-inspection/irroning.png",
+                                                ],
                                               },
                                               {
                                                 title: "Packing Inspection",
@@ -684,6 +697,11 @@ const AppLayout = () => {
                                                   "bg-sky-500/30 text-white",
                                                 image:
                                                   "assets/yqms/humidity-acraboy-checking.jpg",
+                                                galleryImages: [
+                                                  "assets/yqms/aquaboy/quaboy1.png",
+                                                  "assets/yqms/aquaboy/aquaboy2.png",
+                                                  "assets/yqms/aquaboy/aquaboy3.png",
+                                                ],
                                               },
                                               {
                                                 title:
@@ -705,6 +723,9 @@ const AppLayout = () => {
                                                   "https://cdn-icons-png.flaticon.com/128/6820/6820898.png",
                                                 color:
                                                   "bg-slate-500 text-white",
+                                                galleryImages: [
+                                                  "assets/yqms/dashboard/dashboard1.png",
+                                                ],
                                               },
                                               {
                                                 title: "Report",
@@ -1095,6 +1116,15 @@ const AppLayout = () => {
         navigate("/dashboard/ytm");
       } else if (module.title === "KANBAN" || module.id === "kanban") {
         navigate("/dashboard/traffic-light");
+      } else if (module.galleryImages && module.galleryImages.length > 0) {
+        // Navigate to image view with gallery support
+        const encodedPath = encodeURIComponent(module.galleryImages[0]);
+        navigate(`/dashboard/image/${encodedPath}`, {
+          state: {
+            gallery: module.galleryImages,
+            title: module.title,
+          },
+        });
       } else if (module.title === "PWIP" || module.id === "pwip") {
         navigate("/dashboard/pwip");
       } else if (module.title === "Call Out" || module.id === "call-out") {
@@ -1122,7 +1152,6 @@ const AppLayout = () => {
         !location.pathname.includes("ytm-shop") &&
         !location.pathname.includes("ytm") &&
         !location.pathname.includes("traffic-light") &&
-        !location.pathname.includes("pwip") &&
         !location.pathname.includes("call-out") &&
         !location.pathname.includes("yhr") &&
         !location.pathname.includes("salary-bill") &&

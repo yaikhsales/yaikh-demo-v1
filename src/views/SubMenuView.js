@@ -273,7 +273,8 @@ const renderCard = (
   const isFCModule = imageToUse && imageToUse.includes("assets/fc/");
   const isYQMSModule = imageToUse && imageToUse.includes("assets/yqms/");
   const isEGovModule = card.url !== undefined; // E-Government modules have url property
-  const isNonClickableModule = isFCModule || isYQMSModule;
+  const isNonClickableModule =
+    (isFCModule || isYQMSModule) && !card.galleryImages;
 
   // Determine text color for E-Government modules and Purchase Request modules
   let textColorClass = "";
@@ -442,6 +443,18 @@ const renderCard = (
                     "assets/e-invoice/IEWS.jpg",
                   );
                   navigate(`/dashboard/image/${encodedPath}`);
+                } else if (
+                  card.galleryImages &&
+                  card.galleryImages.length > 0
+                ) {
+                  // Navigate to image view with gallery support
+                  const encodedPath = encodeURIComponent(card.galleryImages[0]);
+                  navigate(`/dashboard/image/${encodedPath}`, {
+                    state: {
+                      gallery: card.galleryImages,
+                      title: card.title,
+                    },
+                  });
                 } else if (isFCModule || isYQMSModule) {
                   // FC and YQMS sub-modules: display icons only, no navigation
                   return;
