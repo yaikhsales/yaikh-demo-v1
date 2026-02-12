@@ -7,10 +7,10 @@ import { useTranslation } from '../translate/TranslationContext';
 // Mapping function to match module titles to sub-icon image filenames
 const getYTMIconImage = (title) => {
     const titleToImageMap = {
+        'System Setup': 'system-setup.png',
         'Machine Location': 'machine-location.png',
         'Setup and Repair': 'setup-repair.png',
         'Routine Maintenance': 'routine-maintenance.png',
-        'System Setup': 'system-setup.png',
         'Data': 'data.png',
         'TV': 'TV.png',
         'Transfers': 'transfer.png',
@@ -53,6 +53,12 @@ const YTM = ({ onBack }) => {
     };
 
     const ytmModules = [
+
+        { 
+            title: 'System Setup',
+            color: 'bg-gradient-to-br from-orange-500 to-orange-600',
+            shadow: 'shadow-orange-200'
+        },
         { 
             title: 'Machine Location',
             hasSubModules: true,
@@ -73,11 +79,7 @@ const YTM = ({ onBack }) => {
             color: 'bg-gradient-to-br from-purple-500 to-purple-600',
             shadow: 'shadow-purple-200'
         },
-        { 
-            title: 'System Setup',
-            color: 'bg-gradient-to-br from-orange-500 to-orange-600',
-            shadow: 'shadow-orange-200'
-        },
+       
         { 
             title: 'Data',
             hasSubModules: true,
