@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
-import { Search, Database, ChevronRight, Lightbulb, Sparkles } from "lucide-react";
+import {
+  Search,
+  Database,
+  ChevronRight,
+  Lightbulb,
+  Sparkles,
+} from "lucide-react";
 
 import Header from "./components/Header";
 import SectionContainer from "./components/SectionContainer";
@@ -1647,9 +1653,9 @@ const AppLayout = () => {
                 />
               </div>
             </div>
-            
+
             {/* General AI Agent Button - Right Side Bottom */}
-            {location.pathname === '/' && (
+            {location.pathname === "/" && (
               <button
                 onClick={() => setGeneralAIAgentOpen(true)}
                 className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
@@ -1663,7 +1669,7 @@ const AppLayout = () => {
           <Outlet />
         )}
       </main>
-      
+
       {/* General AI Agent Modal */}
       {isGeneralAIAgentOpen && (
         <GeneralAIAgent onClose={() => setGeneralAIAgentOpen(false)} />
