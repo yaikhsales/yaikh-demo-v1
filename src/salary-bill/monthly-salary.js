@@ -1,794 +1,574 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, DollarSign, Calculator, FileText, Calendar, Receipt, User, MessageCircle } from 'lucide-react';
-import GeneralAIAgent from '../general-ag';
-import { useTranslation } from '../translate/TranslationContext';
+import React, { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Search,
+  Plus,
+  ArrowLeft,
+  Download,
+  Filter,
+  MoreVertical,
+  CheckCircle2,
+  Clock,
+  CreditCard,
+  ChevronRight,
+  TrendingUp,
+  Users,
+  DollarSign,
+  AlertCircle,
+  FileText,
+  User,
+  Calculator,
+  MessageCircle,
+  X,
+} from "lucide-react";
+import GeneralAIAgent from "../general-ag";
+import { useTranslation } from "../translate/TranslationContext";
 
-const MonthlySalary = ({ onBack }) => {
-    const navigate = useNavigate();
-    const { t } = useTranslation();
-    const [isBotOpen, setIsBotOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        employeeId: '',
-        employeeName: '',
-        department: '',
-        position: '',
-        month: '',
-        year: '',
-        payDate: '',
-        basicSalary: '',
-        allowances: {
-            transportation: '',
-            meal: '',
-            housing: '',
-            communication: '',
-            other: ''
-        },
-        overtime: {
-            hours: '',
-            rate: '',
-            amount: ''
-        },
-        bonuses: {
-            performance: '',
-            attendance: '',
-            production: '',
-            other: ''
-        },
-        deductions: {
-            tax: '',
-            nssf: '',
-            healthInsurance: '',
-            advance: '',
-            loan: '',
-            other: ''
-        },
-        grossSalary: '',
-        totalDeductions: '',
-        netSalary: '',
-        paymentMethod: '',
-        bankAccount: '',
-        status: 'pending',
-        notes: ''
-    });
+const MonthlySalaryDashboard = ({ onBack }) => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [isBotOpen, setIsBotOpen] = useState(false);
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
-    const handleBack = () => {
-        if (onBack) {
-            onBack();
-        } else {
-            navigate(-1);
-        }
-    };
+  // MOCK DATA: Simulating a sewing line payroll
+  const [salaryRecords, setSalaryRecords] = useState([
+    {
+      id: "EMP-001",
+      name: "Srey Mao",
+      dept: "Sewing Line A",
+      netPay: 245.5,
+      status: "paid",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-05",
+    },
+    {
+      id: "EMP-002",
+      name: "Vannak Kem",
+      dept: "Sewing Line A",
+      netPay: 230.15,
+      status: "processed",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-06",
+    },
+    {
+      id: "EMP-003",
+      name: "Sophea Rattanak",
+      dept: "Quality Control",
+      netPay: 310.0,
+      status: "approved",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-07",
+    },
+    {
+      id: "EMP-004",
+      name: "Chitra Long",
+      dept: "Sewing Line B",
+      netPay: 220.75,
+      status: "pending",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-08",
+    },
+    {
+      id: "EMP-005",
+      name: "Borith Seng",
+      dept: "Finishing Dept",
+      netPay: 275.4,
+      status: "pending",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-08",
+    },
+    {
+      id: "EMP-006",
+      name: "Leakhena Chan",
+      dept: "Packing",
+      netPay: 215.0,
+      status: "paid",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-04",
+    },
+    {
+      id: "EMP-007",
+      name: "Pisey Morn",
+      dept: "Sewing Line C",
+      netPay: 255.2,
+      status: "processed",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-06",
+    },
+    {
+      id: "EMP-008",
+      name: "Roth Sombo",
+      dept: "Cutting Room",
+      netPay: 290.0,
+      status: "approved",
+      period: "Oct 2023",
+      lastUpdate: "2023-11-07",
+    },
+  ]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        const [parent, child] = name.split('.');
-        
-        if (child) {
-            setFormData(prev => ({
-                ...prev,
-                [parent]: {
-                    ...prev[parent],
-                    [child]: value
-                }
-            }));
-        } else {
-            setFormData(prev => ({
-                ...prev,
-                [name]: value
-            }));
-        }
-    };
+  // Summary Calculations
+  const stats = useMemo(() => {
+    const total = salaryRecords.reduce((acc, curr) => acc + curr.netPay, 0);
+    const pending = salaryRecords.filter((r) => r.status === "pending").length;
+    const paid = salaryRecords.filter((r) => r.status === "paid").length;
+    return { total, pending, paid };
+  }, [salaryRecords]);
 
-    const handleOvertimeChange = (e) => {
-        const { name, value } = e.target;
-        const [parent, child] = name.split('.');
-        
-        setFormData(prev => {
-            const updated = {
-                ...prev,
-                [parent]: {
-                    ...prev[parent],
-                    [child]: value
-                }
-            };
-            
-            if (child === 'hours' || child === 'rate') {
-                const hours = parseFloat(child === 'hours' ? value : prev.overtime.hours) || 0;
-                const rate = parseFloat(child === 'rate' ? value : prev.overtime.rate) || 0;
-                updated.overtime.amount = (hours * rate).toFixed(2);
-            }
-            
-            return updated;
-        });
-    };
+  const filteredRecords = salaryRecords.filter((record) => {
+    const matchesSearch =
+      record.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      record.id.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      statusFilter === "all" || record.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
-    React.useEffect(() => {
-        // Calculate gross salary
-        const basic = parseFloat(formData.basicSalary) || 0;
-        const totalAllowances = 
-            (parseFloat(formData.allowances.transportation) || 0) +
-            (parseFloat(formData.allowances.meal) || 0) +
-            (parseFloat(formData.allowances.housing) || 0) +
-            (parseFloat(formData.allowances.communication) || 0) +
-            (parseFloat(formData.allowances.other) || 0);
-        const overtimeAmount = parseFloat(formData.overtime.amount) || 0;
-        const totalBonuses = 
-            (parseFloat(formData.bonuses.performance) || 0) +
-            (parseFloat(formData.bonuses.attendance) || 0) +
-            (parseFloat(formData.bonuses.production) || 0) +
-            (parseFloat(formData.bonuses.other) || 0);
-        
-        const grossSalary = basic + totalAllowances + overtimeAmount + totalBonuses;
-        
-        // Calculate total deductions
-        const totalDeductions = 
-            (parseFloat(formData.deductions.tax) || 0) +
-            (parseFloat(formData.deductions.nssf) || 0) +
-            (parseFloat(formData.deductions.healthInsurance) || 0) +
-            (parseFloat(formData.deductions.advance) || 0) +
-            (parseFloat(formData.deductions.loan) || 0) +
-            (parseFloat(formData.deductions.other) || 0);
-        
-        // Calculate net salary
-        const netSalary = grossSalary - totalDeductions;
-        
-        setFormData(prev => ({
-            ...prev,
-            grossSalary: grossSalary.toFixed(2),
-            totalDeductions: totalDeductions.toFixed(2),
-            netSalary: netSalary.toFixed(2)
-        }));
-    }, [
-        formData.basicSalary,
-        formData.allowances.transportation,
-        formData.allowances.meal,
-        formData.allowances.housing,
-        formData.allowances.communication,
-        formData.allowances.other,
-        formData.overtime.amount,
-        formData.bonuses.performance,
-        formData.bonuses.attendance,
-        formData.bonuses.production,
-        formData.bonuses.other,
-        formData.deductions.tax,
-        formData.deductions.nssf,
-        formData.deductions.healthInsurance,
-        formData.deductions.advance,
-        formData.deductions.loan,
-        formData.deductions.other
-    ]);
+  const getStatusStyle = (status) => {
+    switch (status) {
+      case "paid":
+        return "bg-green-100 text-green-700 border-green-200";
+      case "processed":
+        return "bg-blue-100 text-blue-700 border-blue-200";
+      case "approved":
+        return "bg-purple-100 text-purple-700 border-purple-200";
+      case "pending":
+        return "bg-amber-100 text-amber-700 border-amber-200";
+      default:
+        return "bg-gray-100 text-gray-700 border-gray-200";
+    }
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Monthly Salary form submitted:', formData);
-    };
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "paid":
+        return <CheckCircle2 size={14} />;
+      case "processed":
+        return <CreditCard size={14} />;
+      case "approved":
+        return <FileText size={14} />;
+      case "pending":
+        return <Clock size={14} />;
+      default:
+        return <AlertCircle size={14} />;
+    }
+  };
 
-    return (
-        <div className="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-50 flex flex-col overflow-hidden z-[100]">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg sticky top-0 z-[101]">
-                <div className="px-4 py-3 flex items-center justify-center">
-                    <div className="flex items-center gap-3">
-                        <button
-                            onClick={handleBack}
-                            className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-blue-700 rounded transition-colors"
-                        >
-                            <ArrowLeft size={18} />
-                            <span className="font-medium">{t('back')}</span>
-                        </button>
-                        <button
-                            onClick={() => navigate('/')}
-                            className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title={t('home')}
-                        >
-                            <img 
-                                src="/logo.jpg" 
-                                alt={t('home')} 
-                                className="w-full h-full object-cover"
-                            />
-                        </button>
-                        <h1 className="text-lg font-bold">{t('monthlySalary')}</h1>
-                    </div>
-                </div>
-            </div>
+  const handleBack = () => (onBack ? onBack() : navigate(-1));
 
-            {/* Form Content */}
-            <div className="flex-1 overflow-y-auto p-6">
-                <div className="max-w-4xl mx-auto">
-                    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 space-y-6">
-                        {/* Employee Information */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <User className="text-blue-600" size={24} />
-                                {t('employeeInformation')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('employeeId')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="employeeId"
-                                        value={formData.employeeId}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="EMP-XXXXX"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('employeeName')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="employeeName"
-                                        value={formData.employeeName}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder={t('enterFullName')}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('department')}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="department"
-                                        value={formData.department}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder={t('departmentName')}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('position')}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="position"
-                                        value={formData.position}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder={t('jobTitle')}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <Calendar size={14} />
-                                        {t('month')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <select
-                                        name="month"
-                                        value={formData.month}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    >
-                                        <option value="">{t('selectMonth')}</option>
-                                        <option value="January">{t('january')}</option>
-                                        <option value="February">{t('february')}</option>
-                                        <option value="March">{t('march')}</option>
-                                        <option value="April">{t('april')}</option>
-                                        <option value="May">{t('may')}</option>
-                                        <option value="June">{t('june')}</option>
-                                        <option value="July">{t('july')}</option>
-                                        <option value="August">{t('august')}</option>
-                                        <option value="September">{t('september')}</option>
-                                        <option value="October">{t('october')}</option>
-                                        <option value="November">{t('november')}</option>
-                                        <option value="December">{t('december')}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <Calendar size={14} />
-                                        {t('year')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="year"
-                                        value={formData.year}
-                                        onChange={handleChange}
-                                        required
-                                        min="2020"
-                                        max="2100"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="2024"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <Calendar size={14} />
-                                        {t('payDate')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="payDate"
-                                        value={formData.payDate}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Earnings */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <DollarSign className="text-blue-600" size={24} />
-                                {t('earnings')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('basicSalary')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="basicSalary"
-                                        value={formData.basicSalary}
-                                        onChange={handleChange}
-                                        required
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('transportationAllowance')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="allowances.transportation"
-                                        value={formData.allowances.transportation}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('mealAllowance')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="allowances.meal"
-                                        value={formData.allowances.meal}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('housingAllowance')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="allowances.housing"
-                                        value={formData.allowances.housing}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('communicationAllowance')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="allowances.communication"
-                                        value={formData.allowances.communication}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('otherAllowances')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="allowances.other"
-                                        value={formData.allowances.other}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Overtime */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <Calculator className="text-blue-600" size={24} />
-                                {t('overtime')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('overtimeHours')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="overtime.hours"
-                                        value={formData.overtime.hours}
-                                        onChange={handleOvertimeChange}
-                                        step="0.5"
-                                        min="0"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('overtimeRatePerHour')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="overtime.rate"
-                                        value={formData.overtime.rate}
-                                        onChange={handleOvertimeChange}
-                                        step="0.01"
-                                        min="0"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('overtimeAmount')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="overtime.amount"
-                                        value={formData.overtime.amount}
-                                        readOnly
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Bonuses */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <Receipt className="text-blue-600" size={24} />
-                                {t('bonuses')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('performanceBonus')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="bonuses.performance"
-                                        value={formData.bonuses.performance}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('attendanceBonus')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="bonuses.attendance"
-                                        value={formData.bonuses.attendance}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('productionBonus')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="bonuses.production"
-                                        value={formData.bonuses.production}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('otherBonuses')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="bonuses.other"
-                                        value={formData.bonuses.other}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Deductions */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <Calculator className="text-red-600" size={24} />
-                                {t('deductions')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('tax')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="deductions.tax"
-                                        value={formData.deductions.tax}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('nssfContribution')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="deductions.nssf"
-                                        value={formData.deductions.nssf}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('healthInsurance')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="deductions.healthInsurance"
-                                        value={formData.deductions.healthInsurance}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('salaryAdvance')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="deductions.advance"
-                                        value={formData.deductions.advance}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('loanDeduction')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="deductions.loan"
-                                        value={formData.deductions.loan}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('otherDeductions')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="deductions.other"
-                                        value={formData.deductions.other}
-                                        onChange={handleChange}
-                                        step="0.01"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Summary */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <FileText className="text-green-600" size={24} />
-                                {t('salarySummary')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('grossSalary')}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="grossSalary"
-                                        value={formData.grossSalary}
-                                        readOnly
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-blue-50 font-bold text-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('totalDeductions')}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="totalDeductions"
-                                        value={formData.totalDeductions}
-                                        readOnly
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-red-50 font-bold text-red-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('netSalary')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="netSalary"
-                                        value={formData.netSalary}
-                                        readOnly
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-green-50 font-bold text-green-700 text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="0.00"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Payment Details */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <DollarSign className="text-blue-600" size={24} />
-                                {t('paymentDetails')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('paymentMethod')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <select
-                                        name="paymentMethod"
-                                        value={formData.paymentMethod}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    >
-                                        <option value="">{t('selectMethod')}</option>
-                                        <option value="Bank Transfer">{t('bankTransfer')}</option>
-                                        <option value="Cash">{t('cash')}</option>
-                                        <option value="Check">{t('check')}</option>
-                                        <option value="Mobile Payment">{t('mobilePayment')}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('bankAccountNumber')}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="bankAccount"
-                                        value={formData.bankAccount}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder={t('bankAccountNumberPlaceholder')}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('status')}
-                                    </label>
-                                    <select
-                                        name="status"
-                                        value={formData.status}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    >
-                                        <option value="pending">{t('pending')}</option>
-                                        <option value="approved">{t('approved')}</option>
-                                        <option value="processed">{t('processed')}</option>
-                                        <option value="paid">{t('paid')}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Notes */}
-                        <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                {t('additionalNotes')}
-                            </label>
-                            <textarea
-                                name="notes"
-                                value={formData.notes}
-                                onChange={handleChange}
-                                rows="4"
-                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                placeholder={t('additionalNotesAboutSalaryPayment')}
-                            />
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
-                            <button
-                                type="button"
-                                onClick={handleBack}
-                                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
-                            >
-                                {t('cancel')}
-                            </button>
-                            <button
-                                type="submit"
-                                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold flex items-center gap-2"
-                            >
-                                <Save size={18} />
-                                {t('processMonthlySalary')}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            {/* Bot Button - Bottom Right */}
-            <button
-                onClick={() => setIsBotOpen(true)}
-                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
-                aria-label="Ask Monthly Salary bot"
-                title="Ask Monthly Salary bot"
-            >
-                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
-            </button>
-            
-            {/* Bot Modal */}
-            {isBotOpen && (
-                <GeneralAIAgent 
-                    onClose={() => setIsBotOpen(false)}
-                    moduleContext="Monthly Salary"
-                />
-            )}
+  return (
+    <div className="fixed inset-0 bg-slate-50 flex flex-col overflow-hidden z-[100]">
+      {/* Minimal Header */}
+      <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-[101]">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={handleBack}
+            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+          >
+            <ArrowLeft size={20} className="text-slate-600" />
+          </button>
+          <div>
+            <h1 className="text-xl font-bold text-slate-800">
+              Monthly Salary Dashboard
+            </h1>
+            <p className="text-sm text-slate-500">
+              Manage payroll and track payment progress
+            </p>
+          </div>
         </div>
-    );
+        <div className="flex items-center gap-3">
+          <button className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-all font-medium border border-slate-200">
+            <Download size={18} />
+            Export PDF
+          </button>
+          <button
+            onClick={() => setIsAddFormOpen(true)}
+            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-bold shadow-lg shadow-blue-200"
+          >
+            <Plus size={18} />
+            Create New Bill
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between group hover:border-blue-300 transition-all">
+            <div>
+              <p className="text-slate-500 text-sm font-medium mb-1">
+                Total Monthly Budget
+              </p>
+              <h3 className="text-3xl font-black text-slate-800">
+                ${stats.total.toLocaleString()}
+              </h3>
+            </div>
+            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <DollarSign size={24} />
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between group hover:border-amber-300 transition-all">
+            <div>
+              <p className="text-slate-500 text-sm font-medium mb-1">
+                Awaiting Approval
+              </p>
+              <h3 className="text-3xl font-black text-slate-800">
+                {stats.pending} Staff
+              </h3>
+            </div>
+            <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Clock size={24} />
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between group hover:border-green-300 transition-all">
+            <div>
+              <p className="text-slate-500 text-sm font-medium mb-1">
+                Successfully Paid
+              </p>
+              <h3 className="text-3xl font-black text-slate-800">
+                {stats.paid} Staff
+              </h3>
+            </div>
+            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <CheckCircle2 size={24} />
+            </div>
+          </div>
+        </div>
+
+        {/* Table Section */}
+        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+          {/* Table Filters */}
+          <div className="p-4 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="relative flex-1 max-w-md">
+              <Search
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                size={18}
+              />
+              <input
+                type="text"
+                placeholder="Search by Employee ID or Name..."
+                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              <Filter size={18} className="text-slate-500" />
+              <select
+                className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-600 focus:ring-2 focus:ring-blue-500 transiton-all outline-none"
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending Approval</option>
+                <option value="approved">Approved</option>
+                <option value="processed">Processed</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Table Content */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-slate-50/50">
+                <tr>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Employee
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Department
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Net Amount
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">
+                    Payment Progress
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    Last Update
+                  </th>
+                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {filteredRecords.map((record, index) => (
+                  <tr
+                    key={index}
+                    className="hover:bg-slate-50/80 transition-colors group"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold">
+                          {record.name.charAt(0)}
+                        </div>
+                        <div>
+                          <div className="font-bold text-slate-800">
+                            {record.name}
+                          </div>
+                          <div className="text-xs text-slate-500">
+                            {record.id}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="text-sm text-slate-600">
+                        {record.dept}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="font-bold text-slate-800">
+                        ${record.netPay.toFixed(2)}
+                      </div>
+                      <div className="text-[10px] text-slate-400 capitalize">
+                        {record.period}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex justify-center">
+                        <div
+                          className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold border ${getStatusStyle(record.status)}`}
+                        >
+                          {getStatusIcon(record.status)}
+                          <span className="capitalize">{record.status}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="text-xs text-slate-500">
+                        {record.lastUpdate}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                      <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all opacity-0 group-hover:opacity-100">
+                        <MoreVertical size={18} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {filteredRecords.length === 0 && (
+            <div className="py-20 text-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 text-slate-400 rounded-full mb-4">
+                <Search size={32} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-800">
+                No records found
+              </h3>
+              <p className="text-slate-500">
+                Try adjusting your search or filters
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* SIDE PANEL: ADD NEW BILL (Replaces the "Old Form") */}
+      {isAddFormOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[200]"
+            onClick={() => setIsAddFormOpen(false)}
+          />
+          <div className="fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-2xl z-[201] flex flex-col transform transition-transform duration-300 animate-slide-in">
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-blue-600 text-white">
+              <div>
+                <h2 className="text-xl font-bold font-heading">
+                  New Monthly Salary
+                </h2>
+                <p className="text-blue-100 text-xs">
+                  Enter employee earnings and deductions
+                </p>
+              </div>
+              <button
+                onClick={() => setIsAddFormOpen(false)}
+                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-6 space-y-8">
+              {/* Form Sections */}
+              <section>
+                <h3 className="flex items-center gap-2 text-sm font-black text-slate-400 uppercase tracking-widest mb-4">
+                  <User size={16} /> Employee Details
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
+                      Search Employee
+                    </label>
+                    <div className="relative">
+                      <Search
+                        className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                        size={14}
+                      />
+                      <input
+                        type="text"
+                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                        placeholder="Enter ID or Name..."
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-2 p-4 bg-blue-50/50 rounded-xl border border-blue-100 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">
+                      JD
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-800">
+                        John Doe (Selected)
+                      </p>
+                      <p className="text-[10px] text-blue-600 font-bold uppercase tracking-tight">
+                        Sewing Line B • Grade A
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <h3 className="flex items-center gap-2 text-sm font-black text-slate-400 uppercase tracking-widest mb-4">
+                  <Calculator size={16} /> Earnings & Incentives
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
+                      Basic Salary ($)
+                    </label>
+                    <input
+                      type="number"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
+                      Overtime (Hrs)
+                    </label>
+                    <input
+                      type="number"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                      placeholder="0"
+                    />
+                  </div>
+                  <div className="col-span-2">
+                    <div className="flex justify-between items-center mb-1">
+                      <label className="block text-xs font-bold text-slate-700 uppercase leading-none">
+                        Weekly Incentives Sum ($)
+                      </label>
+                      <button
+                        className="text-[10px] font-black text-blue-600 hover:text-blue-800 flex items-center gap-1 uppercase tracking-tighter"
+                        type="button"
+                        onClick={() =>
+                          alert(
+                            "Syncing with Weekly Incentive Dashboard... Found $145.00 for this month.",
+                          )
+                        }
+                      >
+                        <TrendingUp size={10} /> Sync from Production Line
+                      </button>
+                    </div>
+                    <input
+                      type="number"
+                      className="w-full px-4 py-2.5 bg-blue-50 border border-blue-200 text-blue-700 font-bold rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
+                      placeholder="0.00"
+                      defaultValue="145.00"
+                    />
+                    <p className="text-[9px] text-slate-400 mt-1 italic leading-none">
+                      *Automatically fetched from the Weekly Incentive module
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              <section>
+                <h3 className="flex items-center gap-2 text-sm font-black text-slate-400 uppercase tracking-widest mb-4">
+                  <AlertCircle size={16} /> Deductions
+                </h3>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
+                      Tax/NSSF ($)
+                    </label>
+                    <input
+                      type="number"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 transition-all outline-none border-red-50"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
+                      Loans/Advance
+                    </label>
+                    <input
+                      type="number"
+                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 transition-all outline-none border-red-50"
+                      placeholder="0.00"
+                    />
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div className="p-6 border-t border-slate-100 bg-slate-50/50">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <p className="text-xs text-slate-500 font-bold uppercase">
+                    Estimated Net Pay
+                  </p>
+                  <p className="text-3xl font-black text-slate-800">$0.00</p>
+                </div>
+                <div className="flex items-center gap-2 text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg border border-green-100 text-xs">
+                  <TrendingUp size={14} /> Low Variance
+                </div>
+              </div>
+              <button className="w-full py-4 bg-blue-600 text-white rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-3">
+                <Plus size={20} />
+                Confirm & Create Bill
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* AI Agent Bubble */}
+      <button
+        onClick={() => setIsBotOpen(true)}
+        className="fixed bottom-6 right-6 z-[102] w-14 h-14 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all group overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+        <MessageCircle className="relative z-10" size={24} />
+      </button>
+
+      {isBotOpen && (
+        <GeneralAIAgent
+          onClose={() => setIsBotOpen(false)}
+          moduleContext="Monthly Salary Dashboard"
+        />
+      )}
+
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+                @keyframes slide-in {
+                    from { transform: translateX(100%); }
+                    to { transform: translateX(0); }
+                }
+                .animate-slide-in {
+                    animation: slide-in 0.3s ease-out;
+                }
+            `,
+        }}
+      />
+    </div>
+  );
 };
 
-export default MonthlySalary;
-
+export default MonthlySalaryDashboard;

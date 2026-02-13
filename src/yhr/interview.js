@@ -1,402 +1,492 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, Calendar, Clock, User, Users, FileText, CheckCircle, MessageCircle } from 'lucide-react';
-import GeneralAIAgent from '../general-ag';
-import { useTranslation } from '../translate/TranslationContext';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Search,
+  Eye,
+  Edit2,
+  Trash2,
+  Check,
+  X,
+  Send,
+  Calendar,
+  Phone,
+  FileText,
+  User,
+  ChevronDown,
+  Plus,
+  MessageCircle,
+  ArrowLeft,
+} from "lucide-react";
+import GeneralAIAgent from "../general-ag";
+import { useTranslation } from "../translate/TranslationContext";
+
+const teamPhotos = [
+  "/assets/about-us/teams/Dot-Sreynoch.jpeg",
+  "/assets/about-us/teams/Koem-Phanny.jpeg",
+  "/assets/about-us/teams/Mr-Arnold11.jpeg",
+  "/assets/about-us/teams/Sin-Khun.jpeg",
+  "/assets/about-us/teams/Voun-Thida.jpeg",
+  "/assets/about-us/teams/chhay.jpg",
+  "/assets/about-us/teams/daly.jpg",
+  "/assets/about-us/teams/yasomi.jpg",
+];
 
 const Interview = ({ onBack }) => {
-    const navigate = useNavigate();
-    const { t, translateModuleTitle } = useTranslation();
-    const [formData, setFormData] = useState({
-        candidateName: '',
-        position: '',
-        interviewDate: '',
-        interviewTime: '',
-        interviewType: '',
-        interviewer: '',
-        interviewers: [],
-        location: '',
-        status: 'scheduled',
-        technicalScore: '',
-        communicationScore: '',
-        culturalFitScore: '',
-        overallRating: '',
-        strengths: '',
-        weaknesses: '',
-        recommendation: '',
-        notes: ''
-    });
-    const [isBotOpen, setIsBotOpen] = useState(false);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [activeTab, setActiveTab] = useState("interviews");
+  const [isBotOpen, setIsBotOpen] = useState(false);
+  const [showSetupModal, setShowSetupModal] = useState(false);
+  const [selectedApplicant, setSelectedApplicant] = useState(null);
 
-    const handleBack = () => {
-        if (onBack) {
-            onBack();
-        } else {
-            navigate(-1);
-        }
-    };
+  const tabs = [{ id: "interviews", label: "Interviews", count: 2 }];
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+  const applicants = [
+    {
+      id: 1,
+      name: "Chhay",
+      gender: "MALE",
+      age: 29,
+      phone: "+855 081 223 998",
+      department: "Production",
+      position: "QA Tester",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "TECHNICAL SCREENING",
+      type: "KHMER",
+      date: "Feb 13, 2026",
+      time: "02:00 PM",
+      photo: "/assets/about-us/teams/chhay.jpg",
+    },
+    {
+      id: 2,
+      name: "Daly",
+      gender: "FEMALE",
+      age: 27,
+      phone: "+855 092 556 887",
+      department: "Marketing",
+      position: "Content Strategist",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "PORTFOLIO REVIEW",
+      type: "KHMER",
+      date: "Feb 13, 2026",
+      time: "03:00 PM",
+      photo: "/assets/about-us/teams/daly.jpg",
+    },
+    {
+      id: 3,
+      name: "Yasomi",
+      gender: "FEMALE",
+      age: 24,
+      phone: "+855 061 445 112",
+      department: "Design",
+      position: "UI/UX Designer",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "DESIGN CHALLENGE",
+      type: "KHMER",
+      date: "Feb 13, 2026",
+      time: "04:00 PM",
+      photo: "/assets/about-us/teams/yasomi.jpg",
+    },
+    {
+      id: 4,
+      name: "Sobon Menghorng",
+      gender: "MALE",
+      age: 28,
+      phone: "+855 010 778 334",
+      department: "Engineering",
+      position: "Frontend Lead",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "FINAL INTERVIEW",
+      type: "KHMER",
+      date: "Feb 14, 2026",
+      time: "10:00 AM",
+      photo: "/assets/about-us/teams/Sobon-Menghorng.jpg",
+    },
+    {
+      id: 5,
+      name: "Dot Sreynoch",
+      gender: "FEMALE",
+      age: 26,
+      phone: "+855 010 223 445",
+      department: "Production",
+      position: "QA Lead",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "MANAGEMENT ROUND",
+      type: "KHMER",
+      date: "Feb 14, 2026",
+      time: "11:30 AM",
+      photo: "/assets/about-us/teams/Dot-Sreynoch.jpeg",
+    },
+    {
+      id: 6,
+      name: "Koem Phanny",
+      gender: "FEMALE",
+      age: 28,
+      phone: "+855 012 334 556",
+      department: "Logistics",
+      position: "Supply Chain",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "SKILLS TEST",
+      type: "KHMER",
+      date: "Feb 14, 2026",
+      time: "02:00 PM",
+      photo: "/assets/about-us/teams/Koem-Phanny.jpeg",
+    },
+    {
+      id: 7,
+      name: "Sin Khun",
+      gender: "MALE",
+      age: 30,
+      phone: "+855 015 445 667",
+      department: "Engineering",
+      position: "Senior Dev",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "TECH INTERVIEW",
+      type: "KHMER",
+      date: "Feb 15, 2026",
+      time: "09:00 AM",
+      photo: "/assets/about-us/teams/Sin-Khun.jpeg",
+    },
+    {
+      id: 8,
+      name: "Voun Thida",
+      gender: "FEMALE",
+      age: 25,
+      phone: "+855 099 556 778",
+      department: "HR",
+      position: "Coordinator",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "HR SCREENING",
+      type: "KHMER",
+      date: "Feb 15, 2026",
+      time: "10:30 AM",
+      photo: "/assets/about-us/teams/Voun-Thida.jpeg",
+    },
+    {
+      id: 9,
+      name: "Proeurng Sokhim",
+      gender: "FEMALE",
+      age: 24,
+      phone: "+855 011 222 333",
+      department: "Design",
+      position: "Graphic Artist",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "PORTFOLIO",
+      type: "KHMER",
+      date: "Feb 15, 2026",
+      time: "03:00 PM",
+      photo: "/assets/about-us/teams/Proeurng-Sokhim.jpeg",
+    },
+    {
+      id: 10,
+      name: "Ton Noeun",
+      gender: "MALE",
+      age: 32,
+      phone: "+855 077 778 990",
+      department: "Maintenance",
+      position: "Lead Tech",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "PRACTICAL TEST",
+      type: "KHMER",
+      date: "Feb 16, 2026",
+      time: "11:00 AM",
+      photo: "/assets/about-us/teams/Ton-Noeun.jpeg",
+    },
+  ];
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Interview form submitted:', formData);
-    };
+  const handleBack = () => {
+    if (onBack) onBack();
+    else navigate(-1);
+  };
 
-    return (
-        <div className="fixed inset-0 bg-gradient-to-br from-green-50 via-white to-green-50 flex flex-col overflow-hidden z-[100]">
-            {/* Header */}
-            <div className="bg-gradient-to-r from-green-600 to-green-700 text-white shadow-lg sticky top-0 z-[101]">
-                <div className="px-4 py-3 flex items-center justify-center">
-                    <div className="flex items-center gap-3">
+  const handlePass = (name) => {
+    alert(`${name} has passed the interview phase.`);
+  };
+
+  const handleFail = (name) => {
+    alert(`${name} has failed the interview phase.`);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-white flex flex-col z-[50] font-sans text-slate-900 overflow-hidden">
+      {/* Main Table Container (Edge-to-Edge) */}
+      <div className="flex-1 flex flex-col min-h-0 bg-white">
+        <div className="flex-1 overflow-hidden flex flex-col">
+          {/* Header Action Bar */}
+          <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-white shrink-0">
+            <div className="flex items-center gap-6">
+              <button
+                onClick={handleBack}
+                className="p-2 hover:bg-slate-50 rounded-full transition-all text-slate-400 hover:text-slate-600 border border-slate-100 shadow-sm"
+              >
+                <ArrowLeft size={20} />
+              </button>
+              <h2 className="text-lg font-black text-slate-800 tracking-tight uppercase">
+                Interviews
+              </h2>
+            </div>
+            <div className="flex items-center gap-3">
+              <button className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center gap-2 active:scale-95">
+                Schedule Interview
+              </button>
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-auto">
+            <table className="w-full text-left border-collapse min-w-[1100px]">
+              <thead>
+                <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
+                  <th className="px-8 py-5">Photo</th>
+                  <th className="px-4 py-5">Applicant / Contact</th>
+                  <th className="px-4 py-5">Department</th>
+                  <th className="px-4 py-5 text-center">Status</th>
+                  <th className="px-4 py-5 text-center">Type</th>
+                  <th className="px-4 py-5">Submitted</th>
+                  <th className="px-8 py-5 text-right whitespace-nowrap">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {applicants.map((applicant) => (
+                  <tr
+                    key={applicant.id}
+                    className="group hover:bg-slate-50/50 transition-all duration-200"
+                  >
+                    <td className="px-8 py-6">
+                      <div className="relative w-12 h-12 rounded-xl border-2 border-slate-100 overflow-hidden shadow-sm group-hover:border-blue-100 transition-colors">
+                        <img
+                          src={applicant.photo}
+                          alt={applicant.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </td>
+                    <td className="px-4 py-6">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-black text-slate-800 text-sm tracking-tight">
+                          {applicant.name}
+                        </span>
+                        <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                          <span>
+                            {applicant.gender} • {applicant.age} YRS
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                          <Phone size={10} className="text-slate-300" />
+                          <span>{applicant.phone}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-6">
+                      <div className="flex flex-col">
+                        <span className="font-black text-slate-700 text-xs">
+                          {applicant.department}
+                        </span>
+                        <span className="text-[10px] font-bold text-slate-400">
+                          {applicant.position}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-6">
+                      <div className="flex flex-col items-center gap-2">
+                        <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.15em]">
+                          {applicant.status}
+                        </span>
+                        <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[9px] font-black tracking-widest border border-emerald-100/50">
+                          {applicant.subStatus}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-6 text-center">
+                      <span className="px-2.5 py-1 bg-white border border-slate-200 rounded text-[9px] font-black text-blue-600 shadow-sm">
+                        {applicant.type}
+                      </span>
+                    </td>
+                    <td className="px-4 py-6">
+                      <div className="flex flex-col">
+                        <span className="font-black text-slate-700 text-xs">
+                          {applicant.date}
+                        </span>
+                        <span className="text-[10px] font-bold text-slate-400">
+                          {applicant.time}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-8 py-6">
+                      <div className="flex items-center justify-end gap-2">
                         <button
-                            onClick={handleBack}
-                            className="flex items-center gap-2 px-3 py-1.5 text-white hover:bg-green-700 rounded transition-colors"
+                          onClick={() => handlePass(applicant.name)}
+                          className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white rounded-lg text-[9px] font-black uppercase hover:bg-blue-700 transition-colors shadow-sm"
                         >
-                            <ArrowLeft size={18} />
-                            <span className="font-medium">{t('back')}</span>
+                          <User size={12} strokeWidth={3} />
+                          Pass
                         </button>
                         <button
-                            onClick={() => navigate('/')}
-                            className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/30 hover:border-white/50 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
-                            title={t('home')}
+                          onClick={() => handleFail(applicant.name)}
+                          className="px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase hover:bg-rose-100 transition-colors"
                         >
-                            <img 
-                                src="/logo.jpg" 
-                                alt={t('home')} 
-                                className="w-full h-full object-cover"
-                            />
+                          Fail
                         </button>
-                        <h1 className="text-lg font-bold">{t('interviewArrangement')}</h1>
-                    </div>
-                </div>
-            </div>
-
-            {/* Form Content */}
-            <div className="flex-1 overflow-y-auto p-6">
-                <div className="max-w-4xl mx-auto">
-                    <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-lg p-6 space-y-6">
-                        {/* Interview Details */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <Calendar className="text-green-600" size={24} />
-                                {t('interviewDetails')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('candidateName')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="candidateName"
-                                        value={formData.candidateName}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder={t('enterCandidateName')}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('positionApplied')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="position"
-                                        value={formData.position}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="e.g., Software Developer"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <Calendar size={14} />
-                                        {t('interviewDate')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="date"
-                                        name="interviewDate"
-                                        value={formData.interviewDate}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <Clock size={14} />
-                                        {t('interviewTime')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="time"
-                                        name="interviewTime"
-                                        value={formData.interviewTime}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('interviewType')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <select
-                                        name="interviewType"
-                                        value={formData.interviewType}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                    >
-                                        <option value="">{t('selectType')}</option>
-                                        <option value="Phone Screening">{t('phoneScreening')}</option>
-                                        <option value="Video Interview">{t('videoInterview')}</option>
-                                        <option value="In-Person">{t('inPerson')}</option>
-                                        <option value="Panel Interview">{t('panelInterview')}</option>
-                                        <option value="Technical Interview">{t('technicalInterview')}</option>
-                                        <option value="Final Interview">{t('finalInterview')}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('locationVenue')}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="location"
-                                        value={formData.location}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder={t('meetingRoomOrVideoLink')}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <User size={14} />
-                                        {t('primaryInterviewer')} <span className="text-red-500">*</span>
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="interviewer"
-                                        value={formData.interviewer}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder={t('interviewerName')}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <Users size={14} />
-                                        {t('additionalInterviewers')}
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="interviewers"
-                                        value={formData.interviewers}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder={t('commaSeparatedNames')}
-                                    />
-                                </div>
-                            </div>
+                        <div className="flex items-center gap-1 ml-2 border-l border-slate-100 pl-3">
+                          <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                            <FileText size={14} />
+                          </button>
+                          <button className="p-1.5 text-slate-300 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                            <Eye size={14} />
+                          </button>
+                          <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                            <Edit2 size={14} />
+                          </button>
+                          <button className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all">
+                            <Trash2 size={14} />
+                          </button>
                         </div>
-
-                        {/* Evaluation Scores */}
-                        <div className="border-b border-gray-200 pb-4">
-                            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                <CheckCircle className="text-green-600" size={24} />
-                                {t('interviewEvaluation')}
-                            </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('technicalSkills')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="technicalScore"
-                                        value={formData.technicalScore}
-                                        onChange={handleChange}
-                                        min="1"
-                                        max="10"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="0"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('communicationSkills')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="communicationScore"
-                                        value={formData.communicationScore}
-                                        onChange={handleChange}
-                                        min="1"
-                                        max="10"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="0"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('culturalFit')}
-                                    </label>
-                                    <input
-                                        type="number"
-                                        name="culturalFitScore"
-                                        value={formData.culturalFitScore}
-                                        onChange={handleChange}
-                                        min="1"
-                                        max="10"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder="0"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('overallRating')}
-                                    </label>
-                                    <select
-                                        name="overallRating"
-                                        value={formData.overallRating}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                    >
-                                        <option value="">{t('selectRating')}</option>
-                                        <option value="Excellent">{t('excellent')}</option>
-                                        <option value="Good">{t('good')}</option>
-                                        <option value="Average">{t('average')}</option>
-                                        <option value="Below Average">{t('belowAverage')}</option>
-                                        <option value="Poor">{t('poor')}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('status')}
-                                    </label>
-                                    <select
-                                        name="status"
-                                        value={formData.status}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                    >
-                                        <option value="scheduled">{t('scheduled')}</option>
-                                        <option value="completed">{t('completed')}</option>
-                                        <option value="cancelled">{t('cancelled')}</option>
-                                        <option value="rescheduled">{t('rescheduled')}</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('recommendation')}
-                                    </label>
-                                    <select
-                                        name="recommendation"
-                                        value={formData.recommendation}
-                                        onChange={handleChange}
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                    >
-                                        <option value="">{t('selectRecommendation')}</option>
-                                        <option value="Strong Hire">{t('strongHire')}</option>
-                                        <option value="Hire">{t('hire')}</option>
-                                        <option value="Maybe">{t('maybe')}</option>
-                                        <option value="No Hire">{t('doNotHire')}</option>
-                                    </select>
-                                </div>
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('strengths')}
-                                    </label>
-                                    <textarea
-                                        name="strengths"
-                                        value={formData.strengths}
-                                        onChange={handleChange}
-                                        rows="2"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder={t('listCandidateStrengths')}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1">
-                                        {t('areasForImprovement')}
-                                    </label>
-                                    <textarea
-                                        name="weaknesses"
-                                        value={formData.weaknesses}
-                                        onChange={handleChange}
-                                        rows="2"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder={t('listAreasForImprovement')}
-                                    />
-                                </div>
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
-                                        <FileText size={14} />
-                                        {t('interviewNotes')}
-                                    </label>
-                                    <textarea
-                                        name="notes"
-                                        value={formData.notes}
-                                        onChange={handleChange}
-                                        rows="4"
-                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                                        placeholder={t('detailedInterviewNotes')}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Action Buttons */}
-                        <div className="flex justify-end gap-3 pt-4 border-t border-gray-200">
-                            <button
-                                type="button"
-                                onClick={handleBack}
-                                className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors font-semibold"
-                            >
-                                {t('cancel')}
-                            </button>
-                            <button
-                                type="submit"
-                                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold flex items-center gap-2"
-                            >
-                                <Save size={18} />
-                                {t('saveInterview')}
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            {/* Bot Button - Bottom Right */}
-            <button
-                onClick={() => setIsBotOpen(true)}
-                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group"
-                aria-label="Ask Interview bot"
-                title="Ask Interview bot"
-            >
-                <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
-            </button>
-            
-            {/* Bot Modal */}
-            {isBotOpen && (
-                <GeneralAIAgent 
-                    onClose={() => setIsBotOpen(false)}
-                    moduleContext="Interview"
-                />
-            )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-    );
+      </div>
+
+      {/* Contract Setup Modal */}
+      {showSetupModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-100">
+                  <FileText size={20} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-slate-800 tracking-tight uppercase">
+                    Setup Contract
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Digital Service Agreement
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowSetupModal(false)}
+                className="p-2 hover:bg-white hover:shadow-sm rounded-xl transition-all text-slate-400 hover:text-slate-600"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="p-8 space-y-8">
+              <div className="flex items-center gap-4 p-4 bg-blue-50/50 rounded-2xl border border-blue-100/50">
+                <img
+                  src={selectedApplicant?.photo}
+                  alt=""
+                  className="w-12 h-12 rounded-xl border-2 border-white shadow-sm"
+                />
+                <div>
+                  <p className="text-xs font-black text-slate-800 uppercase tracking-tight">
+                    {selectedApplicant?.name}
+                  </p>
+                  <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">
+                    Candidate for Probation
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] ml-1">
+                    Contract Type{" "}
+                    <span className="text-slate-200">| លក្ខណៈកិច្ចសន្យា</span>
+                  </label>
+                  <div className="relative group">
+                    <select className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-xs font-bold text-slate-700 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all appearance-none cursor-pointer group-hover:bg-white">
+                      <option>Probation</option>
+                      <option>Fixed Term</option>
+                      <option>Permanent</option>
+                    </select>
+                    <ChevronDown
+                      size={14}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none group-hover:text-blue-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] ml-1">
+                    Template Language{" "}
+                    <span className="text-slate-200">| ភាសាកិច្ចសន្យា</span>
+                  </label>
+                  <div className="relative group">
+                    <select className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-xs font-bold text-slate-700 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 transition-all appearance-none cursor-pointer group-hover:bg-white">
+                      <option>Khmer (Official)</option>
+                      <option>English</option>
+                      <option>Bilingual (KH/EN)</option>
+                    </select>
+                    <ChevronDown
+                      size={14}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none group-hover:text-blue-500 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="col-span-2 space-y-2">
+                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] ml-1">
+                    Official Position{" "}
+                    <span className="text-slate-200">| មុខតំណែងផ្លូវការ</span>
+                  </label>
+                  <input
+                    type="text"
+                    defaultValue="Software Engineer"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-xs font-bold text-slate-700 outline-none focus:border-blue-500 focus:bg-white transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="pt-4 flex items-center justify-end gap-3">
+                <button
+                  onClick={() => setShowSetupModal(false)}
+                  className="px-6 py-3 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+                >
+                  Cancel
+                </button>
+                <button className="px-8 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase hover:bg-slate-800 shadow-xl shadow-slate-200 transition-all active:scale-95">
+                  Confirm Setup
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* AI Bot Button */}
+      <button
+        onClick={() => setIsBotOpen(true)}
+        className="fixed bottom-8 right-8 z-[150] w-14 h-14 bg-blue-600 text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
+      >
+        <MessageCircle className="w-7 h-7 group-hover:rotate-12 transition-transform" />
+      </button>
+
+      {isBotOpen && (
+        <GeneralAIAgent
+          onClose={() => setIsBotOpen(false)}
+          moduleContext="Interviews"
+        />
+      )}
+
+      <style jsx>{`
+        .scroller-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scroller-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+    </div>
+  );
 };
 
 export default Interview;
-

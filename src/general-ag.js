@@ -49,12 +49,30 @@ const GeneralAIAgent = ({ onClose, moduleContext = null }) => {
     if (!moduleContext) {
       return [
         {
-          text: "What modules are available in Yaikh?",
-          question: "What modules are available in Yaikh?",
+          text: "Tell me about Digital Audit",
+          question: "Tell me about the Digital Audit module and its features.",
         },
         {
           text: "How to use Purchase Request?",
           question: "How do I use the Purchase Request module?",
+        },
+        {
+          text: "Track Energy and Water",
+          question: "How can I track Energy and Water consumption in Yaikh?",
+        },
+        {
+          text: "Account, HR & Salary Info",
+          question:
+            "What information can I find in the Accountant, HR, and Salary Bill modules?",
+        },
+        {
+          text: "Support Ticket & Y Shop",
+          question: "How do I create a Support Ticket or use the Y Shop?",
+        },
+        {
+          text: "Air, Waste & Chemical",
+          question:
+            "Tell me about Air, Waste, and Chemical management modules.",
         },
       ];
     }

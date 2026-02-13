@@ -64,10 +64,31 @@ const CE = ({ onBack }) => {
 
   const handleSubModuleClick = (moduleTitle) => {
     console.log("CE Sub-module clicked:", moduleTitle);
-    // Get the image path for this module
-    const imageName = getCEModuleImage(moduleTitle);
-    if (imageName) {
-      setSelectedImage(`/assets/ce/${imageName}`);
+
+    const titleToPathMap = {
+      "ST Standard Time": "/dashboard/standard-time",
+      "Product development": "/dashboard/product-development",
+      "Garment Analysis": "/dashboard/garment-analysis",
+      "Cut,Sew,Pack Productivity": "/dashboard/productivity",
+      "Machine allocation": "/dashboard/machine-allocation",
+      "Skill inventory": "/dashboard/skill-inventory",
+      "Team Performance": "/dashboard/team-performance",
+      "Learning Curve": "/dashboard/learning-curve",
+      Downtimes: "/dashboard/downtimes",
+      "Cost centers ,Direct/Indirect Cost": "/dashboard/cost-centers",
+      CPM: "/dashboard/cpm",
+      "Style Costing": "/dashboard/style-costing",
+    };
+
+    const path = titleToPathMap[moduleTitle];
+    if (path) {
+      navigate(path);
+    } else {
+      // Fallback for images
+      const imageName = getCEModuleImage(moduleTitle);
+      if (imageName) {
+        setSelectedImage(`/assets/ce/${imageName}`);
+      }
     }
   };
 
