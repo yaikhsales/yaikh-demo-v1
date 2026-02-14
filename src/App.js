@@ -84,6 +84,22 @@ import Training from "./training/training";
 import WelcomePage from "./welcome-page";
 import HappyNewYear from "./happy-new-year";
 
+// FC Module Components
+import FabricReceiving from "./fc/FabricReceiving";
+import AccessoriesReceiving from "./fc/AccessoriesReceiving";
+import FabricInspection from "./fc/FabricInspection";
+import FabricTest from "./fc/FabricTest";
+import AccessoriesInspection from "./fc/AccessoriesInspection";
+import WarehouseTracking from "./fc/WarehouseTracking";
+import Consumptions from "./fc/Consumptions";
+import Calculator from "./fc/Calculator";
+import FabricIssuing from "./fc/FabricIssuing";
+import AccessoriesIssuing from "./fc/AccessoriesIssuing";
+import DeliveryTracking from "./fc/DeliveryTracking";
+import ReturnFabric from "./fc/ReturnFabric";
+import ReturnAccessories from "./fc/ReturnAccessories";
+import BrandProtection from "./fc/BrandProtection";
+
 export default function App() {
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
@@ -315,6 +331,65 @@ export default function App() {
             path="training/:department"
             element={<Training onBack={handleBack} />}
           />
+
+          {/* FC Module Routes */}
+          <Route
+            path="fc/fabric-receiving"
+            element={<FabricReceiving onBack={handleBack} />}
+          />
+          <Route
+            path="fc/accessories-receiving"
+            element={<AccessoriesReceiving onBack={handleBack} />}
+          />
+          <Route
+            path="fc/fabric-inspection"
+            element={<FabricInspection onBack={handleBack} />}
+          />
+          <Route
+            path="fc/fabric-test"
+            element={<FabricTest onBack={handleBack} />}
+          />
+          <Route
+            path="fc/accessories-inspection"
+            element={<AccessoriesInspection onBack={handleBack} />}
+          />
+          <Route
+            path="fc/warehouse-tracking"
+            element={<WarehouseTracking onBack={handleBack} />}
+          />
+          <Route
+            path="fc/consumptions"
+            element={<Consumptions onBack={handleBack} />}
+          />
+          <Route
+            path="fc/calculator"
+            element={<Calculator onBack={handleBack} />}
+          />
+          <Route
+            path="fc/fabric-issuing"
+            element={<FabricIssuing onBack={handleBack} />}
+          />
+          <Route
+            path="fc/accessories-issuing"
+            element={<AccessoriesIssuing onBack={handleBack} />}
+          />
+          <Route
+            path="fc/delivery-tracking"
+            element={<DeliveryTracking onBack={handleBack} />}
+          />
+          <Route
+            path="fc/return-fabric"
+            element={<ReturnFabric onBack={handleBack} />}
+          />
+          <Route
+            path="fc/return-accessories"
+            element={<ReturnAccessories onBack={handleBack} />}
+          />
+          <Route
+            path="fc/brand-protection"
+            element={<BrandProtection onBack={handleBack} />}
+          />
+
           <Route path=":moduleId" element={<TableView onBack={handleBack} />} />
         </Route>
       </Routes>

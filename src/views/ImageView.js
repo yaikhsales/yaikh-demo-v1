@@ -187,17 +187,6 @@ const ImageView = ({ onBack }) => {
 
       {/* Main Content Area - Dashboard Display */}
       <div className="flex-1 overflow-auto bg-slate-50 flex items-start justify-center relative p-6">
-        {isLoading && !hasError && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/60 z-10 backdrop-blur-[1px]">
-            <div className="flex flex-col items-center gap-3">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-slate-800"></div>
-              <span className="text-slate-500 text-xs font-bold uppercase tracking-widest">
-                Loading Dashboard...
-              </span>
-            </div>
-          </div>
-        )}
-
         {/* Gallery Navigation - Sleek Overlay Buttons */}
         {gallery.length > 1 && (
           <>

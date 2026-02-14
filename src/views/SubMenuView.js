@@ -151,6 +151,7 @@ const getSubIconImage = (title) => {
     "Buyer Final Inspection": "buyer-final-inspection.jpg",
     "Humidity Aquaboy Checking": "humidity-acraboy-checking.jpg",
     "Customer Complain Cap": "customer-complain-cap.jpg",
+    "Fin Check": "fincheck.png",
   };
 
   // First try exact match
@@ -231,6 +232,7 @@ const getSubIconImage = (title) => {
       "buyer-final-inspection.jpg",
       "humidity-acraboy-checking.jpg",
       "customer-complain-cap.jpg",
+      "fincheck.png",
     ];
     if (yqmsSubModules.includes(imageName)) {
       return `assets/yqms/${imageName}`;
@@ -273,8 +275,7 @@ const renderCard = (
   const isFCModule = imageToUse && imageToUse.includes("assets/fc/");
   const isYQMSModule = imageToUse && imageToUse.includes("assets/yqms/");
   const isEGovModule = card.url !== undefined; // E-Government modules have url property
-  const isNonClickableModule =
-    (isFCModule || isYQMSModule) && !card.galleryImages;
+  const isNonClickableModule = isYQMSModule && !card.galleryImages;
 
   // Determine text color for E-Government modules and Purchase Request modules
   let textColorClass = "";
@@ -455,8 +456,39 @@ const renderCard = (
                       title: card.title,
                     },
                   });
-                } else if (isFCModule || isYQMSModule) {
-                  // FC and YQMS sub-modules: display icons only, no navigation
+                } else if (card.title === "Fabric Receiving") {
+                  navigate("/dashboard/fc/fabric-receiving");
+                } else if (card.title === "Accessories Receiving") {
+                  navigate("/dashboard/fc/accessories-receiving");
+                } else if (card.title === "Fabric Inspection") {
+                  navigate("/dashboard/fc/fabric-inspection");
+                } else if (card.title === "Fabric Test") {
+                  navigate("/dashboard/fc/fabric-test");
+                } else if (card.title === "Accessories Inspection") {
+                  navigate("/dashboard/fc/accessories-inspection");
+                } else if (
+                  card.title.trim() === "Warehouse Tracking Location" ||
+                  card.title.trim() === "Warehouse Tracking"
+                ) {
+                  navigate("/dashboard/fc/warehouse-tracking");
+                } else if (card.title === "Consumptions") {
+                  navigate("/dashboard/fc/consumptions");
+                } else if (card.title === "Calculator") {
+                  navigate("/dashboard/fc/calculator");
+                } else if (card.title === "Fabric Issuing") {
+                  navigate("/dashboard/fc/fabric-issuing");
+                } else if (card.title === "Accessories Issuing") {
+                  navigate("/dashboard/fc/accessories-issuing");
+                } else if (card.title === "Delivery Tracking") {
+                  navigate("/dashboard/fc/delivery-tracking");
+                } else if (card.title === "Return Fabric") {
+                  navigate("/dashboard/fc/return-fabric");
+                } else if (card.title === "Return Accessories") {
+                  navigate("/dashboard/fc/return-accessories");
+                } else if (card.title === "Brand Protection") {
+                  navigate("/dashboard/fc/brand-protection");
+                } else if (isYQMSModule && !card.galleryImages) {
+                  // YQMS sub-modules: maintain existing behavior for now if no gallery
                   return;
                 } else if (card.image) {
                   // Encode the image path to handle slashes correctly
@@ -704,10 +736,10 @@ const SubMenuView = () => {
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-full min-h-[500px] animate-in fade-in zoom-in duration-300 ${isEGovView ? "relative z-10" : ""}`}
+      className={`flex flex-col items-center h-full overflow-y-auto min-h-[500px] animate-in fade-in zoom-in duration-300 ${isEGovView ? "relative z-10" : ""}`}
     >
       <div
-        className={`w-full max-w-4xl ${isGroupedStructure ? "mb-4" : "mb-8"} flex flex-col items-center gap-4`}
+        className={`w-full max-w-[95vw] ${isGroupedStructure ? "mb-4" : "mb-8"} flex flex-col items-center gap-4`}
       >
         <div className="flex items-center gap-3">
           <button

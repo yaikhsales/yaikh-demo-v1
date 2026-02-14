@@ -603,13 +603,6 @@ const AppLayout = () => {
                                                   "bg-teal-500/30 text-white",
                                                 image:
                                                   "assets/fc/finishing-inspection.jpg",
-                                                galleryImages: [
-                                                  "assets/yqms/finishing-inspection/fin-check-report.png",
-                                                  "assets/yqms/finishing-inspection/fin-check-inspection.png",
-                                                  "assets/yqms/finishing-inspection/fin-check-setting.png",
-                                                  "assets/yqms/finishing-inspection/fin-check-template.png",
-                                                  "assets/yqms/finishing-inspection/fin-check-upload.png",
-                                                ],
                                               },
                                               {
                                                 title: "Ironing Inspection",
@@ -635,6 +628,21 @@ const AppLayout = () => {
                                           {
                                             label: "Inspection",
                                             cards: [
+                                              {
+                                                title: "Fin Check",
+                                                icon: "ClipboardCheck",
+                                                color:
+                                                  "bg-emerald-600/30 text-white",
+                                                image:
+                                                  "assets/yqms/fincheck.png",
+                                                galleryImages: [
+                                                  "assets/yqms/finishing-inspection/fin-check-report.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-inspection.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-setting.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-template.png",
+                                                  "assets/yqms/finishing-inspection/fin-check-upload.png",
+                                                ],
+                                              },
                                               {
                                                 title: "Pre Final Inspection",
                                                 icon: "Eye",
@@ -1556,7 +1564,9 @@ const AppLayout = () => {
         />
       )}
       {isGMChatOpen && <GMChat onClose={() => setGMChatOpen(false)} />}
-      <main className="flex-1 relative p-4 md:p-6 overflow-x-auto">
+      <main
+        className={`flex-1 relative ${location.pathname === "/" ? "p-4 md:p-6" : "p-0"} overflow-x-auto`}
+      >
         {/* === BACKGROUND LAYERS === */}
         {/* Background is now handled by ThemeBackground component in thems.js */}
         {/* Light Beam Effect when light is on - only for normal theme */}
