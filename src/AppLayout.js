@@ -433,6 +433,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "QC File",
+                                                action:
+                                                  "/dashboard/yqms/qc-file",
                                                 icon: "FileText",
                                                 color:
                                                   "bg-slate-500/30 text-white",
@@ -441,6 +443,7 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Pre Production Meeting",
+                                                action: "/dashboard/yqms/ppm",
                                                 icon: "Users",
                                                 color:
                                                   "bg-blue-500/30 text-white",
@@ -454,6 +457,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "First Output Cutting",
+                                                action:
+                                                  "/dashboard/yqms/first-output-cutting",
                                                 icon: "Scissors",
                                                 color:
                                                   "bg-orange-500/30 text-white",
@@ -463,6 +468,8 @@ const AppLayout = () => {
                                               {
                                                 title:
                                                   "First Output Printing Embroidery",
+                                                action:
+                                                  "/dashboard/yqms/first-output-print",
                                                 icon: "PenTool",
                                                 color:
                                                   "bg-pink-500/30 text-white",
@@ -471,6 +478,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "First Output Sewing",
+                                                action:
+                                                  "/dashboard/yqms/first-output-sewing",
                                                 icon: "PenTool",
                                                 color:
                                                   "bg-lime-500/30 text-white",
@@ -479,6 +488,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "QA Cutting",
+                                                action:
+                                                  "/dashboard/yqms/qa-cutting",
                                                 icon: "Search",
                                                 color:
                                                   "bg-amber-500/30 text-white",
@@ -487,6 +498,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "QA Printing Embroidery",
+                                                action:
+                                                  "/dashboard/yqms/qa-print",
                                                 icon: "Search",
                                                 color:
                                                   "bg-yellow-500/30 text-white",
@@ -495,6 +508,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "QA 20pcs Audit",
+                                                action:
+                                                  "/dashboard/yqms/20pcs-audit",
                                                 icon: "ClipboardCheck",
                                                 color:
                                                   "bg-emerald-500/30 text-white",
@@ -503,6 +518,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Inline Audit Rolling",
+                                                action:
+                                                  "/dashboard/yqms/inline-audit",
                                                 icon: "FileCheck",
                                                 color:
                                                   "bg-indigo-500/30 text-white",
@@ -511,6 +528,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Offline Audit",
+                                                action:
+                                                  "/dashboard/yqms/offline-audit",
                                                 icon: "FileCheck",
                                                 color:
                                                   "bg-violet-500/30 text-white",
@@ -519,6 +538,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "QC End Line Checking",
+                                                action:
+                                                  "/dashboard/yqms/endline-check",
                                                 icon: "CheckCircle",
                                                 color:
                                                   "bg-blue-600/30 text-white",
@@ -532,6 +553,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "Internal Rolling QC",
+                                                action:
+                                                  "/dashboard/yqms/rolling-qc",
                                                 icon: "FileCheck",
                                                 color:
                                                   "bg-blue-500/30 text-white",
@@ -548,6 +571,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "Cutting Inspection",
+                                                action:
+                                                  "/dashboard/yqms/cutting-inspection",
                                                 icon: "Search",
                                                 color:
                                                   "bg-orange-500/30 text-white",
@@ -556,6 +581,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Cut Panel Inspection",
+                                                action:
+                                                  "/dashboard/yqms/cut-panel-inspection",
                                                 icon: "Search",
                                                 color:
                                                   "bg-amber-500/30 text-white",
@@ -564,6 +591,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Printing Inspection",
+                                                action:
+                                                  "/dashboard/yqms/printing-inspection",
                                                 icon: "Search",
                                                 color:
                                                   "bg-purple-500/30 text-white",
@@ -572,6 +601,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Embroidery Inspection",
+                                                action:
+                                                  "/dashboard/yqms/embroidery-inspection",
                                                 icon: "Search",
                                                 color:
                                                   "bg-pink-500/30 text-white",
@@ -585,6 +616,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "Garment Check Output",
+                                                action:
+                                                  "/dashboard/yqms/sewing-output",
                                                 icon: "CheckCircle",
                                                 color:
                                                   "bg-green-500/30 text-white",
@@ -598,6 +631,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "Finishing Inspection",
+                                                action:
+                                                  "/dashboard/yqms/finishing-inspection",
                                                 icon: "ClipboardCheck",
                                                 color:
                                                   "bg-teal-500/30 text-white",
@@ -606,6 +641,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Ironing Inspection",
+                                                action:
+                                                  "/dashboard/yqms/ironing-inspection",
                                                 icon: "Thermometer",
                                                 color:
                                                   "bg-cyan-500/30 text-white",
@@ -617,6 +654,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Packing Inspection",
+                                                action:
+                                                  "/dashboard/yqms/packing-inspection",
                                                 icon: "PackageCheck",
                                                 color:
                                                   "bg-indigo-500/30 text-white",
@@ -630,6 +669,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "Fin Check",
+                                                action:
+                                                  "/dashboard/yqms/fin-check",
                                                 icon: "ClipboardCheck",
                                                 color:
                                                   "bg-emerald-600/30 text-white",
@@ -645,6 +686,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Pre Final Inspection",
+                                                action:
+                                                  "/dashboard/yqms/pre-final",
                                                 icon: "Eye",
                                                 color:
                                                   "bg-rose-500/30 text-white",
@@ -653,6 +696,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Final Inspection",
+                                                action:
+                                                  "/dashboard/yqms/final-inspection",
                                                 icon: "Eye",
                                                 color:
                                                   "bg-red-500/30 text-white",
@@ -661,6 +706,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Buyer Final Inspection",
+                                                action:
+                                                  "/dashboard/yqms/buyer-final",
                                                 icon: "Eye",
                                                 color:
                                                   "bg-red-600/30 text-white",
@@ -669,6 +716,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Supplier Evaluation",
+                                                action:
+                                                  "/dashboard/yqms/supplier-evaluation",
                                                 icon: "CheckSquare",
                                                 color:
                                                   "bg-teal-500/30 text-white",
@@ -677,6 +726,7 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Customer Complain Cap",
+                                                action: "/dashboard/yqms/cap",
                                                 icon: "AlertTriangle",
                                                 color:
                                                   "bg-orange-600/30 text-white",
@@ -691,6 +741,8 @@ const AppLayout = () => {
                                               {
                                                 title:
                                                   "QA Audit Finishing Packing",
+                                                action:
+                                                  "/dashboard/yqms/qa-audit-finishing",
                                                 icon: "ClipboardCheck",
                                                 color:
                                                   "bg-green-500/30 text-white",
@@ -700,6 +752,8 @@ const AppLayout = () => {
                                               {
                                                 title:
                                                   "Humidity Aquaboy Checking",
+                                                action:
+                                                  "/dashboard/yqms/aquaboy",
                                                 icon: "Thermometer",
                                                 color:
                                                   "bg-sky-500/30 text-white",
@@ -714,6 +768,8 @@ const AppLayout = () => {
                                               {
                                                 title:
                                                   "First Output Finishing And Packing",
+                                                action:
+                                                  "/dashboard/yqms/first-output-finishing",
                                                 icon: "PackageCheck",
                                                 color:
                                                   "bg-cyan-500/30 text-white",
@@ -727,6 +783,8 @@ const AppLayout = () => {
                                             cards: [
                                               {
                                                 title: "Dashboard",
+                                                action:
+                                                  "/dashboard/yqms/dashboard",
                                                 image:
                                                   "https://cdn-icons-png.flaticon.com/128/6820/6820898.png",
                                                 color:
@@ -737,6 +795,8 @@ const AppLayout = () => {
                                               },
                                               {
                                                 title: "Report",
+                                                action:
+                                                  "/dashboard/yqms/report",
                                                 image:
                                                   "https://cdn-icons-png.flaticon.com/128/1321/1321938.png",
                                                 color:

@@ -275,7 +275,8 @@ const renderCard = (
   const isFCModule = imageToUse && imageToUse.includes("assets/fc/");
   const isYQMSModule = imageToUse && imageToUse.includes("assets/yqms/");
   const isEGovModule = card.url !== undefined; // E-Government modules have url property
-  const isNonClickableModule = isYQMSModule && !card.galleryImages;
+  const isNonClickableModule =
+    isYQMSModule && !card.galleryImages && !card.action;
 
   // Determine text color for E-Government modules and Purchase Request modules
   let textColorClass = "";

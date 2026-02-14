@@ -99,6 +99,19 @@ import DeliveryTracking from "./fc/DeliveryTracking";
 import ReturnFabric from "./fc/ReturnFabric";
 import ReturnAccessories from "./fc/ReturnAccessories";
 import BrandProtection from "./fc/BrandProtection";
+import QCFile from "./yqms/QCFile";
+import InternalRollingQC from "./yqms/InternalRollingQC";
+import CuttingInspection from "./yqms/CuttingInspection";
+import GarmentCheckOutput from "./yqms/GarmentCheckOutput";
+import PackingInspection from "./yqms/PackingInspection";
+import FinalInspection from "./yqms/FinalInspection";
+import PreProductionMeeting from "./yqms/PreProductionMeeting";
+import AuditReport from "./yqms/AuditReport";
+import BuyerFinalInspection from "./yqms/BuyerFinalInspection";
+import SupplierEvaluation from "./yqms/SupplierEvaluation";
+import CustomerComplainCap from "./yqms/CustomerComplainCap";
+import YQMSReport from "./yqms/YQMSReport";
+import YQMSGlobalDashboard from "./yqms/YQMSGlobalDashboard";
 
 export default function App() {
   const navigate = useNavigate();
@@ -388,6 +401,180 @@ export default function App() {
           <Route
             path="fc/brand-protection"
             element={<BrandProtection onBack={handleBack} />}
+          />
+
+          {/* YQMS Module Routes */}
+          <Route path="yqms/qc-file" element={<QCFile onBack={handleBack} />} />
+          <Route
+            path="yqms/rolling-qc"
+            element={<InternalRollingQC onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/cutting-inspection"
+            element={<CuttingInspection onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/sewing-output"
+            element={<GarmentCheckOutput onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/packing-inspection"
+            element={<PackingInspection onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/final-inspection"
+            element={<FinalInspection onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/ppm"
+            element={<PreProductionMeeting onBack={handleBack} />}
+          />
+
+          {/* Additional YQMS Routes using AuditReport */}
+          <Route
+            path="yqms/20pcs-audit"
+            element={<AuditReport title="QA 20pcs Audit" onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/inline-audit"
+            element={
+              <AuditReport title="Inline Audit Rolling" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/offline-audit"
+            element={<AuditReport title="Offline Audit" onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/endline-check"
+            element={
+              <AuditReport title="QC End Line Checking" onBack={handleBack} />
+            }
+          />
+
+          <Route
+            path="yqms/first-output-cutting"
+            element={
+              <AuditReport title="First Output Cutting" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/pre-final"
+            element={
+              <AuditReport title="Pre Final Inspection" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/buyer-final"
+            element={<BuyerFinalInspection onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/supplier-evaluation"
+            element={<SupplierEvaluation onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/cap"
+            element={<CustomerComplainCap onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/qa-audit-finishing"
+            element={
+              <AuditReport
+                title="QA Audit Finishing Packing"
+                onBack={handleBack}
+              />
+            }
+          />
+          <Route
+            path="yqms/first-output-finishing"
+            element={
+              <AuditReport
+                title="First Output Finishing And Packing"
+                onBack={handleBack}
+              />
+            }
+          />
+          <Route
+            path="yqms/report"
+            element={<YQMSReport onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/ironing-inspection"
+            element={
+              <AuditReport title="Ironing Inspection" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/aquaboy"
+            element={
+              <AuditReport
+                title="Humidity Aquaboy Checking"
+                onBack={handleBack}
+              />
+            }
+          />
+          <Route
+            path="yqms/fin-check"
+            element={<AuditReport title="Fin Check" onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/dashboard"
+            element={<YQMSGlobalDashboard onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/first-output-print"
+            element={
+              <AuditReport
+                title="First Output Printing/Embroidery"
+                onBack={handleBack}
+              />
+            }
+          />
+          <Route
+            path="yqms/first-output-sewing"
+            element={
+              <AuditReport title="First Output Sewing" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/qa-cutting"
+            element={<AuditReport title="QA Cutting" onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/qa-print"
+            element={
+              <AuditReport title="QA Printing/Embroidery" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/cut-panel-inspection"
+            element={
+              <AuditReport title="Cut Panel Inspection" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/printing-inspection"
+            element={
+              <AuditReport title="Printing Inspection" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/embroidery-inspection"
+            element={
+              <AuditReport title="Embroidery Inspection" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/finishing-inspection"
+            element={
+              <AuditReport title="Finishing Inspection" onBack={handleBack} />
+            }
+          />
+          <Route
+            path="yqms/ironing-inspection"
+            element={
+              <AuditReport title="Ironing Inspection" onBack={handleBack} />
+            }
           />
 
           <Route path=":moduleId" element={<TableView onBack={handleBack} />} />
