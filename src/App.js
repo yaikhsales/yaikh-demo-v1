@@ -83,6 +83,8 @@ import CallOut from "./Call-out/call-out";
 import Training from "./training/training";
 import WelcomePage from "./welcome-page";
 import HappyNewYear from "./happy-new-year";
+import QCFile from "./yqms/qc-file";
+import PreProductionMeeting from "./yqms/PPM/pre-production-meeting";
 
 // FC Module Components
 import FabricReceiving from "./fc/FabricReceiving";
@@ -136,7 +138,7 @@ export default function App() {
           <Route path="call-out" element={<CallOut onBack={handleBack} />} />
           <Route
             path="meeting"
-            element={<TimelineView onBack={handleBack} onAdd={() => {}} />}
+            element={<TimelineView onBack={handleBack} onAdd={() => { }} />}
           />
           <Route
             path="meeting-room"
@@ -323,6 +325,8 @@ export default function App() {
             path="system-analysis"
             element={<SystemAnalyze onBack={handleBack} />}
           />
+          <Route path="yqms/qc-file" element={<QCFile onBack={handleBack} />} />
+          <Route path="yqms/pre-production-meeting" element={<PreProductionMeeting onBack={handleBack} />} />
           <Route
             path="waste"
             element={<WasteDashboardView onBack={handleBack} />}
