@@ -8,9 +8,10 @@ const WaterIn = ({ onBack }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const { t } = useTranslation();
-    
+
     // Get category from navigation state, default to 'Washing'
     const category = location.state?.category || 'Washing';
+    const [isBotOpen, setIsBotOpen] = useState(false);
 
     // Sample device data
     const device = {
@@ -55,20 +56,20 @@ const WaterIn = ({ onBack }) => {
         const padding = { top: 20, right: 20, bottom: 40, left: 50 };
         const graphWidth = width - padding.left - padding.right;
         const graphHeight = height - padding.top - padding.bottom;
-        
+
         const maxValue = 4;
         const yScale = graphHeight / maxValue;
-        
+
         const getX = (index) => padding.left + (index / (times.length - 1)) * graphWidth;
         const getY = (value) => padding.top + graphHeight - (value * yScale);
-        
+
         // Create path for water consumption (shaded area)
         const areaPath = data.map((point, index) => {
             const x = getX(index);
             const y = getY(point.value);
             return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
         }).join(' ') + ` L ${getX(times.length - 1)} ${getY(0)} L ${getX(0)} ${getY(0)} Z`;
-        
+
         // Create line path
         const linePath = data.map((point, index) => {
             const x = getX(index);
@@ -94,7 +95,7 @@ const WaterIn = ({ onBack }) => {
                         />
                     );
                 })}
-                
+
                 {/* Y-axis labels */}
                 {[0, 1, 2, 3, 4].map((value) => {
                     const y = getY(value);
@@ -111,7 +112,7 @@ const WaterIn = ({ onBack }) => {
                         </text>
                     );
                 })}
-                
+
                 {/* X-axis labels */}
                 {times.map((time, index) => {
                     const x = getX(index);
@@ -128,14 +129,14 @@ const WaterIn = ({ onBack }) => {
                         </text>
                     );
                 })}
-                
+
                 {/* Water consumption area (shaded) */}
                 <path
                     d={areaPath}
                     fill="rgba(59, 130, 246, 0.3)"
                     stroke="none"
                 />
-                
+
                 {/* Water consumption line */}
                 <path
                     d={linePath}
@@ -154,8 +155,8 @@ const WaterIn = ({ onBack }) => {
                 <div className="w-32"></div> {/* Left spacer */}
                 <div className="flex-1 flex flex-col items-center gap-2">
                     <div className="flex items-center gap-3">
-                        <button 
-                            onClick={handleBack} 
+                        <button
+                            onClick={handleBack}
                             className="flex items-center gap-2 px-4 py-2 hover:bg-blue-700 rounded transition-colors flex-shrink-0 bg-blue-600 text-white font-semibold text-sm"
                             aria-label="Go back"
                         >
@@ -166,9 +167,9 @@ const WaterIn = ({ onBack }) => {
                             className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-slate-300 hover:border-slate-400 transition-all hover:scale-110 cursor-pointer flex-shrink-0"
                             title={t('home')}
                         >
-                            <img 
-                                src="/logo.jpg" 
-                                alt={t('home')} 
+                            <img
+                                src="/logo.jpg"
+                                alt={t('home')}
                                 className="w-full h-full object-cover"
                             />
                         </button>
@@ -204,7 +205,7 @@ const WaterIn = ({ onBack }) => {
                                 <div className="bg-white rounded-lg border border-slate-300 p-6 flex flex-col items-center">
                                     {/* Water Meter Image/Icon */}
                                     <div className="w-48 h-48 bg-slate-800 rounded-lg flex items-center justify-center mb-4 relative overflow-hidden">
-                                        <img 
+                                        <img
                                             src="/assets/icons/sub-icons/water.jpg"
                                             alt={t('waterMeter')}
                                             className="w-full h-full object-contain"
@@ -214,12 +215,12 @@ const WaterIn = ({ onBack }) => {
                                             }}
                                         />
                                     </div>
-                                    
+
                                     {/* Device Name */}
                                     <div className="text-center mb-2">
                                         <div className="font-bold text-slate-800 text-lg">{device.id}. {device.name}</div>
                                     </div>
-                                    
+
                                     {/* Device ID */}
                                     <div className="text-xs text-slate-500 font-mono">
                                         {device.deviceId}
@@ -247,7 +248,7 @@ const WaterIn = ({ onBack }) => {
                     </div>
                 </div>
             </div>
-            
+
             {/* Bot Button - Bottom Right */}
             <button
                 onClick={() => setIsBotOpen(true)}
@@ -257,10 +258,10 @@ const WaterIn = ({ onBack }) => {
             >
                 <MessageCircle className="w-8 h-8 group-hover:rotate-12 transition-transform" />
             </button>
-            
+
             {/* Bot Modal */}
             {isBotOpen && (
-                <GeneralAIAgent 
+                <GeneralAIAgent
                     onClose={() => setIsBotOpen(false)}
                     moduleContext="Water In"
                 />

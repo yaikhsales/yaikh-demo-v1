@@ -264,19 +264,18 @@ const renderCard = (
   const imageToUse = card.url
     ? card.image
     : card.image &&
-        (card.image.startsWith("modules-image/") ||
-          card.image.startsWith("assets/fc/") ||
-          card.image.startsWith("assets/yqms/") ||
-          card.image.startsWith("assets/icons/sub-icons/") ||
-          card.image.startsWith("http://") ||
-          card.image.startsWith("https://"))
+      (card.image.startsWith("modules-image/") ||
+        card.image.startsWith("assets/fc/") ||
+        card.image.startsWith("assets/yqms/") ||
+        card.image.startsWith("assets/icons/sub-icons/") ||
+        card.image.startsWith("http://") ||
+        card.image.startsWith("https://"))
       ? card.image
       : subIconImage || card.image;
   const isFCModule = imageToUse && imageToUse.includes("assets/fc/");
   const isYQMSModule = imageToUse && imageToUse.includes("assets/yqms/");
   const isEGovModule = card.url !== undefined; // E-Government modules have url property
-  const isNonClickableModule =
-    isYQMSModule && !card.galleryImages && !card.action;
+  const isNonClickableModule = isYQMSModule && !card.galleryImages && card.title !== "QC File" && card.title !== "Pre Production Meeting" && !card.action;
 
   // Determine text color for E-Government modules and Purchase Request modules
   let textColorClass = "";
@@ -352,186 +351,188 @@ const renderCard = (
           isNonClickableModule
             ? undefined
             : () => {
-                // Handle E-Government sub-modules - open URL in new tab
-                if (card.url) {
-                  window.open(card.url, "_blank", "noopener,noreferrer");
-                  return;
-                }
-
-                // Handle Training sub-modules (except Online Training)
-                if (isTrainingModule && card.title !== "Online Training") {
-                  navigate(
-                    `/dashboard/training/${encodeURIComponent(card.title)}`,
-                    { state: { departmentName: card.title } },
-                  );
-                  return;
-                }
-
-                if (card.action) {
-                  navigate(card.action);
-                  return;
-                } else if (card.title === "Verify PR") {
-                  navigate("/dashboard/verify-pr");
-                } else if (card.title === "Approval PR") {
-                  navigate("/dashboard/approval-pr");
-                } else if (card.title === "Pay PR") {
-                  navigate("/dashboard/pay-pr");
-                } else if (card.title === "Checklist Attendant") {
-                  navigate("/dashboard/checklist-attendance");
-                } else if (card.title === "My Attendant") {
-                  navigate("/dashboard/my-attendance");
-                } else if (card.title === "Checklist 6s") {
-                  // Show Checklist 6s image
-                  const encodedPath = encodeURIComponent(
-                    "assets/checklist-6s.jpg",
-                  );
-                  navigate(`/dashboard/image/${encodedPath}`);
-                } else if (card.title === "Digital Audit") {
-                  // Show Digital Audit image
-                  const encodedPath = encodeURIComponent(
-                    "assets/digital-audit.jpg",
-                  );
-                  navigate(`/dashboard/image/${encodedPath}`);
-                } else if (card.title === "Compliance Certificate") {
-                  navigate("/dashboard/compliance-certificate");
-                } else if (card.title === "Audit Plan") {
-                  navigate("/dashboard/audit-plan");
-                } else if (card.title === "Show Lists Request") {
-                  navigate("/dashboard/show-list-request");
-                } else if (card.title === "Master List") {
-                  navigate("/dashboard/master-list");
-                } else if (card.title === "My Confirm Received") {
-                  navigate("/dashboard/my-confirm-received");
-                } else if (card.title === "Temperature Humidity Sensor") {
-                  navigate("/dashboard/air/temperature");
-                } else if (card.title === "Air Quality Detector") {
-                  navigate("/dashboard/air/quality");
-                } else if (card.title === "Request Worker Form") {
-                  navigate("/dashboard/temp-worker-request/form");
-                } else if (card.title === "Request Worker List") {
-                  navigate("/dashboard/temp-worker-request/list");
-                } else if (card.title === "In") {
-                  navigate("/dashboard/water/in");
-                } else if (card.title === "Out") {
-                  navigate("/dashboard/water/out");
-                } else if (card.title === "Gate Pass") {
-                  navigate("/dashboard/gatepass");
-                } else if (card.title === "Visitor Record") {
-                  navigate("/dashboard/gatepass/visitor");
-                } else if (card.title === "Waste") {
-                  navigate("/dashboard/waste/analytics");
-                } else if (card.title === "Boiler") {
-                  navigate("/dashboard/waste/boiler");
-                } else if (card.title === "Face Scan Logs") {
-                  navigate("/dashboard/cctv/face-scan");
-                } else if (card.title === "My Face Scan") {
-                  navigate("/dashboard/cctv/my-face-scan");
-                } else if (card.title === "Cambodia E Invoice") {
-                  // Open Cambodia E Invoice login page in new tab
-                  window.open(
-                    "https://einvoice.ggmt.sg/login",
-                    "_blank",
-                    "noopener,noreferrer",
-                  );
-                } else if (card.title === "Supplier Management") {
-                  // Show Supplier Management image
-                  const encodedPath = encodeURIComponent(
-                    "assets/e-invoice/supplier-management.jpg",
-                  );
-                  navigate(`/dashboard/image/${encodedPath}`);
-                } else if (card.title === "IEWS") {
-                  // Show IEWS image
-                  const encodedPath = encodeURIComponent(
-                    "assets/e-invoice/IEWS.jpg",
-                  );
-                  navigate(`/dashboard/image/${encodedPath}`);
-                } else if (
-                  card.galleryImages &&
-                  card.galleryImages.length > 0
-                ) {
-                  // Navigate to image view with gallery support
-                  const encodedPath = encodeURIComponent(card.galleryImages[0]);
-                  navigate(`/dashboard/image/${encodedPath}`, {
-                    state: {
-                      gallery: card.galleryImages,
-                      title: card.title,
-                    },
-                  });
-                } else if (card.title === "Fabric Receiving") {
-                  navigate("/dashboard/fc/fabric-receiving");
-                } else if (card.title === "Accessories Receiving") {
-                  navigate("/dashboard/fc/accessories-receiving");
-                } else if (card.title === "Fabric Inspection") {
-                  navigate("/dashboard/fc/fabric-inspection");
-                } else if (card.title === "Fabric Test") {
-                  navigate("/dashboard/fc/fabric-test");
-                } else if (card.title === "Accessories Inspection") {
-                  navigate("/dashboard/fc/accessories-inspection");
-                } else if (
-                  card.title.trim() === "Warehouse Tracking Location" ||
-                  card.title.trim() === "Warehouse Tracking"
-                ) {
-                  navigate("/dashboard/fc/warehouse-tracking");
-                } else if (card.title === "Consumptions") {
-                  navigate("/dashboard/fc/consumptions");
-                } else if (card.title === "Calculator") {
-                  navigate("/dashboard/fc/calculator");
-                } else if (card.title === "Fabric Issuing") {
-                  navigate("/dashboard/fc/fabric-issuing");
-                } else if (card.title === "Accessories Issuing") {
-                  navigate("/dashboard/fc/accessories-issuing");
-                } else if (card.title === "Delivery Tracking") {
-                  navigate("/dashboard/fc/delivery-tracking");
-                } else if (card.title === "Return Fabric") {
-                  navigate("/dashboard/fc/return-fabric");
-                } else if (card.title === "Return Accessories") {
-                  navigate("/dashboard/fc/return-accessories");
-                } else if (card.title === "Brand Protection") {
-                  navigate("/dashboard/fc/brand-protection");
-                } else if (isYQMSModule && !card.galleryImages) {
-                  // YQMS sub-modules: maintain existing behavior for now if no gallery
-                  return;
-                } else if (card.image) {
-                  // Encode the image path to handle slashes correctly
-                  const encodedPath = encodeURIComponent(card.image);
-                  navigate(`/dashboard/image/${encodedPath}`);
-                } else if (
-                  card.cards &&
-                  Array.isArray(card.cards) &&
-                  card.cards.length > 0
-                ) {
-                  // If card has nested cards, navigate to submenu with state
-                  navigate(`/dashboard/submenu/${moduleId}`, {
-                    state: {
-                      title: card.title,
-                      cards: card.cards,
-                      isGrouped: card.isGrouped || false,
-                    },
-                  });
-                } else {
-                  // No route defined for this card - log warning and prevent navigation
-                  console.warn(
-                    `No route defined for card: "${card.title}". Card data:`,
-                    card,
-                  );
-                  // Optionally show an alert or toast notification
-                  alert(`Module "${card.title}" is not yet implemented.`);
-                }
+              // Handle E-Government sub-modules - open URL in new tab
+              if (card.url) {
+                window.open(card.url, "_blank", "noopener,noreferrer");
+                return;
               }
+
+              // Handle Training sub-modules (except Online Training)
+              if (isTrainingModule && card.title !== "Online Training") {
+                navigate(
+                  `/dashboard/training/${encodeURIComponent(card.title)}`,
+                  { state: { departmentName: card.title } },
+                );
+                return;
+              }
+
+              if (card.action) {
+                navigate(card.action);
+                return;
+              } else if (card.title === "Verify PR") {
+                navigate("/dashboard/verify-pr");
+              } else if (card.title === "Approval PR") {
+                navigate("/dashboard/approval-pr");
+              } else if (card.title === "Pay PR") {
+                navigate("/dashboard/pay-pr");
+              } else if (card.title === "Checklist Attendant") {
+                navigate("/dashboard/checklist-attendance");
+              } else if (card.title === "My Attendant") {
+                navigate("/dashboard/my-attendance");
+              } else if (card.title === "Checklist 6s") {
+                // Show Checklist 6s image
+                const encodedPath = encodeURIComponent(
+                  "assets/checklist-6s.jpg",
+                );
+                navigate(`/dashboard/image/${encodedPath}`);
+              } else if (card.title === "Digital Audit") {
+                // Show Digital Audit image
+                const encodedPath = encodeURIComponent(
+                  "assets/digital-audit.jpg",
+                );
+                navigate(`/dashboard/image/${encodedPath}`);
+              } else if (card.title === "Compliance Certificate") {
+                navigate("/dashboard/compliance-certificate");
+              } else if (card.title === "Audit Plan") {
+                navigate("/dashboard/audit-plan");
+              } else if (card.title === "Show Lists Request") {
+                navigate("/dashboard/show-list-request");
+              } else if (card.title === "Master List") {
+                navigate("/dashboard/master-list");
+              } else if (card.title === "My Confirm Received") {
+                navigate("/dashboard/my-confirm-received");
+              } else if (card.title === "Temperature Humidity Sensor") {
+                navigate("/dashboard/air/temperature");
+              } else if (card.title === "Air Quality Detector") {
+                navigate("/dashboard/air/quality");
+              } else if (card.title === "Request Worker Form") {
+                navigate("/dashboard/temp-worker-request/form");
+              } else if (card.title === "Request Worker List") {
+                navigate("/dashboard/temp-worker-request/list");
+              } else if (card.title === "In") {
+                navigate("/dashboard/water/in");
+              } else if (card.title === "Out") {
+                navigate("/dashboard/water/out");
+              } else if (card.title === "Gate Pass") {
+                navigate("/dashboard/gatepass");
+              } else if (card.title === "Visitor Record") {
+                navigate("/dashboard/gatepass/visitor");
+              } else if (card.title === "Waste") {
+                navigate("/dashboard/waste/analytics");
+              } else if (card.title === "Boiler") {
+                navigate("/dashboard/waste/boiler");
+              } else if (card.title === "Face Scan Logs") {
+                navigate("/dashboard/cctv/face-scan");
+              } else if (card.title === "My Face Scan") {
+                navigate("/dashboard/cctv/my-face-scan");
+              } else if (card.title === "Cambodia E Invoice") {
+                // Open Cambodia E Invoice login page in new tab
+                window.open(
+                  "https://einvoice.ggmt.sg/login",
+                  "_blank",
+                  "noopener,noreferrer",
+                );
+              } else if (card.title === "Supplier Management") {
+                // Show Supplier Management image
+                const encodedPath = encodeURIComponent(
+                  "assets/e-invoice/supplier-management.jpg",
+                );
+                navigate(`/dashboard/image/${encodedPath}`);
+              } else if (card.title === "IEWS") {
+                // Show IEWS image
+                const encodedPath = encodeURIComponent(
+                  "assets/e-invoice/IEWS.jpg",
+                );
+                navigate(`/dashboard/image/${encodedPath}`);
+              } else if (
+                card.galleryImages &&
+                card.galleryImages.length > 0
+              ) {
+                // Navigate to image view with gallery support
+                const encodedPath = encodeURIComponent(card.galleryImages[0]);
+                navigate(`/dashboard/image/${encodedPath}`, {
+                  state: {
+                    gallery: card.galleryImages,
+                    title: card.title,
+                  },
+                });
+              } else if (card.title === "Fabric Receiving") {
+                navigate("/dashboard/fc/fabric-receiving");
+              } else if (card.title === "Accessories Receiving") {
+                navigate("/dashboard/fc/accessories-receiving");
+              } else if (card.title === "Fabric Inspection") {
+                navigate("/dashboard/fc/fabric-inspection");
+              } else if (card.title === "Fabric Test") {
+                navigate("/dashboard/fc/fabric-test");
+              } else if (card.title === "Accessories Inspection") {
+                navigate("/dashboard/fc/accessories-inspection");
+              } else if (
+                card.title.trim() === "Warehouse Tracking Location" ||
+                card.title.trim() === "Warehouse Tracking"
+              ) {
+                navigate("/dashboard/fc/warehouse-tracking");
+              } else if (card.title === "Consumptions") {
+                navigate("/dashboard/fc/consumptions");
+              } else if (card.title === "Calculator") {
+                navigate("/dashboard/fc/calculator");
+              } else if (card.title === "Fabric Issuing") {
+                navigate("/dashboard/fc/fabric-issuing");
+              } else if (card.title === "Accessories Issuing") {
+                navigate("/dashboard/fc/accessories-issuing");
+              } else if (card.title === "Delivery Tracking") {
+                navigate("/dashboard/fc/delivery-tracking");
+              } else if (card.title === "Return Fabric") {
+                navigate("/dashboard/fc/return-fabric");
+              } else if (card.title === "Return Accessories") {
+                navigate("/dashboard/fc/return-accessories");
+              } else if (card.title === "Brand Protection") {
+                navigate("/dashboard/fc/brand-protection");
+              } else if (card.title === "QC File") {
+                navigate("/dashboard/yqms/qc-file");
+              } else if (card.title === "Pre Production Meeting") {
+                navigate("/dashboard/yqms/pre-production-meeting");
+              } else if (isYQMSModule && !card.galleryImages) {
+                // YQMS sub-modules: maintain existing behavior for now if no gallery
+                return;
+              } else if (card.image) {
+                // Encode the image path to handle slashes correctly
+                const encodedPath = encodeURIComponent(card.image);
+                navigate(`/dashboard/image/${encodedPath}`);
+              } else if (
+                card.cards &&
+                Array.isArray(card.cards) &&
+                card.cards.length > 0
+              ) {
+                // If card has nested cards, navigate to submenu with state
+                navigate(`/dashboard/submenu/${moduleId}`, {
+                  state: {
+                    title: card.title,
+                    cards: card.cards,
+                    isGrouped: card.isGrouped || false,
+                  },
+                });
+              } else {
+                // No route defined for this card - log warning and prevent navigation
+                console.warn(
+                  `No route defined for card: "${card.title}". Card data:`,
+                  card,
+                );
+                // Optionally show an alert or toast notification
+                alert(`Module "${card.title}" is not yet implemented.`);
+              }
+            }
         }
-        className={`${cardSize} ${isColorfulCard ? "rounded-xl" : isEGovModule ? "rounded-2xl" : "rounded-lg"} shadow-xl flex flex-col items-center ${isYQMSOrFC && isCompact ? "justify-start" : "justify-center"} ${gapSize} ${
-          isColorfulCard
-            ? "border-0"
-            : isEGovModule
-              ? ""
-              : "border-2 border-black/20"
-        } ${
-          isNonClickableModule
+        className={`${cardSize} ${isColorfulCard ? "rounded-xl" : isEGovModule ? "rounded-2xl" : "rounded-lg"} shadow-xl flex flex-col items-center ${isYQMSOrFC && isCompact ? "justify-start" : "justify-center"} ${gapSize} ${isColorfulCard
+          ? "border-0"
+          : isEGovModule
+            ? ""
+            : "border-2 border-black/20"
+          } ${isNonClickableModule
             ? "cursor-default"
             : isEGovModule
               ? "cursor-pointer"
               : "cursor-pointer"
-        } ${card.color ? card.color : isColorfulCard ? "bg-white" : isEGovModule ? "bg-white text-slate-800" : theme === "normal" ? "bg-white/90 text-slate-800 border-white/30" : "bg-white text-slate-800"} ${isColorfulCard ? "p-6" : isCompact ? (isYQMSOrFC ? "p-2" : "p-1") : isEGovModule ? "p-6" : "p-4"} ${isYQMSOrFC ? "overflow-hidden" : ""}`}
+          } ${card.color ? card.color : isColorfulCard ? "bg-white" : isEGovModule ? "bg-white text-slate-800" : theme === "normal" ? "bg-white/90 text-slate-800 border-white/30" : "bg-white text-slate-800"} ${isColorfulCard ? "p-6" : isCompact ? (isYQMSOrFC ? "p-2" : "p-1") : isEGovModule ? "p-6" : "p-4"} ${isYQMSOrFC ? "overflow-hidden" : ""}`}
       >
         <div
           className={
@@ -560,7 +561,7 @@ const renderCard = (
                   <img
                     src={
                       finalImageToUse.startsWith("http://") ||
-                      finalImageToUse.startsWith("https://")
+                        finalImageToUse.startsWith("https://")
                         ? finalImageToUse
                         : `/${finalImageToUse}`
                     }
@@ -569,31 +570,31 @@ const renderCard = (
                     style={
                       isEGovModule
                         ? {
+                          backgroundColor: "transparent",
+                          filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.2))",
+                          borderRadius: "8px",
+                          maxWidth: "100%",
+                          maxHeight: "100%",
+                        }
+                        : isNonClickableModule
+                          ? {
                             backgroundColor: "transparent",
                             filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.2))",
                             borderRadius: "8px",
-                            maxWidth: "100%",
-                            maxHeight: "100%",
                           }
-                        : isNonClickableModule
-                          ? {
-                              backgroundColor: "transparent",
-                              filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.2))",
-                              borderRadius: "8px",
-                            }
                           : card.image
                             ? {
-                                backgroundColor: "transparent",
-                                filter:
-                                  "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-                                borderRadius: "8px",
-                              }
+                              backgroundColor: "transparent",
+                              filter:
+                                "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                              borderRadius: "8px",
+                            }
                             : {
-                                mixBlendMode: "multiply",
-                                backgroundColor: "transparent",
-                                filter:
-                                  "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
-                              }
+                              mixBlendMode: "multiply",
+                              backgroundColor: "transparent",
+                              filter:
+                                "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
+                            }
                     }
                     onError={(e) => {
                       e.target.style.display = "none";
@@ -666,8 +667,8 @@ const SubMenuView = () => {
     // Extract all cards from groups
     flatCards = Array.isArray(cards.groups)
       ? cards.groups.flatMap((group) =>
-          Array.isArray(group.cards) ? group.cards : [],
-        )
+        Array.isArray(group.cards) ? group.cards : [],
+      )
       : [];
   } else {
     // Regular array of cards
