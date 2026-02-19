@@ -123,25 +123,25 @@ const TeamPerformance = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Rank / Line</th>
-                <th className="px-4 py-5">Team Leader</th>
-                <th className="px-4 py-5 text-center">Avg Efficiency</th>
-                <th className="px-4 py-5 text-center">Quality Rate (DHU)</th>
-                <th className="px-4 py-5 text-center">Absenteeism</th>
-                <th className="px-4 py-5 text-center">Performance Score</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Rank / Line</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200">Team Leader</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Avg Efficiency</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Quality Rate (DHU)</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Absenteeism</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Performance Score</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Status
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {teams.map((rec) => (
+            <tbody>
+              {teams.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <div className="flex items-center gap-5">
                       <span
                         className={`w-8 h-8 rounded-full flex items-center justify-center font-black text-xs ${rec.rank === 1 ? "bg-yellow-400 text-white shadow-lg shadow-yellow-100" : "bg-slate-50 text-slate-400 border border-slate-100"}`}
@@ -153,23 +153,23 @@ const TeamPerformance = ({ onBack }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-6 font-black text-slate-600 text-[10px] uppercase">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 font-black text-slate-600 text-[10px] uppercase">
                     {rec.supervisor}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="font-black text-teal-600 text-xs">
                       {rec.efficiency}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="font-black text-blue-600 text-xs text-nowrap">
                       {rec.qualityRate}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center text-rose-500 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-rose-500 font-bold text-xs">
                     {rec.absenteeism}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <div className="flex items-center justify-center gap-1.5">
                       <div className="w-1.5 h-1.5 rounded-full bg-teal-500"></div>
                       <span className="font-black text-slate-800 text-xs">
@@ -177,7 +177,7 @@ const TeamPerformance = ({ onBack }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-8 py-6 text-right">
+                  <td className="px-8 py-4 border-b border-slate-200 text-right">
                     <span className="px-2.5 py-1 bg-teal-50 border border-teal-100 rounded text-[9px] font-black text-teal-600 shadow-sm uppercase">
                       Gold
                     </span>

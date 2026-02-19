@@ -23,6 +23,9 @@ const Payroll = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
   const tabs = [{ id: "all", label: "Payroll Records", count: 8 }];
 
@@ -35,11 +38,11 @@ const Payroll = ({ onBack }) => {
       phone: "+855 010 223 445",
       department: "Production",
       position: "QA Engineer",
-      salary: "$1,200.00",
       status: "PAID",
-      type: "KHMER",
-      date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/Dot-Sreynoch.jpeg",
+      salary: "$850.00",
+      type: "EXPAT",
+      date: "Jan 31, 2026",
+      photo: "/assets/Yaikh-Uploads/H01_00004155_20251224132344.jpeg",
     },
     {
       id: 2,
@@ -49,11 +52,11 @@ const Payroll = ({ onBack }) => {
       phone: "+855 012 334 556",
       department: "Logistics",
       position: "Coordinator",
-      salary: "$850.00",
       status: "PAID",
-      type: "KHMER",
-      date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/Koem-Phanny.jpeg",
+      salary: "$920.00",
+      type: "EXPAT",
+      date: "Jan 31, 2026",
+      photo: "/assets/Yaikh-Uploads/H01_00004163_20260110104202.jpeg",
     },
     {
       id: 3,
@@ -62,82 +65,82 @@ const Payroll = ({ onBack }) => {
       age: 30,
       phone: "+855 015 445 667",
       department: "Engineering",
-      position: "Senior Dev",
-      salary: "$2,500.00",
+      position: "Developer",
       status: "PENDING",
-      type: "KHMER",
+      salary: "$1,200.00",
+      type: "EXPAT",
       date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/Sin-Khun.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004171_20260108143914.jpeg",
     },
     {
       id: 4,
-      name: "Voun Thida",
-      gender: "FEMALE",
+      name: "Voun Samnang",
+      gender: "MALE",
       age: 25,
       phone: "+855 099 556 778",
       department: "Admin",
       position: "Assistant",
-      salary: "$600.00",
       status: "PAID",
-      type: "KHMER",
-      date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/Voun-Thida.jpeg",
+      salary: "$780.00",
+      type: "EXPAT",
+      date: "Jan 31, 2026",
+      photo: "/assets/Yaikh-Uploads/H01_00004177_20260112101013.jpeg",
     },
     {
       id: 5,
-      name: "Chhay",
-      gender: "MALE",
-      age: 29,
-      phone: "+855 081 223 998",
-      department: "Production",
-      position: "QA Tester",
-      salary: "$950.00",
+      name: "Set Sophy",
+      gender: "FEMALE",
+      age: 27,
+      phone: "+855 088 667 889",
+      department: "Operations",
+      position: "Manager",
       status: "PAID",
-      type: "KHMER",
-      date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/chhay.jpg",
+      salary: "$1,150.00",
+      type: "EXPAT",
+      date: "Jan 31, 2026",
+      photo: "/assets/Yaikh-Uploads/H01_00004193_20260110100532.jpeg",
     },
     {
       id: 6,
-      name: "Daly",
+      name: "Ton Sreyneang",
       gender: "FEMALE",
-      age: 27,
-      phone: "+855 092 556 887",
-      department: "Marketing",
-      position: "Strategist",
+      age: 32,
+      phone: "+855 081 223 998",
+      department: "Production",
+      position: "Supervisor",
       salary: "$1,100.00",
       status: "PAID",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/daly.jpg",
+      photo: "/assets/Yaikh-Uploads/H01_00004198_20251215163335.jpeg",
     },
     {
       id: 7,
-      name: "Yasomi",
-      gender: "FEMALE",
+      name: "Proeurng Sokhim",
+      gender: "MALE",
       age: 24,
-      phone: "+855 061 445 112",
-      department: "Design",
-      position: "Designer",
+      phone: "+855 092 556 887",
+      department: "Marketing",
+      position: "Strategist",
       salary: "$1,300.00",
       status: "PAID",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/yasomi.jpg",
+      photo: "/assets/Yaikh-Uploads/H01_00004199_20260110100611.jpeg",
     },
     {
       id: 8,
-      name: "Sobon Menghorng",
-      gender: "MALE",
-      age: 28,
+      name: "Sobon Sreypich",
+      gender: "FEMALE",
+      age: 29,
       phone: "+855 010 778 334",
       department: "Engineering",
       position: "Frontend Lead",
       salary: "$2,200.00",
       status: "PAID",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/Sobon-Menghorng.jpg",
+      photo: "/assets/Yaikh-Uploads/H01_00004202_20260110100639.jpeg",
     },
   ];
 
@@ -146,8 +149,10 @@ const Payroll = ({ onBack }) => {
     else navigate(-1);
   };
 
-  const handleAction = (type, name) => {
-    alert(`${type} - Payroll for ${name}`);
+  const handleAction = (type, record) => {
+    setSelectedRecord(record);
+    if (type === "View") setShowDetailModal(true);
+    else if (type === "Edit") setShowEditModal(true);
   };
 
   return (
@@ -210,104 +215,277 @@ const Payroll = ({ onBack }) => {
         </div>
 
         {/* Table Content */}
-        <div className="flex-1 overflow-auto">
-          <table className="w-full text-left border-collapse min-w-[1100px]">
-            <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Photo</th>
-                <th className="px-4 py-5">Employee / Contact</th>
-                <th className="px-4 py-5 font-center">Salary (Net)</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-4 py-5 text-center">Type</th>
-                <th className="px-4 py-5">Pay Date</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {records.map((rec) => (
-                <tr
-                  key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
-                >
-                  <td className="px-8 py-6">
-                    <div className="relative w-12 h-12 rounded-xl border-2 border-slate-100 overflow-hidden shadow-sm group-hover:border-amber-100 transition-colors">
-                      <img
-                        src={rec.photo}
-                        alt={rec.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </td>
-                  <td className="px-4 py-6">
-                    <div className="flex flex-col gap-1">
-                      <span className="font-black text-slate-800 text-sm tracking-tight">
-                        {rec.name}
+        <div className="flex-1 overflow-auto px-8 pb-8">
+          <div className="bg-white border-t border-l border-slate-200 shadow-sm overflow-hidden">
+            <table className="w-full text-left border-collapse min-w-[1100px]">
+              <thead>
+                <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                  <th className="px-6 py-4 border-r border-b border-slate-200 text-center w-20">
+                    Photo
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-slate-200">
+                    Employee / Contact
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-slate-200">
+                    Salary (Net)
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                    Status
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                    Type
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-slate-200">
+                    Pay Date
+                  </th>
+                  <th className="px-6 py-4 border-b border-slate-200 text-center whitespace-nowrap">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {records.map((rec) => (
+                  <tr
+                    key={rec.id}
+                    className="hover:bg-slate-50 transition-colors"
+                  >
+                    <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                      <div className="inline-block relative w-12 h-12 rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+                        <img
+                          src={rec.photo}
+                          alt={rec.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-slate-200">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-bold text-slate-800 text-sm tracking-tight">
+                          {rec.name}
+                        </span>
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                          <span>{rec.position}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-400">
+                          <Phone size={10} className="text-amber-400" />
+                          <span>{rec.phone}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-slate-200">
+                      <div className="font-bold text-slate-700 text-sm">
+                        {rec.salary}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                      <span
+                        className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${rec.status === "PAID" ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-amber-50 text-amber-600 border-amber-100"}`}
+                      >
+                        {rec.status}
                       </span>
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
-                        <span>{rec.position}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-400">
-                        <Phone size={10} className="text-slate-300" />
-                        <span>{rec.phone}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-6">
-                    <div className="font-black text-slate-700 text-sm">
-                      {rec.salary}
-                    </div>
-                  </td>
-                  <td className="px-4 py-6 text-center">
-                    <span
-                      className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${rec.status === "PAID" ? "bg-emerald-50 text-emerald-600 border-emerald-100/50" : "bg-amber-50 text-amber-600 border-amber-100/50"}`}
-                    >
-                      {rec.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-6 text-center">
-                    <span className="px-2.5 py-1 bg-white border border-slate-200 rounded text-[9px] font-black text-amber-600 shadow-sm uppercase">
-                      {rec.type}
-                    </span>
-                  </td>
-                  <td className="px-4 py-6">
-                    <div className="flex flex-col">
-                      <span className="font-black text-slate-700 text-xs">
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded text-[9px] font-bold text-amber-600 uppercase">
+                        {rec.type}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-slate-200">
+                      <div className="font-bold text-slate-700 text-xs">
                         {rec.date}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleAction("View", rec.name)}
-                        className="flex items-center gap-1.5 px-4 py-1.5 bg-amber-500 text-white rounded-lg text-[9px] font-black uppercase hover:bg-amber-600 transition-colors shadow-sm"
-                      >
-                        <Eye size={12} strokeWidth={3} />
-                        View
-                      </button>
-                      <button
-                        onClick={() => handleAction("Edit", rec.name)}
-                        className="px-4 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[9px] font-black uppercase hover:bg-slate-50 transition-colors"
-                      >
-                        Edit
-                      </button>
-                      <div className="flex items-center gap-1 ml-2 border-l border-slate-100 pl-3">
-                        <button className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all">
-                          <Trash2 size={14} />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-b border-slate-200">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleAction("View", rec)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 text-white rounded text-[9px] font-bold uppercase hover:bg-amber-600 transition-colors shadow-sm"
+                        >
+                          <Eye size={10} strokeWidth={3} />
+                          View
+                        </button>
+                        <button
+                          onClick={() => handleAction("Edit", rec)}
+                          className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 rounded text-[9px] font-bold uppercase hover:bg-slate-50 transition-colors"
+                        >
+                          Edit
                         </button>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      {/* AI Bot */}
+      {/* View Detail Modal (Payslip) */}
+      {showDetailModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-amber-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600 shadow-inner">
+                  <DollarSign size={24} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Payslip Preview
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Salary disbursement breakdown
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="p-8 bg-gradient-to-br from-amber-50/50 to-slate-50/30 border-b border-slate-100 flex items-center gap-8">
+                <div className="relative">
+                  <img
+                    src={selectedRecord?.photo}
+                    className="w-24 h-24 rounded-[2rem] border-4 border-white shadow-xl"
+                    alt=""
+                  />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none uppercase">
+                    {selectedRecord?.name}
+                  </h2>
+                  <div className="flex gap-3">
+                    <span className="text-[12px] font-black text-amber-600 uppercase tracking-widest bg-white border border-amber-100 px-3 py-1 rounded-lg">
+                      Net: {selectedRecord?.salary}
+                    </span>
+                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-lg">
+                      {selectedRecord?.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 divide-y divide-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-4 bg-slate-50/30 font-black text-slate-400 text-[9px] uppercase tracking-widest flex items-center">
+                    Payment Details
+                  </div>
+                  <div className="col-span-2 p-4">
+                    <div className="text-sm font-bold text-slate-700 uppercase">
+                      Pay Cycle: February 2026
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      Disbursement Date: {selectedRecord?.date}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end gap-3">
+              <button className="flex items-center gap-2 px-6 py-4 bg-white border border-slate-200 text-slate-600 rounded-2xl text-[10px] font-black uppercase hover:bg-slate-50 transition-all active:scale-95">
+                <FileText size={16} />
+                Download PDF
+              </button>
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="px-10 py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-slate-800 transition-all shadow-xl active:scale-95"
+              >
+                Close Payslip
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-500 flex items-center justify-center text-white shadow-lg shadow-amber-100">
+                  <Edit2 size={24} strokeWidth={3} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Adjust Payroll
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Update salary or payment status
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="grid grid-cols-1 divide-y divide-slate-100 border-b border-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Net Salary
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <input
+                      type="text"
+                      defaultValue={selectedRecord?.salary}
+                      className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Payment Status
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <select
+                      className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer"
+                      defaultValue={selectedRecord?.status}
+                    >
+                      <option>PAID</option>
+                      <option>PENDING</option>
+                      <option>PROCESSING</option>
+                      <option>FAILED</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="px-8 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert("Payroll updated successfully!");
+                  setShowEditModal(false);
+                }}
+                className="px-12 py-4 bg-amber-500 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-amber-600 shadow-xl shadow-amber-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <Check size={16} strokeWidth={3} />
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <button
         onClick={() => setIsBotOpen(true)}
         className="fixed bottom-8 right-8 z-[150] w-14 h-14 bg-amber-500 text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
