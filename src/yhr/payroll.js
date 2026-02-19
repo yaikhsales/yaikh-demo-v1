@@ -216,29 +216,29 @@ const Payroll = ({ onBack }) => {
 
         {/* Table Content */}
         <div className="flex-1 overflow-auto px-8 pb-8">
-          <div className="bg-white border-t border-l border-slate-200 shadow-sm overflow-hidden">
+          <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse min-w-[1100px]">
               <thead>
-                <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
-                  <th className="px-6 py-4 border-r border-b border-slate-200 text-center w-20">
+                <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[11px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                  <th className="px-6 py-4 border-r border-b border-black text-center w-20">
                     Photo
                   </th>
-                  <th className="px-6 py-4 border-r border-b border-slate-200">
+                  <th className="px-6 py-4 border-r border-b border-black">
                     Employee / Contact
                   </th>
-                  <th className="px-6 py-4 border-r border-b border-slate-200">
+                  <th className="px-6 py-4 border-r border-b border-black">
                     Salary (Net)
                   </th>
-                  <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                  <th className="px-6 py-4 border-r border-b border-black text-center">
                     Status
                   </th>
-                  <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                  <th className="px-6 py-4 border-r border-b border-black text-center">
                     Type
                   </th>
-                  <th className="px-6 py-4 border-r border-b border-slate-200">
+                  <th className="px-6 py-4 border-r border-b border-black">
                     Pay Date
                   </th>
-                  <th className="px-6 py-4 border-b border-slate-200 text-center whitespace-nowrap">
+                  <th className="px-6 py-4 border-b border-black text-center whitespace-nowrap">
                     Action
                   </th>
                 </tr>
@@ -249,8 +249,8 @@ const Payroll = ({ onBack }) => {
                     key={rec.id}
                     className="hover:bg-slate-50 transition-colors"
                   >
-                    <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
-                      <div className="inline-block relative w-12 h-12 rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+                    <td className="px-6 py-4 border-r border-b border-black text-center">
+                      <div className="inline-block relative w-28 h-28 rounded-lg border-2 border-black overflow-hidden shadow-sm">
                         <img
                           src={rec.photo}
                           alt={rec.name}
@@ -258,43 +258,43 @@ const Payroll = ({ onBack }) => {
                         />
                       </div>
                     </td>
-                    <td className="px-6 py-4 border-r border-b border-slate-200">
+                    <td className="px-6 py-4 border-r border-b border-black">
                       <div className="flex flex-col gap-1">
-                        <span className="font-bold text-slate-800 text-sm tracking-tight">
+                        <span className="font-bold text-black text-sm tracking-tight">
                           {rec.name}
                         </span>
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-black">
                           <span>{rec.position}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-400">
+                        <div className="flex items-center gap-1.5 text-[9px] font-bold text-black">
                           <Phone size={10} className="text-amber-400" />
                           <span>{rec.phone}</span>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 border-r border-b border-slate-200">
-                      <div className="font-bold text-slate-700 text-sm">
+                    <td className="px-6 py-4 border-r border-b border-black">
+                      <div className="font-bold text-black text-sm">
                         {rec.salary}
                       </div>
                     </td>
-                    <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                    <td className="px-6 py-4 border-r border-b border-black text-center">
                       <span
                         className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${rec.status === "PAID" ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-amber-50 text-amber-600 border-amber-100"}`}
                       >
                         {rec.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
-                      <span className="px-2 py-0.5 bg-white border border-slate-200 rounded text-[9px] font-bold text-amber-600 uppercase">
+                    <td className="px-6 py-4 border-r border-b border-black text-center">
+                      <span className="px-2 py-0.5 bg-white border border-black rounded text-[9px] font-bold text-amber-600 uppercase">
                         {rec.type}
                       </span>
                     </td>
-                    <td className="px-6 py-4 border-r border-b border-slate-200">
-                      <div className="font-bold text-slate-700 text-xs">
+                    <td className="px-6 py-4 border-r border-b border-black">
+                      <div className="font-bold text-black text-xs">
                         {rec.date}
                       </div>
                     </td>
-                    <td className="px-6 py-4 border-b border-slate-200">
+                    <td className="px-6 py-4 border-b border-black">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleAction("View", rec)}
@@ -305,7 +305,7 @@ const Payroll = ({ onBack }) => {
                         </button>
                         <button
                           onClick={() => handleAction("Edit", rec)}
-                          className="px-3 py-1.5 bg-white border border-slate-200 text-slate-600 rounded text-[9px] font-bold uppercase hover:bg-slate-50 transition-colors"
+                          className="px-3 py-1.5 bg-white border border-black text-black rounded text-[9px] font-bold uppercase hover:bg-slate-50 transition-colors"
                         >
                           Edit
                         </button>

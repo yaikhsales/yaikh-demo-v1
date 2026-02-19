@@ -238,29 +238,29 @@ const Onboarding = ({ onBack }) => {
           </div>
 
           <div className="flex-1 overflow-auto px-8 pb-8">
-            <div className="bg-white border-t border-l border-slate-200 shadow-sm overflow-hidden">
+            <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
               <table className="w-full text-left border-collapse min-w-[1100px]">
                 <thead>
-                  <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
-                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center w-20">
+                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[11px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                    <th className="px-6 py-4 border-r border-b border-black text-center w-20">
                       Photo
                     </th>
-                    <th className="px-6 py-4 border-r border-b border-slate-200">
+                    <th className="px-6 py-4 border-r border-b border-black">
                       Applicant / Contact
                     </th>
-                    <th className="px-6 py-4 border-r border-b border-slate-200">
+                    <th className="px-6 py-4 border-r border-b border-black">
                       Department
                     </th>
-                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                    <th className="px-6 py-4 border-r border-b border-black text-center">
                       Status
                     </th>
-                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                    <th className="px-6 py-4 border-r border-b border-black text-center">
                       Type
                     </th>
-                    <th className="px-6 py-4 border-r border-b border-slate-200">
+                    <th className="px-6 py-4 border-r border-b border-black">
                       Start Date
                     </th>
-                    <th className="px-6 py-4 border-b border-slate-200 text-center whitespace-nowrap">
+                    <th className="px-6 py-4 border-b border-black text-center whitespace-nowrap">
                       Action
                     </th>
                   </tr>
@@ -271,8 +271,8 @@ const Onboarding = ({ onBack }) => {
                       key={applicant.id}
                       className="hover:bg-slate-50 transition-colors"
                     >
-                      <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
-                        <div className="inline-block relative w-12 h-12 rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+                      <td className="px-6 py-4 border-r border-b border-black text-center">
+                        <div className="inline-block relative w-28 h-28 rounded-lg border-2 border-black overflow-hidden shadow-sm">
                           <img
                             src={applicant.photo}
                             alt={applicant.name}
@@ -280,31 +280,31 @@ const Onboarding = ({ onBack }) => {
                           />
                         </div>
                       </td>
-                      <td className="px-6 py-4 border-r border-b border-slate-200">
+                      <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col gap-1">
-                          <span className="font-bold text-slate-800 text-sm tracking-tight">
+                          <span className="font-bold text-black text-sm tracking-tight">
                             {applicant.name}
                           </span>
-                          <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase">
+                          <div className="flex items-center gap-2 text-[9px] font-bold text-black uppercase">
                             <span>{applicant.age} YRS</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-black">
                             <Phone size={10} className="text-blue-400" />
                             <span>{applicant.phone}</span>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 border-r border-b border-slate-200">
-                        <div className="flex flex-col text-xs font-bold text-slate-700">
+                      <td className="px-6 py-4 border-r border-b border-black">
+                        <div className="flex flex-col text-xs font-bold text-black">
                           <span>{applicant.department}</span>
-                          <span className="text-[10px] font-medium text-slate-400">
+                          <span className="text-[10px] font-medium text-black">
                             {applicant.position}
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 border-r border-b border-slate-200">
+                      <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col items-center gap-2 text-center">
-                          <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest italic leading-none">
+                          <span className="text-[9px] font-bold text-black uppercase tracking-widest italic leading-none">
                             {applicant.status}
                           </span>
                           <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-md text-[9px] font-black tracking-widest border border-indigo-100">
@@ -312,15 +312,15 @@ const Onboarding = ({ onBack }) => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
-                        <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded text-[9px] font-bold text-slate-600 uppercase">
+                      <td className="px-6 py-4 border-r border-b border-black text-center">
+                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[9px] font-bold text-black uppercase">
                           {applicant.type}
                         </span>
                       </td>
-                      <td className="px-6 py-4 border-r border-b border-slate-200">
-                        <div className="flex flex-col text-[11px] font-bold text-slate-600">
+                      <td className="px-6 py-4 border-r border-b border-black">
+                        <div className="flex flex-col text-[11px] font-bold text-black">
                           <span>{applicant.date}</span>
-                          <span className="text-[9px] text-slate-400 uppercase tracking-tighter">
+                          <span className="text-[9px] text-black uppercase tracking-tighter">
                             {applicant.time}
                           </span>
                         </div>
@@ -336,21 +336,21 @@ const Onboarding = ({ onBack }) => {
                           </button>
                           <button
                             onClick={() => handleEdit(applicant)}
-                            className="px-4 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[9px] font-black uppercase hover:bg-slate-50 transition-colors"
+                            className="px-4 py-1.5 bg-white border border-black text-black rounded-lg text-[9px] font-black uppercase hover:bg-slate-50 transition-colors"
                           >
                             Edit
                           </button>
-                          <div className="flex items-center gap-1 ml-2 border-l border-slate-100 pl-3">
-                            <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                          <div className="flex items-center gap-1 ml-2 border-l border-black pl-3">
+                            <button className="p-1.5 text-black hover:text-black hover:bg-white hover:shadow-sm rounded transition-all">
                               <FileText size={14} />
                             </button>
-                            <button className="p-1.5 text-slate-300 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                            <button className="p-1.5 text-black hover:text-blue-600 hover:bg-white hover:shadow-sm rounded transition-all">
                               <Eye size={14} />
                             </button>
-                            <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                            <button className="p-1.5 text-black hover:text-black hover:bg-white hover:shadow-sm rounded transition-all">
                               <Edit2 size={14} />
                             </button>
-                            <button className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all">
+                            <button className="p-1.5 text-black hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all">
                               <Trash2 size={14} />
                             </button>
                           </div>

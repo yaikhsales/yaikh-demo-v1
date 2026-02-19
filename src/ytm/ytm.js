@@ -14,7 +14,7 @@ const getYTMIconImage = (title) => {
     Data: "data.png",
     "Machine Layout": "TV.png",
     Transfers: "transfer.png",
-    Download: "download.png",
+    // Download: "download.png",
     Analysis: "analysis.png",
     Report: "report.png",
   };
@@ -56,7 +56,7 @@ const YTM = ({ onBack }) => {
       "Routine Maintenance": "routine-maintenance.jpg",
       "Machine Layout": "TV.png",
       Transfers: "transfer.png",
-      Download: "download.jpg",
+      // Download: "download.jpg",
       Analysis: "analysis.jpg",
       Report: "report1.jpg",
     };
@@ -118,7 +118,7 @@ const YTM = ({ onBack }) => {
       subModules: [
         { title: "Analysis" },
         { title: "Report" },
-        { title: "Download" },
+        // { title: "Download" },
       ],
       color: "bg-gradient-to-br from-indigo-500 to-indigo-600",
       shadow: "shadow-indigo-200",
