@@ -282,28 +282,28 @@ const StandardTime = ({ onBack }) => {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse min-w-[1500px]">
                 <thead>
-                  <tr className="bg-[#F1F5F9] text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                    <th className="px-6 py-5">Order Number</th>
-                    <th className="px-6 py-5">Style Number</th>
-                    <th className="px-6 py-5">Customer</th>
-                    <th className="px-6 py-5">Item Type</th>
-                    <th className="px-6 py-5">PP SAM History</th>
-                    <th className="px-6 py-5">Stage / Type</th>
-                    <th className="px-6 py-5 text-center">Visual Reference</th>
-                    <th className="px-6 py-5 text-center">Prod. SAM</th>
-                    <th className="px-6 py-5">Variance Notes</th>
-                    <th className="px-6 py-5 text-center">
+                  <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                    <th className="px-6 py-4 border-r border-b border-slate-200">Order Number</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">Style Number</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">Customer</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">Item Type</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">PP SAM History</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">Stage / Type</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center">Visual Reference</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center">Prod. SAM</th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">Variance Notes</th>
+                    <th className="px-6 py-4 border-b border-slate-200 text-center">
                       Similar Style Comparison
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {records.map((rec) => (
+                <tbody>
+                  {records.map((rec, idx) => (
                     <tr
                       key={rec.id}
-                      className={`${rec.rowColor} border-l-[6px] transition-all duration-300 hover:brightness-[0.97] cursor-default`}
+                      className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} transition-all duration-300 hover:bg-slate-100 cursor-default`}
                     >
-                      <td className="px-6 py-8 font-black text-[12px] whitespace-nowrap">
+                      <td className="px-6 py-4 border-r border-b border-slate-200 font-black text-[12px] whitespace-nowrap">
                         <div className="flex flex-col">
                           <span>{rec.orderNumber}</span>
                           <span className="text-[9px] opacity-40 uppercase">
@@ -311,16 +311,16 @@ const StandardTime = ({ onBack }) => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-8 font-bold text-[12px]">
+                      <td className="px-6 py-4 border-r border-b border-slate-200 font-bold text-[12px]">
                         {rec.styleNumber}
                       </td>
-                      <td className="px-6 py-8 font-black text-[11px] uppercase tracking-wider">
+                      <td className="px-6 py-4 border-r border-b border-slate-200 font-black text-[11px] uppercase tracking-wider">
                         {rec.customer}
                       </td>
-                      <td className="px-6 py-8 font-bold text-[12px]">
+                      <td className="px-6 py-4 border-r border-b border-slate-200 font-bold text-[12px]">
                         {rec.item}
                       </td>
-                      <td className="px-6 py-8">
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
                         <div className="flex flex-col gap-3">
                           {rec.ppSamHistory.map((history, i) => (
                             <div
@@ -337,7 +337,7 @@ const StandardTime = ({ onBack }) => {
                           ))}
                         </div>
                       </td>
-                      <td className="px-6 py-8">
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
                         <div className="flex flex-col gap-2">
                           {rec.types.map((type, i) => (
                             <span
@@ -349,7 +349,7 @@ const StandardTime = ({ onBack }) => {
                           ))}
                         </div>
                       </td>
-                      <td className="px-6 py-8">
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
                         <div className="flex justify-center">
                           <div className="w-20 h-20 bg-white rounded-2xl shadow-lg border border-slate-200/50 p-1.5 overflow-hidden">
                             <img
@@ -360,7 +360,7 @@ const StandardTime = ({ onBack }) => {
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-8 text-center">
+                      <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
                         <div className="flex flex-col items-center">
                           <span className="text-[26px] font-black tracking-tighter leading-none">
                             {rec.prodSam}
@@ -370,14 +370,14 @@ const StandardTime = ({ onBack }) => {
                           </span>
                         </div>
                       </td>
-                      <td className="px-6 py-8">
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
                         <div className="bg-white/40 p-3 rounded-xl border border-black/5">
                           <p className="text-[11px] font-bold italic opacity-80 leading-snug">
                             "{rec.varianceReason}"
                           </p>
                         </div>
                       </td>
-                      <td className="px-6 py-8">
+                      <td className="px-6 py-4 border-b border-slate-200">
                         <div className="flex items-center justify-center gap-10">
                           {rec.comparison.map((val, i) => (
                             <div key={i} className="flex flex-col items-center">

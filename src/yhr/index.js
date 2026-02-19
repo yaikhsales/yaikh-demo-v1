@@ -185,10 +185,19 @@ const YHR = ({ onBack }) => {
                           Onboarding: "/dashboard/onboarding",
                           "Benefit Profile": "/dashboard/benefit-profile",
                           Payroll: "/dashboard/payroll",
-                          NSSF: "/dashboard/nssf",
                           "Visa and Work Permit": "/dashboard/visa-work-permit",
                           Canteen: "/dashboard/canteen",
                         };
+
+                        if (module.title === "NSSF") {
+                          window.open(
+                            "https://enterprise.nssf.gov.kh/auth/login",
+                            "_blank",
+                            "noopener,noreferrer",
+                          );
+                          return;
+                        }
+
                         const route = routeMap[module.title];
                         if (route) {
                           navigate(route);
@@ -343,7 +352,7 @@ const YHR = ({ onBack }) => {
                   />
                 </div>
                 <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">
-                  Ministry of Labour
+                  MLVT
                 </span>
               </button>
             </div>

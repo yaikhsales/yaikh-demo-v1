@@ -21,14 +21,16 @@ import GeneralAIAgent from "../general-ag";
 import { useTranslation } from "../translate/TranslationContext";
 
 const teamPhotos = [
-  "/assets/about-us/teams/Dot-Sreynoch.jpeg",
-  "/assets/about-us/teams/Koem-Phanny.jpeg",
-  "/assets/about-us/teams/Mr-Arnold11.jpeg",
-  "/assets/about-us/teams/Sin-Khun.jpeg",
-  "/assets/about-us/teams/Voun-Thida.jpeg",
-  "/assets/about-us/teams/chhay.jpg",
-  "/assets/about-us/teams/daly.jpg",
-  "/assets/about-us/teams/yasomi.jpg",
+  "/assets/Yaikh-Uploads/H01_00004155_20251224132344.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004163_20260110104202.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004171_20260108143914.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004177_20260112101013.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004193_20260110100532.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004198_20251215163335.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004199_20260110100611.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004202_20260110100639.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004203_20250903122655.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004216_20260114093811.jpeg",
 ];
 
 const Recruitment = ({ onBack }) => {
@@ -40,6 +42,19 @@ const Recruitment = ({ onBack }) => {
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showInterviewModal, setShowInterviewModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    gender: "MALE",
+    age: "",
+    phone: "",
+    department: "",
+    position: "",
+    type: "EXPAT",
+  });
 
   const tabs = [{ id: "all", label: "Applicants", count: 4 }];
 
@@ -54,10 +69,10 @@ const Recruitment = ({ onBack }) => {
       position: "QA Engineer",
       status: "PHASE 1: REVIEW",
       subStatus: "NEW APPLICANT",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 13, 2026",
       time: "09:30 AM",
-      photo: "/assets/about-us/teams/Dot-Sreynoch.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004155_20251224132344.jpeg",
     },
     {
       id: 2,
@@ -67,12 +82,12 @@ const Recruitment = ({ onBack }) => {
       phone: "+855 012 334 556",
       department: "Logistics",
       position: "Coordinator",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "TECH SCREENING",
-      type: "KHMER",
+      status: "PHASE 1: REVIEW",
+      subStatus: "UNDER REVIEW",
+      type: "EXPAT",
       date: "Feb 13, 2026",
-      time: "09:45 AM",
-      photo: "/assets/about-us/teams/Koem-Phanny.jpeg",
+      time: "10:15 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004163_20260110104202.jpeg",
     },
     {
       id: 3,
@@ -82,27 +97,27 @@ const Recruitment = ({ onBack }) => {
       phone: "+855 015 445 667",
       department: "Engineering",
       position: "Developer",
-      status: "PHASE 3: ONBOARDING",
-      subStatus: "OFFER SENT",
-      type: "KHMER",
+      status: "PHASE 1: REVIEW",
+      subStatus: "NEW APPLICANT",
+      type: "EXPAT",
       date: "Feb 13, 2026",
-      time: "10:15 AM",
-      photo: "/assets/about-us/teams/Sin-Khun.jpeg",
+      time: "11:00 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004171_20260108143914.jpeg",
     },
     {
       id: 4,
-      name: "Voun Thida",
-      gender: "FEMALE",
+      name: "Voun Samnang",
+      gender: "MALE",
       age: 25,
       phone: "+855 099 556 778",
-      department: "Admin",
+      department: "HR",
       position: "Assistant",
       status: "PHASE 1: REVIEW",
-      subStatus: "DOCUMENT PENDING",
-      type: "KHMER",
-      date: "Feb 13, 2026",
-      time: "10:30 AM",
-      photo: "/assets/about-us/teams/Voun-Thida.jpeg",
+      subStatus: "NEW APPLICANT",
+      type: "EXPAT",
+      date: "Feb 14, 2026",
+      time: "09:00 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004177_20260112101013.jpeg",
     },
     {
       id: 5,
@@ -112,102 +127,102 @@ const Recruitment = ({ onBack }) => {
       phone: "+855 088 667 889",
       department: "Operations",
       position: "Manager",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "FINAL ROUND",
-      type: "KHMER",
-      date: "Feb 12, 2026",
-      time: "04:45 PM",
-      photo: "/assets/about-us/teams/Set-Sophy.jpg",
+      status: "PHASE 1: REVIEW",
+      subStatus: "UNDER REVIEW",
+      type: "EXPAT",
+      date: "Feb 14, 2026",
+      time: "10:30 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004193_20260110100532.jpeg",
     },
     {
       id: 6,
-      name: "Ton Noeun",
-      gender: "MALE",
+      name: "Ton Sreyneang",
+      gender: "FEMALE",
       age: 32,
-      phone: "+855 077 778 990",
-      department: "Maintenance",
-      position: "Technician",
+      phone: "+855 081 223 998",
+      department: "Production",
+      position: "Supervisor",
       status: "PHASE 1: REVIEW",
-      subStatus: "SHORTLISTED",
-      type: "KHMER",
-      date: "Feb 12, 2026",
-      time: "02:00 PM",
-      photo: "/assets/about-us/teams/Ton-Noeun.jpeg",
+      subStatus: "NEW APPLICANT",
+      type: "EXPAT",
+      date: "Feb 15, 2026",
+      time: "01:45 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004198_20251215163335.jpeg",
     },
     {
       id: 7,
       name: "Proeurng Sokhim",
-      gender: "FEMALE",
+      gender: "MALE",
       age: 24,
-      phone: "+855 011 222 333",
-      department: "Design",
-      position: "UI Designer",
+      phone: "+855 092 556 887",
+      department: "Marketing",
+      position: "Strategist",
       status: "PHASE 1: REVIEW",
-      subStatus: "PORTFOLIO REVIEW",
-      type: "KHMER",
-      date: "Feb 12, 2026",
-      time: "11:30 AM",
-      photo: "/assets/about-us/teams/Proeurng-Sokhim.jpeg",
+      subStatus: "NEW APPLICANT",
+      type: "EXPAT",
+      date: "Feb 15, 2026",
+      time: "03:15 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004199_20260110100611.jpeg",
     },
     {
       id: 8,
-      name: "Sobon Menghorng",
-      gender: "MALE",
+      name: "Sobon Sreypich",
+      gender: "FEMALE",
       age: 29,
-      phone: "+855 016 333 444",
+      phone: "+855 010 778 334",
       department: "Engineering",
-      position: "Backend Dev",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "CODE TEST",
-      type: "KHMER",
-      date: "Feb 11, 2026",
-      time: "03:15 PM",
-      photo: "/assets/about-us/teams/Sobon-Menghorng.jpg",
+      position: "Frontend",
+      status: "PHASE 1: REVIEW",
+      subStatus: "NEW APPLICANT",
+      type: "EXPAT",
+      date: "Feb 16, 2026",
+      time: "09:30 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004202_20260110100639.jpeg",
     },
     {
       id: 9,
       name: "Van Phanith",
       gender: "MALE",
       age: 27,
-      phone: "+855 092 444 555",
-      department: "Finance",
-      position: "Accountant",
-      status: "PHASE 3: ONBOARDING",
-      subStatus: "CONTRACT SIGNED",
-      type: "KHMER",
-      date: "Feb 11, 2026",
-      time: "01:00 PM",
-      photo: "/assets/about-us/teams/Van-Phanith.jpeg",
+      phone: "+855 011 222 333",
+      department: "Design",
+      position: "Junior UI",
+      status: "PHASE 1: REVIEW",
+      subStatus: "NEW APPLICANT",
+      type: "EXPAT",
+      date: "Feb 16, 2026",
+      time: "11:45 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004203_20250903122655.jpeg",
     },
     {
       id: 10,
-      name: "Yeom Chetra",
-      gender: "MALE",
+      name: "Yeom Sreysros",
+      gender: "FEMALE",
       age: 31,
-      phone: "+855 095 555 666",
-      department: "Engineering",
-      position: "DevOps",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "CULTURE FIT",
-      type: "KHMER",
-      date: "Feb 10, 2026",
-      time: "09:00 AM",
-      photo: "/assets/about-us/teams/Yeom-Chetra.jpeg",
+      phone: "+855 077 778 990",
+      department: "Maintenance",
+      position: "Technician",
+      status: "PHASE 1: REVIEW",
+      subStatus: "NEW APPLICANT",
+      type: "EXPAT",
+      date: "Feb 16, 2026",
+      time: "02:30 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004216_20260114093811.jpeg",
     },
     {
       id: 11,
       name: "Young Sengheang",
       gender: "MALE",
-      age: 28,
-      phone: "+855 010 666 777",
-      department: "HR",
-      position: "Recruiter",
-      status: "PHASE 1: REVIEW",
-      subStatus: "INITIAL SCREEN",
-      type: "KHMER",
+      age: 29,
+      phone: "+855 093 112 334",
+      department: "Production",
+      position: "Supervisor",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "DEPT INTERVIEW",
+      type: "EXPAT",
       date: "Feb 10, 2026",
-      time: "10:30 AM",
-      photo: "/assets/about-us/teams/Young-Sengheang.jpeg",
+      time: "02:30 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004219_20260114093834.jpeg",
     },
     {
       id: 12,
@@ -234,7 +249,7 @@ const Recruitment = ({ onBack }) => {
       position: "Helpdesk",
       status: "PHASE 2: INTERVIEW",
       subStatus: "SKILLS TEST",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 09, 2026",
       time: "11:00 AM",
       photo: "/assets/about-us/teams/samnang.png",
@@ -249,7 +264,7 @@ const Recruitment = ({ onBack }) => {
       position: "Social Media",
       status: "PHASE 1: REVIEW",
       subStatus: "IN REVIEW",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 08, 2026",
       time: "02:45 PM",
       photo: "/assets/about-us/teams/daly.jpg",
@@ -264,7 +279,7 @@ const Recruitment = ({ onBack }) => {
       position: "Intern",
       status: "PHASE 3: ONBOARDING",
       subStatus: "ID ISSUED",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 08, 2026",
       time: "09:30 AM",
       photo: "/assets/about-us/teams/yasomi.jpg",
@@ -279,7 +294,7 @@ const Recruitment = ({ onBack }) => {
       position: "Warehouse",
       status: "PHASE 1: REVIEW",
       subStatus: "NEW APPLICANT",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 07, 2026",
       time: "03:20 PM",
       photo: "/assets/about-us/teams/chhorng.jpg",
@@ -312,12 +327,14 @@ const Recruitment = ({ onBack }) => {
     }
   };
 
-  const handleInterview = (name) => {
-    alert(`Scheduling interview for ${name}...`);
+  const handleInterview = (applicant) => {
+    setSelectedApplicant(applicant);
+    setShowInterviewModal(true);
   };
 
-  const handleReject = (name) => {
-    alert(`${name} has been moved to the rejected list.`);
+  const handleReject = (applicant) => {
+    setSelectedApplicant(applicant);
+    setShowRejectModal(true);
   };
 
   return (
@@ -339,7 +356,10 @@ const Recruitment = ({ onBack }) => {
               </h2>
             </div>
             <div className="flex items-center gap-3">
-              <button className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center gap-2 active:scale-95">
+              <button
+                onClick={() => setShowAddModal(true)}
+                className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center gap-2 active:scale-95"
+              >
                 <Plus size={14} strokeWidth={3} />
                 Add Applicant
               </button>
@@ -347,132 +367,143 @@ const Recruitment = ({ onBack }) => {
           </div>
 
           {/* Table Area */}
-          <div className="flex-1 overflow-auto">
-            <table className="w-full text-left border-collapse min-w-[1100px]">
-              <thead>
-                <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                  <th className="px-8 py-5">Photo</th>
-                  <th className="px-4 py-5">Applicant / Contact</th>
-                  <th className="px-4 py-5">Department</th>
-                  <th className="px-4 py-5 text-center">Status</th>
-                  <th className="px-4 py-5 text-center">Type</th>
-                  <th className="px-4 py-5">Submitted</th>
-                  <th className="px-8 py-5 text-right whitespace-nowrap">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {applicantsList.map((applicant) => (
-                  <tr
-                    key={applicant.id}
-                    className="group hover:bg-slate-50/50 transition-all duration-200"
-                  >
-                    <td className="px-8 py-6">
-                      <div className="relative w-12 h-12 rounded-xl border-2 border-slate-100 overflow-hidden shadow-sm group-hover:border-blue-100 transition-colors">
-                        <img
-                          src={applicant.photo}
-                          alt={applicant.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col gap-1">
-                        <span className="font-black text-slate-800 text-sm tracking-tight">
-                          {applicant.name}
-                        </span>
-                        <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                          <span>
-                            {applicant.gender} • {applicant.age} YRS
+          <div className="flex-1 overflow-auto px-8 pb-8">
+            <div className="bg-white border-t border-l border-slate-200 shadow-sm overflow-hidden">
+              <table className="w-full text-left border-collapse min-w-[1100px]">
+                <thead>
+                  <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center w-20">
+                      {t("photo") || "Photo"}
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">
+                      {t("applicant") || "Applicant"} /{" "}
+                      {t("contact") || "Contact"}
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">
+                      {t("department") || "Department"}
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                      {t("status") || "Status"}
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                      {t("type") || "Type"}
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-slate-200">
+                      {t("submitted") || "Submitted"}
+                    </th>
+                    <th className="px-6 py-4 border-b border-slate-200 text-center whitespace-nowrap">
+                      {t("action") || "Action"}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {applicantsList.map((applicant) => (
+                    <tr
+                      key={applicant.id}
+                      className="hover:bg-slate-50 transition-colors"
+                    >
+                      <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                        <div className="inline-block relative w-12 h-12 rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+                          <img
+                            src={applicant.photo}
+                            alt={applicant.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-bold text-slate-800 text-sm tracking-tight">
+                            {applicant.name}
+                          </span>
+                          <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase">
+                            <span>{applicant.age} YRS</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
+                            <Phone size={10} className="text-blue-400" />
+                            <span>{applicant.phone}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
+                        <div className="flex flex-col">
+                          <span className="font-bold text-slate-700 text-xs uppercase tracking-tight">
+                            {applicant.department}
+                          </span>
+                          <span className="text-[10px] font-medium text-slate-400">
+                            {applicant.position}
                           </span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
-                          <Phone size={10} className="text-slate-300" />
-                          <span>{applicant.phone}</span>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
+                        <div className="flex flex-col items-center gap-2">
+                          <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest italic">
+                            {applicant.status}
+                          </span>
+                          <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[9px] font-black tracking-widest border border-emerald-100">
+                            {applicant.subStatus}
+                          </span>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col">
-                        <span className="font-black text-slate-700 text-xs">
-                          {applicant.department}
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-slate-200 text-center">
+                        <span className="px-2 py-0.5 bg-slate-100 border border-slate-200 rounded text-[9px] font-bold text-slate-600 uppercase">
+                          {applicant.type}
                         </span>
-                        <span className="text-[10px] font-bold text-slate-400">
-                          {applicant.position}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col items-center gap-2">
-                        <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.15em]">
-                          {applicant.status}
-                        </span>
-                        <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[9px] font-black tracking-widest border border-emerald-100/50">
-                          {applicant.subStatus}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-6 text-center">
-                      <span className="px-2.5 py-1 bg-white border border-slate-200 rounded text-[9px] font-black text-blue-600 shadow-sm">
-                        {applicant.type}
-                      </span>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col">
-                        <span className="font-black text-slate-700 text-xs text-nowrap">
-                          {applicant.date}
-                        </span>
-                        <span className="text-[10px] font-bold text-slate-400">
-                          {applicant.time}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handleInterview(applicant.name)}
-                          className="flex items-center gap-1.5 px-4 py-1.5 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase hover:bg-emerald-100 transition-colors"
-                        >
-                          <Calendar size={12} strokeWidth={3} />
-                          Interview
-                        </button>
-                        <button
-                          onClick={() => handleReject(applicant.name)}
-                          className="flex items-center gap-1.5 px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase hover:bg-rose-100 transition-colors"
-                        >
-                          <X size={12} strokeWidth={3} />
-                          Reject
-                        </button>
-                        <div className="flex items-center gap-1 ml-2 border-l border-slate-100 pl-3">
-                          <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
-                            <FileText size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleViewDetail(applicant)}
-                            className="p-1.5 text-slate-300 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded transition-all"
-                          >
-                            <Eye size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleEdit(applicant)}
-                            className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all"
-                          >
-                            <Edit2 size={14} />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(applicant.id)}
-                            className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all"
-                          >
-                            <Trash2 size={14} />
-                          </button>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-slate-200">
+                        <div className="flex flex-col text-[11px] font-bold text-slate-600">
+                          <span>{applicant.date}</span>
+                          <span className="text-[9px] text-slate-400">
+                            {applicant.time}
+                          </span>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                      <td className="px-8 py-6">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => handleInterview(applicant)}
+                            className="flex items-center gap-1.5 px-4 py-1.5 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase hover:bg-emerald-100 transition-colors"
+                          >
+                            <Calendar size={12} strokeWidth={3} />
+                            Interview
+                          </button>
+                          <button
+                            onClick={() => handleReject(applicant)}
+                            className="flex items-center gap-1.5 px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase hover:bg-rose-100 transition-colors"
+                          >
+                            <X size={12} strokeWidth={3} />
+                            Reject
+                          </button>
+                          <div className="flex items-center gap-1 ml-2 border-l border-slate-100 pl-3">
+                            <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                              <FileText size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleViewDetail(applicant)}
+                              className="p-1.5 text-slate-300 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded transition-all"
+                            >
+                              <Eye size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleEdit(applicant)}
+                              className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all"
+                            >
+                              <Edit2 size={14} />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(applicant.id)}
+                              className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -586,109 +617,293 @@ const Recruitment = ({ onBack }) => {
         </div>
       )}
 
-      {/* Detail View Modal */}
-      {showDetailModal && (
+      {/* Add Applicant Modal */}
+      {showAddModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-[32px] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
-            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-white">
-              <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-inner">
-                  <User size={28} />
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-100">
+                  <Plus size={24} strokeWidth={3} />
                 </div>
                 <div>
                   <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
-                    Applicant Profile
+                    New Applicant
                   </h3>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    Submission Details & History
+                    Register a new candidate in the system
                   </p>
                 </div>
               </div>
               <button
-                onClick={() => setShowDetailModal(false)}
-                className="p-3 hover:bg-slate-50 rounded-2xl transition-all text-slate-400"
+                onClick={() => setShowAddModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400 hover:text-slate-600"
               >
                 <X size={24} />
               </button>
             </div>
 
-            <div className="p-10 space-y-10 max-h-[70vh] overflow-y-auto scroller-hide">
-              <div className="flex items-center gap-8 p-6 bg-slate-50 rounded-3xl border border-slate-100">
-                <img
-                  src={selectedApplicant?.photo}
-                  className="w-24 h-24 rounded-2xl border-4 border-white shadow-md"
-                  alt=""
-                />
-                <div className="space-y-2">
-                  <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none">
-                    {selectedApplicant?.name}
-                  </h2>
-                  <div className="flex gap-4">
-                    <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest bg-blue-50 px-2 py-1 rounded-md">
-                      {selectedApplicant?.type}
-                    </span>
-                    <span className="text-[10px] font-black text-emerald-600 uppercase tracking-widest bg-emerald-50 px-2 py-1 rounded-md">
-                      {selectedApplicant?.subStatus}
-                    </span>
+            <div className="p-0">
+              <div className="border-b border-slate-100">
+                {/* Table Form Content */}
+                <div className="grid grid-cols-1 divide-y divide-slate-100">
+                  {/* Row 1 */}
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Full Name
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <input
+                        type="text"
+                        placeholder="e.g. John Doe"
+                        className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300"
+                      />
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-x-12 gap-y-8">
-                <div className="space-y-1">
-                  <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">
-                    Contact Phone
-                  </p>
-                  <p className="text-sm font-bold text-slate-700">
-                    {selectedApplicant?.phone}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">
-                    Department
-                  </p>
-                  <p className="text-sm font-bold text-slate-700">
-                    {selectedApplicant?.department}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">
-                    Applied For
-                  </p>
-                  <p className="text-sm font-bold text-slate-700">
-                    {selectedApplicant?.position}
-                  </p>
-                </div>
-                <div className="space-y-1">
-                  <p className="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">
-                    Date Submitted
-                  </p>
-                  <p className="text-sm font-bold text-slate-700">
-                    {selectedApplicant?.date} at {selectedApplicant?.time}
-                  </p>
+                  {/* Row 2 */}
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Gender & Age
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4 flex items-center gap-4">
+                      <select className="bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer">
+                        <option>MALE</option>
+                        <option>FEMALE</option>
+                        <option>OTHER</option>
+                      </select>
+                      <div className="w-px h-4 bg-slate-200"></div>
+                      <input
+                        type="number"
+                        placeholder="Age"
+                        className="w-20 bg-transparent border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300"
+                      />
+                    </div>
+                  </div>
+                  {/* Row 3 */}
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Phone Number
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <input
+                        type="text"
+                        placeholder="+855 000 000 000"
+                        className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300"
+                      />
+                    </div>
+                  </div>
+                  {/* Row 4 */}
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Department
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <select className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer">
+                        <option value="">Select Department</option>
+                        <option>Production</option>
+                        <option>Engineering</option>
+                        <option>Admin</option>
+                        <option>HR</option>
+                        <option>Design</option>
+                      </select>
+                    </div>
+                  </div>
+                  {/* Row 5 */}
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Position
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <input
+                        type="text"
+                        placeholder="e.g. Software Engineer"
+                        className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300"
+                      />
+                    </div>
+                  </div>
+                  {/* Row 6 */}
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Applicant Type
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <div className="flex items-center gap-6">
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="type"
+                            className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300"
+                            defaultChecked
+                          />
+                          <span className="text-xs font-bold text-slate-600 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+                            Foreigner
+                          </span>
+                        </label>
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="radio"
+                            name="type"
+                            className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-slate-300"
+                          />
+                          <span className="text-xs font-bold text-slate-600 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+                            Expat
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="px-10 py-8 bg-slate-50 flex justify-end">
+            <div className="p-8 bg-slate-50 flex items-center justify-end gap-4">
               <button
-                onClick={() => setShowDetailModal(false)}
-                className="px-10 py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-slate-800 transition-all shadow-xl active:scale-95"
+                onClick={() => setShowAddModal(false)}
+                className="px-6 py-3 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
               >
-                Close View
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert("Applicant added successfully!");
+                  setShowAddModal(false);
+                }}
+                className="px-10 py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <Check size={16} strokeWidth={3} />
+                Create Applicant
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Edit Modal (Mock) */}
+      {/* Detail View Modal */}
+      {showDetailModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-5">
+                <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-inner">
+                  <User size={24} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Applicant Profile
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Detailed record information
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="p-8 bg-gradient-to-br from-blue-50/50 to-slate-50/30 border-b border-slate-100 flex items-center gap-8">
+                <div className="relative">
+                  <img
+                    src={selectedApplicant?.photo}
+                    className="w-24 h-24 rounded-[2rem] border-4 border-white shadow-xl"
+                    alt=""
+                  />
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-white rounded-xl shadow-md flex items-center justify-center border border-slate-100">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none uppercase">
+                    {selectedApplicant?.name}
+                  </h2>
+                  <div className="flex gap-3">
+                    <span className="text-[9px] font-black text-blue-600 uppercase tracking-[0.15em] bg-white border border-blue-100 px-3 py-1 rounded-lg shadow-sm">
+                      {selectedApplicant?.type}
+                    </span>
+                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-[0.15em] bg-white border border-emerald-100 px-3 py-1 rounded-lg shadow-sm">
+                      {selectedApplicant?.subStatus}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Data Table */}
+              <div className="grid grid-cols-1 divide-y divide-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-4 bg-slate-50/30 font-black text-slate-400 text-[9px] uppercase tracking-widest flex items-center">
+                    Phone Contact
+                  </div>
+                  <div className="col-span-2 p-4 text-sm font-bold text-slate-700">
+                    {selectedApplicant?.phone}
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-4 bg-slate-50/30 font-black text-slate-400 text-[9px] uppercase tracking-widest flex items-center">
+                    Bio Info
+                  </div>
+                  <div className="col-span-2 p-4 text-sm font-bold text-slate-700 uppercase">
+                    {selectedApplicant?.age} Years Old
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-4 bg-slate-50/30 font-black text-slate-400 text-[9px] uppercase tracking-widest flex items-center">
+                    Employment
+                  </div>
+                  <div className="col-span-2 p-4">
+                    <div className="text-sm font-bold text-slate-700 uppercase">
+                      {selectedApplicant?.position}
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      {selectedApplicant?.department} Department
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-4 bg-slate-50/30 font-black text-slate-400 text-[9px] uppercase tracking-widest flex items-center">
+                    Submission
+                  </div>
+                  <div className="col-span-2 p-4 text-sm font-bold text-slate-500">
+                    {selectedApplicant?.date} at {selectedApplicant?.time}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end">
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="px-10 py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-slate-800 transition-all shadow-xl active:scale-95"
+              >
+                Close Profile
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
           <div className="bg-white rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
-            <div className="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-white">
-              <div className="flex items-center gap-5">
-                <div className="w-14 h-14 rounded-2xl bg-orange-50 flex items-center justify-center text-orange-600 shadow-inner">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-orange-500 flex items-center justify-center text-white shadow-lg shadow-orange-100">
                   <Edit2 size={24} />
                 </div>
                 <div>
@@ -696,53 +911,318 @@ const Recruitment = ({ onBack }) => {
                     Edit Applicant
                   </h3>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    Update basic information
+                    Modify existing candidate data
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowEditModal(false)}
-                className="p-3 hover:bg-slate-50 rounded-2xl transition-all text-slate-400"
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
               >
                 <X size={24} />
               </button>
             </div>
 
-            <div className="p-10 space-y-8">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  defaultValue={selectedApplicant?.name}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 text-sm font-bold text-slate-700 outline-none focus:border-blue-500 transition-all"
+            <div className="p-0">
+              <div className="grid grid-cols-1 divide-y divide-slate-100 border-b border-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Full Name
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <input
+                      type="text"
+                      defaultValue={selectedApplicant?.name}
+                      className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Phone Number
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <input
+                      type="text"
+                      defaultValue={selectedApplicant?.phone}
+                      className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Department
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <select
+                      className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer"
+                      defaultValue={selectedApplicant?.department}
+                    >
+                      <option>Production</option>
+                      <option>Engineering</option>
+                      <option>Admin</option>
+                      <option>HR</option>
+                      <option>Design</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="px-8 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert("Changes saved successfully!");
+                  setShowEditModal(false);
+                }}
+                className="px-10 py-4 bg-orange-500 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-orange-600 shadow-xl shadow-orange-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <Check size={16} strokeWidth={3} />
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Interview Schedule Modal */}
+      {showInterviewModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-100">
+                  <Calendar size={24} strokeWidth={3} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Schedule Interview
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Set up a new technical screening
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowInterviewModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="p-6 bg-emerald-50/50 border-b border-emerald-100 flex items-center gap-4 mx-4 my-4 rounded-2xl">
+                <img
+                  src={selectedApplicant?.photo}
+                  className="w-12 h-12 rounded-xl object-cover border-2 border-white shadow-sm"
+                  alt=""
                 />
+                <div>
+                  <h4 className="font-black text-slate-800 uppercase text-xs">
+                    {selectedApplicant?.name}
+                  </h4>
+                  <p className="text-[10px] font-bold text-emerald-600 uppercase">
+                    Candidate for {selectedApplicant?.position}
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">
-                  Phone Number
-                </label>
-                <input
-                  type="text"
-                  defaultValue={selectedApplicant?.phone}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 text-sm font-bold text-slate-700 outline-none focus:border-blue-500 transition-all"
+
+              <div className="grid grid-cols-1 divide-y divide-slate-100 border-b border-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Date & Time
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5 flex gap-4">
+                    <input
+                      type="date"
+                      className="flex-1 bg-transparent border-none text-sm font-bold text-slate-700 outline-none"
+                    />
+                    <div className="w-px h-6 bg-slate-200"></div>
+                    <input
+                      type="time"
+                      className="flex-1 bg-transparent border-none text-sm font-bold text-slate-700 outline-none"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Interviewer
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <select className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer">
+                      <option>Tech Lead (Arnold)</option>
+                      <option>HR Manager (Sreynoch)</option>
+                      <option>CEO (Mony)</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Method
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <div className="flex gap-6">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="method"
+                          defaultChecked
+                          className="w-4 h-4 text-emerald-600"
+                        />
+                        <span className="text-xs font-bold text-slate-600 uppercase">
+                          Offline
+                        </span>
+                      </label>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="method"
+                          className="w-4 h-4 text-emerald-600"
+                        />
+                        <span className="text-xs font-bold text-slate-600 uppercase">
+                          Online
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowInterviewModal(false)}
+                className="px-8 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert("Interview scheduled successfully!");
+                  setShowInterviewModal(false);
+                }}
+                className="px-10 py-4 bg-emerald-600 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-emerald-700 shadow-xl shadow-emerald-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <Calendar size={16} strokeWidth={3} />
+                Schedule Now
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reject Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500 flex items-center justify-center text-white shadow-lg shadow-rose-100">
+                  <X size={24} strokeWidth={3} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Reject Candidate
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Terminate the recruitment process
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="p-6 bg-rose-50/50 border-b border-rose-100 flex items-center gap-4 mx-4 my-4 rounded-2xl">
+                <img
+                  src={selectedApplicant?.photo}
+                  className="w-12 h-12 rounded-xl object-cover border-2 border-white shadow-sm opacity-50 grayscale"
+                  alt=""
                 />
+                <div>
+                  <h4 className="font-black text-slate-800 uppercase text-xs">
+                    {selectedApplicant?.name}
+                  </h4>
+                  <p className="text-[10px] font-bold text-rose-600 uppercase">
+                    Reason for rejection required
+                  </p>
+                </div>
               </div>
-              <div className="pt-4 flex justify-end gap-3">
-                <button
-                  onClick={() => setShowEditModal(false)}
-                  className="px-8 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => setShowEditModal(false)}
-                  className="px-10 py-4 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all"
-                >
-                  Save Changes
-                </button>
+
+              <div className="grid grid-cols-1 divide-y divide-slate-100 border-b border-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Reason
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <select className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer">
+                      <option>Technical skills mismatch</option>
+                      <option>Cultural fit concerns</option>
+                      <option>Salary expectation mismatch</option>
+                      <option>Position closed</option>
+                      <option>Candidate withdrew</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 min-h-[120px]">
+                  <div className="p-5 bg-slate-50/50 flex items-start pt-6">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Internal Notes
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <textarea
+                      placeholder="Add specific details for the records..."
+                      className="w-full h-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300 resize-none"
+                    ></textarea>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="px-8 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert(`${selectedApplicant?.name} has been rejected.`);
+                  setShowRejectModal(false);
+                }}
+                className="px-12 py-4 bg-rose-600 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-rose-700 shadow-xl shadow-rose-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <Send size={16} />
+                Confirm Rejection
+              </button>
             </div>
           </div>
         </div>

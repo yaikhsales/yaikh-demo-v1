@@ -8,7 +8,7 @@ import { useTranslation } from '../translate/TranslationContext';
 const getSalaryBillIconImage = (title) => {
     const titleToImageMap = {
         'Monthly Salary': 'monthly-salary.png',
-        'Weekly Incentive': 'weekly-incentive.png',
+        'Incentive': 'weekly-incentive.png',
         'Permit Fee': 'permit-fee.png',
         'Resign Payment': 'resign-payment.png'
     };
@@ -33,7 +33,7 @@ const SalaryBill = ({ onBack }) => {
         // Navigate to respective module pages
         const routeMap = {
             'Monthly Salary': '/dashboard/monthly-salary',
-            'Weekly Incentive': '/dashboard/weekly-incentive',
+            'Incentive': '/dashboard/weekly-incentive',
             'Permit Fee': '/dashboard/permit-fee',
             'Resign Payment': '/dashboard/resign-payment'
         };
@@ -52,7 +52,7 @@ const SalaryBill = ({ onBack }) => {
             shadow: 'shadow-blue-200'
         },
         { 
-            title: 'Weekly Incentive', 
+            title: 'Incentive', 
             color: 'bg-gradient-to-br from-green-500 to-green-600',
             shadow: 'shadow-green-200'
         },

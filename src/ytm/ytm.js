@@ -32,6 +32,10 @@ const YTM = ({ onBack }) => {
   const [isBotOpen, setIsBotOpen] = useState(false);
 
   const reportImages = ["/assets/ytm/report1.jpg", "/assets/ytm/report2.jpg"];
+  const systemSetupImages = [
+    "/assets/ytm/system-setup1.jpg",
+    "/assets/ytm/system-setup.jpg",
+  ];
 
   const handleBack = () => {
     if (selectedImage) {
@@ -123,6 +127,10 @@ const YTM = ({ onBack }) => {
 
   // --- Full Screen Image Viewer View ---
   if (selectedImage) {
+    const isMultiImage = ["Report", "System Setup"].includes(currentTitle);
+    const multiImages =
+      currentTitle === "Report" ? reportImages : systemSetupImages;
+
     return (
       <div className="fixed inset-0 bg-black flex flex-col overflow-hidden z-[150]">
         <div className="bg-white/10 backdrop-blur-md border-b border-white/20 px-6 py-4 flex items-center justify-between sticky top-0 z-[151]">
@@ -153,14 +161,14 @@ const YTM = ({ onBack }) => {
         </div>
 
         <div className="flex-1 overflow-hidden flex items-center justify-center p-4 bg-slate-900 relative">
-          {currentTitle === "Report" && (
+          {isMultiImage && (
             <>
               <button
                 onClick={() =>
                   setCurrentImageIndex((prev) => (prev === 0 ? 1 : 0))
                 }
                 className="absolute left-10 z-[160] p-4 rounded-full bg-slate-900/90 hover:bg-black shadow-2xl text-white transition-all hover:scale-110 active:scale-95 border border-white/20"
-                title="Previous Report"
+                title="Previous"
               >
                 <ArrowLeft size={24} />
               </button>
@@ -170,13 +178,13 @@ const YTM = ({ onBack }) => {
                   setCurrentImageIndex((prev) => (prev === 0 ? 1 : 0))
                 }
                 className="absolute right-10 z-[160] p-4 rounded-full bg-slate-900/90 hover:bg-black shadow-2xl text-white transition-all hover:scale-110 active:scale-95 rotate-180 border border-white/20"
-                title="Next Report"
+                title="Next"
               >
                 <ArrowLeft size={24} />
               </button>
 
               <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-[160]">
-                {[0, 1].map((idx) => (
+                {multiImages.map((_, idx) => (
                   <div
                     key={idx}
                     className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentImageIndex ? "w-8 bg-orange-500" : "w-2 bg-white/20"}`}
@@ -187,14 +195,14 @@ const YTM = ({ onBack }) => {
           )}
 
           <img
-            src={
-              currentTitle === "Report"
-                ? reportImages[currentImageIndex]
-                : selectedImage
-            }
+            src={isMultiImage ? multiImages[currentImageIndex] : selectedImage}
             alt="Dashboard View"
             className="max-w-full max-h-full object-contain shadow-2xl rounded-lg transition-all duration-500"
-            key={currentImageIndex}
+            key={
+              isMultiImage
+                ? `${currentTitle}-${currentImageIndex}`
+                : selectedImage
+            }
             onError={(e) => {
               e.target.src =
                 "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2070";

@@ -133,27 +133,27 @@ const StyleCosting = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1200px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Style Details</th>
-                <th className="px-4 py-5 text-center">SAM</th>
-                <th className="px-4 py-5 text-center">CPM Factor</th>
-                <th className="px-4 py-5 text-center">Labor Cost</th>
-                <th className="px-4 py-5 text-center text-violet-600">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Style Details</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">SAM</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">CPM Factor</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Labor Cost</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center text-violet-600">
                   Total Unit Cost
                 </th>
-                <th className="px-4 py-5 text-center">Customer</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Customer</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {costings.map((rec) => (
+            <tbody>
+              {costings.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <div className="flex flex-col gap-1">
                       <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                         {rec.name}
@@ -165,26 +165,26 @@ const StyleCosting = ({ onBack }) => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-400 font-bold text-xs uppercase">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-400 font-bold text-xs uppercase">
                     {rec.sam} Min
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-400 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-400 font-bold text-xs">
                     ${rec.cpm}
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
                     {rec.laborCost}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="font-black text-violet-600 text-lg tabular-nums">
                       {rec.totalCost}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[9px] font-black uppercase">
                       {rec.customer}
                     </span>
                   </td>
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-b border-slate-200">
                     <div className="flex items-center justify-end gap-2 text-nowrap">
                       <button
                         onClick={() => handleAction("View", rec.name)}
