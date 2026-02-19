@@ -100,8 +100,8 @@ const AppLayout = () => {
         // Navigate directly to YHR component
         navigate("/dashboard/yhr");
       } else if (demoType === "SUBMENU_SALARY_BILL") {
-        // Navigate directly to Salary Bill component
-        navigate("/dashboard/salary-bill");
+        // Navigate to YHR component (Salary Bill is now part of YHR)
+        navigate("/dashboard/yhr");
       } else if (demoType === "SUBMENU_WATER") {
         // Navigate directly to Water component
         navigate("/dashboard/water");
@@ -426,330 +426,6 @@ const AppLayout = () => {
                                   ]
                                   : demoType === "SUBMENU_YQMS"
                                     ? {
-<<<<<<< Updated upstream
-                                      grouped: true,
-                                      groups: [
-                                        {
-                                          label: "Pre Production",
-                                          cards: [
-                                            {
-                                              title: "QC File",
-                                              icon: "FileText",
-                                              color:
-                                                "bg-red-600/30 text-white",
-                                              image:
-                                                "assets/yqms/qc-file.jpg",
-                                              action: "/dashboard/yqms/qc-file",
-                                            },
-                                            {
-                                              title: "Pre Production Meeting",
-                                              icon: "Users",
-                                              color:
-                                                "bg-red-600/30 text-white",
-                                              image:
-                                                "assets/yqms/pre-production-meeting.jpg",
-                                              action: "/dashboard/yqms/pre-production-meeting",
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "First Output ",
-                                          cards: [
-                                            {
-                                              title: "First Output Cutting",
-                                              icon: "Scissors",
-                                              color:
-                                                "bg-orange-500/30 text-white",
-                                              image:
-                                                "assets/yqms/first-output-cutting.jpg",
-                                            },
-                                            {
-                                              title:
-                                                "First Output Printing Embroidery",
-                                              icon: "PenTool",
-                                              color:
-                                                "bg-pink-500/30 text-white",
-                                              image:
-                                                "assets/yqms/first-output-printing-embroidery.jpg",
-                                            },
-                                            {
-                                              title: "First Output Sewing",
-                                              icon: "PenTool",
-                                              color:
-                                                "bg-lime-500/30 text-white",
-                                              image:
-                                                "assets/yqms/first-output-sewing.jpg",
-                                            },
-                                            {
-                                              title: "QA Cutting",
-                                              icon: "Search",
-                                              color:
-                                                "bg-amber-500/30 text-white",
-                                              image:
-                                                "assets/yqms/qa-cutting.jpg",
-                                            },
-                                            {
-                                              title: "QA Printing Embroidery",
-                                              icon: "Search",
-                                              color:
-                                                "bg-yellow-500/30 text-white",
-                                              image:
-                                                "assets/yqms/qa-printing-embroidery.jpg",
-                                            },
-                                            {
-                                              title: "QA 20pcs Audit",
-                                              icon: "ClipboardCheck",
-                                              color:
-                                                "bg-emerald-500/30 text-white",
-                                              image:
-                                                "assets/yqms/qa-20pcs-audit.jpg",
-                                            },
-                                            {
-                                              title: "Inline Audit Rolling",
-                                              icon: "FileCheck",
-                                              color:
-                                                "bg-indigo-500/30 text-white",
-                                              image:
-                                                "assets/yqms/inline-audit-rolling.jpg",
-                                            },
-                                            {
-                                              title: "Offline Audit",
-                                              icon: "FileCheck",
-                                              color:
-                                                "bg-violet-500/30 text-white",
-                                              image:
-                                                "assets/yqms/offline-audit.jpg",
-                                            },
-                                            {
-                                              title: "QC End Line Checking",
-                                              icon: "CheckCircle",
-                                              color:
-                                                "bg-red-600/30 text-white",
-                                              image:
-                                                "assets/yqms/qc-end-line-checking.jpg",
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "IQC",
-                                          cards: [
-                                            {
-                                              title: "Internal Rolling QC",
-                                              icon: "FileCheck",
-                                              color:
-                                                "bg-blue-500/30 text-white",
-                                              image:
-                                                "assets/fc/internal-rolling-qc.jpg",
-                                              galleryImages: [
-                                                "assets/yqms/internal-rolling-qc/internal-qc-rolling.png",
-                                              ],
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "Cut",
-                                          cards: [
-                                            {
-                                              title: "Cutting Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-orange-500/30 text-white",
-                                              image:
-                                                "assets/fc/cutting-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Cut Panel Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-amber-500/30 text-white",
-                                              image:
-                                                "assets/fc/cut-panel-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Printing Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-purple-500/30 text-white",
-                                              image:
-                                                "assets/fc/printing-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Embroidery Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-pink-500/30 text-white",
-                                              image:
-                                                "assets/fc/embroidery-inspection.jpg",
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "Sew",
-                                          cards: [
-                                            {
-                                              title: "Garment Check Output",
-                                              icon: "CheckCircle",
-                                              color:
-                                                "bg-green-500/30 text-white",
-                                              image:
-                                                "assets/fc/garment-check-output.jpg",
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "Pack",
-                                          cards: [
-                                            {
-                                              title: "Finishing Inspection",
-                                              icon: "ClipboardCheck",
-                                              color:
-                                                "bg-teal-500/30 text-white",
-                                              image:
-                                                "assets/fc/finishing-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Ironing Inspection",
-                                              icon: "Thermometer",
-                                              color:
-                                                "bg-cyan-500/30 text-white",
-                                              image:
-                                                "assets/fc/ironing-inspection.jpg",
-                                              galleryImages: [
-                                                "assets/yqms/irroning-inspection/irroning.png",
-                                              ],
-                                            },
-                                            {
-                                              title: "Packing Inspection",
-                                              icon: "PackageCheck",
-                                              color:
-                                                "bg-indigo-500/30 text-white",
-                                              image:
-                                                "assets/fc/packing-inspection.jpg",
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "Inspection",
-                                          cards: [
-                                            {
-                                              title: "Fin Check",
-                                              icon: "ClipboardCheck",
-                                              color:
-                                                "bg-emerald-600/30 text-white",
-                                              image:
-                                                "assets/yqms/fincheck.png",
-                                              galleryImages: [
-                                                "assets/yqms/finishing-inspection/fin-check-report.png",
-                                                "assets/yqms/finishing-inspection/fin-check-inspection.png",
-                                                "assets/yqms/finishing-inspection/fin-check-setting.png",
-                                                "assets/yqms/finishing-inspection/fin-check-template.png",
-                                                "assets/yqms/finishing-inspection/fin-check-upload.png",
-                                              ],
-                                            },
-                                            {
-                                              title: "Pre Final Inspection",
-                                              icon: "Eye",
-                                              color:
-                                                "bg-rose-500/30 text-white",
-                                              image:
-                                                "assets/yqms/pre-final-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Final Inspection",
-                                              icon: "Eye",
-                                              color:
-                                                "bg-red-500/30 text-white",
-                                              image:
-                                                "assets/yqms/final-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Buyer Final Inspection",
-                                              icon: "Eye",
-                                              color:
-                                                "bg-red-600/30 text-white",
-                                              image:
-                                                "assets/yqms/buyer-final-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Supplier Evaluation",
-                                              icon: "CheckSquare",
-                                              color:
-                                                "bg-teal-500/30 text-white",
-                                              image:
-                                                "assets/yqms/supplier-evaluation.jpg",
-                                            },
-                                            {
-                                              title: "Customer Complain Cap",
-                                              icon: "AlertTriangle",
-                                              color:
-                                                "bg-orange-600/30 text-white",
-                                              image:
-                                                "assets/yqms/customer-complain-cap.jpg",
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "Final Production",
-                                          cards: [
-                                            {
-                                              title:
-                                                "QA Audit Finishing Packing",
-                                              icon: "ClipboardCheck",
-                                              color:
-                                                "bg-green-500/30 text-white",
-                                              image:
-                                                "assets/yqms/qa-audit-finishing-packing.jpg",
-                                            },
-                                            {
-                                              title:
-                                                "Humidity Aquaboy Checking",
-                                              icon: "Thermometer",
-                                              color:
-                                                "bg-sky-500/30 text-white",
-                                              image:
-                                                "assets/yqms/humidity-acraboy-checking.jpg",
-                                              galleryImages: [
-                                                "assets/yqms/aquaboy/quaboy1.png",
-                                                "assets/yqms/aquaboy/aquaboy2.png",
-                                                "assets/yqms/aquaboy/aquaboy3.png",
-                                              ],
-                                            },
-                                            {
-                                              title:
-                                                "First Output Finishing And Packing",
-                                              icon: "PackageCheck",
-                                              color:
-                                                "bg-cyan-500/30 text-white",
-                                              image:
-                                                "assets/yqms/first-output-finishing-and-packing.jpg",
-                                            },
-                                          ],
-                                        },
-                                        {
-                                          label: "Data",
-                                          cards: [
-                                            {
-                                              title: "Dashboard",
-                                              image:
-                                                "https://cdn-icons-png.flaticon.com/128/6820/6820898.png",
-                                              color:
-                                                "bg-slate-500 text-white",
-                                              galleryImages: [
-                                                "assets/yqms/dashboard/dashboard1.png",
-                                              ],
-                                            },
-                                            {
-                                              title: "Report",
-                                              image:
-                                                "https://cdn-icons-png.flaticon.com/128/1321/1321938.png",
-                                              color:
-                                                "bg-slate-500 text-white",
-                                            },
-                                          ],
-                                        },
-                                      ],
-                                    }
-=======
                                         grouped: true,
                                         groups: [
                                           {
@@ -1120,7 +796,6 @@ const AppLayout = () => {
                                           },
                                         ],
                                       }
->>>>>>> Stashed changes
                                     : demoType === "SUBMENU_EGOV"
                                       ? [
                                         {
@@ -1499,6 +1174,8 @@ const AppLayout = () => {
         navigate("/dashboard/ytm");
       } else if (module.title === "KANBAN" || module.id === "kanban") {
         navigate("/dashboard/traffic-light");
+      } else if (module.title === "PWIP" || module.id === "pwip") {
+        navigate("/dashboard/pwip");
       } else if (module.galleryImages && module.galleryImages.length > 0) {
         // Navigate to image view with gallery support
         const encodedPath = encodeURIComponent(module.galleryImages[0]);
@@ -1508,8 +1185,6 @@ const AppLayout = () => {
             title: module.title,
           },
         });
-      } else if (module.title === "PWIP" || module.id === "pwip") {
-        navigate("/dashboard/pwip");
       } else if (module.title === "Call Out" || module.id === "call-out") {
         navigate("/dashboard/call-out");
       } else if (module.id === "meeting" && module.title === "Meeting Room") {
