@@ -25,8 +25,7 @@ const StandardTime = ({ onBack }) => {
         { date: "01-Mar-26", sam: "23.50" },
       ],
       types: ["PROTO SAMPLE", "FIT SAMPLE", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1591047139829-d91aec96dad5?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/13442/13442760.png",
       prodSam: "23.50",
       varianceReason: "Complex quilting required",
       comparison: ["22.10", "23.00", "24.20"],
@@ -44,8 +43,7 @@ const StandardTime = ({ onBack }) => {
         { date: "05-Mar-26", sam: "15.50" },
       ],
       types: ["INITIAL REF", "SIZE SET", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1542272604-787c3835535d?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/1867/1867632.png",
       prodSam: "15.75",
       varianceReason: "Stone wash effect added",
       comparison: ["15.00", "15.50", "16.00"],
@@ -63,8 +61,7 @@ const StandardTime = ({ onBack }) => {
         { date: "08-Mar-26", sam: "6.00" },
       ],
       types: ["DEV SAMPLE", "FIT SAMPLE", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/18923/18923323.png",
       prodSam: "6.10",
       varianceReason: "High speed hemming",
       comparison: ["5.90", "6.10", "6.30"],
@@ -82,8 +79,7 @@ const StandardTime = ({ onBack }) => {
         { date: "10-Mar-26", sam: "13.50" },
       ],
       types: ["PROTO SAMPLE", "WEAR TEST", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/1867/1867632.png",
       prodSam: "13.80",
       varianceReason: "Flatlock stitching",
       comparison: ["13.20", "13.50", "14.00"],
@@ -101,8 +97,7 @@ const StandardTime = ({ onBack }) => {
         { date: "12-Mar-26", sam: "18.50" },
       ],
       types: ["REF SAMPLE", "FIT SAMPLE", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/13442/13442760.png",
       prodSam: "18.75",
       varianceReason: "Kangaroo pocket align",
       comparison: ["18.00", "18.50", "19.20"],
@@ -120,8 +115,7 @@ const StandardTime = ({ onBack }) => {
         { date: "15-Mar-26", sam: "10.50" },
       ],
       types: ["PROTO SAMPLE", "FIT SAMPLE", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1581655353564-df123a1eb820?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/18923/18923323.png",
       prodSam: "10.65",
       varianceReason: "Collar rib adjustment",
       comparison: ["10.10", "10.50", "11.00"],
@@ -139,8 +133,7 @@ const StandardTime = ({ onBack }) => {
         { date: "18-Mar-26", sam: "19.80" },
       ],
       types: ["INITIAL REF", "SIZE SET", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/13442/13442760.png",
       prodSam: "19.95",
       varianceReason: "Linking machine setup",
       comparison: ["19.00", "19.80", "20.50"],
@@ -158,8 +151,7 @@ const StandardTime = ({ onBack }) => {
         { date: "20-Mar-26", sam: "14.80" },
       ],
       types: ["DEV SAMPLE", "WEAR TEST", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/1867/1867632.png",
       prodSam: "14.90",
       varianceReason: "Pocket gusset detail",
       comparison: ["14.20", "14.80", "15.50"],
@@ -177,8 +169,7 @@ const StandardTime = ({ onBack }) => {
         { date: "22-Mar-26", sam: "30.50" },
       ],
       types: ["PROTO SAMPLE", "FIT SAMPLE", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/18923/18923323.png",
       prodSam: "30.80",
       varianceReason: "Shoulder pad alignment",
       comparison: ["29.50", "30.50", "31.50"],
@@ -196,8 +187,7 @@ const StandardTime = ({ onBack }) => {
         { date: "25-Mar-26", sam: "11.90" },
       ],
       types: ["DEV SAMPLE", "FIT SAMPLE", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/1867/1867632.png",
       prodSam: "12.10",
       varianceReason: "Delicate hem finish",
       comparison: ["11.50", "11.90", "12.50"],
@@ -215,8 +205,7 @@ const StandardTime = ({ onBack }) => {
         { date: "28-Mar-26", sam: "8.90" },
       ],
       types: ["PROTO SAMPLE", "WEAR TEST", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/13442/13442760.png",
       prodSam: "9.15",
       varianceReason: "Elastic tension sync",
       comparison: ["8.50", "8.90", "9.50"],
@@ -234,8 +223,7 @@ const StandardTime = ({ onBack }) => {
         { date: "30-Mar-26", sam: "16.20" },
       ],
       types: ["REF SAMPLE", "SIZE SET", "PP SAMPLE"],
-      thumbnail:
-        "https://images.unsplash.com/photo-1552902865-b72c031ac5ea?w=200&h=200&fit=crop",
+      thumbnail: "https://cdn-icons-png.flaticon.com/128/18923/18923323.png",
       prodSam: "16.50",
       varianceReason: "Drawcord eyelet fix",
       comparison: ["15.80", "16.20", "17.00"],
