@@ -636,14 +636,8 @@ const AppLayout = () => {
                                               color:
                                                 "bg-emerald-600/30 text-white",
                                               image:
-                                                "assets/yqms/fincheck.png",
-                                              galleryImages: [
-                                                "assets/yqms/finishing-inspection/fin-check-report.png",
-                                                "assets/yqms/finishing-inspection/fin-check-inspection.png",
-                                                "assets/yqms/finishing-inspection/fin-check-setting.png",
-                                                "assets/yqms/finishing-inspection/fin-check-template.png",
-                                                "assets/yqms/finishing-inspection/fin-check-upload.png",
-                                              ],
+                                                "assets/yqms/fin-check-icon.png",
+                                              action: "/dashboard/yqms/fin-check",
                                             },
                                             {
                                               title: "Pre Final Inspection",

@@ -17,8 +17,11 @@ import {
 
 const AddMeeting = ({ onCancel, onSave }) => {
     const [isRecording, setIsRecording] = useState(false);
+    const isRecordingRef = useRef(false); // Ref to track recording state without triggering re-renders in callbacks
     const [selectedLanguage, setSelectedLanguage] = useState('en-US'); // Default to English
     const [isListening, setIsListening] = useState(false);
+    const [interimTranscript, setInterimTranscript] = useState('');
+    const [permissionError, setPermissionError] = useState(false);
     const recognitionRef = useRef(null);
 
     const [formData, setFormData] = useState({
@@ -30,9 +33,8 @@ const AddMeeting = ({ onCancel, onSave }) => {
         notes: ''
     });
 
-    // Initialize Speech Recognition
+    // Initialize Speech Recognition once
     useEffect(() => {
-        // Check if browser supports Speech Recognition
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
         if (SpeechRecognition) {
@@ -46,7 +48,7 @@ const AddMeeting = ({ onCancel, onSave }) => {
             };
 
             recognition.onresult = (event) => {
-                let interimTranscript = '';
+                let currentInterim = '';
                 let finalTranscript = '';
 
                 for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -54,7 +56,7 @@ const AddMeeting = ({ onCancel, onSave }) => {
                     if (event.results[i].isFinal) {
                         finalTranscript += transcript + ' ';
                     } else {
-                        interimTranscript += transcript;
+                        currentInterim += transcript;
                     }
                 }
 
@@ -64,19 +66,32 @@ const AddMeeting = ({ onCancel, onSave }) => {
                         notes: prev.notes + finalTranscript
                     }));
                 }
+                setInterimTranscript(currentInterim);
             };
 
             recognition.onerror = (event) => {
                 console.error('Speech recognition error:', event.error);
+
+                if (event.error === 'not-allowed') {
+                    setPermissionError(true);
+                } else if (event.error === 'network') {
+                    alert('Network error during speech recognition. Please check your connection.');
+                }
+
                 setIsRecording(false);
+                isRecordingRef.current = false;
                 setIsListening(false);
             };
 
             recognition.onend = () => {
                 setIsListening(false);
-                if (isRecording) {
-                    // Restart if still in recording mode
-                    recognition.start();
+                // Restart if the user still wants to record (continuous mode sometimes stops)
+                if (isRecordingRef.current) {
+                    try {
+                        recognition.start();
+                    } catch (err) {
+                        console.error('Failed to restart recognition:', err);
+                    }
                 }
             };
 
@@ -90,7 +105,19 @@ const AddMeeting = ({ onCancel, onSave }) => {
                 recognitionRef.current.stop();
             }
         };
-    }, [selectedLanguage, isRecording]);
+    }, []); // Only run once on mount
+
+    // Update language when it changes
+    useEffect(() => {
+        if (recognitionRef.current) {
+            recognitionRef.current.lang = selectedLanguage;
+
+            // If recording, we need to restart to apply the language change
+            if (isRecording) {
+                recognitionRef.current.stop();
+            }
+        }
+    }, [selectedLanguage]);
 
     const handleMicClick = () => {
         if (!recognitionRef.current) {
@@ -99,27 +126,50 @@ const AddMeeting = ({ onCancel, onSave }) => {
         }
 
         if (!isRecording) {
-            // Start recording
+            setPermissionError(false);
+            // 1. Instantly show localized "Hello!" so the user knows the button worked
+            if (!formData.notes.trim()) {
+                const helloText = {
+                    'en-US': 'Hello! ',
+                    'km-KH': 'សួស្តី! ',
+                    'zh-CN': '你好! '
+                }[selectedLanguage] || 'Hello! ';
+
+                setFormData(prev => ({ ...prev, notes: helloText }));
+            }
+
+            // 2. Start recording state
             setIsRecording(true);
-            recognitionRef.current.lang = selectedLanguage;
-            recognitionRef.current.start();
+            isRecordingRef.current = true;
+
+            try {
+                recognitionRef.current.start();
+            } catch (err) {
+                console.error('Error starting recognition:', err);
+                setIsRecording(false);
+                isRecordingRef.current = false;
+            }
         } else {
             // Stop recording
             setIsRecording(false);
+            isRecordingRef.current = false;
             recognitionRef.current.stop();
         }
     };
 
     const handleLanguageChange = (lang) => {
+        const oldLang = selectedLanguage;
         setSelectedLanguage(lang);
 
-        // If currently recording, restart with new language
-        if (isRecording && recognitionRef.current) {
-            recognitionRef.current.stop();
-            setTimeout(() => {
-                recognitionRef.current.lang = lang;
-                recognitionRef.current.start();
-            }, 100);
+        // If the current notes box only contains a greeting, swap it to the new language
+        const greetings = {
+            'en-US': 'Hello! ',
+            'km-KH': 'សួស្តី! ',
+            'zh-CN': '你好! '
+        };
+
+        if (formData.notes === greetings[oldLang]) {
+            setFormData(prev => ({ ...prev, notes: greetings[lang] }));
         }
     };
 
@@ -127,7 +177,7 @@ const AddMeeting = ({ onCancel, onSave }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="w-full max-w-4xl bg-white border border-slate-200 rounded-[2.5rem] shadow-2xl shadow-slate-900/20 overflow-hidden animate-in zoom-in-95 duration-300 max-h-[90vh] flex flex-col">
                 {/* Form Header */}
-                <div className="flex items-center justify-between px-10 py-8 border-b border-slate-100 bg-white z-10">
+                <div className="flex items-center justify-between px-6 py-6 border-b border-slate-100 bg-white z-10">
                     <div>
                         <h2 className="text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-3">
                             <div className="p-2 bg-red-50 rounded-xl text-red-600">
@@ -252,6 +302,16 @@ const AddMeeting = ({ onCancel, onSave }) => {
                                         >
                                             ខ្មែរ
                                         </button>
+                                        <button
+                                            onClick={() => handleLanguageChange('zh-CN')}
+                                            className={`px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all ${selectedLanguage === 'zh-CN'
+                                                ? 'bg-blue-500 text-white shadow-md'
+                                                : 'text-slate-600 hover:bg-slate-200'
+                                                }`}
+                                            title="Chinese"
+                                        >
+                                            中文
+                                        </button>
                                     </div>
 
                                     {/* Recording Status Badge */}
@@ -259,7 +319,11 @@ const AddMeeting = ({ onCancel, onSave }) => {
                                         <div className="flex items-center gap-1.5 px-3 py-1 bg-red-50 rounded-full border border-red-100 animate-pulse">
                                             <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
                                             <span className="text-[10px] font-bold text-red-600 uppercase tracking-widest">
-                                                {selectedLanguage === 'km-KH' ? 'កំពុងថត...' : 'Recording...'}
+                                                {{
+                                                    'en-US': 'Recording...',
+                                                    'km-KH': 'កំពុងថត...',
+                                                    'zh-CN': '录音中...'
+                                                }[selectedLanguage]}
                                             </span>
                                         </div>
                                     )}
@@ -282,14 +346,41 @@ const AddMeeting = ({ onCancel, onSave }) => {
                                 </div>
                             </div>
                             <div className="relative group">
+                                {permissionError && (
+                                    <div className="mb-3 p-4 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between animate-in slide-in-from-top-2 duration-300">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2 bg-red-100 rounded-xl text-red-600">
+                                                <Mic className="w-4 h-4" />
+                                            </div>
+                                            <div>
+                                                <p className="text-xs font-black text-red-700 uppercase tracking-tight">Microphone Blocked</p>
+                                                <p className="text-[10px] text-red-500 font-bold leading-tight mt-0.5">Please click the padlock icon in your browser search bar and set Microphone to "Allow".</p>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() => setPermissionError(false)}
+                                            className="p-1.5 hover:bg-red-100 rounded-full transition-all text-red-400"
+                                        >
+                                            <X className="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                )}
                                 <textarea
                                     className={`w-full px-6 py-5 bg-gray-50 border rounded-xl shadow-sm focus:ring-2 focus:outline-none transition-all font-medium placeholder:text-slate-300 min-h-[180px] resize-none ${isRecording
                                         ? 'border-blue-300 focus:ring-blue-500/20 focus:border-blue-400'
                                         : 'border-gray-300 focus:ring-blue-500/20 focus:border-blue-500'}`}
                                     placeholder={isRecording
-                                        ? (selectedLanguage === 'km-KH' ? 'កំពុងស្តាប់កំណត់ត្រាការប្រជុំ...' : 'Listening to meeting notes...')
-                                        : (selectedLanguage === 'km-KH' ? 'បញ្ចូលកំណត់ត្រាការប្រជុំ ឬថតសំឡេង...' : 'Enter meeting highlights or record voice minutes...')}
-                                    value={formData.notes}
+                                        ? {
+                                            'en-US': 'Listening to meeting notes...',
+                                            'km-KH': 'កំពុងស្តាប់កំណត់ត្រាការប្រជុំ...',
+                                            'zh-CN': '正在倾听会议记录...'
+                                        }[selectedLanguage]
+                                        : {
+                                            'en-US': 'Enter meeting highlights or record voice minutes...',
+                                            'km-KH': 'បញ្ចូលកំណត់ត្រាការប្រជុំ ឬថតសំឡេង...',
+                                            'zh-CN': '输入会议重点或录制语音分钟...'
+                                        }[selectedLanguage]}
+                                    value={formData.notes + interimTranscript}
                                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                                 ></textarea>
 
@@ -305,9 +396,11 @@ const AddMeeting = ({ onCancel, onSave }) => {
                             {isRecording && (
                                 <p className="text-[10px] text-red-500 font-bold uppercase tracking-[0.2em] text-center mt-3 flex items-center justify-center gap-2">
                                     <Activity className="w-3.5 h-3.5" />
-                                    {selectedLanguage === 'km-KH'
-                                        ? 'ការទទួលស្គាល់សំឡេងកម្រិតខ្ពស់កំពុងដំណើរការ'
-                                        : 'High-fidelity voice recognition active'}
+                                    {{
+                                        'en-US': 'High-fidelity voice recognition active',
+                                        'km-KH': 'ការទទួលស្គាល់សំឡេងកម្រិតខ្ពស់កំពុងដំណើរការ',
+                                        'zh-CN': '高保真语音识别已开启'
+                                    }[selectedLanguage]}
                                 </p>
                             )}
                         </div>
@@ -315,7 +408,7 @@ const AddMeeting = ({ onCancel, onSave }) => {
                 </div>
 
                 {/* Form Footer */}
-                <div className="flex items-center justify-end gap-4 p-10 bg-slate-50/50 border-t border-slate-100">
+                <div className="flex items-center justify-end gap-4 p-6 bg-slate-50/50 border-t border-slate-100">
                     <button
                         onClick={onCancel}
                         className="px-6 py-3 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all uppercase tracking-[0.2em] shadow-sm active:scale-95"
