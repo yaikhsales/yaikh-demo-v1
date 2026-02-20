@@ -85,6 +85,7 @@ import WelcomePage from "./welcome-page";
 import HappyNewYear from "./happy-new-year";
 import QCFile from "./yqms/qc-file";
 import PreProductionMeeting from "./yqms/PPM/pre-production-meeting";
+import FinCheckDashboard from "./yqms/Fin-check/index";
 
 // FC Module Components
 import FabricReceiving from "./fc/FabricReceiving";
@@ -338,6 +339,7 @@ export default function App() {
           />
           <Route path="yqms/qc-file" element={<QCFile onBack={handleBack} />} />
           <Route path="yqms/pre-production-meeting" element={<PreProductionMeeting onBack={handleBack} />} />
+          <Route path="yqms/fin-check" element={<FinCheckDashboard onBack={handleBack} />} />
           <Route
             path="waste"
             element={<WasteDashboardView onBack={handleBack} />}

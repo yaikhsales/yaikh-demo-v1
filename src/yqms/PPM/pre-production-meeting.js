@@ -31,13 +31,13 @@ const PreProductionMeeting = ({ onBack }) => {
     const meetings = [
         { id: 'PPM-2024-001', date: '2024-02-18', buyer: 'Aritzia', style: 'AR-701-BLU', attendees: 12, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
         { id: 'PPM-2024-002', date: '2024-02-18', buyer: 'Costco', style: 'CS-SILK-TW', attendees: 8, status: 'In-Progress', statusColor: 'text-amber-700 bg-amber-100 border-amber-200' },
-        { id: 'PPM-2024-003', date: '2024-02-17', buyer: 'Lululemon', style: 'LL-FAST-BLK', attendees: 15, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
-        { id: 'PPM-2024-004', date: '2024-02-17', buyer: 'Nike', style: 'NK-TECH-GRY', attendees: 10, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
-        { id: 'PPM-2024-005', date: '2024-02-19', buyer: 'Gap', style: 'GP-DENIM-99', attendees: 6, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
-        { id: 'PPM-2024-006', date: '2024-02-20', buyer: 'Uniqlo', style: 'UQ-AIR-772', attendees: 14, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
-        { id: 'PPM-2024-007', date: '2024-02-16', buyer: 'Zara', style: 'ZR-COAT-W24', attendees: 20, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
-        { id: 'PPM-2024-008', date: '2024-02-15', buyer: 'H&M', style: 'HM-KNIT-PR', attendees: 5, status: 'Cancelled', statusColor: 'text-slate-700 bg-slate-100 border-slate-200' },
-        { id: 'PPM-2024-009', date: '2024-02-21', buyer: 'Adidas', style: 'AD-PERF-RUN', attendees: 9, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
+        { id: 'PPM-2024-003', date: '2024-02-17', buyer: 'Arizia', style: 'LL-FAST-BLK', attendees: 15, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
+        { id: 'PPM-2024-004', date: '2024-02-17', buyer: 'ANF', style: 'NK-TECH-GRY', attendees: 10, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
+        { id: 'PPM-2024-005', date: '2024-02-19', buyer: 'Reitmans', style: 'GP-DENIM-99', attendees: 6, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
+        { id: 'PPM-2024-006', date: '2024-02-20', buyer: 'Arizia', style: 'UQ-AIR-772', attendees: 14, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
+        { id: 'PPM-2024-007', date: '2024-02-16', buyer: 'Arizia', style: 'ZR-COAT-W24', attendees: 20, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
+        { id: 'PPM-2024-008', date: '2024-02-15', buyer: 'Costco', style: 'HM-KNIT-PR', attendees: 5, status: 'Cancelled', statusColor: 'text-slate-700 bg-slate-100 border-slate-200' },
+        { id: 'PPM-2024-009', date: '2024-02-21', buyer: 'ANF', style: 'AD-PERF-RUN', attendees: 9, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
     ];
 
     const stats = [
@@ -102,7 +102,13 @@ const PreProductionMeeting = ({ onBack }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         {stats.map((stat, idx) => (
                             <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 relative overflow-hidden group hover:border-red-300 transition-all shadow-sm hover:shadow-md">
-                                <div className="absolute top-0 right-0 p-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Data</div>
+                                <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2 py-1 bg-emerald-50 rounded-full border border-emerald-100/50 transition-all group-hover:bg-emerald-100/80">
+                                    <div className="relative flex h-1.5 w-1.5">
+                                        <div className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></div>
+                                        <div className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></div>
+                                    </div>
+                                    <span className="text-[8px] font-black text-emerald-600 uppercase tracking-widest leading-none">Active Data</span>
+                                </div>
                                 <div className="flex items-center gap-4">
                                     <div className={`p-4 rounded-2xl ${stat.bgColor} ${stat.color}`}>
                                         <stat.icon className="w-6 h-6" />
@@ -136,7 +142,7 @@ const PreProductionMeeting = ({ onBack }) => {
                                     />
                                     <button
                                         type="button"
-                                        className="absolute end-1.5 bottom-1.5 top-1.5 text-white bg-slate-900 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-100 font-bold rounded-lg text-[10px] px-4 uppercase tracking-wider transition-all shadow-sm"
+                                        className="absolute end-1 bottom-1.5 top-1.5 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-slate-100 font-bold rounded-lg text-[10px] px-4 uppercase tracking-wider transition-all shadow-sm"
                                     >
                                         Search
                                     </button>
@@ -153,7 +159,7 @@ const PreProductionMeeting = ({ onBack }) => {
                     </div>
 
                     {/* Table Section */}
-                    <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
+                    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-slate-50/50 text-sm uppercase font-bold tracking-widest text-slate-800 border-b border-slate-200">
@@ -164,7 +170,7 @@ const PreProductionMeeting = ({ onBack }) => {
                                     <th className="px-6 py-5">Buyer</th>
                                     <th className="px-6 py-5 text-center">Attendees</th>
                                     <th className="px-6 py-5 text-center">Status</th>
-                                    <th className="px-8 py-5 text-right">Action</th>
+                                    <th className="px-12 py-5 text-right w-24">Action</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
@@ -189,27 +195,29 @@ const PreProductionMeeting = ({ onBack }) => {
                                             <div className="text-sm font-medium text-slate-600">{meeting.buyer}</div>
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <div className="flex items-center justify-center gap-1.5">
-                                                <Users className="w-3.5 h-3.5 text-slate-400" />
-                                                <span className="text-sm font-bold text-slate-900">{meeting.attendees}</span>
+                                            <div className="flex items-center justify-center gap-2.5">
+                                                <div className="p-1.5 bg-purple-50 rounded-lg text-purple-600 border border-purple-100/50 shadow-sm transition-transform group-hover:scale-110">
+                                                    <Users className="w-3.5 h-3.5" />
+                                                </div>
+                                                <span className="text-sm font-black text-slate-800 tracking-tight">{meeting.attendees}</span>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex justify-center">
-                                                <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold tracking-widest uppercase border ${meeting.statusColor}`}>
+                                                <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-[0.1em] uppercase border shadow-sm ${meeting.statusColor}`}>
                                                     {meeting.status}
                                                 </span>
                                             </div>
                                         </td>
-                                        <td className="px-8 py-4 text-right">
-                                            <div className="flex items-center justify-end gap-1.5 text-slate-700">
-                                                <button className="p-2 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all border border-transparent hover:border-red-100" title="Meeting Minutes">
+                                        <td className="px-6 py-4 text-right w-24 ">
+                                            <div className="flex items-center justify-end gap-1 text-slate-700">
+                                                <button className="flex items-center gap-2 px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-600 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border border-amber-100 group/inline shadow-sm" title="Meeting Minutes">
                                                     <Eye className="w-4 h-4" />
                                                 </button>
-                                                <button className="p-2 hover:bg-amber-50 hover:text-amber-600 rounded-lg transition-all border border-transparent hover:border-amber-100" title="Edit Plan">
+                                                <button className="flex items-center gap-2 px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border border-blue-100 group/inline shadow-sm" title="Edit Plan">
                                                     <Pencil className="w-4 h-4" />
                                                 </button>
-                                                <button className="p-2 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all border border-transparent hover:border-red-100" title="Cancel Meeting">
+                                                <button className="flex items-center gap-2 px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border border-red-100 group/inline shadow-sm" title="Cancel Meeting">
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
                                             </div>
@@ -220,7 +228,7 @@ const PreProductionMeeting = ({ onBack }) => {
                         </table>
 
                         {/* Pagination Area */}
-                        <div className="px-8 py-5 bg-slate-50/50 flex items-center justify-between border-t border-slate-200">
+                        <div className="px-8 py-3 bg-slate-50/50 flex items-center justify-between border-t border-slate-200">
                             <span className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Page {currentPage} of {totalPages}</span>
                             <div className="flex gap-2">
                                 <button
