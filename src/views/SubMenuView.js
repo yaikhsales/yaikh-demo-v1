@@ -137,11 +137,11 @@ const getSubIconImage = (title) => {
     "First Output Printing Embroidery": "first-output-printing-embroidery.jpg",
     "First Output Sewing": "first-output-sewing.jpg",
     "First Output Finishing And Packing":
-      "first-output-finishing-and-packing.jpg",
+      "first-output-finishing-packing-icon.svg",
     "QA Cutting": "qa-cutting.jpg",
     "QA Printing Embroidery": "qa-printing-embroidery.jpg",
     "QA 20pcs Audit": "qa-20pcs-audit.jpg",
-    "QA Audit Finishing Packing": "qa-audit-finishing-packing.jpg",
+    "QA Audit Finishing Packing": "qa-audit-finishing-packing-icon.svg",
     "Inline Audit Rolling": "inline-audit-rolling.jpg",
     "Offline Audit": "offline-audit.jpg",
     "QC End Line Checking": "qc-end-line-checking.jpg",
@@ -149,7 +149,6 @@ const getSubIconImage = (title) => {
     "Pre Final Inspection": "pre-final-inspection.jpg",
     "Final Inspection": "final-inspection.jpg",
     "Buyer Final Inspection": "buyer-final-inspection.jpg",
-    "Humidity Aquaboy Checking": "humidity-acraboy-checking.jpg",
     "Customer Complain Cap": "customer-complain-cap.jpg",
     "Fin Check": "fincheck.png",
   };
@@ -280,10 +279,10 @@ const renderCard = (
   // Determine text color for E-Government modules and Purchase Request modules
   let textColorClass = "";
   if (card.color) {
-    if (card.color.includes("text-black")) {
-      textColorClass = "text-black";
-    } else if (card.color.includes("text-white")) {
-      textColorClass = "text-white";
+    // Extract any text-* class from card.color (e.g., text-white, text-black, text-blue-600)
+    const textClassMatch = card.color.match(/\btext-[\w-]+\b/);
+    if (textClassMatch) {
+      textColorClass = textClassMatch[0];
     } else if (isEGovModule) {
       textColorClass = "text-white";
     }
@@ -309,31 +308,33 @@ const renderCard = (
       ? "w-64 h-56" // Card size similar to the sample (256px × 224px)
       : isCompact
         ? "w-[155px] h-[170px]"
-        : isNonClickableModule
-          ? "w-56 h-52"
-          : "w-48 h-40";
+        : isYQMSOrFC && card.color && card.color.includes("bg-white")
+          ? "w-60 h-64" // Prominent size for Inspection cards
+          : isNonClickableModule
+            ? "w-56 h-52"
+            : "w-48 h-40";
   const iconSize = isColorfulCard
     ? "w-32 h-32" // Bigger icons for Accountant and Purchase Request (128px × 128px)
     : isEGovModule
       ? "w-40 h-40" // Large logo for clarity (160px × 160px)
       : isCompact
         ? "w-[115px] h-[115px]"
-        : isNonClickableModule
-          ? "w-28 h-28"
-          : "w-16 h-16";
+        : isYQMSOrFC && card.color && card.color.includes("bg-white")
+          ? "w-48 h-48" // Larger size to fill the card
+          : isNonClickableModule
+            ? "w-28 h-28"
+            : "w-16 h-16";
   const textSize = isColorfulCard
-    ? "text-lg font-bold" // Bigger text for Accountant and Purchase Request
+    ? "text-lg font-bold" // Standard size for colorful cards
     : isEGovModule
       ? "text-xl font-bold" // Bold text for clarity
       : isCompact
-        ? isVeryLongText
-          ? "text-[11px] font-bold"
-          : isLongText
-            ? "text-xs font-bold"
-            : "text-base font-bold"
-        : isNonClickableModule
-          ? "text-base"
-          : "text-lg";
+        ? "text-sm font-bold" // Increased to text-sm for compact
+        : isYQMSOrFC && card.color && card.color.includes("bg-white")
+          ? "text-2xl font-bold" // Prominent blue title from screenshot
+          : isNonClickableModule
+            ? "text-base" // Increased to text-base for non-clickable
+            : "text-lg"; // Increased to text-lg for standard cards
   const gapSize = isColorfulCard
     ? "gap-4"
     : isEGovModule
@@ -522,17 +523,19 @@ const renderCard = (
               }
             }
         }
-        className={`${cardSize} ${isColorfulCard ? "rounded-xl" : isEGovModule ? "rounded-2xl" : "rounded-lg"} shadow-xl flex flex-col items-center ${isYQMSOrFC && isCompact ? "justify-start" : "justify-center"} ${gapSize} ${isColorfulCard
+        className={`${cardSize} ${isColorfulCard ? "rounded-xl" : isEGovModule ? "rounded-2xl" : "rounded-xl"} shadow-xl flex flex-col items-center ${isYQMSOrFC && isCompact ? "justify-start" : "justify-center"} ${gapSize} ${isColorfulCard
           ? "border-0"
           : isEGovModule
             ? ""
-            : "border-2 border-black/20"
+            : card.color && card.color.includes("bg-white")
+              ? "border-2 border-blue-400"
+              : "border-2 border-black/20"
           } ${isNonClickableModule
             ? "cursor-default"
             : isEGovModule
               ? "cursor-pointer"
               : "cursor-pointer"
-          } ${card.color ? card.color : isColorfulCard ? "bg-white" : isEGovModule ? "bg-white text-slate-800" : theme === "normal" ? "bg-white/90 text-slate-800 border-white/30" : "bg-white text-slate-800"} ${isColorfulCard ? "p-6" : isCompact ? (isYQMSOrFC ? "p-2" : "p-1") : isEGovModule ? "p-6" : "p-4"} ${isYQMSOrFC ? "overflow-hidden" : ""}`}
+          } ${card.color ? card.color : isColorfulCard ? "bg-white" : isEGovModule ? "bg-white text-slate-800" : theme === "normal" ? "bg-white/90 text-slate-800 border-white/30" : "bg-white text-slate-800"} ${isColorfulCard ? "p-6" : isCompact ? (isYQMSOrFC ? (card.color && card.color.includes("bg-white") ? "p-3" : "p-2") : "p-1") : isEGovModule ? "p-6" : "p-4"} ${isYQMSOrFC ? "overflow-hidden" : ""}`}
       >
         <div
           className={
@@ -543,9 +546,11 @@ const renderCard = (
                   ? isYQMSOrFC
                     ? "flex-shrink-0"
                     : "p-0 rounded-lg relative"
-                  : theme === "normal"
-                    ? "p-3 rounded-lg relative bg-white/20 backdrop-blur-sm"
-                    : "p-3 rounded-lg relative bg-white/10 backdrop-blur-sm"
+                  : isYQMSOrFC && card.color && card.color.includes("bg-white")
+                    ? "p-6 rounded-3xl relative bg-slate-100/80 shadow-inner flex flex-col items-center gap-2" // Gray container from screenshot
+                    : theme === "normal"
+                      ? "p-3 rounded-lg relative bg-white/20 backdrop-blur-sm"
+                      : "p-3 rounded-lg relative bg-white/10 backdrop-blur-sm"
                 : isCompact
                   ? "p-0 rounded-lg relative"
                   : "p-2 rounded-lg relative"
@@ -576,25 +581,33 @@ const renderCard = (
                           maxWidth: "100%",
                           maxHeight: "100%",
                         }
-                        : isNonClickableModule
+                        : isYQMSOrFC && card.color && card.color.includes("bg-white")
                           ? {
-                            backgroundColor: "transparent",
-                            filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.2))",
-                            borderRadius: "8px",
+                            backgroundColor: "white",
+                            border: "2px solid #3b82f6",
+                            padding: "8px",
+                            borderRadius: "16px",
+                            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
                           }
-                          : card.image
+                          : isNonClickableModule
                             ? {
                               backgroundColor: "transparent",
-                              filter:
-                                "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                              filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.2))",
                               borderRadius: "8px",
                             }
-                            : {
-                              mixBlendMode: "multiply",
-                              backgroundColor: "transparent",
-                              filter:
-                                "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
-                            }
+                            : card.image
+                              ? {
+                                backgroundColor: "transparent",
+                                filter:
+                                  "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                                borderRadius: "8px",
+                              }
+                              : {
+                                mixBlendMode: "multiply",
+                                backgroundColor: "transparent",
+                                filter:
+                                  "drop-shadow(0 2px 4px rgba(0,0,0,0.1))",
+                              }
                     }
                     onError={(e) => {
                       e.target.style.display = "none";
@@ -636,7 +649,7 @@ const renderCard = (
             wordWrap: "break-word",
             overflowWrap: "break-word",
             display: "block",
-            maxHeight: isYQMSOrFC && isCompact ? "36px" : "none",
+            maxHeight: isYQMSOrFC && isCompact ? "48px" : "none",
             overflow: "hidden",
           }}
         >
@@ -811,7 +824,7 @@ const SubMenuView = () => {
                     className={`text-center ${isProminentModule ? "mb-3" : "mb-0.5"}`}
                   >
                     <h3
-                      className={`${isProminentModule ? "text-xl px-6 py-2" : "text-xs px-3 py-1"} font-bold text-white uppercase tracking-tight drop-shadow-lg whitespace-nowrap ${theme === "normal" ? "bg-slate-700/80" : "bg-slate-700/60"} backdrop-blur-sm rounded-full border border-slate-500/50 inline-block`}
+                      className={`${isProminentModule ? "text-base px-6 py-2" : "text-sm px-3 py-1"} font-bold text-white uppercase tracking-tight drop-shadow-lg whitespace-nowrap ${theme === "normal" ? "bg-slate-700/80" : "bg-slate-700/60"} backdrop-blur-sm rounded-full border border-slate-500/50 inline-block`}
                     >
                       {group.label}
                     </h3>

@@ -107,6 +107,7 @@ import CuttingInspection from "./yqms/CuttingInspection";
 import GarmentCheckOutput from "./yqms/GarmentCheckOutput";
 import PackingInspection from "./yqms/PackingInspection";
 import FinalInspection from "./yqms/FinalInspection";
+
 import AuditReport from "./yqms/AuditReport";
 import BuyerFinalInspection from "./yqms/BuyerFinalInspection";
 import SupplierEvaluation from "./yqms/SupplierEvaluation";
