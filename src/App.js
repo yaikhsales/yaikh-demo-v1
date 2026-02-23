@@ -102,13 +102,12 @@ import DeliveryTracking from "./fc/DeliveryTracking";
 import ReturnFabric from "./fc/ReturnFabric";
 import ReturnAccessories from "./fc/ReturnAccessories";
 import BrandProtection from "./fc/BrandProtection";
-import QCFile from "./yqms/QCFile";
 import InternalRollingQC from "./yqms/InternalRollingQC";
 import CuttingInspection from "./yqms/CuttingInspection";
 import GarmentCheckOutput from "./yqms/GarmentCheckOutput";
 import PackingInspection from "./yqms/PackingInspection";
 import FinalInspection from "./yqms/FinalInspection";
-import PreProductionMeeting from "./yqms/PreProductionMeeting";
+
 import AuditReport from "./yqms/AuditReport";
 import BuyerFinalInspection from "./yqms/BuyerFinalInspection";
 import SupplierEvaluation from "./yqms/SupplierEvaluation";
