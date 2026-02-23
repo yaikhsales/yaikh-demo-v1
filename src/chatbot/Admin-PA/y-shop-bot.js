@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Plus, Menu, Trash2, Sparkles } from 'lucide-react';
 
-const API_ENDPOINT = 'http://192.167.4.7:8001/api/ai-agent';
+const API_ENDPOINT = 'https://dev.yaikh.com/api/ai-agent';
 const MODULE_NAME = 'shop';
 
 const YShopBot = ({ onClose }) => {

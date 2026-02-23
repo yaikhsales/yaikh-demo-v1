@@ -23,6 +23,9 @@ const BenefitProfile = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
 
   const tabs = [{ id: "all", label: "Benefit Profiles", count: 10 }];
 
@@ -37,9 +40,9 @@ const BenefitProfile = ({ onBack }) => {
       position: "QA Engineer",
       status: "ACTIVE",
       plan: "PREMIUM HEALTH",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Jan 15, 2026",
-      photo: "/assets/about-us/teams/Dot-Sreynoch.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004155_20251224132344.jpeg",
     },
     {
       id: 2,
@@ -51,9 +54,9 @@ const BenefitProfile = ({ onBack }) => {
       position: "Coordinator",
       status: "ACTIVE",
       plan: "STANDARD HEALTH",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Jan 20, 2026",
-      photo: "/assets/about-us/teams/Koem-Phanny.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004163_20260110104202.jpeg",
     },
     {
       id: 3,
@@ -65,79 +68,79 @@ const BenefitProfile = ({ onBack }) => {
       position: "Developer",
       status: "PENDING",
       plan: "PREMIUM HEALTH",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 01, 2026",
-      photo: "/assets/about-us/teams/Sin-Khun.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004171_20260108143914.jpeg",
     },
     {
       id: 4,
-      name: "Voun Thida",
-      gender: "FEMALE",
+      name: "Voun Samnang",
+      gender: "MALE",
       age: 25,
       phone: "+855 099 556 778",
       department: "Admin",
       position: "Assistant",
       status: "ACTIVE",
       plan: "BASIC HEALTH",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 05, 2026",
-      photo: "/assets/about-us/teams/Voun-Thida.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004177_20260112101013.jpeg",
     },
     {
       id: 5,
-      name: "Chhay",
-      gender: "MALE",
-      age: 29,
-      phone: "+855 081 223 998",
-      department: "Production",
-      position: "QA Tester",
+      name: "Set Sophy",
+      gender: "FEMALE",
+      age: 27,
+      phone: "+855 088 667 889",
+      department: "Operations",
+      position: "Manager",
       status: "ACTIVE",
-      plan: "STANDARD HEALTH",
-      type: "KHMER",
+      plan: "PREMIUM HEALTH",
+      type: "EXPAT",
       date: "Feb 10, 2026",
-      photo: "/assets/about-us/teams/chhay.jpg",
+      photo: "/assets/Yaikh-Uploads/H01_00004193_20260110100532.jpeg",
     },
     {
       id: 6,
-      name: "Daly",
+      name: "Ton Sreyneang",
       gender: "FEMALE",
-      age: 27,
-      phone: "+855 092 556 887",
-      department: "Marketing",
-      position: "Strategist",
+      age: 32,
+      phone: "+855 077 778 990",
+      department: "Maintenance",
+      position: "Technician",
       status: "ACTIVE",
-      plan: "STANDARD HEALTH",
-      type: "KHMER",
-      date: "Feb 11, 2026",
-      photo: "/assets/about-us/teams/daly.jpg",
+      plan: "BASIC HEALTH",
+      type: "EXPAT",
+      date: "Feb 12, 2026",
+      photo: "/assets/Yaikh-Uploads/H01_00004198_20251215163335.jpeg",
     },
     {
       id: 7,
-      name: "Yasomi",
-      gender: "FEMALE",
+      name: "Proeurng Sokhim",
+      gender: "MALE",
       age: 24,
-      phone: "+855 061 445 112",
+      phone: "+855 011 222 333",
       department: "Design",
-      position: "Designer",
-      status: "PENDING",
-      plan: "PREMIUM HEALTH",
-      type: "KHMER",
-      date: "Feb 12, 2026",
-      photo: "/assets/about-us/teams/yasomi.jpg",
+      position: "UI Designer",
+      status: "SUSPENDED",
+      plan: "STANDARD HEALTH",
+      type: "EXPAT",
+      date: "Feb 14, 2026",
+      photo: "/assets/Yaikh-Uploads/H01_00004199_20260110100611.jpeg",
     },
     {
       id: 8,
-      name: "Yeom Chetra",
-      gender: "MALE",
+      name: "Sobon Sreypich",
+      gender: "FEMALE",
       age: 31,
       phone: "+855 012 889 001",
       department: "Production",
       position: "Full Stack",
       status: "ACTIVE",
       plan: "EXECUTIVE HEALTH",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 13, 2026",
-      photo: "/assets/about-us/teams/Yeom-Chetra.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004202_20260110100639.jpeg",
     },
     {
       id: 9,
@@ -149,23 +152,23 @@ const BenefitProfile = ({ onBack }) => {
       position: "Specialist",
       status: "ACTIVE",
       plan: "STANDARD HEALTH",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 13, 2026",
-      photo: "/assets/about-us/teams/Young-Sengheang.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004219_20260114093834.jpeg",
     },
     {
       id: 10,
-      name: "Samnang",
-      gender: "MALE",
-      age: 30,
-      phone: "+855 085 443 112",
-      department: "IT",
-      position: "SysAdmin",
+      name: "Yeom Sreysros",
+      gender: "FEMALE",
+      age: 31,
+      phone: "+855 095 555 666",
+      department: "Logistics",
+      position: "Fleet Admin",
       status: "ACTIVE",
       plan: "BASIC HEALTH",
-      type: "KHMER",
+      type: "EXPAT",
       date: "Feb 14, 2026",
-      photo: "/assets/about-us/teams/samnang.png",
+      photo: "/assets/Yaikh-Uploads/H01_00004216_20260114093811.jpeg",
     },
   ];
 
@@ -174,8 +177,10 @@ const BenefitProfile = ({ onBack }) => {
     else navigate(-1);
   };
 
-  const handleAction = (type, name) => {
-    alert(`${type} - Benefit Profile for ${name}`);
+  const handleAction = (type, employee) => {
+    setSelectedEmployee(employee);
+    if (type === "View") setShowDetailModal(true);
+    else if (type === "Edit") setShowEditModal(true);
   };
 
   return (
@@ -238,111 +243,289 @@ const BenefitProfile = ({ onBack }) => {
         </div>
 
         {/* Table Content */}
-        <div className="flex-1 overflow-auto">
-          <table className="w-full text-left border-collapse min-w-[1100px]">
-            <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Photo</th>
-                <th className="px-4 py-5">Employee / Contact</th>
-                <th className="px-4 py-5">Department</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-4 py-5 text-center">Benefit Plan</th>
-                <th className="px-4 py-5">Enrollment Date</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50">
-              {employees.map((emp) => (
-                <tr
-                  key={emp.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
-                >
-                  <td className="px-8 py-6">
-                    <div className="relative w-12 h-12 rounded-xl border-2 border-slate-100 overflow-hidden shadow-sm group-hover:border-indigo-100 transition-colors">
-                      <img
-                        src={emp.photo}
-                        alt={emp.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  </td>
-                  <td className="px-4 py-6">
-                    <div className="flex flex-col gap-1">
-                      <span className="font-black text-slate-800 text-sm tracking-tight">
-                        {emp.name}
-                      </span>
-                      <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                        <span>
-                          {emp.gender} • {emp.age} YRS
+        <div className="flex-1 overflow-auto px-8 pb-8">
+          <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
+            <table className="w-full text-left border-collapse min-w-[1100px]">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[11px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                  <th className="px-6 py-4 border-r border-b border-black text-center w-20">
+                    Photo
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-black">
+                    Employee / Contact
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-black">
+                    Department
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-black text-center">
+                    Status
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-black text-center">
+                    Benefit Plan
+                  </th>
+                  <th className="px-6 py-4 border-r border-b border-black">
+                    Enrollment Date
+                  </th>
+                  <th className="px-6 py-4 border-b border-black text-center whitespace-nowrap">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {employees.map((emp) => (
+                  <tr
+                    key={emp.id}
+                    className="hover:bg-slate-50 transition-colors"
+                  >
+                    <td className="px-6 py-4 border-r border-b border-black text-center">
+                      <div className="inline-block relative w-28 h-28 rounded-lg border-2 border-black overflow-hidden shadow-sm">
+                        <img
+                          src={emp.photo}
+                          alt={emp.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-black">
+                      <div className="flex flex-col gap-1">
+                        <span className="font-bold text-black text-sm tracking-tight">
+                          {emp.name}
+                        </span>
+                        <div className="flex items-center gap-2 text-[9px] font-bold text-black uppercase">
+                          <span>{emp.age} YRS</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-black">
+                          <Phone size={10} className="text-indigo-400" />
+                          <span>{emp.phone}</span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-black">
+                      <div className="flex flex-col">
+                        <span className="font-bold text-black text-xs">
+                          {emp.department}
+                        </span>
+                        <span className="text-[10px] font-medium text-black">
+                          {emp.position}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
-                        <Phone size={10} className="text-slate-300" />
-                        <span>{emp.phone}</span>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 py-6">
-                    <div className="flex flex-col">
-                      <span className="font-black text-slate-700 text-xs">
-                        {emp.department}
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-black text-center">
+                      <span
+                        className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${emp.status === "ACTIVE" ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-amber-50 text-amber-600 border-amber-100"}`}
+                      >
+                        {emp.status}
                       </span>
-                      <span className="text-[10px] font-bold text-slate-400">
-                        {emp.position}
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-black text-center">
+                      <span className="px-2.5 py-1 bg-white border border-black rounded text-[9px] font-bold text-indigo-600 shadow-sm uppercase">
+                        {emp.plan}
                       </span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-6 text-center">
-                    <span
-                      className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${emp.status === "ACTIVE" ? "bg-emerald-50 text-emerald-600 border-emerald-100/50" : "bg-amber-50 text-amber-600 border-amber-100/50"}`}
-                    >
-                      {emp.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-6 text-center">
-                    <span className="px-2.5 py-1 bg-white border border-slate-200 rounded text-[9px] font-black text-indigo-600 shadow-sm uppercase">
-                      {emp.plan}
-                    </span>
-                  </td>
-                  <td className="px-4 py-6">
-                    <div className="flex flex-col">
-                      <span className="font-black text-slate-700 text-xs">
+                    </td>
+                    <td className="px-6 py-4 border-r border-b border-black">
+                      <div className="font-bold text-black text-xs">
                         {emp.date}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-8 py-6">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleAction("View", emp.name)}
-                        className="flex items-center gap-1.5 px-4 py-1.5 bg-indigo-600 text-white rounded-lg text-[9px] font-black uppercase hover:bg-indigo-700 transition-colors shadow-sm"
-                      >
-                        <Eye size={12} strokeWidth={3} />
-                        View
-                      </button>
-                      <button
-                        onClick={() => handleAction("Edit", emp.name)}
-                        className="px-4 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[9px] font-black uppercase hover:bg-slate-50 transition-colors"
-                      >
-                        Edit
-                      </button>
-                      <div className="flex items-center gap-1 ml-2 border-l border-slate-100 pl-3">
-                        <button className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all">
-                          <Trash2 size={14} />
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 border-b border-black">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleAction("View", emp)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 text-white rounded text-[9px] font-bold uppercase hover:bg-indigo-700 transition-colors shadow-sm"
+                        >
+                          <Eye size={10} strokeWidth={3} />
+                          View
+                        </button>
+                        <button
+                          onClick={() => handleAction("Edit", emp)}
+                          className="px-3 py-1.5 bg-white border border-black text-black rounded text-[9px] font-bold uppercase hover:bg-slate-50 transition-colors"
+                        >
+                          Edit
                         </button>
                       </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      {/* AI Bot */}
+      {/* View Detail Modal */}
+      {showDetailModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-indigo-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-inner">
+                  <Heart size={24} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Benefit Summary
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Coverage and plan details
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="p-8 bg-gradient-to-br from-indigo-50/50 to-slate-50/30 border-b border-slate-100 flex items-center gap-8">
+                <div className="relative">
+                  <img
+                    src={selectedEmployee?.photo}
+                    className="w-24 h-24 rounded-[2rem] border-4 border-white shadow-xl"
+                    alt=""
+                  />
+                </div>
+                <div className="space-y-2">
+                  <h2 className="text-2xl font-black text-slate-800 tracking-tight leading-none uppercase">
+                    {selectedEmployee?.name}
+                  </h2>
+                  <div className="flex gap-3">
+                    <span className="text-[9px] font-black text-indigo-600 uppercase tracking-[0.15em] bg-white border border-indigo-100 px-3 py-1 rounded-lg">
+                      {selectedEmployee?.plan}
+                    </span>
+                    <span className="text-[9px] font-black text-emerald-600 uppercase tracking-[0.15em] bg-white border border-emerald-100 px-3 py-1 rounded-lg">
+                      {selectedEmployee?.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 divide-y divide-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-4 bg-slate-50/30 font-black text-slate-400 text-[9px] uppercase tracking-widest flex items-center">
+                    ID & Position
+                  </div>
+                  <div className="col-span-2 p-4">
+                    <div className="text-sm font-bold text-slate-700 uppercase">
+                      {selectedEmployee?.position}
+                    </div>
+                    <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                      {selectedEmployee?.department} Department
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-4 bg-slate-50/30 font-black text-slate-400 text-[9px] uppercase tracking-widest flex items-center">
+                    Enrollment
+                  </div>
+                  <div className="col-span-2 p-4 text-sm font-bold text-slate-500">
+                    Registered on {selectedEmployee?.date}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end">
+              <button
+                onClick={() => setShowDetailModal(false)}
+                className="px-10 py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-slate-800 transition-all shadow-xl active:scale-95"
+              >
+                Close Summary
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-600 flex items-center justify-center text-white shadow-lg shadow-indigo-100">
+                  <Edit2 size={24} strokeWidth={3} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Modify Benefits
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Adjust employee insurance plans
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="grid grid-cols-1 divide-y divide-slate-100 border-b border-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Coverage Plan
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <select
+                      className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer"
+                      defaultValue={selectedEmployee?.plan}
+                    >
+                      <option>PREMIUM HEALTH</option>
+                      <option>STANDARD HEALTH</option>
+                      <option>BASIC HEALTH</option>
+                      <option>EXECUTIVE HEALTH</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Plan Status
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <select
+                      className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer"
+                      defaultValue={selectedEmployee?.status}
+                    >
+                      <option>ACTIVE</option>
+                      <option>PENDING</option>
+                      <option>SUSPENDED</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowEditModal(false)}
+                className="px-8 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert("Changes saved successfully!");
+                  setShowEditModal(false);
+                }}
+                className="px-10 py-4 bg-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <Check size={16} strokeWidth={3} />
+                Save Coverage
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <button
         onClick={() => setIsBotOpen(true)}
         className="fixed bottom-8 right-8 z-[150] w-14 h-14 bg-indigo-600 text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"

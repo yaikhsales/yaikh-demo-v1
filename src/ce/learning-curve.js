@@ -125,38 +125,38 @@ const LearningCurve = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Running Style</th>
-                <th className="px-4 py-5 text-center">Run Day</th>
-                <th className="px-4 py-5 text-center">Start Eff.</th>
-                <th className="px-4 py-5 text-center">Current Progress</th>
-                <th className="px-4 py-5 text-center">Days to Mature</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Running Style</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Run Day</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Start Eff.</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Current Progress</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Days to Mature</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Status</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {styles.map((rec) => (
+            <tbody>
+              {styles.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                       {rec.style}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-black text-slate-600 shadow-sm uppercase">
                       {rec.runDay}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-400 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-400 font-bold text-xs">
                     {rec.startEfficiency}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <div className="flex items-center justify-center gap-3">
                       <span className="font-black text-slate-400 text-[10px]">
                         {rec.startEfficiency}
@@ -167,10 +167,10 @@ const LearningCurve = ({ onBack }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
                     {rec.daysToMaturity} Days
                   </td>
-                  <td className="px-4 py-6 text-center text-nowrap">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-nowrap">
                     <span
                       className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
                         rec.status === "COMPLETED"
@@ -183,7 +183,7 @@ const LearningCurve = ({ onBack }) => {
                       {rec.status}
                     </span>
                   </td>
-                  <td className="px-8 py-6 text-right">
+                  <td className="px-8 py-4 border-b border-slate-200 text-right">
                     <button className="p-2 text-slate-300 hover:text-pink-600 hover:bg-white hover:shadow-sm rounded transition-all">
                       <LineChart size={16} />
                     </button>

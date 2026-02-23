@@ -123,25 +123,25 @@ const Downtimes = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Reason / Line</th>
-                <th className="px-4 py-5 text-center">Start Time</th>
-                <th className="px-4 py-5 text-center">Duration</th>
-                <th className="px-4 py-5 text-center">Category</th>
-                <th className="px-4 py-5 text-center">Impact</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Reason / Line</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Start Time</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Duration</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Category</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Impact</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Status</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {logs.map((rec) => (
+            <tbody>
+              {logs.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <div className="flex flex-col gap-1">
                       <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                         {rec.reason}
@@ -151,27 +151,27 @@ const Downtimes = ({ onBack }) => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-500 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-500 font-bold text-xs">
                     {rec.time}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="font-black text-red-600 text-sm">
                       {rec.duration}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[9px] font-black uppercase">
                       {rec.category}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`text-[10px] font-black ${rec.impact === "CRITICAL" ? "text-red-700 underline" : rec.impact === "HIGH" ? "text-red-500" : "text-amber-500"}`}
                     >
                       {rec.impact}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
                         rec.status === "RESOLVED"
@@ -182,7 +182,7 @@ const Downtimes = ({ onBack }) => {
                       {rec.status}
                     </span>
                   </td>
-                  <td className="px-8 py-6 text-right">
+                  <td className="px-8 py-4 border-b border-slate-200 text-right">
                     <button className="px-4 py-1.5 bg-white border border-slate-200 text-slate-600 rounded-lg text-[9px] font-black uppercase hover:bg-slate-50 transition-colors">
                       Investigate
                     </button>

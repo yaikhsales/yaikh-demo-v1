@@ -139,24 +139,24 @@ const ProductDevelopment = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Style / Customer</th>
-                <th className="px-4 py-5">Sample Stage</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-4 py-5">Due Date</th>
-                <th className="px-4 py-5 text-center">Complexity</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Style / Customer</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200">Sample Stage</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Status</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200">Due Date</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Complexity</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {samples.map((rec) => (
+            <tbody>
+              {samples.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <div className="flex flex-col gap-1">
                       <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                         {rec.styleName}
@@ -168,12 +168,12 @@ const ProductDevelopment = ({ onBack }) => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-6 text-center lg:text-left">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center lg:text-left">
                     <span className="px-2.5 py-1 bg-emerald-50 border border-emerald-100 text-[9px] font-black text-emerald-700 rounded-lg uppercase tracking-tight">
                       {rec.stage}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
                         rec.status === "COMPLETED"
@@ -186,7 +186,7 @@ const ProductDevelopment = ({ onBack }) => {
                       {rec.status}
                     </span>
                   </td>
-                  <td className="px-4 py-6">
+                  <td className="px-4 py-4 border-r border-b border-slate-200">
                     <div className="flex flex-col">
                       <span className="font-black text-slate-700 text-xs text-nowrap">
                         {rec.dueDate}
@@ -196,14 +196,14 @@ const ProductDevelopment = ({ onBack }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`text-[10px] font-black ${rec.complexity === "HIGH" ? "text-red-500" : rec.complexity === "MEDIUM" ? "text-amber-500" : "text-emerald-500"}`}
                     >
                       {rec.complexity}
                     </span>
                   </td>
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-b border-slate-200">
                     <div className="flex items-center justify-end gap-2 text-nowrap">
                       <button
                         onClick={() => handleAction("View", rec.styleName)}
