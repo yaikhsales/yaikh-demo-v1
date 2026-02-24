@@ -125,46 +125,46 @@ const CostCenters = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Cost Center</th>
-                <th className="px-4 py-5 text-center">Direct Cost</th>
-                <th className="px-4 py-5 text-center">Indirect Cost</th>
-                <th className="px-4 py-5 text-center">Utilities</th>
-                <th className="px-4 py-5 text-center text-cyan-600">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Cost Center</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Direct Cost</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Indirect Cost</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Utilities</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center text-cyan-600">
                   Total Monthly
                 </th>
-                <th className="px-4 py-5 text-center">Variance</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Variance</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Status
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {centers.map((rec) => (
+            <tbody>
+              {centers.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                       {rec.name}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-700 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-bold text-xs">
                     {rec.directCost}
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-500 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-500 font-bold text-xs">
                     {rec.indirectCost}
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-500 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-500 font-bold text-xs">
                     {rec.utility}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span className="font-black text-blue-600 text-sm">
                       {rec.total}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <div
                       className={`flex items-center justify-center gap-1 font-black text-xs ${rec.variance.startsWith("+") ? "text-rose-500" : "text-emerald-500"}`}
                     >
@@ -177,7 +177,7 @@ const CostCenters = ({ onBack }) => {
                       />
                     </div>
                   </td>
-                  <td className="px-8 py-6 text-right">
+                  <td className="px-8 py-4 border-b border-slate-200 text-right">
                     <span
                       className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
                         rec.status === "OPTIMAL"

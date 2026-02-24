@@ -111,13 +111,67 @@ const YHR = ({ onBack }) => {
       shadow: "shadow-teal-200",
       hasWhiteBg: true,
     },
+  ];
+
+  const salaryBillModules = [
     {
       title: "Attendant",
       color: "bg-gradient-to-br from-orange-500 to-orange-600",
       shadow: "shadow-orange-200",
       hasSubMenu: true,
     },
+    {
+      title: "Monthly Salary",
+      color: "bg-gradient-to-br from-blue-500 to-blue-600",
+      shadow: "shadow-blue-200",
+    },
+    {
+      title: "Incentive",
+      color: "bg-gradient-to-br from-green-500 to-green-600",
+      shadow: "shadow-green-200",
+    },
+    {
+      title: "Permit Fee",
+      color: "bg-gradient-to-br from-purple-500 to-purple-600",
+      shadow: "shadow-purple-200",
+    },
+    {
+      title: "Resign Payment",
+      color: "bg-gradient-to-br from-orange-500 to-orange-600",
+      shadow: "shadow-orange-200",
+    },
   ];
+
+  const getSalaryBillIconImage = (title) => {
+    const titleToImageMap = {
+      Attendant: "attendant.png",
+      "Monthly Salary": "monthly-salary.png",
+      Incentive: "weekly-incentive.png",
+      "Permit Fee": "permit-fee.png",
+      "Resign Payment": "resign-payment.png",
+    };
+    return titleToImageMap[title] || null;
+  };
+
+  const handleSalaryBillClick = (module) => {
+    if (module.hasSubMenu && module.title === "Attendant") {
+      handleAttendantClick();
+      return;
+    }
+    
+    const routeMap = {
+      "Monthly Salary": "/dashboard/monthly-salary",
+      Incentive: "/dashboard/weekly-incentive",
+      "Permit Fee": "/dashboard/permit-fee",
+      "Resign Payment": "/dashboard/resign-payment",
+    };
+    const route = routeMap[module.title];
+    if (route) {
+      navigate(route);
+    } else {
+      console.log(`${module.title} clicked - no route defined`);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-gray-100 flex flex-col overflow-hidden z-[100]">
@@ -162,94 +216,175 @@ const YHR = ({ onBack }) => {
       <div className="flex-1 overflow-y-auto p-6 sm:p-8 bg-gradient-to-b from-gray-50 to-gray-100">
         {!showAttendantSubMenu && !showFWCMSSubMenu && !showBenefitSubMenu ? (
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6">
-              {yhrModules.map((module, idx) => {
-                const iconImage = getYHRIconImage(module.title);
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => {
-                      if (module.hasSubMenu) {
-                        if (module.title === "Attendant") {
-                          handleAttendantClick();
-                        } else if (module.title === "FWCMS") {
-                          handleFWCMSClick();
-                        } else if (module.title === "Benefit Profile") {
-                          setShowBenefitSubMenu(true);
-                        }
-                      } else {
-                        // Navigate to respective module pages
-                        const routeMap = {
-                          Recruitment: "/dashboard/recruitment",
-                          Interview: "/dashboard/interview",
-                          Onboarding: "/dashboard/onboarding",
-                          "Benefit Profile": "/dashboard/benefit-profile",
-                          Payroll: "/dashboard/payroll",
-                          NSSF: "/dashboard/nssf",
-                          "Visa and Work Permit": "/dashboard/visa-work-permit",
-                          Canteen: "/dashboard/canteen",
-                        };
-                        const route = routeMap[module.title];
-                        if (route) {
-                          navigate(route);
-                        } else {
-                          console.log(
-                            `${module.title} clicked - no route defined`,
-                          );
-                        }
-                      }
-                    }}
-                    className={`
-                                            ${module.color} 
-                                            text-white 
-                                            p-6 sm:p-8 
-                                            rounded-xl 
-                                            shadow-lg 
-                                            ${module.shadow}
-                                            hover:shadow-2xl 
-                                            transition-all 
-                                            duration-300
-                                            hover:scale-105 
-                                            active:scale-95
-                                            flex 
-                                            flex-col 
-                                            items-center 
-                                            justify-center 
-                                            gap-4
-                                            min-h-[160px] 
-                                            sm:min-h-[180px]
-                                            relative
-                                            overflow-hidden
-                                            group
-                                        `}
-                  >
-                    {/* Subtle overlay for depth */}
-                    <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            {/* Two Column Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 relative">
+              {/* Left Column - YHR Modules */}
+              <div className="flex flex-col pr-0 lg:pr-12 pb-8 lg:pb-0">
+                <h2 className="text-2xl font-bold text-black mb-6">{t("yhr")}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 auto-rows-fr">
+                  {yhrModules.map((module, idx) => {
+                    const iconImage = getYHRIconImage(module.title);
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          if (module.hasSubMenu) {
+                            if (module.title === "Attendant") {
+                              handleAttendantClick();
+                            } else if (module.title === "FWCMS") {
+                              handleFWCMSClick();
+                            } else if (module.title === "Benefit Profile") {
+                              setShowBenefitSubMenu(true);
+                            }
+                          } else {
+                            // Navigate to respective module pages
+                            const routeMap = {
+                              Recruitment: "/dashboard/recruitment",
+                              Interview: "/dashboard/interview",
+                              Onboarding: "/dashboard/onboarding",
+                              "Benefit Profile": "/dashboard/benefit-profile",
+                              Payroll: "/dashboard/payroll",
+                              "Visa and Work Permit": "/dashboard/visa-work-permit",
+                              Canteen: "/dashboard/canteen",
+                            };
 
-                    {/* Icon Container */}
-                    <div
-                      className={`relative z-10 flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 mb-2 ${module.hasWhiteBg ? "bg-white rounded-lg p-2 sm:p-3 shadow-lg" : ""}`}
-                    >
-                      {iconImage ? (
-                        <img
-                          src={`/assets/icons/sub-icons/${iconImage}`}
-                          alt={module.title}
-                          className={`w-full h-full object-contain ${module.hasWhiteBg ? "" : "drop-shadow-2xl"}`}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-white/20 rounded-lg flex items-center justify-center">
-                          <div className="w-12 h-12 bg-white/30 rounded"></div>
+                            if (module.title === "NSSF") {
+                              window.open(
+                                "https://enterprise.nssf.gov.kh/auth/login",
+                                "_blank",
+                                "noopener,noreferrer",
+                              );
+                              return;
+                            }
+
+                            const route = routeMap[module.title];
+                            if (route) {
+                              navigate(route);
+                            } else {
+                              console.log(
+                                `${module.title} clicked - no route defined`,
+                              );
+                            }
+                          }
+                        }}
+                        className={`
+                          ${module.color} 
+                          text-white 
+                          p-6 
+                          rounded-xl 
+                          shadow-lg 
+                          ${module.shadow}
+                          hover:shadow-2xl 
+                          transition-all 
+                          duration-300
+                          hover:scale-105 
+                          active:scale-95
+                          flex 
+                          flex-col 
+                          items-center 
+                          justify-center 
+                          gap-4
+                          h-[180px]
+                          w-full
+                          relative
+                          overflow-hidden
+                          group
+                        `}
+                      >
+                        {/* Subtle overlay for depth */}
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                        {/* Icon Container */}
+                        <div
+                          className={`relative z-10 flex items-center justify-center w-20 h-20 mb-2 ${module.hasWhiteBg ? "bg-white rounded-lg p-2 shadow-lg" : ""}`}
+                        >
+                          {iconImage ? (
+                            <img
+                              src={`/assets/icons/sub-icons/${iconImage}`}
+                              alt={module.title}
+                              className={`w-full h-full object-contain ${module.hasWhiteBg ? "" : "drop-shadow-2xl"}`}
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-white/20 rounded-lg flex items-center justify-center">
+                              <div className="w-12 h-12 bg-white/30 rounded"></div>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
 
-                    {/* Text Label */}
-                    <span className="relative z-10 font-bold text-sm sm:text-base text-center leading-tight drop-shadow-md">
-                      {translateModuleTitle(module.title)}
-                    </span>
-                  </button>
-                );
-              })}
+                        {/* Text Label */}
+                        <span className="relative z-10 font-bold text-sm text-center leading-tight drop-shadow-md">
+                          {translateModuleTitle(module.title)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Vertical Divider */}
+              <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-black transform -translate-x-1/2"></div>
+              
+              {/* Right Column - Salary Bill Modules */}
+              <div className="flex flex-col pl-0 lg:pl-12">
+                <h2 className="text-2xl font-bold text-black mb-6">{t("salaryBill")}</h2>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 auto-rows-fr">
+                  {salaryBillModules.map((module, idx) => {
+                    const iconImage = getSalaryBillIconImage(module.title);
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => handleSalaryBillClick(module)}
+                        className={`
+                          ${module.color} 
+                          text-white 
+                          p-6 
+                          rounded-xl 
+                          shadow-lg 
+                          ${module.shadow}
+                          hover:shadow-2xl 
+                          transition-all 
+                          duration-300
+                          hover:scale-105 
+                          active:scale-95
+                          flex 
+                          flex-col 
+                          items-center 
+                          justify-center 
+                          gap-4
+                          h-[180px]
+                          w-full
+                          relative
+                          overflow-hidden
+                          group
+                        `}
+                      >
+                        {/* Subtle overlay for depth */}
+                        <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                        {/* Icon Container */}
+                        <div className="relative z-10 flex items-center justify-center w-20 h-20 mb-2">
+                          {iconImage ? (
+                            <img
+                              src={`/assets/icons/sub-icons/${iconImage}`}
+                              alt={module.title}
+                              className="w-full h-full object-contain drop-shadow-2xl"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-white/20 rounded-lg flex items-center justify-center">
+                              <div className="w-12 h-12 bg-white/30 rounded"></div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Text Label */}
+                        <span className="relative z-10 font-bold text-sm text-center leading-tight drop-shadow-md">
+                          {translateModuleTitle(module.title)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         ) : showAttendantSubMenu ? (
@@ -343,7 +478,7 @@ const YHR = ({ onBack }) => {
                   />
                 </div>
                 <span className="relative z-10 font-bold text-lg sm:text-xl drop-shadow-md">
-                  Ministry of Labour
+                  MLVT
                 </span>
               </button>
             </div>
