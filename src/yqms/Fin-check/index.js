@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { useTranslation } from '../../translate/TranslationContext';
 
 // Import Modular Components
 import FinCheckInspection from './fin-check-inspection';
@@ -19,6 +20,7 @@ import {
 } from './fin-check-icon';
 
 const FinCheckDashboard = ({ onBack }) => {
+    const { t } = useTranslation();
     const [activeModule, setActiveModule] = React.useState(null);
     const [view, setView] = React.useState('grid');
     const [selectedStyle, setSelectedStyle] = React.useState(null);
@@ -40,37 +42,37 @@ const FinCheckDashboard = ({ onBack }) => {
     const modules = [
         {
             id: 'settings',
-            title: "FinCheck Setting",
+            title: t("finCheckSetting"),
             icon: FinCheckSettingIcon,
             theme: 'light'
         },
         {
             id: 'templates',
-            title: "FinCheck Template",
+            title: t("finCheckTemplate"),
             icon: FinCheckTemplateIcon,
             theme: 'dark'
         },
         {
             id: 'inspection',
-            title: "Inspection",
+            title: t("finCheckInspection"),
             icon: InspectionIcon,
             theme: 'light'
         },
         {
             id: 'upload',
-            title: "Inspection",
+            title: t("finCheckUpload"),
             icon: UploadIcon,
             theme: 'light'
         },
         {
             id: 'reports',
-            title: "FinCheck Report",
+            title: t("finCheckReport"),
             icon: FinCheckReportIcon,
             theme: 'dark'
         },
         {
             id: 'legacy',
-            title: "P88 Legacy",
+            title: t("P88Legacy"),
             icon: P88LegacyIcon,
             theme: 'light'
         }

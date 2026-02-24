@@ -445,6 +445,8 @@ const renderCard = (
                   "assets/e-invoice/IEWS.jpg",
                 );
                 navigate(`/dashboard/image/${encodedPath}`);
+              } else if (card.title === "Humidity Aquaboy Checking") {
+                navigate("/dashboard/yqms/aquaboy");
               } else if (
                 card.galleryImages &&
                 card.galleryImages.length > 0

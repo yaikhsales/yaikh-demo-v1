@@ -114,6 +114,9 @@ import SupplierEvaluation from "./yqms/SupplierEvaluation";
 import CustomerComplainCap from "./yqms/CustomerComplainCap";
 import YQMSReport from "./yqms/YQMSReport";
 import YQMSGlobalDashboard from "./yqms/YQMSGlobalDashboard";
+import HumidityReportAdd from "./yqms/HumidityReport/add-model";
+import HumidityReportList from "./yqms/HumidityReport/show-list";
+
 
 export default function App() {
   const navigate = useNavigate();
@@ -512,12 +515,16 @@ export default function App() {
           <Route
             path="yqms/aquaboy"
             element={
-              <AuditReport
-                title="Humidity Aquaboy Checking"
-                onBack={handleBack}
-              />
+              <HumidityReportAdd onBack={handleBack} />
             }
           />
+          <Route
+            path="yqms/aquaboy/list"
+            element={
+              <HumidityReportList onBack={handleBack} />
+            }
+          />
+
           <Route
             path="yqms/fin-check"
             element={<AuditReport title="Fin Check" onBack={handleBack} />}
