@@ -15,7 +15,7 @@ const translations = {
     menu: "Menu",
     quickActions: "Quick Actions",
     language: "Language",
-    
+
     // Common
     close: "Close",
     cancel: "Cancel",
@@ -53,7 +53,7 @@ const translations = {
     viewAll: "View All",
     showMore: "Show More",
     showLess: "Show Less",
-    
+
     // User
     user: "User",
     profile: "Profile",
@@ -66,23 +66,23 @@ const translations = {
     phone: "Phone",
     name: "Name",
     id: "ID",
-    
+
     // Notifications
     notifications: "Notifications",
     noNotifications: "No notifications",
-    
+
     // Language names
     english: "English",
     khmer: "Khmer",
     chinese: "Chinese",
     switchToEnglish: "Switch to English Version",
     switchToChinese: "Switch to Chinese Version",
-    
+
     // Sections
     administration: "Administration",
     managementDashboard: "Management Dashboard",
     operations: "Operations",
-    
+
     // Module Groups
     accountant: "Accountant",
     admin: "ADMIN",
@@ -92,7 +92,7 @@ const translations = {
     qa: "QA",
     internalLogistics: "Internal Logistics",
     production: "Production",
-    
+
     // Modules - Administration
     eInvoicing: "E-Invoicing",
     purchaseRequest: "Purchase Request",
@@ -118,7 +118,7 @@ const translations = {
     chemical: "Chemical",
     eGovernment: "E-GOVERNMENT",
     systemAnalysis: "System Analysis",
-    
+
     // Modules - Operations
     yqms: "YQMS",
     callOut: "Call Out",
@@ -136,7 +136,7 @@ const translations = {
     pps: "PPS",
     sample: "Sample",
     materialPurchase: "Material Purchase",
-    
+
     // Sub-modules - YHR
     recruitment: "Recruitment",
     interview: "Interview",
@@ -148,7 +148,7 @@ const translations = {
     visaAndWorkPermit: "Visa and Work Permit",
     fwcms: "FWCMS",
     canteen: "Canteen",
-    
+
     // Sub-modules - Training Departments
     onlineTraining: "Online Training",
     yai: "YAI",
@@ -173,7 +173,7 @@ const translations = {
     warehouse: "Warehouse",
     ie: "IE",
     qaFabric: "QA (Fabric)",
-    
+
     // Sub-modules - YTM
     ytm: "YTM",
     machineLocation: "Machine Location",
@@ -186,13 +186,13 @@ const translations = {
     downloadData: "Download",
     analysis: "Analysis",
     report: "Report",
-    
+
     // Additional YHR sub-modules
     checklistAttendant: "Checklist Attendant",
     myAttendant: "My Attendant",
     fwcmsPortal: "FWCMS Portal",
     ministryOfLabour: "Ministry of Labour",
-    
+
     // Form Labels - Common
     date: "Date",
     time: "Time",
@@ -212,7 +212,7 @@ const translations = {
     subtotal: "Subtotal",
     unit: "Unit",
     unitPrice: "Unit Price",
-    
+
     // Form Labels - Purchase Request
     purchaseRequisitionForm: "Purchase Requisition Form",
     purchaseList: "Purchase List",
@@ -245,12 +245,12 @@ const translations = {
     gm: "GM",
     purchaser: "Purchaser",
     stationery: "Stationery",
-    
+
     // Form Labels - Support Ticket
     subject: "Subject",
     nature: "Nature",
     keyword: "Keyword",
-    
+
     // Status
     active: "Active",
     inactive: "Inactive",
@@ -261,7 +261,7 @@ const translations = {
     inProgress: "In Progress",
     cancelled: "Cancelled",
     comingSoon: "Coming Soon",
-    
+
     // Messages
     noData: "No data available",
     noResults: "No results found",
@@ -271,7 +271,7 @@ const translations = {
     operationFailed: "Operation failed",
     requiredField: "This field is required",
     invalidInput: "Invalid input",
-    
+
     // Time
     today: "Today",
     yesterday: "Yesterday",
@@ -282,7 +282,7 @@ const translations = {
     lastWeek: "Last Week",
     lastMonth: "Last Month",
     lastYear: "Last Year",
-    
+
     // Actions
     viewDetails: "View Details",
     editItem: "Edit Item",
@@ -293,13 +293,13 @@ const translations = {
     actions: "Action",
     addProduct: "Add Product",
     remove: "Remove",
-    
+
     // Salary Bill Sub-modules
     monthlySalary: "Monthly Salary",
     weeklyIncentive: "Weekly Incentive",
     permitFee: "Permit Fee",
     resignPayment: "Resign Payment",
-    
+
     // Gate Pass
     visitor: "Visitor",
     personalRequest: "Personal Request",
@@ -326,7 +326,7 @@ const translations = {
     healthIssue: "Health Issue",
     personalEmergency: "Personal Emergency",
     other: "Other",
-    
+
     // Support Ticket Form
     details: "Details",
     uploadImage: "Upload image",
@@ -335,7 +335,7 @@ const translations = {
     imageFormatWarning: "and should be in",
     format: "format",
     or: "or",
-    
+
     // Common Form Fields
     employeeName: "Employee Name",
     jobTitle: "Job Title",
@@ -354,7 +354,7 @@ const translations = {
     year: "Year",
     month: "Month",
     week: "Week",
-    
+
     // Gate Pass Table Headers
     no: "N°",
     employeeIdHeader: "EMPLOYEE ID",
@@ -384,7 +384,7 @@ const translations = {
     submitRequest: "Submit Request",
     hour: "Hour",
     minute: "Minute",
-    
+
     // Training
     course: "Course",
     lessons: "Lessons (PDF)",
@@ -399,7 +399,7 @@ const translations = {
     end: "End",
     trainingLesson: "Training Lesson",
     listAndScheduleTrainingCourse: "List and Schedule Training Course",
-    
+
     // Accountant Module
     checkRequestLists: "Check Request Lists",
     code: "CODE",
@@ -427,7 +427,7 @@ const translations = {
     paid: "Paid",
     by: "by",
     accApprovePay: "ACC APPROVE & PAY",
-    
+
     // Recruitment Form
     positionInformation: "Position Information",
     positionTitle: "Position Title",
@@ -472,7 +472,7 @@ const translations = {
     shortlisted: "Shortlisted",
     rejected: "Rejected",
     hired: "Hired",
-    
+
     // Interview Form
     interviewArrangement: "Interview Arrangement",
     interviewDetails: "Interview Details",
@@ -503,7 +503,7 @@ const translations = {
     technicalInterview: "Technical Interview",
     finalInterview: "Final Interview",
     scheduled: "Scheduled",
-    
+
     // Onboarding Form
     onboarding: "Onboarding",
     employeeInformation: "Employee Information",
@@ -516,7 +516,7 @@ const translations = {
     trainingCompleted: "Training Completed",
     systemAccess: "System Access",
     saveOnboarding: "Save Onboarding",
-    
+
     // Temp Worker Request Form
     temporaryWorkerRequest: "Temporary Worker Request",
     requestor: "Requestor",
@@ -1215,7 +1215,7 @@ const translations = {
     energyConsumedB: "Energy Consumed B",
     energyConsumedC: "Energy Consumed C",
     energyConsumedD: "Energy Consumed D",
-    
+
     // Gate Pass - Where To Go Options
     ymToWh12000: "YM to WH12000",
     ymToSubFactory: "YM to Sub Factory",
@@ -1223,7 +1223,7 @@ const translations = {
     wh12000ToYm: "WH12000 to YM",
     whToSubFactory: "WH to Sub Factory",
     whToOther: "WH to Other",
-    
+
     // Energy - Switch Board
     switchBoardList: "Switch Board List",
     switchBoards: "Switch Boards",
@@ -1235,10 +1235,10 @@ const translations = {
     totalSwitchBoards: "Total Switch Boards",
     totalEquipments: "Total Equipments",
     averageEquipments: "Average Equipments",
-    
+
     // Air - Air Quality Detector
     airQualityDetectorDeviceList: "Air Quality Detector's Device List",
-    
+
     // Waste - Boiler
     boiler: "Boiler",
     addBoiler: "Add Boiler",
@@ -1249,7 +1249,7 @@ const translations = {
     electricBoiler: "Electric Boiler",
     totalBoiler: "Total Boiler",
     daysTracked: "Days Tracked",
-    
+
     // Digital Audit - Compliance Certificate
     complianceCertificate: "Compliance Certificate",
     search: "Search",
@@ -1268,14 +1268,14 @@ const translations = {
     expired: "Expired",
     viewCertificate: "View Certificate",
     noCertificatesFound: "No certificates found",
-    
+
     // Purchase Request - Approval
     requestDetails: "Req Details",
     approvalApplicationList: "Approval Application List",
     accountantApproval: "Accountant Approval",
     accountantApprovalAndPayment: "Accountant Approval and Payment",
     approvedAndPaid: "Approved & Paid",
-    
+
     // Call Out / KANBAN
     allLocation: "All Location",
     refresh: "Refresh",
@@ -1291,7 +1291,7 @@ const translations = {
     line9: "Line 9",
     line10: "Line 10",
     line11: "Line 11",
-    
+
     // CE Module
     stStandardTime: "ST Standard Time",
     productDevelopment: "Product development",
@@ -1305,18 +1305,49 @@ const translations = {
     costCentersDirectIndirectCost: "Cost centers ,Direct/Indirect Cost",
     cpm: "CPM",
     styleCosting: "Style Costing",
-    
+
     // FC Module
     accessoriesReceiving: "Accessories Receiving",
     accessoriesInspection: "Accessories Inspection",
     accessoriesIssuing: "Accessories Issuing",
     warehouseTrackingLocation: "Warehouse Tracking Location",
-    
+
     // YQMS - Final Production
     qaAuditFinishingPacking: "QA Audit Finishing Packing",
     humidityAquaboyChecking: "Humidity Aquaboy Checking",
     firstOutputFinishingAndPacking: "First Output Finishing And Packing",
-    
+    finCheck: "Fin Check",
+    humidityAquaboy: "Humidity Aquaboy",
+    qaAuditFinishingPacking: "QA Audit Finishing Packing",
+    firstOutputFinishingAndPacking: "First Output Finishing And Packing",
+    customerComplaintCPR: "Customer Complaint CPR",
+
+    // Humidity Report
+    humidityReport: "Humidity Report",
+    generalInformation: "General Information",
+    reportType: "Report Type",
+    factoryStyleNo: "Factory Style No",
+    buyerStyleNo: "Buyer Style #",
+    fabrication: "Fabrication",
+    colorName: "Color Name",
+    aquaboyReadingSpec: "Aquaboy Reading Spec",
+    beforeDryRoom: "Before Dry Room",
+    inspectionRecords: "Inspection Records",
+    addNewRecord: "Add New Record",
+    aquaboyReading: "Aquaboy Reading",
+    topBody: "Top (Body)",
+    middleBody: "Middle (Body)",
+    bottomBody: "Bottom (Body)",
+    inspectionPhotos: "Inspection Photos",
+    selectionRequired: "Selection Required",
+    chooseStyleToEnableUpload: "Choose Style No to enable upload",
+    P88Legacy: "P88 Legacy",
+    finCheckTemplate: "Fincheck Template",
+    finCheckReport: "Fincheck Report",
+    finCheckUpload: "Fincheck Upload",
+    finCheckSetting: "Fincheck Setting",
+    finCheckInspection: "Fincheck Inspection",
+
     // Compliance Certificate - Additional
     certificateAndReport: "Certificate and Report",
     typeOfMinistries: "Type of ministries",
@@ -1348,12 +1379,12 @@ const translations = {
     certificates: "certificates",
     board: "Board",
     equipments: "equipments",
-    
+
     // Water Module
     waterProductList: "Water Product List",
     totalWaterConsumed: "Total Water Consumed",
     waterMeter: "Water Meter",
-    
+
     // Phone Viewer
     phoneScreenshots: "Phone Screenshots",
     images: "images",
