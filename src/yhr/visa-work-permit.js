@@ -179,7 +179,7 @@ const VisaWorkPermit = ({ onBack }) => {
           <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
             <table className="w-full text-left border-collapse min-w-[1100px]">
               <thead>
-                <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[11px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[16px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
                   <th className="px-6 py-4 border-r border-b border-black text-center w-20">
                     Photo
                   </th>
@@ -220,52 +220,52 @@ const VisaWorkPermit = ({ onBack }) => {
                     </td>
                     <td className="px-6 py-4 border-r border-b border-black">
                       <div className="flex flex-col gap-1">
-                        <span className="font-bold text-black text-sm tracking-tight">
+                        <span className="font-bold text-black text-[18px] tracking-tight">
                           {rec.name}
                         </span>
-                        <div className="flex items-center gap-1.5 text-[9px] font-bold text-black uppercase">
+                        <div className="flex items-center gap-1.5 text-[18px] font-bold text-black uppercase">
                           <span>{rec.department}</span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-black">
+                        <div className="flex items-center gap-1.5 text-[18px] font-bold text-black">
                           <Phone size={10} className="text-red-400" />
                           <span>{rec.phone}</span>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 border-r border-b border-black">
-                      <div className="font-bold text-black text-xs">
+                      <div className="font-bold text-black text-[18px]">
                         {rec.nationality}
                       </div>
                     </td>
                     <td className="px-6 py-4 border-r border-b border-black text-center">
                       <span
-                        className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${rec.expiryDate === "PERMANENT" ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-red-50 text-red-600 border-red-100"}`}
+                        className={`px-3 py-1 rounded-md text-[18px] font-black tracking-widest border ${rec.expiryDate === "PERMANENT" ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-red-50 text-red-600 border-red-100"}`}
                       >
                         {rec.expiryDate === "PERMANENT" ? "ACTIVE" : "EXPIRING"}
                       </span>
                     </td>
                     <td className="px-6 py-4 border-r border-b border-black text-center">
-                      <span className="px-2.5 py-1 bg-white border border-black rounded text-[9px] font-bold text-red-600 shadow-sm uppercase">
+                      <span className="px-2.5 py-1 bg-white border border-black rounded text-[18px] font-bold text-red-600 shadow-sm uppercase">
                         {rec.visaType}
                       </span>
                     </td>
                     <td className="px-6 py-4 border-r border-b border-black">
-                      <div className="font-bold text-black text-xs text-center">
+                      <div className="font-bold text-black text-[18px] text-center">
                         {rec.expiryDate}
                       </div>
                     </td>
-                    <td className="px-6 py-4 border-b border-black">
+                    <td className="px-6 py-4 border-r border-b border-black">
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => handleAction("View", rec)}
-                          className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white rounded text-[9px] font-bold uppercase hover:bg-red-700 transition-colors shadow-sm"
+                          className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white rounded text-[18px] font-bold uppercase hover:bg-red-700 transition-colors shadow-sm"
                         >
                           <Eye size={10} strokeWidth={3} />
                           View
                         </button>
                         <button
                           onClick={() => handleAction("Edit", rec)}
-                          className="px-3 py-1.5 bg-white border border-black text-black rounded text-[9px] font-bold uppercase hover:bg-slate-50 transition-colors"
+                          className="px-3 py-1.5 bg-white border border-black text-black rounded text-[18px] font-bold uppercase hover:bg-slate-50 transition-colors"
                         >
                           Edit
                         </button>

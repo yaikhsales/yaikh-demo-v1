@@ -240,7 +240,7 @@ const Interview = ({ onBack }) => {
             <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
               <table className="w-full text-left border-collapse min-w-[1100px]">
                 <thead>
-                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[11px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[16px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
                     <th className="px-6 py-4 border-r border-b border-black text-center w-20">
                       Photo
                     </th>
@@ -281,61 +281,61 @@ const Interview = ({ onBack }) => {
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col gap-1">
-                          <span className="font-bold text-black text-sm tracking-tight">
+                          <span className="font-bold text-black text-[18px] tracking-tight">
                             {applicant.name}
                           </span>
-                          <div className="flex items-center gap-2 text-[9px] font-bold text-black uppercase">
+                          <div className="flex items-center gap-2 text-[18px] font-bold text-black uppercase">
                             <span>{applicant.age} YRS</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-black">
-                            <Phone size={10} className="text-blue-400" />
+                          <div className="flex items-center gap-1.5 text-[18px] font-bold text-black">
+                            <Phone size={18} className="text-blue-400" />
                             <span>{applicant.phone}</span>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
-                        <div className="flex flex-col text-xs font-bold text-black">
+                        <div className="flex flex-col text-[18px] font-bold text-black">
                           <span>{applicant.department}</span>
-                          <span className="text-[10px] font-medium text-black">
+                          <span className="text-[18px] font-medium text-black">
                             {applicant.position}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col items-center gap-2 text-center">
-                          <span className="text-[9px] font-bold text-black uppercase tracking-widest italic leading-none">
+                          <span className="text-[18px] font-bold text-black uppercase tracking-widest italic leading-none">
                             {applicant.status}
                           </span>
-                          <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-[9px] font-black tracking-widest border border-blue-100">
+                          <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-[18px] font-black tracking-widest border border-blue-100">
                             {applicant.subStatus}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black text-center">
-                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[9px] font-bold text-black uppercase">
+                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[18px] font-bold text-black uppercase">
                           {applicant.type}
                         </span>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
-                        <div className="flex flex-col text-[11px] font-bold text-black">
+                        <div className="flex flex-col text-[18px] font-bold text-black">
                           <span>{applicant.date}</span>
-                          <span className="text-[9px] text-black uppercase tracking-tighter">
+                          <span className="text-[18px] text-black uppercase tracking-tighter">
                             {applicant.time}
                           </span>
                         </div>
                       </td>
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6 border-r border-b border-black">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handlePass(applicant)}
-                            className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white rounded-lg text-[9px] font-black uppercase hover:bg-blue-700 transition-colors shadow-sm"
+                            className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white rounded-lg text-[18px] font-black uppercase hover:bg-blue-700 transition-colors shadow-sm"
                           >
                             <User size={12} strokeWidth={3} />
                             Pass
                           </button>
                           <button
                             onClick={() => handleFail(applicant)}
-                            className="px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase hover:bg-rose-100 transition-colors"
+                            className="px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[18px] font-black uppercase hover:bg-rose-100 transition-colors"
                           >
                             Fail
                           </button>
