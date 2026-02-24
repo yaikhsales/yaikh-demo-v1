@@ -299,11 +299,11 @@ export const DASHBOARD_DATA = [
             image: "assets/modules-image/new-icons-modules/PWIP.png?v=1",
             status: "active",
             highlight: true,
-            galleryImages: [
-              "assets/pwip/pwip1.jpg",
-              "assets/pwip/pwip2.jpg",
-              "assets/pwip/pwip3.jpg",
-            ],
+            // galleryImages: [
+            //   "assets/pwip/pwip1.jpg",
+            //   "assets/pwip/pwip2.jpg",
+            //   "assets/pwip/pwip3.jpg",
+            // ],
           },
           {
             id: "kanban",

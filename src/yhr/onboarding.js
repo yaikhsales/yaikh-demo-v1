@@ -152,51 +152,51 @@ const Onboarding = ({ onBack }) => {
       time: "09:15 AM",
       photo: "/assets/Yaikh-Uploads/H01_00004199_20260110100611.jpeg",
     },
-    {
-      id: 8,
-      name: "Voun Thida",
-      gender: "FEMALE",
-      age: 25,
-      phone: "+855 099 556 778",
-      department: "Admin",
-      position: "Assistant",
-      status: "PHASE 3: ONBOARDING",
-      subStatus: "DOCUMENTS PENDING",
-      type: "EXPAT",
-      date: "Feb 15, 2026",
-      time: "11:00 AM",
-      photo: "/assets/about-us/teams/Voun-Thida.jpeg",
-    },
-    {
-      id: 9,
-      name: "Set Sophy",
-      gender: "FEMALE",
-      age: 27,
-      phone: "+855 088 667 889",
-      department: "Operations",
-      position: "Manager",
-      status: "PHASE 3: ONBOARDING",
-      subStatus: "FINAL CHECKLIST",
-      type: "EXPAT",
-      date: "Feb 15, 2026",
-      time: "01:30 PM",
-      photo: "/assets/about-us/teams/Set-Sophy.jpg",
-    },
-    {
-      id: 10,
-      name: "Ton Noeun",
-      gender: "MALE",
-      age: 32,
-      phone: "+855 077 778 990",
-      department: "Maintenance",
-      position: "Technician",
-      status: "PHASE 3: ONBOARDING",
-      subStatus: "SAFETY BRIEFING",
-      type: "EXPAT",
-      date: "Feb 16, 2026",
-      time: "10:00 AM",
-      photo: "/assets/about-us/teams/Ton-Noeun.jpeg",
-    },
+    // {
+    //   id: 8,
+    //   name: "Voun Thida",
+    //   gender: "FEMALE",
+    //   age: 25,
+    //   phone: "+855 099 556 778",
+    //   department: "Admin",
+    //   position: "Assistant",
+    //   status: "PHASE 3: ONBOARDING",
+    //   subStatus: "DOCUMENTS PENDING",
+    //   type: "EXPAT",
+    //   date: "Feb 15, 2026",
+    //   time: "11:00 AM",
+    //   photo: "/assets/about-us/teams/Voun-Thida.jpeg",
+    // },
+    // {
+    //   id: 9,
+    //   name: "Set Sophy",
+    //   gender: "FEMALE",
+    //   age: 27,
+    //   phone: "+855 088 667 889",
+    //   department: "Operations",
+    //   position: "Manager",
+    //   status: "PHASE 3: ONBOARDING",
+    //   subStatus: "FINAL CHECKLIST",
+    //   type: "EXPAT",
+    //   date: "Feb 15, 2026",
+    //   time: "01:30 PM",
+    //   photo: "/assets/about-us/teams/Set-Sophy.jpg",
+    // },
+    // {
+    //   id: 10,
+    //   name: "Ton Noeun",
+    //   gender: "MALE",
+    //   age: 32,
+    //   phone: "+855 077 778 990",
+    //   department: "Maintenance",
+    //   position: "Technician",
+    //   status: "PHASE 3: ONBOARDING",
+    //   subStatus: "SAFETY BRIEFING",
+    //   type: "EXPAT",
+    //   date: "Feb 16, 2026",
+    //   time: "10:00 AM",
+    //   photo: "/assets/about-us/teams/Ton-Noeun.jpeg",
+    // },
   ];
 
   const handleBack = () => {
@@ -241,7 +241,7 @@ const Onboarding = ({ onBack }) => {
             <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
               <table className="w-full text-left border-collapse min-w-[1100px]">
                 <thead>
-                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[11px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[16px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
                     <th className="px-6 py-4 border-r border-b border-black text-center w-20">
                       Photo
                     </th>
@@ -260,7 +260,7 @@ const Onboarding = ({ onBack }) => {
                     <th className="px-6 py-4 border-r border-b border-black">
                       Start Date
                     </th>
-                    <th className="px-6 py-4 border-b border-black text-center whitespace-nowrap">
+                    <th className="px-6 py-4 border-r border-b border-black text-center whitespace-nowrap">
                       Action
                     </th>
                   </tr>
@@ -282,61 +282,61 @@ const Onboarding = ({ onBack }) => {
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col gap-1">
-                          <span className="font-bold text-black text-sm tracking-tight">
+                          <span className="font-bold text-black text-[18px] tracking-tight">
                             {applicant.name}
                           </span>
-                          <div className="flex items-center gap-2 text-[9px] font-bold text-black uppercase">
+                          <div className="flex items-center gap-2 text-[18px] font-bold text-black uppercase">
                             <span>{applicant.age} YRS</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-black">
+                          <div className="flex items-center gap-1.5 text-[18px] font-bold text-black">
                             <Phone size={10} className="text-blue-400" />
                             <span>{applicant.phone}</span>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
-                        <div className="flex flex-col text-xs font-bold text-black">
+                        <div className="flex flex-col text-[18px] font-bold text-black">
                           <span>{applicant.department}</span>
-                          <span className="text-[10px] font-medium text-black">
+                          <span className="text-[18px] font-medium text-black">
                             {applicant.position}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col items-center gap-2 text-center">
-                          <span className="text-[9px] font-bold text-black uppercase tracking-widest italic leading-none">
+                          <span className="text-[18px] font-bold text-black uppercase tracking-widest italic leading-none">
                             {applicant.status}
                           </span>
-                          <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-md text-[9px] font-black tracking-widest border border-indigo-100">
+                          <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-md text-[18px] font-black tracking-widest border border-indigo-100">
                             {applicant.subStatus}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black text-center">
-                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[9px] font-bold text-black uppercase">
+                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[18px] font-bold text-black uppercase">
                           {applicant.type}
                         </span>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
-                        <div className="flex flex-col text-[11px] font-bold text-black">
+                        <div className="flex flex-col text-[18px] font-bold text-black">
                           <span>{applicant.date}</span>
-                          <span className="text-[9px] text-black uppercase tracking-tighter">
+                          <span className="text-[18px] text-black uppercase tracking-tighter">
                             {applicant.time}
                           </span>
                         </div>
                       </td>
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6 border-r border-b border-black">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleView(applicant)}
-                            className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white rounded-lg text-[9px] font-black uppercase hover:bg-blue-700 transition-colors shadow-sm"
+                            className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white rounded-lg text-[18px] font-black uppercase hover:bg-blue-700 transition-colors shadow-sm"
                           >
                             <Eye size={12} strokeWidth={3} />
                             View
                           </button>
                           <button
                             onClick={() => handleEdit(applicant)}
-                            className="px-4 py-1.5 bg-white border border-black text-black rounded-lg text-[9px] font-black uppercase hover:bg-slate-50 transition-colors"
+                            className="px-4 py-1.5 bg-white border border-black text-black rounded-lg text-[18px] font-black uppercase hover:bg-slate-50 transition-colors"
                           >
                             Edit
                           </button>

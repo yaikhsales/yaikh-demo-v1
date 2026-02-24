@@ -224,81 +224,81 @@ const Recruitment = ({ onBack }) => {
       time: "02:30 PM",
       photo: "/assets/Yaikh-Uploads/H01_00004219_20260114093834.jpeg",
     },
-    {
-      id: 12,
-      name: "Virot",
-      gender: "MALE",
-      age: 33,
-      phone: "+855 012 777 888",
-      department: "Engineering",
-      position: "Senior Dev",
-      status: "PHASE 1: REVIEW",
-      subStatus: "REJECTED",
-      type: "EXPAT",
-      date: "Feb 09, 2026",
-      time: "04:15 PM",
-      photo: "/assets/about-us/teams/virot.jpg",
-    },
-    {
-      id: 13,
-      name: "Samnang",
-      gender: "MALE",
-      age: 25,
-      phone: "+855 081 888 999",
-      department: "IT Support",
-      position: "Helpdesk",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "SKILLS TEST",
-      type: "EXPAT",
-      date: "Feb 09, 2026",
-      time: "11:00 AM",
-      photo: "/assets/about-us/teams/samnang.png",
-    },
-    {
-      id: 14,
-      name: "Daly",
-      gender: "FEMALE",
-      age: 26,
-      phone: "+855 099 999 000",
-      department: "Marketing",
-      position: "Social Media",
-      status: "PHASE 1: REVIEW",
-      subStatus: "IN REVIEW",
-      type: "EXPAT",
-      date: "Feb 08, 2026",
-      time: "02:45 PM",
-      photo: "/assets/about-us/teams/daly.jpg",
-    },
-    {
-      id: 15,
-      name: "Yasomi",
-      gender: "FEMALE",
-      age: 24,
-      phone: "+855 061 000 111",
-      department: "Design",
-      position: "Intern",
-      status: "PHASE 3: ONBOARDING",
-      subStatus: "ID ISSUED",
-      type: "EXPAT",
-      date: "Feb 08, 2026",
-      time: "09:30 AM",
-      photo: "/assets/about-us/teams/yasomi.jpg",
-    },
-    {
-      id: 16,
-      name: "Chhorng",
-      gender: "MALE",
-      age: 30,
-      phone: "+855 070 111 222",
-      department: "Logistics",
-      position: "Warehouse",
-      status: "PHASE 1: REVIEW",
-      subStatus: "NEW APPLICANT",
-      type: "EXPAT",
-      date: "Feb 07, 2026",
-      time: "03:20 PM",
-      photo: "/assets/about-us/teams/chhorng.jpg",
-    },
+    // {
+    //   id: 12,
+    //   name: "Virot",
+    //   gender: "MALE",
+    //   age: 33,
+    //   phone: "+855 012 777 888",
+    //   department: "Engineering",
+    //   position: "Senior Dev",
+    //   status: "PHASE 1: REVIEW",
+    //   subStatus: "REJECTED",
+    //   type: "EXPAT",
+    //   date: "Feb 09, 2026",
+    //   time: "04:15 PM",
+    //   photo: "/assets/about-us/teams/virot.jpg",
+    // },
+    // {
+    //   id: 13,
+    //   name: "Samnang",
+    //   gender: "MALE",
+    //   age: 25,
+    //   phone: "+855 081 888 999",
+    //   department: "IT Support",
+    //   position: "Helpdesk",
+    //   status: "PHASE 2: INTERVIEW",
+    //   subStatus: "SKILLS TEST",
+    //   type: "EXPAT",
+    //   date: "Feb 09, 2026",
+    //   time: "11:00 AM",
+    //   photo: "/assets/about-us/teams/samnang.png",
+    // },
+    // {
+    //   id: 14,
+    //   name: "Daly",
+    //   gender: "FEMALE",
+    //   age: 26,
+    //   phone: "+855 099 999 000",
+    //   department: "Marketing",
+    //   position: "Social Media",
+    //   status: "PHASE 1: REVIEW",
+    //   subStatus: "IN REVIEW",
+    //   type: "EXPAT",
+    //   date: "Feb 08, 2026",
+    //   time: "02:45 PM",
+    //   photo: "/assets/about-us/teams/daly.jpg",
+    // },
+    // {
+    //   id: 15,
+    //   name: "Yasomi",
+    //   gender: "FEMALE",
+    //   age: 24,
+    //   phone: "+855 061 000 111",
+    //   department: "Design",
+    //   position: "Intern",
+    //   status: "PHASE 3: ONBOARDING",
+    //   subStatus: "ID ISSUED",
+    //   type: "EXPAT",
+    //   date: "Feb 08, 2026",
+    //   time: "09:30 AM",
+    //   photo: "/assets/about-us/teams/yasomi.jpg",
+    // },
+    // {
+    //   id: 16,
+    //   name: "Chhorng",
+    //   gender: "MALE",
+    //   age: 30,
+    //   phone: "+855 070 111 222",
+    //   department: "Logistics",
+    //   position: "Warehouse",
+    //   status: "PHASE 1: REVIEW",
+    //   subStatus: "NEW APPLICANT",
+    //   type: "EXPAT",
+    //   date: "Feb 07, 2026",
+    //   time: "03:20 PM",
+    //   photo: "/assets/about-us/teams/chhorng.jpg",
+    // },
   ]);
 
   const handleBack = () => {
@@ -371,7 +371,7 @@ const Recruitment = ({ onBack }) => {
             <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
               <table className="w-full text-left border-collapse min-w-[1100px]">
                 <thead>
-                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[11px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[16px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
                     <th className="px-6 py-4 border-r border-b border-black text-center w-20">
                       {t("photo") || "Photo"}
                     </th>
@@ -391,7 +391,7 @@ const Recruitment = ({ onBack }) => {
                     <th className="px-6 py-4 border-r border-b border-black">
                       {t("submitted") || "Submitted"}
                     </th>
-                    <th className="px-6 py-4 border-b border-black text-center whitespace-nowrap">
+                    <th className="px-6 py-4 border-r border-b border-black text-center whitespace-nowrap">
                       {t("action") || "Action"}
                     </th>
                   </tr>
@@ -413,13 +413,13 @@ const Recruitment = ({ onBack }) => {
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col gap-1">
-                          <span className="font-bold text-black text-sm tracking-tight">
+                          <span className="font-bold text-black text-[18px] tracking-tight">
                             {applicant.name}
                           </span>
-                          <div className="flex items-center gap-2 text-[9px] font-bold text-black uppercase">
+                          <div className="flex items-center gap-2 text-[18px] font-bold text-black uppercase">
                             <span>{applicant.age} YRS</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-[10px] font-bold text-black">
+                          <div className="flex items-center gap-1.5 text-[18px] font-bold text-black">
                             <Phone size={10} className="text-blue-400" />
                             <span>{applicant.phone}</span>
                           </div>
@@ -427,49 +427,49 @@ const Recruitment = ({ onBack }) => {
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col">
-                          <span className="font-bold text-black text-xs uppercase tracking-tight">
+                          <span className="font-bold text-black text-[18px] uppercase tracking-tight">
                             {applicant.department}
                           </span>
-                          <span className="text-[10px] font-medium text-black">
+                          <span className="text-[18px] font-medium text-black">
                             {applicant.position}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
                         <div className="flex flex-col items-center gap-2">
-                          <span className="text-[9px] font-bold text-black uppercase tracking-widest italic">
+                          <span className="text-[18px] font-bold text-black uppercase tracking-widest italic">
                             {applicant.status}
                           </span>
-                          <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[9px] font-black tracking-widest border border-emerald-100">
+                          <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[18px] font-black tracking-widest border border-emerald-100">
                             {applicant.subStatus}
                           </span>
                         </div>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black text-center">
-                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[9px] font-bold text-black uppercase">
+                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[18px] font-bold text-black uppercase">
                           {applicant.type}
                         </span>
                       </td>
                       <td className="px-6 py-4 border-r border-b border-black">
-                        <div className="flex flex-col text-[11px] font-bold text-black">
+                        <div className="flex flex-col text-[18px] font-bold text-black">
                           <span>{applicant.date}</span>
-                          <span className="text-[9px] text-black">
+                          <span className="text-[18px] text-black">
                             {applicant.time}
                           </span>
                         </div>
                       </td>
-                      <td className="px-8 py-6">
+                      <td className="px-8 py-6 border-r border-b border-black">
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleInterview(applicant)}
-                            className="flex items-center gap-1.5 px-4 py-1.5 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-lg text-[9px] font-black uppercase hover:bg-emerald-100 transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-1.5 bg-emerald-50 border border-emerald-100 text-emerald-600 rounded-lg text-[18px] font-black uppercase hover:bg-emerald-100 transition-colors"
                           >
                             <Calendar size={12} strokeWidth={3} />
                             Interview
                           </button>
                           <button
                             onClick={() => handleReject(applicant)}
-                            className="flex items-center gap-1.5 px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase hover:bg-rose-100 transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[18px] font-black uppercase hover:bg-rose-100 transition-colors"
                           >
                             <X size={12} strokeWidth={3} />
                             Reject

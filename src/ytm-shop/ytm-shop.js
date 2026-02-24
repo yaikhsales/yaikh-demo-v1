@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, Calendar, AlertTriangle, CheckCircle, ShoppingBag, Stethoscope, Wrench, X, ArrowLeft, MessageCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, Calendar, AlertTriangle, CheckCircle, ShoppingBag, Stethoscope, Wrench, X, ArrowLeft } from 'lucide-react';
 import ImageViewer from '../components/ImageViewer';
-import GeneralAIAgent from '../general-ag';
 
 const YShop = ({ onBack }) => {
     const navigate = useNavigate();
-    const [isBotOpen, setIsBotOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [dateRange, setDateRange] = useState('01/12/2025 / 30/12/2025');
     const [department, setDepartment] = useState('Office');
@@ -628,28 +626,6 @@ const YShop = ({ onBack }) => {
                 <ImageViewer 
                     imagePath={selectedImage} 
                     onClose={() => setSelectedImage(null)} 
-                />
-            )}
-
-            {/* Bot Button - Bottom Right */}
-            <button
-                onClick={() => setIsBotOpen(true)}
-                className="fixed bottom-6 right-6 z-50 w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full shadow-2xl hover:shadow-3xl hover:scale-110 transition-all duration-300 flex items-center justify-center group border-2 border-white/20"
-                aria-label="Ask YTM Shop bot"
-                title="Ask YTM Shop bot"
-            >
-                <img
-                    src="/general-bot.png"
-                    alt="YTM Shop Bot"
-                    className="w-full h-full object-cover rounded-full p-1.5"
-                />
-            </button>
-            
-            {/* Bot Modal */}
-            {isBotOpen && (
-                <GeneralAIAgent 
-                    onClose={() => setIsBotOpen(false)}
-                    moduleContext="YTM Shop"
                 />
             )}
         </div>
