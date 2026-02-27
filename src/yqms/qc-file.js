@@ -20,7 +20,9 @@ import {
     Trash2,
     Calendar,
     ThumbsUp,
-    MessageSquare
+    MessageSquare,
+    X,
+    Send
 } from 'lucide-react';
 import { useTranslation } from '../translate/TranslationContext';
 
@@ -29,7 +31,11 @@ const QCFile = ({ onBack }) => {
     const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 7;
+    const [itemsPerPage] = useState(7);
+    const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState(null);
+    const [modalType, setModalType] = useState('recommend'); // 'recommend' or 'feedback'
+    const [commentText, setCommentText] = useState('');
 
     const records = [
         { id: 'GPAR12376NOS', date: '2024-02-14', buyer: 'Aritzia', style: 'FFS 99-06-60284-R-SU26', rolls: 45, qty: '2,250m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_001.pdf', comments: 12 },
@@ -209,7 +215,13 @@ const QCFile = ({ onBack }) => {
                                     <td className="px-6 py-4 text-center">
                                         <button
                                             className="flex items-center justify-center gap-2 mx-auto hover:bg-blue-50 px-2 py-1 rounded-xl transition-all group/comment border border-blue-200 hover:border-blue-200 shadow-sm"
-                                            onClick={() => console.log('View buyer comments for', record.id)}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSelectedRecord(record);
+                                                setCommentText('');
+                                                setModalType('feedback');
+                                                setIsCommentModalOpen(true);
+                                            }}
                                         >
 
                                             <div className="flex items-center gap-1.5">
@@ -247,6 +259,13 @@ const QCFile = ({ onBack }) => {
                                             <button
                                                 className="flex items-center gap-2 px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all border border-emerald-100 group/inline shadow-sm"
                                                 title="Recommend"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setSelectedRecord(record);
+                                                    setCommentText('');
+                                                    setModalType('recommend');
+                                                    setIsCommentModalOpen(true);
+                                                }}
                                             >
                                                 <MessageSquare className="w-3.5 h-3.5 group-hover/inline:scale-110 transition-transform" />
                                             </button>
@@ -303,6 +322,129 @@ const QCFile = ({ onBack }) => {
                     </div>
                 </div>
             </main>
+
+            {/* Conditional Modal */}
+            {isCommentModalOpen && selectedRecord && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                    <div
+                        className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
+                        onClick={() => setIsCommentModalOpen(false)}
+                    />
+
+                    {modalType === 'recommend' ? (
+                        /* ADD RECOMMENDATION UI */
+                        <div className="relative bg-white rounded-[32px] shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-300">
+                            {/* Header */}
+                            <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 border border-emerald-100 shadow-sm">
+                                        <MessageSquare className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Add Recommendation</h3>
+                                        <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">{selectedRecord.id} • {selectedRecord.buyer}</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => setIsCommentModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-all text-slate-400">
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
+
+                            {/* Body */}
+                            <div className="p-8 space-y-6">
+                                <div className="space-y-3">
+                                    <label className="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] px-1">Your Comment / Suggestion</label>
+                                    <div className="relative group">
+                                        <textarea
+                                            value={commentText}
+                                            onChange={(e) => setCommentText(e.target.value)}
+                                            placeholder="Type your feedback here..."
+                                            className="w-full h-40 p-6 bg-white border-2 border-emerald-100 rounded-[24px] text-sm focus:ring-8 focus:ring-emerald-50 focus:border-emerald-500 transition-all outline-none resize-none placeholder:text-slate-300 font-bold tracking-tight shadow-sm"
+                                            autoFocus
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="bg-blue-50/50 border border-blue-100 rounded-2xl p-5 flex gap-4">
+                                    <Activity className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                                    <div className="text-[12px] font-bold text-blue-700/80 leading-relaxed tracking-tight">
+                                        Your recommendation will be visible to the QC team and the buyer. This helps in improving material quality and processing.
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Footer */}
+                            <div className="px-8 py-6 border-t border-slate-50 flex items-center justify-end gap-4 bg-slate-50/30">
+                                <button
+                                    onClick={() => setIsCommentModalOpen(false)}
+                                    className="px-6 py-3 text-[11px] font-black text-slate-500 hover:bg-slate-200 rounded-2xl transition-all uppercase tracking-[0.15em]"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        console.log('Posting recommendation:', commentText);
+                                        setIsCommentModalOpen(false);
+                                    }}
+                                    className="flex items-center gap-3 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-[11px] font-black shadow-xl shadow-emerald-200 transition-all uppercase tracking-[0.15em] hover:-translate-y-1"
+                                >
+                                    <Send className="w-4 h-4" /> Post Comment
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        /* FEEDBACK & RECOMMENDATIONS HISTORY UI */
+                        <div className="relative bg-white rounded-[24px] shadow-2xl w-full max-w-xl overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-200 flex flex-col max-h-[90vh]">
+                            {/* Modal Header */}
+                            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between shrink-0">
+                                <div className="flex items-center gap-4">
+                                    <div className="p-3 bg-blue-50 rounded-xl text-blue-600 border border-blue-100/50 shadow-sm">
+                                        <MessageSquare className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base font-black text-slate-900 uppercase tracking-tight">Feedback & Recommendations</h3>
+                                        <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">{selectedRecord.id} • {selectedRecord.buyer}</p>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => setIsCommentModalOpen(false)}
+                                    className="p-2.5 hover:bg-slate-100 rounded-full transition-all text-slate-400 hover:text-slate-600 hover:rotate-90"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Modal Body - Scrollable Feedback List */}
+                            <div className="flex-1 overflow-y-auto p-8 space-y-6">
+                                <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em] mb-2 px-1">Previous Conversations</h4>
+
+                                <div className="space-y-6">
+                                    {[
+                                        { user: 'Buyer Admin', time: '2 hours ago', text: 'Material hand-feel is good, but check the color consistency on roll #12.', initial: 'B', color: 'bg-rose-500', iconColor: 'text-white' },
+                                        { user: 'QC Team', time: '5 hours ago', text: 'Roll #12 inspected. Minor variation found, but within tolerance.', initial: 'Q', color: 'bg-purple-500', iconColor: 'text-white' },
+                                        { user: 'System Update', time: 'Yesterday', text: 'Status changed to "In-Progress" based on initial yardage check.', initial: 'S', color: 'bg-emerald-400', iconColor: 'text-white' }
+                                    ].map((c, i) => (
+                                        <div key={i} className="flex gap-5 group">
+                                            <div className={`w-10 h-10 rounded-xl ${c.color} flex items-center justify-center ${c.iconColor} text-sm font-black shrink-0 shadow-md group-hover:scale-105 transition-transform`}>
+                                                {c.initial}
+                                            </div>
+                                            <div className="flex-1 pt-0.5">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-sm font-extrabold text-slate-800 tracking-tight">{c.user}</span>
+                                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{c.time}</span>
+                                                </div>
+                                                <div className="text-[13px] text-slate-600 leading-relaxed p-4 bg-slate-50 border border-slate-100 rounded-2xl rounded-tl-none font-medium shadow-sm group-hover:bg-slate-100/50 transition-colors">
+                                                    {c.text}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

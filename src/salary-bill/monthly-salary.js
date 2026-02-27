@@ -1,25 +1,23 @@
 import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Search,
-  Plus,
   ArrowLeft,
-  Download,
+  Search,
   Filter,
-  MoreVertical,
-  CheckCircle2,
-  Clock,
-  CreditCard,
-  ChevronRight,
-  TrendingUp,
+  Download,
   Users,
   DollarSign,
-  AlertCircle,
-  FileText,
-  User,
-  Calculator,
+  TrendingDown,
+  Wallet,
+  CheckCircle,
+  ChevronRight,
   MessageCircle,
   X,
+  CreditCard,
+  Banknote,
+  Smartphone,
+  Calendar as CalendarIcon,
+  AlertCircle,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
 import { useTranslation } from "../translate/TranslationContext";
@@ -28,547 +26,516 @@ const MonthlySalaryDashboard = ({ onBack }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isBotOpen, setIsBotOpen] = useState(false);
-  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("ABA");
 
-  // MOCK DATA: Simulating a sewing line payroll
-  const [salaryRecords, setSalaryRecords] = useState([
-    {
-      id: "EMP-001",
-      name: "Srey Mao",
-      dept: "Sewing Line A",
-      netPay: 245.5,
-      status: "paid",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-05",
-    },
-    {
-      id: "EMP-002",
-      name: "Vannak Kem",
-      dept: "Sewing Line A",
-      netPay: 230.15,
-      status: "processed",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-06",
-    },
-    {
-      id: "EMP-003",
-      name: "Sophea Rattanak",
-      dept: "Quality Control",
-      netPay: 310.0,
-      status: "approved",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-07",
-    },
-    {
-      id: "EMP-004",
-      name: "Chitra Long",
-      dept: "Sewing Line B",
-      netPay: 220.75,
-      status: "pending",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-08",
-    },
-    {
-      id: "EMP-005",
-      name: "Borith Seng",
-      dept: "Finishing Dept",
-      netPay: 275.4,
-      status: "pending",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-08",
-    },
-    {
-      id: "EMP-006",
-      name: "Leakhena Chan",
-      dept: "Packing",
-      netPay: 215.0,
-      status: "paid",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-04",
-    },
-    {
-      id: "EMP-007",
-      name: "Pisey Morn",
-      dept: "Sewing Line C",
-      netPay: 255.2,
-      status: "processed",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-06",
-    },
-    {
-      id: "EMP-008",
-      name: "Roth Sombo",
-      dept: "Cutting Room",
-      netPay: 290.0,
-      status: "approved",
-      period: "Oct 2023",
-      lastUpdate: "2023-11-07",
-    },
-  ]);
-
-  // Summary Calculations
-  const stats = useMemo(() => {
-    const total = salaryRecords.reduce((acc, curr) => acc + curr.netPay, 0);
-    const pending = salaryRecords.filter((r) => r.status === "pending").length;
-    const paid = salaryRecords.filter((r) => r.status === "paid").length;
-    return { total, pending, paid };
-  }, [salaryRecords]);
-
-  const filteredRecords = salaryRecords.filter((record) => {
-    const matchesSearch =
-      record.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      record.id.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus =
-      statusFilter === "all" || record.status === statusFilter;
-    return matchesSearch && matchesStatus;
+  // State for filters matching your screenshot
+  const [filters, setFilters] = useState({
+    department: "All Departments",
+    section: "All Sections",
+    status: "All Status",
+    search: "",
   });
 
-  const getStatusStyle = (status) => {
-    switch (status) {
-      case "paid":
-        return "bg-green-100 text-green-700 border-green-200";
-      case "processed":
-        return "bg-blue-100 text-blue-700 border-blue-200";
-      case "approved":
-        return "bg-purple-100 text-purple-700 border-purple-200";
-      case "pending":
-        return "bg-amber-100 text-amber-700 border-amber-200";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200";
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case "paid":
-        return <CheckCircle2 size={14} />;
-      case "processed":
-        return <CreditCard size={14} />;
-      case "approved":
-        return <FileText size={14} />;
-      case "pending":
-        return <Clock size={14} />;
-      default:
-        return <AlertCircle size={14} />;
-    }
-  };
+  // Mock Data matching the new detailed table format
+  const [salaryRecords] = useState([
+    {
+      no: 1,
+      name: "Rothanak",
+      id: "YMDRIVER",
+      section: "-",
+      basic: 0,
+      days: 0,
+      gross: 0,
+      advance: 0,
+      deduct: 0,
+      net: 0,
+      status: "PAY",
+    },
+    {
+      no: 2,
+      name: "Lawrence Yue",
+      id: "000005",
+      section: "-",
+      basic: 0,
+      days: 0,
+      gross: 0,
+      advance: 0,
+      deduct: 0,
+      net: 0,
+      status: "PAY",
+    },
+    {
+      no: 3,
+      name: "Trista",
+      id: "000002",
+      section: "Head Office",
+      basic: 0,
+      days: 0,
+      gross: 0,
+      advance: 0,
+      deduct: 0,
+      net: 0,
+      status: "PAY",
+    },
+    {
+      no: 4,
+      name: "micky yu",
+      id: "00003",
+      section: "Head Office",
+      basic: 0,
+      days: 0.5,
+      gross: 9.38,
+      advance: 0,
+      deduct: 0.19,
+      net: 9.19,
+      status: "PAY",
+    },
+    {
+      no: 5,
+      name: "Suon Nai",
+      id: "YM1430",
+      section: "Boiler",
+      basic: 0,
+      days: 0.5,
+      gross: 9.19,
+      advance: 0,
+      deduct: 0.18,
+      net: 9.01,
+      status: "WAITING APPROVAL",
+    },
+  ]);
 
   const handleBack = () => (onBack ? onBack() : navigate(-1));
 
   return (
-    <div className="fixed inset-0 bg-slate-50 flex flex-col overflow-hidden z-[100]">
-      {/* Minimal Header */}
-      <div className="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-[101]">
+    <div className="fixed inset-0 bg-[#f8fafc] flex flex-col overflow-hidden z-[100] font-sans">
+      {/* 1. TOP HEADER ACTION BAR */}
+      <div className="bg-white px-8 py-4 flex items-center justify-between border-b border-slate-200">
         <div className="flex items-center gap-4">
-          <button
-            onClick={handleBack}
-            className="p-2 hover:bg-slate-100 rounded-full transition-colors"
-          >
-            <ArrowLeft size={20} className="text-slate-600" />
-          </button>
+          <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
+            <FileText size={24} />
+          </div>
           <div>
-            <h1 className="text-xl font-bold text-slate-800">
-              Monthly Salary Dashboard
-            </h1>
-            <p className="text-sm text-slate-500">
-              Manage payroll and track payment progress
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-bold text-slate-800">
+                ពិនិត្យប្រាក់បៀវត្សរ៍
+              </h1>
+              <span className="text-slate-400">/</span>
+              <span className="text-slate-500 font-medium">
+                Payroll Review: January 2026
+              </span>
+            </div>
+            <p className="text-xs text-slate-400">
+              Reviewing and finalizing payroll for the current period
             </p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-all font-medium border border-slate-200">
-            <Download size={18} />
-            Export PDF
+          <button
+            onClick={handleBack}
+            className="px-4 py-2 border border-slate-200 rounded-lg text-sm font-bold text-slate-600 flex items-center gap-2 hover:bg-slate-50"
+          >
+            <ArrowLeft size={16} /> Back
+          </button>
+          <button className="px-4 py-2 bg-green-50 text-green-600 border border-green-200 rounded-lg text-sm font-bold flex items-center gap-2">
+            <CheckCircle size={16} /> Payroll Approved
           </button>
           <button
-            onClick={() => setIsAddFormOpen(true)}
-            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all font-bold shadow-lg shadow-blue-200"
+            onClick={() => setIsBulkModalOpen(true)}
+            className="px-6 py-2 bg-indigo-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg shadow-indigo-100"
           >
-            <Plus size={18} />
-            Create New Bill
+            <CreditCard size={16} /> Pay All
+          </button>
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 shadow-lg shadow-blue-100">
+            <Download size={16} /> Export Excel
           </button>
         </div>
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-6">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between group hover:border-blue-300 transition-all">
-            <div>
-              <p className="text-slate-500 text-sm font-medium mb-1">
-                Total Monthly Budget
-              </p>
-              <h3 className="text-3xl font-black text-slate-800">
-                ${stats.total.toLocaleString()}
-              </h3>
-            </div>
-            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <DollarSign size={24} />
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between group hover:border-amber-300 transition-all">
-            <div>
-              <p className="text-slate-500 text-sm font-medium mb-1">
-                Awaiting Approval
-              </p>
-              <h3 className="text-3xl font-black text-slate-800">
-                {stats.pending} Staff
-              </h3>
-            </div>
-            <div className="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Clock size={24} />
-            </div>
-          </div>
-          <div className="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between group hover:border-green-300 transition-all">
-            <div>
-              <p className="text-slate-500 text-sm font-medium mb-1">
-                Successfully Paid
-              </p>
-              <h3 className="text-3xl font-black text-slate-800">
-                {stats.paid} Staff
-              </h3>
-            </div>
-            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <CheckCircle2 size={24} />
-            </div>
-          </div>
+      <div className="flex-1 overflow-y-auto p-8 space-y-6">
+        {/* 2. FOUR STATS CARDS */}
+        <div className="grid grid-cols-4 gap-6">
+          <StatCard
+            title="EMPLOYEES"
+            value="95"
+            sub="Processed"
+            icon={<Users />}
+            color="blue"
+          />
+          <StatCard
+            title="GROSS EARNINGS"
+            value="$12,774.45"
+            sub="Base: $12,520"
+            icon={<DollarSign />}
+            color="emerald"
+          />
+          <StatCard
+            title="TOTAL DEDUCTIONS"
+            value="$12,062.87"
+            sub="NSSF, Tax & Absences"
+            icon={<TrendingDown />}
+            color="rose"
+            textColor="text-red-600"
+          />
+          <StatCard
+            title="NET DISBURSEMENT"
+            value="$711.58"
+            sub="Final to Pay"
+            icon={<Wallet />}
+            color="indigo"
+          />
         </div>
 
-        {/* Table Section */}
-        <div className="bg-white rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
-          {/* Table Filters */}
-          <div className="p-4 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div className="relative flex-1 max-w-md">
-              <Search
-                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                size={18}
-              />
-              <input
-                type="text"
-                placeholder="Search by Employee ID or Name..."
-                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all outline-none"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Filter size={18} className="text-slate-500" />
-              <select
-                className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-600 focus:ring-2 focus:ring-blue-500 transiton-all outline-none"
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <option value="all">All Statuses</option>
-                <option value="pending">Pending Approval</option>
-                <option value="approved">Approved</option>
-                <option value="processed">Processed</option>
-                <option value="paid">Paid</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Table Content */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead className="bg-slate-50/50">
-                <tr>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    Employee
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    Department
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    Net Amount
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">
-                    Payment Progress
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    Last Update
-                  </th>
-                  <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {filteredRecords.map((record, index) => (
-                  <tr
-                    key={index}
-                    className="hover:bg-slate-50/80 transition-colors group"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-600 font-bold">
-                          {record.name.charAt(0)}
-                        </div>
-                        <div>
-                          <div className="font-bold text-slate-800">
-                            {record.name}
-                          </div>
-                          <div className="text-xs text-slate-500">
-                            {record.id}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-sm text-slate-600">
-                        {record.dept}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="font-bold text-slate-800">
-                        ${record.netPay.toFixed(2)}
-                      </div>
-                      <div className="text-[10px] text-slate-400 capitalize">
-                        {record.period}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex justify-center">
-                        <div
-                          className={`flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold border ${getStatusStyle(record.status)}`}
-                        >
-                          {getStatusIcon(record.status)}
-                          <span className="capitalize">{record.status}</span>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="text-xs text-slate-500">
-                        {record.lastUpdate}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right">
-                      <button className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all opacity-0 group-hover:opacity-100">
-                        <MoreVertical size={18} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredRecords.length === 0 && (
-            <div className="py-20 text-center">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-slate-100 text-slate-400 rounded-full mb-4">
-                <Search size={32} />
+        {/* 3. FILTER BAR */}
+        <div className="bg-white p-4 rounded-xl border border-slate-200 flex items-end gap-4 shadow-sm">
+          <div className="flex-1 grid grid-cols-4 gap-4">
+            <FilterSelect
+              label="Department"
+              options={["All Departments", "Production", "HR", "Admin"]}
+            />
+            <FilterSelect
+              label="Section"
+              options={["All Sections", "Boiler", "Sewing"]}
+            />
+            <FilterSelect
+              label="Payment Status"
+              options={["All Status", "Paid", "Pending"]}
+            />
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-slate-400 uppercase">
+                Search Employee
+              </label>
+              <div className="relative">
+                <Search
+                  size={16}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                />
+                <input
+                  type="text"
+                  placeholder="Type Name or ID Card #..."
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
               </div>
-              <h3 className="text-lg font-bold text-slate-800">
-                No records found
-              </h3>
-              <p className="text-slate-500">
-                Try adjusting your search or filters
-              </p>
             </div>
-          )}
+          </div>
+          <button className="px-8 py-2 bg-blue-600 text-white rounded-lg font-bold text-sm h-[40px] flex items-center gap-2">
+            <Filter size={16} /> Apply
+          </button>
+        </div>
+
+        {/* 4. DATA TABLE */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+          <table className="w-full text-left">
+            <thead className="bg-slate-50 text-[10px] font-black text-black-400 uppercase tracking-wider border-b border-slate-200 ">
+              <tr>
+                <th className="px-4 py-4 w-12 text-center">ល.រ / NO</th>
+                <th className="px-6 py-4">ឈ្មោះបុគ្គលិក / NAME</th>
+                <th className="px-4 py-4">អត្តលេខ / ID</th>
+                <th className="px-4 py-4">ផ្នែក / SECTION</th>
+                <th className="px-4 py-4">ប្រាក់ខែគោល / BASIC</th>
+                <th className="px-4 py-4">វត្តមាន / DAYS</th>
+                <th className="px-4 py-4">សរុប / GROSS</th>
+                <th className="px-4 py-4">បើកមុន / ADVANCE</th>
+                <th className="px-4 py-4">ប្រាក់កាត់ / DEDUCT</th>
+                <th className="px-4 py-4">បើកជាក់ស្តែង / NET</th>
+                <th className="px-4 py-4"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 text-sm font-bold text-slate-700">
+              {salaryRecords.map((item) => (
+                <tr
+                  key={item.no}
+                  className="hover:bg-slate-50 transition-colors"
+                >
+                  <td className="px-4 py-4 text-center text-slate-400 font-medium">
+                    {item.no}
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex flex-col">
+                      <span className="text-slate-900">{item.name}</span>
+                      <span className="text-[10px] text-slate-300">-</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-4 text-slate-500 text-xs tracking-tighter">
+                    {item.id}
+                  </td>
+                  <td className="px-4 py-4 text-slate-500 font-medium">
+                    {item.section}
+                  </td>
+                  <td className="px-4 py-4">${item.basic}</td>
+                  <td className="px-4 py-4 text-blue-600">{item.days}</td>
+                  <td className="px-4 py-4">${item.gross}</td>
+                  <td className="px-4 py-4 text-rose-500">${item.advance}</td>
+                  <td className="px-4 py-4 text-rose-500">${item.deduct}</td>
+                  <td className="px-4 py-4 text-blue-700">${item.net}</td>
+                  <td className="px-4 py-4">
+                    <div className="flex items-center gap-2">
+                      <button
+                        className={`px-4 py-1 rounded text-[10px] font-black uppercase ${
+                          item.status === "PAY"
+                            ? "bg-blue-50 text-blue-600 border border-blue-100"
+                            : "bg-slate-50 text-slate-400 border border-slate-100"
+                        }`}
+                      >
+                        {item.status}
+                      </button>
+                      <ChevronRight size={16} className="text-slate-300" />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {/* SIDE PANEL: ADD NEW BILL (Replaces the "Old Form") */}
-      {isAddFormOpen && (
-        <>
-          <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[200]"
-            onClick={() => setIsAddFormOpen(false)}
-          />
-          <div className="fixed inset-y-0 right-0 w-full max-w-xl bg-white shadow-2xl z-[201] flex flex-col transform transition-transform duration-300 animate-slide-in">
-            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-blue-600 text-white">
-              <div>
-                <h2 className="text-xl font-bold font-heading">
-                  New Monthly Salary
-                </h2>
-                <p className="text-blue-100 text-xs">
-                  Enter employee earnings and deductions
-                </p>
-              </div>
+      {/* 5. BULK PAYMENT MODAL (Screenshot 3) */}
+      {isBulkModalOpen && (
+        <div className="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+            {/* Modal Header Overlay */}
+            <div className="bg-indigo-600 p-10 flex flex-col items-center justify-center text-white relative">
               <button
-                onClick={() => setIsAddFormOpen(false)}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                onClick={() => setIsBulkModalOpen(false)}
+                className="absolute top-6 right-6 p-2 bg-white/10 rounded-full hover:bg-white/20"
               >
                 <X size={20} />
               </button>
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mb-4">
+                <Banknote size={32} />
+              </div>
+              <h2 className="text-2xl font-bold">បើកប្រាក់បៀវត្សរ៍ទាំងអស់</h2>
+              <p className="text-indigo-100 text-sm">
+                Bulk Payment For All Remaining Staff
+              </p>
             </div>
 
-            <div className="flex-1 overflow-y-auto p-6 space-y-8">
-              {/* Form Sections */}
-              <section>
-                <h3 className="flex items-center gap-2 text-sm font-black text-slate-400 uppercase tracking-widest mb-4">
-                  <User size={16} /> Employee Details
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
-                      Search Employee
-                    </label>
-                    <div className="relative">
-                      <Search
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-                        size={14}
-                      />
-                      <input
-                        type="text"
-                        className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
-                        placeholder="Enter ID or Name..."
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-2 p-4 bg-blue-50/50 rounded-xl border border-blue-100 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold">
-                      JD
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-800">
-                        John Doe (Selected)
-                      </p>
-                      <p className="text-[10px] text-blue-600 font-bold uppercase tracking-tight">
-                        Sewing Line B • Grade A
-                      </p>
-                    </div>
-                  </div>
+            <div className="p-8 space-y-6">
+              <div className="p-4 bg-amber-50 border border-amber-100 rounded-xl flex gap-3 text-amber-700">
+                <div className="shrink-0 pt-1">
+                  <AlertCircle size={18} />
                 </div>
-              </section>
+                <p className="text-xs leading-relaxed font-medium">
+                  This will mark **all approved but unpaid** records for this
+                  month as PAID. Please ensure the bank transfers are actually
+                  completed before doing this.
+                </p>
+              </div>
 
-              <section>
-                <h3 className="flex items-center gap-2 text-sm font-black text-slate-400 uppercase tracking-widest mb-4">
-                  <Calculator size={16} /> Earnings & Incentives
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
-                      Basic Salary ($)
-                    </label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
-                      placeholder="0.00"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
-                      Overtime (Hrs)
-                    </label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
-                      placeholder="0"
-                    />
-                  </div>
-                  <div className="col-span-2">
-                    <div className="flex justify-between items-center mb-1">
-                      <label className="block text-xs font-bold text-slate-700 uppercase leading-none">
-                        Weekly Incentives Sum ($)
-                      </label>
-                      <button
-                        className="text-[10px] font-black text-blue-600 hover:text-blue-800 flex items-center gap-1 uppercase tracking-tighter"
-                        type="button"
-                        onClick={() =>
-                          alert(
-                            "Syncing with Weekly Incentive Dashboard... Found $145.00 for this month.",
-                          )
-                        }
-                      >
-                        <TrendingUp size={10} /> Sync from Production Line
-                      </button>
-                    </div>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-2.5 bg-blue-50 border border-blue-200 text-blue-700 font-bold rounded-xl focus:ring-2 focus:ring-blue-500 transition-all outline-none"
-                      placeholder="0.00"
-                      defaultValue="145.00"
-                    />
-                    <p className="text-[9px] text-slate-400 mt-1 italic leading-none">
-                      *Automatically fetched from the Weekly Incentive module
-                    </p>
-                  </div>
-                </div>
-              </section>
-
-              <section>
-                <h3 className="flex items-center gap-2 text-sm font-black text-slate-400 uppercase tracking-widest mb-4">
-                  <AlertCircle size={16} /> Deductions
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
-                      Tax/NSSF ($)
-                    </label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 transition-all outline-none border-red-50"
-                      placeholder="0.00"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1 uppercase">
-                      Loans/Advance
-                    </label>
-                    <input
-                      type="number"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-red-500 transition-all outline-none border-red-50"
-                      placeholder="0.00"
-                    />
-                  </div>
-                </div>
-              </section>
-            </div>
-
-            <div className="p-6 border-t border-slate-100 bg-slate-50/50">
-              <div className="flex items-center justify-between mb-6">
-                <div>
-                  <p className="text-xs text-slate-500 font-bold uppercase">
-                    Estimated Net Pay
-                  </p>
-                  <p className="text-3xl font-black text-slate-800">$0.00</p>
-                </div>
-                <div className="flex items-center gap-2 text-green-600 font-bold bg-green-50 px-3 py-1 rounded-lg border border-green-100 text-xs">
-                  <TrendingUp size={14} /> Low Variance
+              <div className="space-y-4">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  Select Payment Method
+                </label>
+                <div className="grid grid-cols-4 gap-3">
+                  <PaymentMethod
+                    label="ABA"
+                    logoUrl="https://www.ababank.com/typo3conf/ext/boxmodel/Resources/Private/Templates/ABA/images/aba-web-top-logo.png"
+                    active={paymentMethod === "ABA"}
+                    onClick={() => setPaymentMethod("ABA")}
+                  />
+                  <PaymentMethod
+                    label="ACLEDA"
+                    logoUrl="https://companieslogo.com/img/orig/ABC.KH-3aa8d94f.png?t=1720244490"
+                    active={paymentMethod === "ACLEDA"}
+                    onClick={() => setPaymentMethod("ACLEDA")}
+                  />
+                  <PaymentMethod
+                    label="Wing"
+                    logoUrl="https://cdn.aptoide.com/imgs/6/1/2/6123ff328eb2a408f5aba54174c142f4_icon.png"
+                    active={paymentMethod === "Wing"}
+                    onClick={() => setPaymentMethod("Wing")}
+                  />
+                  <PaymentMethod
+                    label="Cash"
+                    icon={<Banknote size={32} />}
+                    active={paymentMethod === "Cash"}
+                    onClick={() => setPaymentMethod("Cash")}
+                  />
                 </div>
               </div>
-              <button className="w-full py-4 bg-blue-600 text-white rounded-2xl font-black shadow-xl shadow-blue-200 hover:bg-blue-700 transition-all flex items-center justify-center gap-3">
-                <Plus size={20} />
-                Confirm & Create Bill
-              </button>
+
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                  Date
+                </label>
+                <div className="relative">
+                  <CalendarIcon
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  />
+                  <input
+                    type="text"
+                    defaultValue="02 / 26 / 2026"
+                    className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-4 pt-4">
+                <button
+                  onClick={() => setIsBulkModalOpen(false)}
+                  className="flex-1 py-4 bg-slate-100 text-slate-600 rounded-2xl font-black text-sm hover:bg-slate-200 transition-all"
+                >
+                  Cancel
+                </button>
+                <button className="flex-2 py-4 bg-indigo-600 text-white rounded-2xl font-black text-sm shadow-xl shadow-indigo-100 hover:bg-indigo-700 transition-all px-8">
+                  Process Bulk Pay
+                </button>
+              </div>
             </div>
           </div>
-        </>
+        </div>
       )}
 
-      {/* AI Agent Bubble */}
+      {/* AI Bot */}
       <button
         onClick={() => setIsBotOpen(true)}
-        className="fixed bottom-6 right-6 z-[102] w-14 h-14 bg-gradient-to-tr from-blue-600 to-indigo-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all group overflow-hidden"
+        className="fixed bottom-8 right-8 z-[150] w-14 h-14 bg-indigo-600 text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
       >
-        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-        <MessageCircle className="relative z-10" size={24} />
+        <MessageCircle className="w-7 h-7 group-hover:rotate-12 transition-transform" />
       </button>
 
       {isBotOpen && (
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
-          moduleContext="Monthly Salary Dashboard"
+          moduleContext="Monthly Payroll Review"
         />
       )}
-
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-                @keyframes slide-in {
-                    from { transform: translateX(100%); }
-                    to { transform: translateX(0); }
-                }
-                .animate-slide-in {
-                    animation: slide-in 0.3s ease-out;
-                }
-            `,
-        }}
-      />
     </div>
   );
 };
+
+// Helper Components
+// const StatCard = ({ title, value, sub, icon, color }) => {
+//   const colors = {
+//     blue: "bg-blue-50 text-blue-600 shadow-blue-100",
+//     emerald: "bg-emerald-50 text-emerald-600 shadow-emerald-100",
+//     rose: "bg-rose-50 text-rose-600 shadow-rose-100",
+//     indigo: "bg-indigo-50 text-indigo-600 shadow-indigo-100",
+//   };
+//   return (
+//     <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden group">
+//       <div className="relative z-10">
+//         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+//           {title}
+//         </p>
+//         <h3 className="text-2xl font-black text-slate-800 leading-none mb-2">
+//           {value}
+//         </h3>
+//         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+//           {sub}
+//         </p>
+//       </div>
+//       <div
+//         className={`absolute top-6 right-6 w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${colors[color]}`}
+//       >
+//         {icon}
+//       </div>
+//     </div>
+//   );
+// };
+
+// Add textColor prop with a default value of "text-slate-800"
+const StatCard = ({
+  title,
+  value,
+  sub,
+  icon,
+  color,
+  textColor = "text-slate-800",
+}) => {
+  const colors = {
+    blue: "bg-blue-50 text-blue-600 shadow-blue-100",
+    emerald: "bg-emerald-50 text-emerald-600 shadow-emerald-100",
+    rose: "bg-rose-50 text-rose-600 shadow-rose-100",
+    indigo: "bg-indigo-50 text-indigo-600 shadow-indigo-100",
+  };
+  return (
+    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden group">
+      <div className="relative z-10">
+        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">
+          {title}
+        </p>
+        {/* Replace text-slate-800 with the dynamic textColor variable */}
+        <h3 className={`text-2xl font-black ${textColor} leading-none mb-2`}>
+          {value}
+        </h3>
+        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">
+          {sub}
+        </p>
+      </div>
+      <div
+        className={`absolute top-6 right-6 w-12 h-12 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 ${colors[color]}`}
+      >
+        {icon}
+      </div>
+    </div>
+  );
+};
+
+const FilterSelect = ({ label, options }) => (
+  <div className="space-y-1">
+    <label className="text-[10px] font-bold text-slate-400 uppercase">
+      {label}
+    </label>
+    <select className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700 outline-none focus:ring-2 focus:ring-blue-500">
+      {options.map((opt) => (
+        <option key={opt}>{opt}</option>
+      ))}
+    </select>
+  </div>
+);
+
+const PaymentMethod = ({ label, logoUrl, active, onClick, icon }) => (
+  <div
+    onClick={onClick}
+    className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all cursor-pointer h-32 ${
+      active
+        ? "border-indigo-600 bg-indigo-50 shadow-sm"
+        : "border-slate-100 bg-white hover:border-indigo-200 hover:bg-slate-50"
+    }`}
+  >
+    <div className="w-16 h-16 mb-3 flex items-center justify-center overflow-hidden">
+      {label === "Cash" ? (
+        <div className={active ? "text-indigo-600" : "text-slate-400"}>
+          {icon}
+        </div>
+      ) : (
+        <img
+          src={logoUrl}
+          alt={label}
+          className="w-full h-full object-contain"
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
+        />
+      )}
+    </div>
+    <span
+      className={`text-xs font-black uppercase tracking-wider ${
+        active ? "text-indigo-600" : "text-slate-500"
+      }`}
+    >
+      {label}
+    </span>
+  </div>
+);
+
+const FileText = ({ size }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+    <polyline points="14 2 14 8 20 8" />
+  </svg>
+);
 
 export default MonthlySalaryDashboard;

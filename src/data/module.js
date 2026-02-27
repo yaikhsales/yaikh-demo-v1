@@ -144,13 +144,6 @@ export const DASHBOARD_DATA = [
             demoType: "SUBMENU_YHR",
           },
           {
-            id: "salary-bill",
-            title: "Salary Bill",
-            image: "assets/modules-image/new-icons-modules/Salary-Bill.png?v=1",
-            status: "active",
-            demoType: "SUBMENU_SALARY_BILL",
-          },
-          {
             id: "org",
             title: "Org Chart",
             image: "assets/modules-image/new-icons-modules/Org-Chart.png?v=1",
@@ -306,11 +299,11 @@ export const DASHBOARD_DATA = [
             image: "assets/modules-image/new-icons-modules/PWIP.png?v=1",
             status: "active",
             highlight: true,
-            galleryImages: [
-              "assets/pwip/pwip1.jpg",
-              "assets/pwip/pwip2.jpg",
-              "assets/pwip/pwip3.jpg",
-            ],
+            // galleryImages: [
+            //   "assets/pwip/pwip1.jpg",
+            //   "assets/pwip/pwip2.jpg",
+            //   "assets/pwip/pwip3.jpg",
+            // ],
           },
           {
             id: "kanban",

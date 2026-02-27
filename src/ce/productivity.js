@@ -339,12 +339,12 @@ const Productivity = ({ onBack }) => {
 
   const renderContent = () => {
     if (activeTab === "all") {
-      return lines.map((rec) => (
+      return lines.map((rec, idx) => (
         <tr
           key={rec.id}
-          className="group hover:bg-slate-50/50 transition-all duration-200"
+          className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
         >
-          <td className="px-8 py-6">
+          <td className="px-8 py-4 border-r border-b border-slate-200">
             <div className="flex flex-col gap-1">
               <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                 {rec.line}
@@ -354,16 +354,16 @@ const Productivity = ({ onBack }) => {
               </div>
             </div>
           </td>
-          <td className="px-4 py-6 font-black text-slate-500 text-xs">
+          <td className="px-4 py-4 border-r border-b border-slate-200 font-black text-slate-500 text-xs">
             {rec.style}
           </td>
-          <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
             {rec.target}
           </td>
-          <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
             {rec.actual}
           </td>
-          <td className="px-4 py-6 text-center">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
             <div className="flex flex-col items-center">
               <span
                 className={`font-black text-sm ${parseFloat(rec.efficiency) >= 95 ? "text-emerald-600" : parseFloat(rec.efficiency) >= 90 ? "text-blue-600" : "text-rose-600"}`}
@@ -378,7 +378,7 @@ const Productivity = ({ onBack }) => {
               </div>
             </div>
           </td>
-          <td className="px-4 py-6 text-center">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
             <span
               className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
                 rec.status === "EXCELLENT" || rec.status === "ON TRACK"
@@ -389,7 +389,7 @@ const Productivity = ({ onBack }) => {
               {rec.status}
             </span>
           </td>
-          <td className="px-8 py-6">
+          <td className="px-8 py-4 border-b border-slate-200">
             <div className="flex items-center justify-end gap-2 text-nowrap">
               <button
                 onClick={() => handleAction("View", rec.line)}
@@ -411,9 +411,9 @@ const Productivity = ({ onBack }) => {
           <React.Fragment key={idx}>
             <tr
               onClick={() => toggleSection(rec.label)}
-              className={`group cursor-pointer transition-all duration-200 ${isExpanded ? "bg-slate-50" : "hover:bg-slate-50/50"}`}
+              className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} cursor-pointer transition-all duration-200 hover:bg-slate-100`}
             >
-              <td className="px-8 py-6">
+              <td className="px-8 py-4 border-r border-b border-slate-200">
                 <div className="flex items-center gap-4">
                   <div
                     className={`p-1 rounded bg-slate-100 text-slate-400 group-hover:text-orange-600 transition-colors ${isExpanded ? "rotate-180" : ""}`}
@@ -430,16 +430,16 @@ const Productivity = ({ onBack }) => {
                   </div>
                 </div>
               </td>
-              <td className="px-4 py-6 font-black text-slate-400 text-xs italic">
+              <td className="px-4 py-4 border-r border-b border-slate-200 font-black text-slate-400 text-xs italic">
                 Aggregated
               </td>
-              <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+              <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
                 {rec.target}
               </td>
-              <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+              <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
                 {rec.actual}
               </td>
-              <td className="px-4 py-6 text-center">
+              <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                 <div className="flex flex-col items-center">
                   <span
                     className={`font-black text-sm ${parseFloat(rec.efficiency) >= 95 ? "text-emerald-600" : "text-blue-600"}`}
@@ -454,14 +454,14 @@ const Productivity = ({ onBack }) => {
                   </div>
                 </div>
               </td>
-              <td className="px-4 py-6 text-center">
+              <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                 <span
                   className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border bg-emerald-50 text-emerald-600 border-emerald-100/50`}
                 >
                   {rec.status}
                 </span>
               </td>
-              <td className="px-8 py-6">
+              <td className="px-8 py-4 border-b border-slate-200">
                 <div className="flex items-center justify-end gap-2 text-nowrap">
                   <button
                     onClick={(e) => {
@@ -482,7 +482,7 @@ const Productivity = ({ onBack }) => {
                   key={`line-${line.id}`}
                   className="bg-slate-50/30 animate-in slide-in-from-top-1 duration-200"
                 >
-                  <td className="px-8 py-4 pl-16">
+                  <td className="px-8 py-4 pl-16 border-r border-b border-slate-200">
                     <div className="flex flex-col gap-0.5">
                       <span className="font-bold text-slate-700 text-xs tracking-tight">
                         {line.line}
@@ -492,16 +492,16 @@ const Productivity = ({ onBack }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-4 font-bold text-slate-500 text-[10px]">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 font-bold text-slate-500 text-[10px]">
                     {line.style}
                   </td>
-                  <td className="px-4 py-4 text-center text-slate-600 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-600 font-bold text-xs">
                     {line.target}
                   </td>
-                  <td className="px-4 py-4 text-center text-slate-600 font-bold text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-600 font-bold text-xs">
                     {line.actual}
                   </td>
-                  <td className="px-4 py-4 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <div className="flex flex-col items-center">
                       <span
                         className={`font-bold text-xs ${parseFloat(line.efficiency) >= 95 ? "text-emerald-600" : parseFloat(line.efficiency) >= 90 ? "text-blue-600" : "text-rose-600"}`}
@@ -510,7 +510,7 @@ const Productivity = ({ onBack }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-4 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`px-2 py-0.5 rounded text-[8px] font-bold tracking-widest border ${
                         line.status === "EXCELLENT" ||
@@ -522,7 +522,7 @@ const Productivity = ({ onBack }) => {
                       {line.status}
                     </span>
                   </td>
-                  <td className="px-8 py-4 text-right">
+                  <td className="px-8 py-4 border-b border-slate-200 text-right">
                     <button
                       onClick={() => handleAction("Detail", line.line)}
                       className="text-[9px] font-bold text-blue-600 hover:text-blue-800 transition-colors uppercase tracking-widest"
@@ -539,9 +539,9 @@ const Productivity = ({ onBack }) => {
       return departmentsData.map((rec, idx) => (
         <tr
           key={idx}
-          className="group hover:bg-slate-50/50 transition-all duration-200"
+          className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
         >
-          <td className="px-8 py-6">
+          <td className="px-8 py-4 border-r border-b border-slate-200">
             <div className="flex flex-col gap-1">
               <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap uppercase">
                 {rec.label}
@@ -551,16 +551,16 @@ const Productivity = ({ onBack }) => {
               </div>
             </div>
           </td>
-          <td className="px-4 py-6 font-black text-slate-400 text-xs italic">
+          <td className="px-4 py-4 border-r border-b border-slate-200 font-black text-slate-400 text-xs italic">
             Dept Output
           </td>
-          <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
             {rec.target}
           </td>
-          <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
             {rec.actual}
           </td>
-          <td className="px-4 py-6 text-center">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
             <div className="flex flex-col items-center">
               <span
                 className={`font-black text-sm ${parseFloat(rec.efficiency) >= 95 ? "text-emerald-600" : "text-blue-600"}`}
@@ -575,14 +575,14 @@ const Productivity = ({ onBack }) => {
               </div>
             </div>
           </td>
-          <td className="px-4 py-6 text-center">
+          <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
             <span
               className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border bg-emerald-50 text-emerald-600 border-emerald-100/50`}
             >
               {rec.status}
             </span>
           </td>
-          <td className="px-8 py-6">
+          <td className="px-8 py-4 border-b border-slate-200">
             <div className="flex items-center justify-end gap-2 text-nowrap">
               <button
                 onClick={() => handleAction("View", rec.label)}
@@ -664,22 +664,22 @@ const Productivity = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-slate-50/50 text-[10px] font-black text-slate-900 uppercase tracking-widest border-b border-slate-200">
-                <th className="px-8 py-5">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">
                   {activeTab === "all"
                     ? "Line / Section"
                     : activeTab === "section"
                       ? "Section Name"
                       : "Department Name"}
                 </th>
-                <th className="px-4 py-5 font-center">
+                <th className="px-4 py-4 border-r border-b border-slate-200 font-center">
                   {activeTab === "all" ? "Running Style" : "Level"}
                 </th>
-                <th className="px-4 py-5 text-center">Daily Target</th>
-                <th className="px-4 py-5 text-center">Actual Output</th>
-                <th className="px-4 py-5 text-center">Efficiency</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Daily Target</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Actual Output</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Efficiency</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Status</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Action
                 </th>
               </tr>

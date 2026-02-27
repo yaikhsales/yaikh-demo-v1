@@ -15,7 +15,7 @@ const translations = {
     menu: "ម៉ឺនុយ",
     quickActions: "សកម្មភាពរហ័ស",
     language: "ភាសា",
-    
+
     // Common
     close: "បិទ",
     cancel: "បោះបង់",
@@ -53,7 +53,7 @@ const translations = {
     viewAll: "មើលទាំងអស់",
     showMore: "បង្ហាញបន្ថែម",
     showLess: "បង្ហាញតិច",
-    
+
     // User
     user: "អ្នកប្រើប្រាស់",
     profile: "ប្រូហ្វាល",
@@ -66,23 +66,23 @@ const translations = {
     phone: "ទូរស័ព្ទ",
     name: "ឈ្មោះ",
     id: "លេខសម្គាល់",
-    
+
     // Notifications
     notifications: "ការជូនដំណឹង",
     noNotifications: "គ្មានការជូនដំណឹង",
-    
+
     // Language names
     english: "English",
     khmer: "ខ្មែរ",
     chinese: "ចិន",
     switchToEnglish: "ប្តូរទៅកំណែភាសាអង់គ្លេស",
     switchToChinese: "ប្តូរទៅកំណែភាសាចិន",
-    
+
     // Sections
     administration: "រដ្ឋបាល",
     managementDashboard: "ផ្ទាំងគ្រប់គ្រង",
     operations: "ប្រតិបត្តិការ",
-    
+
     // Module Groups
     accountant: "គណនេយ្យ",
     admin: "រដ្ឋបាល",
@@ -92,7 +92,7 @@ const translations = {
     qa: "QA",
     internalLogistics: "ឡូជីស្ទិកខាងក្នុង",
     production: "ផលិតកម្ម",
-    
+
     // Modules - Administration
     eInvoicing: "វិក្កយបត្រអេឡិចត្រូនិច",
     purchaseRequest: "សំណើទិញ",
@@ -118,7 +118,7 @@ const translations = {
     chemical: "គីមី",
     eGovernment: "រដ្ឋាភិបាលអេឡិចត្រូនិច",
     systemAnalysis: "ការវិភាគប្រព័ន្ធ",
-    
+
     // Modules - Operations
     yqms: "YQMS",
     callOut: "ការហៅ",
@@ -136,7 +136,7 @@ const translations = {
     pps: "PPS",
     sample: "គំរូ",
     materialPurchase: "ការទិញសម្ភារៈ",
-    
+
     // Sub-modules - YHR
     recruitment: "ការជ្រើសរើស",
     interview: "ការស meeting",
@@ -148,7 +148,7 @@ const translations = {
     visaAndWorkPermit: "វីសានិងលិខិតអនុញ្ញាតធ្វើការ",
     fwcms: "FWCMS",
     canteen: "ភោជនីយដ្ឋាន",
-    
+
     // Sub-modules - Training Departments
     onlineTraining: "ការបណ្តុះបណ្តាលអនឡាញ",
     yai: "YAI",
@@ -173,7 +173,7 @@ const translations = {
     warehouse: "ឃ្លាំង",
     ie: "IE",
     qaFabric: "QA (ក្រណាត់)",
-    
+
     // Sub-modules - YTM
     ytm: "YTM",
     machineLocation: "ទីតាំងម៉ាស៊ីន",
@@ -186,13 +186,13 @@ const translations = {
     downloadData: "ទាញយក",
     analysis: "ការវិភាគ",
     report: "របាយការណ៍",
-    
+
     // Additional YHR sub-modules
     checklistAttendant: "Checklist Attendant",
     myAttendant: "My Attendant",
     fwcmsPortal: "FWCMS Portal",
     ministryOfLabour: "ក្រសួងការងារ",
-    
+
     // Form Labels - Common
     date: "កាលបរិច្ឆេទ",
     time: "ពេលវេលា",
@@ -212,7 +212,7 @@ const translations = {
     subtotal: "សរុបរង",
     unit: "ឯកតា",
     unitPrice: "តម្លៃឯកតា",
-    
+
     // Form Labels - Purchase Request
     purchaseRequisitionForm: "ទម្រង់សំណើទិញ",
     purchaseList: "បញ្ជីទិញ",
@@ -245,12 +245,12 @@ const translations = {
     gm: "GM",
     purchaser: "អ្នកទិញ",
     stationery: "សម្ភារៈការិយាល័យ",
-    
+
     // Form Labels - Support Ticket
     subject: "ប្រធានបទ",
     nature: "ធម្មជាតិ",
     keyword: "ពាក្យគន្លឹះ",
-    
+
     // Status
     active: "សកម្ម",
     inactive: "អសកម្ម",
@@ -261,7 +261,7 @@ const translations = {
     inProgress: "កំពុងដំណើរការ",
     cancelled: "បានលុបចោល",
     comingSoon: "នឹងមកដល់ឆាប់ៗ",
-    
+
     // Messages
     noData: "គ្មានទិន្នន័យ",
     noResults: "គ្មានលទ្ធផល",
@@ -271,7 +271,7 @@ const translations = {
     operationFailed: "ប្រតិបត្តិការបរាជ័យ",
     requiredField: "វាលនេះត្រូវការ",
     invalidInput: "ការបញ្ចូលមិនត្រឹមត្រូវ",
-    
+
     // Time
     today: "ថ្ងៃនេះ",
     yesterday: "ម្សិលមិញ",
@@ -282,7 +282,7 @@ const translations = {
     lastWeek: "សប្តាហ៍មុន",
     lastMonth: "ខែមុន",
     lastYear: "ឆ្នាំមុន",
-    
+
     // Actions
     viewDetails: "មើលព័ត៌មានលម្អិត",
     editItem: "កែប្រែធាតុ",
@@ -293,13 +293,13 @@ const translations = {
     actions: "សកម្មភាព",
     addProduct: "បន្ថែមផលិតផល",
     remove: "យកចេញ",
-    
+
     // Salary Bill Sub-modules
     monthlySalary: "ប្រាក់ខែប្រចាំខែ",
     weeklyIncentive: "រង្វាន់ប្រចាំសប្តាហ៍",
     permitFee: "ថ្លៃអនុញ្ញាត",
     resignPayment: "ការបង់ប្រាក់លាឈប់",
-    
+
     // Gate Pass
     visitor: "អ្នកទស្សនា",
     personalRequest: "សំណើផ្ទាល់ខ្លួន",
@@ -326,7 +326,7 @@ const translations = {
     healthIssue: "បញ្ហាសុខាភិបាល",
     personalEmergency: "អាសន្នផ្ទាល់ខ្លួន",
     other: "ផ្សេងៗ",
-    
+
     // Support Ticket Form
     details: "ព័ត៌មានលម្អិត",
     uploadImage: "ផ្ទុកឡើងរូបភាព",
@@ -335,7 +335,7 @@ const translations = {
     imageFormatWarning: "និងគួរតែជា",
     format: "ទ្រង់ទ្រាយ",
     or: "ឬ",
-    
+
     // Common Form Fields
     employeeName: "ឈ្មោះបុគ្គលិក",
     jobTitle: "តួនាទី",
@@ -354,7 +354,7 @@ const translations = {
     year: "ឆ្នាំ",
     month: "ខែ",
     week: "សប្តាហ៍",
-    
+
     // Gate Pass Table Headers
     no: "លេខ",
     employeeIdHeader: "លេខសម្គាល់បុគ្គលិក",
@@ -384,7 +384,7 @@ const translations = {
     submitRequest: "ដាក់ស្នើសំណើ",
     hour: "ម៉ោង",
     minute: "នាទី",
-    
+
     // Training
     course: "វគ្គសិក្សា",
     lessons: "មេរៀន (PDF)",
@@ -399,7 +399,7 @@ const translations = {
     end: "បញ្ចប់",
     trainingLesson: "មេរៀនបណ្តុះបណ្តាល",
     listAndScheduleTrainingCourse: "បញ្ជី និងកាលវិភាគវគ្គសិក្សាបណ្តុះបណ្តាល",
-    
+
     // Accountant Module
     checkRequestLists: "បញ្ជីសំណើពិនិត្យ",
     code: "លេខកូដ",
@@ -427,7 +427,7 @@ const translations = {
     paid: "បានបង់",
     by: "ដោយ",
     accApprovePay: "ការអនុម័ត និងបង់គណនេយ្យ",
-    
+
     // Recruitment Form
     positionInformation: "ព័ត៌មានមុខតំណែង",
     positionTitle: "ចំណងជើងមុខតំណែង",
@@ -472,7 +472,7 @@ const translations = {
     shortlisted: "បានជ្រើសរើស",
     rejected: "បានបដិសេធ",
     hired: "បានជួល",
-    
+
     // Interview Form
     interviewArrangement: "ការរៀបចំសម្ភាសន៍",
     interviewDetails: "ព័ត៌មានលម្អិតសម្ភាសន៍",
@@ -503,7 +503,7 @@ const translations = {
     technicalInterview: "សម្ភាសន៍បច្ចេកទេស",
     finalInterview: "សម្ភាសន៍ចុងក្រោយ",
     scheduled: "បានកំណត់ពេល",
-    
+
     // Onboarding Form
     onboarding: "ការដាក់បញ្ចូល",
     employeeInformation: "ព័ត៌មានបុគ្គលិក",
@@ -516,7 +516,7 @@ const translations = {
     trainingCompleted: "ការបណ្តុះបណ្តាលបានបញ្ចប់",
     systemAccess: "ការចូលប្រើប្រព័ន្ធ",
     saveOnboarding: "រក្សាទុកការដាក់បញ្ចូល",
-    
+
     // Temp Worker Request Form
     temporaryWorkerRequest: "សំណើកម្មករបណ្តោះអាសន្ន",
     requestor: "អ្នកស្នើសុំ",
@@ -1434,7 +1434,7 @@ const translations = {
     energyConsumedB: "ថាមពលប្រើប្រាស់ B",
     energyConsumedC: "ថាមពលប្រើប្រាស់ C",
     energyConsumedD: "ថាមពលប្រើប្រាស់ D",
-    
+
     // Energy - Switch Board
     switchBoardList: "បញ្ជី Switch Board",
     switchBoards: "Switch Boards",
@@ -1446,10 +1446,10 @@ const translations = {
     totalSwitchBoards: "Switch Boards សរុប",
     totalEquipments: "ឧបករណ៍សរុប",
     averageEquipments: "ឧបករណ៍មធ្យម / Board",
-    
+
     // Air - Air Quality Detector
     airQualityDetectorDeviceList: "បញ្ជីឧបករណ៍រកឃើញគុណភាពខ្យល់",
-    
+
     // Waste - Boiler
     boiler: "Boiler",
     addBoiler: "បន្ថែម Boiler",
@@ -1460,7 +1460,7 @@ const translations = {
     electricBoiler: "Electric Boiler",
     totalBoiler: "Boiler សរុប",
     daysTracked: "ថ្ងៃដែលតាមដាន",
-    
+
     // Digital Audit - Compliance Certificate
     complianceCertificate: "វិញ្ញាបនបត្រអនុលោម",
     search: "ស្វែងរក",
@@ -1479,14 +1479,14 @@ const translations = {
     expired: "ផុតកំណត់",
     viewCertificate: "មើលវិញ្ញាបនបត្រ",
     noCertificatesFound: "រកមិនឃើញវិញ្ញាបនបត្រ",
-    
+
     // Purchase Request - Approval
     requestDetails: "ព័ត៌មានលម្អិតសំណើ",
     approvalApplicationList: "បញ្ជីសំណើអនុម័ត",
     accountantApproval: "ការអនុម័តគណនេយ្យ",
     accountantApprovalAndPayment: "ការអនុម័តនិងការបង់ប្រាក់គណនេយ្យ",
     approvedAndPaid: "បានអនុម័ត & បានបង់",
-    
+
     // Call Out / KANBAN
     allLocation: "ទីតាំងទាំងអស់",
     refresh: "ធ្វើឱ្យស្រស់",
@@ -1502,7 +1502,7 @@ const translations = {
     line9: "បន្ទាត់ 9",
     line10: "បន្ទាត់ 10",
     line11: "បន្ទាត់ 11",
-    
+
     // CE Module
     stStandardTime: "ST Standard Time",
     productDevelopment: "ការអភិវឌ្ឍផលិតផល",
@@ -1516,18 +1516,24 @@ const translations = {
     costCentersDirectIndirectCost: "មជ្ឈមណ្ឌលថ្លៃដើម, ថ្លៃដើមផ្ទាល់/ប្រយោល",
     cpm: "CPM",
     styleCosting: "ការគណនាថ្លៃដើមរចនា",
-    
+
     // FC Module
     accessoriesReceiving: "ការទទួលគ្រឿងបន្ថែម",
     accessoriesInspection: "ការពិនិត្យគ្រឿងបន្ថែម",
     accessoriesIssuing: "ការចេញគ្រឿងបន្ថែម",
     warehouseTrackingLocation: "ទីតាំងតាមដានឃ្លាំង",
-    
+
     // YQMS - Final Production
-    qaAuditFinishingPacking: "QA Audit Finishing Packing",
-    humidityAquaboyChecking: "Humidity Aquaboy Checking",
-    firstOutputFinishingAndPacking: "First Output Finishing And Packing",
-    
+    qaAuditFinishingPacking: "QA សវនកម្មបញ្ចប់ការវេចខ្ចប់",
+    humidityAquaboyChecking: "ការត្រួតពិនិត្យសំណើម Aquaboy",
+    firstOutputFinishingAndPacking: "ការបញ្ចប់លទ្ធផលដំបូង និងការវេចខ្ចប់",
+    finCheckSetting: "FinCheck ការកំណត់ការកំណត់",
+    finCheckReport: "FinCheck របាយការណ៍",
+    finCheckTemplate: "FinCheck ប្រើប្រាស់",
+    finCheckInspection: "FinCheck ពិនិត្យ",
+    finCheckUpload: "FinCheck នាំចូល",
+    P88Legacy: "P88 បញ្ជី",
+
     // Compliance Certificate - Additional
     certificateAndReport: "វិញ្ញាបនបត្រ និងរបាយការណ៍",
     typeOfMinistries: "ប្រភេទក្រសួង",
@@ -1559,12 +1565,12 @@ const translations = {
     certificates: "វិញ្ញាបនបត្រ",
     board: "ក្តារ",
     equipments: "ឧបករណ៍",
-    
+
     // Water Module
     waterProductList: "បញ្ជីផលិតផលទឹក",
     totalWaterConsumed: "ទឹកប្រើប្រាស់សរុប",
     waterMeter: "ម៉ែត្រទឹក",
-    
+
     // Phone Viewer
     phoneScreenshots: "រូបភាពអេក្រង់ទូរស័ព្ទ",
     images: "រូបភាព",

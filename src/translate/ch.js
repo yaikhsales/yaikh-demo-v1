@@ -1435,6 +1435,15 @@ const translations = {
     energyConsumedC: "能耗C",
     energyConsumedD: "能耗D",
     
+
+    // YQMS
+    finCheckSetting: "Fincheck 设置",
+    finCheckUpload: "Fincheck 上传",
+    finCheckTemplate: "Fincheck 模板",
+    finCheckReport: "Fincheck 报告",
+    finCheckInspection: "Fincheck 检查",
+    P88Legacy: "P88 Legacy",
+
     // Energy - Switch Board
     switchBoardList: "开关板列表",
     switchBoards: "开关板",

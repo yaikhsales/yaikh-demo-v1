@@ -1827,6 +1827,24 @@ const ApprovalPR = ({ onBack }) => {
           }}
         />
       )}
+
+      {/* AI Bot Button */}
+      <button
+        onClick={() => setIsBotOpen(true)}
+        className="fixed bottom-8 right-8 z-[150] w-14 h-14 bg-blue-600 text-white rounded-2xl shadow-xl hover:scale-110 active:scale-95 transition-all flex items-center justify-center group"
+        aria-label="Ask Approval PR bot"
+        title="Ask Approval PR bot"
+      >
+        <MessageCircle className="w-7 h-7 group-hover:rotate-12 transition-transform" />
+      </button>
+
+      {/* Bot Modal */}
+      {isBotOpen && (
+        <GeneralAIAgent
+          onClose={() => setIsBotOpen(false)}
+          moduleContext="Approval PR"
+        />
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import {
   Search,
@@ -256,7 +256,7 @@ const AppLayout = () => {
                     {
                       title: "Truck Records",
                       icon: "Truck",
-                      color: "bg-slate-500 text-white",
+                      color: "bg-white text-blue-600",
                     },
                     {
                       title: "Walk In/Out",
@@ -365,7 +365,7 @@ const AppLayout = () => {
                               {
                                 title: "Switch (Fan & Pump)",
                                 icon: "ToggleRight",
-                                color: "bg-slate-500 text-white",
+                                color: "bg-white text-blue-600",
                               },
                               {
                                 title: "Air Quality Detector",
@@ -435,7 +435,7 @@ const AppLayout = () => {
                                               title: "QC File",
                                               icon: "FileText",
                                               color:
-                                                "bg-red-600/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/qc-file.jpg",
                                               action: "/dashboard/yqms/qc-file",
@@ -444,7 +444,7 @@ const AppLayout = () => {
                                               title: "Pre Production Meeting",
                                               icon: "Users",
                                               color:
-                                                "bg-red-600/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/pre-production-meeting.jpg",
                                               action: "/dashboard/yqms/pre-production-meeting",
@@ -458,7 +458,7 @@ const AppLayout = () => {
                                               title: "First Output Cutting",
                                               icon: "Scissors",
                                               color:
-                                                "bg-orange-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/first-output-cutting.jpg",
                                             },
@@ -467,7 +467,7 @@ const AppLayout = () => {
                                                 "First Output Printing Embroidery",
                                               icon: "PenTool",
                                               color:
-                                                "bg-pink-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/first-output-printing-embroidery.jpg",
                                             },
@@ -475,7 +475,7 @@ const AppLayout = () => {
                                               title: "First Output Sewing",
                                               icon: "PenTool",
                                               color:
-                                                "bg-lime-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/first-output-sewing.jpg",
                                             },
@@ -483,7 +483,7 @@ const AppLayout = () => {
                                               title: "QA Cutting",
                                               icon: "Search",
                                               color:
-                                                "bg-amber-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/qa-cutting.jpg",
                                             },
@@ -491,7 +491,7 @@ const AppLayout = () => {
                                               title: "QA Printing Embroidery",
                                               icon: "Search",
                                               color:
-                                                "bg-yellow-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/qa-printing-embroidery.jpg",
                                             },
@@ -499,7 +499,7 @@ const AppLayout = () => {
                                               title: "QA 20pcs Audit",
                                               icon: "ClipboardCheck",
                                               color:
-                                                "bg-emerald-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/qa-20pcs-audit.jpg",
                                             },
@@ -507,7 +507,7 @@ const AppLayout = () => {
                                               title: "Inline Audit Rolling",
                                               icon: "FileCheck",
                                               color:
-                                                "bg-indigo-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/inline-audit-rolling.jpg",
                                             },
@@ -515,7 +515,7 @@ const AppLayout = () => {
                                               title: "Offline Audit",
                                               icon: "FileCheck",
                                               color:
-                                                "bg-violet-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/offline-audit.jpg",
                                             },
@@ -523,7 +523,7 @@ const AppLayout = () => {
                                               title: "QC End Line Checking",
                                               icon: "CheckCircle",
                                               color:
-                                                "bg-red-600/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/qc-end-line-checking.jpg",
                                             },
@@ -536,7 +536,7 @@ const AppLayout = () => {
                                               title: "Internal Rolling QC",
                                               icon: "FileCheck",
                                               color:
-                                                "bg-blue-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/internal-rolling-qc.jpg",
                                               galleryImages: [
@@ -552,7 +552,7 @@ const AppLayout = () => {
                                               title: "Cutting Inspection",
                                               icon: "Search",
                                               color:
-                                                "bg-orange-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/cutting-inspection.jpg",
                                             },
@@ -560,7 +560,7 @@ const AppLayout = () => {
                                               title: "Cut Panel Inspection",
                                               icon: "Search",
                                               color:
-                                                "bg-amber-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/cut-panel-inspection.jpg",
                                             },
@@ -568,7 +568,7 @@ const AppLayout = () => {
                                               title: "Printing Inspection",
                                               icon: "Search",
                                               color:
-                                                "bg-purple-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/printing-inspection.jpg",
                                             },
@@ -576,7 +576,7 @@ const AppLayout = () => {
                                               title: "Embroidery Inspection",
                                               icon: "Search",
                                               color:
-                                                "bg-pink-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/embroidery-inspection.jpg",
                                             },
@@ -589,7 +589,7 @@ const AppLayout = () => {
                                               title: "Garment Check Output",
                                               icon: "CheckCircle",
                                               color:
-                                                "bg-green-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/garment-check-output.jpg",
                                             },
@@ -602,7 +602,7 @@ const AppLayout = () => {
                                               title: "Finishing Inspection",
                                               icon: "ClipboardCheck",
                                               color:
-                                                "bg-teal-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/finishing-inspection.jpg",
                                             },
@@ -610,7 +610,7 @@ const AppLayout = () => {
                                               title: "Ironing Inspection",
                                               icon: "Thermometer",
                                               color:
-                                                "bg-cyan-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/ironing-inspection.jpg",
                                               galleryImages: [
@@ -621,7 +621,7 @@ const AppLayout = () => {
                                               title: "Packing Inspection",
                                               icon: "PackageCheck",
                                               color:
-                                                "bg-indigo-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
                                                 "assets/fc/packing-inspection.jpg",
                                             },
@@ -634,56 +634,42 @@ const AppLayout = () => {
                                               title: "Fin Check",
                                               icon: "ClipboardCheck",
                                               color:
-                                                "bg-emerald-600/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
-                                                "assets/yqms/fincheck.png",
-                                              galleryImages: [
-                                                "assets/yqms/finishing-inspection/fin-check-report.png",
-                                                "assets/yqms/finishing-inspection/fin-check-inspection.png",
-                                                "assets/yqms/finishing-inspection/fin-check-setting.png",
-                                                "assets/yqms/finishing-inspection/fin-check-template.png",
-                                                "assets/yqms/finishing-inspection/fin-check-upload.png",
-                                              ],
+                                                "assets/yqms/fincheck-icon.svg",
+                                              action: "/dashboard/yqms/fin-check",
                                             },
                                             {
                                               title: "Pre Final Inspection",
                                               icon: "Eye",
                                               color:
-                                                "bg-rose-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
-                                                "assets/yqms/pre-final-inspection.jpg",
+                                                "assets/yqms/pre-final-inspection-icon.svg",
                                             },
                                             {
                                               title: "Final Inspection",
                                               icon: "Eye",
-                                              color:
-                                                "bg-red-500/30 text-white",
-                                              image:
-                                                "assets/yqms/final-inspection.jpg",
+                                              color: "bg-white text-blue-600",
+                                              image: "assets/yqms/final-inspection-icon.svg",
                                             },
                                             {
                                               title: "Buyer Final Inspection",
                                               icon: "Eye",
-                                              color:
-                                                "bg-red-600/30 text-white",
-                                              image:
-                                                "assets/yqms/buyer-final-inspection.jpg",
+                                              color: "bg-white text-blue-600",
+                                              image: "assets/yqms/buyer-final-inspection-icon.svg",
                                             },
                                             {
                                               title: "Supplier Evaluation",
                                               icon: "CheckSquare",
-                                              color:
-                                                "bg-teal-500/30 text-white",
-                                              image:
-                                                "assets/yqms/supplier-evaluation.jpg",
+                                              color: "bg-white text-blue-600",
+                                              image: "assets/yqms/supplier-evaluation-icon.svg",
                                             },
                                             {
-                                              title: "Customer Complain Cap",
+                                              title: "Customer Complaint CAP",
                                               icon: "AlertTriangle",
-                                              color:
-                                                "bg-orange-600/30 text-white",
-                                              image:
-                                                "assets/yqms/customer-complain-cap.jpg",
+                                              color: "bg-white text-blue-600",
+                                              image: "assets/yqms/customer-complaint-cap-icon.svg",
                                             },
                                           ],
                                         },
@@ -695,18 +681,18 @@ const AppLayout = () => {
                                                 "QA Audit Finishing Packing",
                                               icon: "ClipboardCheck",
                                               color:
-                                                "bg-green-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
-                                                "assets/yqms/qa-audit-finishing-packing.jpg",
+                                                "assets/yqms/qa-audit-finishing-packing-icon.svg",
                                             },
                                             {
                                               title:
                                                 "Humidity Aquaboy Checking",
-                                              icon: "Thermometer",
+                                              icon: "Droplets",
                                               color:
-                                                "bg-sky-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
-                                                "assets/yqms/humidity-acraboy-checking.jpg",
+                                                "assets/yqms/aquaboy-icon.svg",
                                               galleryImages: [
                                                 "assets/yqms/aquaboy/quaboy1.png",
                                                 "assets/yqms/aquaboy/aquaboy2.png",
@@ -718,9 +704,9 @@ const AppLayout = () => {
                                                 "First Output Finishing And Packing",
                                               icon: "PackageCheck",
                                               color:
-                                                "bg-cyan-500/30 text-white",
+                                                "bg-white text-blue-600",
                                               image:
-                                                "assets/yqms/first-output-finishing-and-packing.jpg",
+                                                "assets/yqms/first-output-finishing-packing-icon.svg",
                                             },
                                           ],
                                         },
@@ -730,19 +716,18 @@ const AppLayout = () => {
                                             {
                                               title: "Dashboard",
                                               image:
-                                                "https://cdn-icons-png.flaticon.com/128/6820/6820898.png",
+                                                "assets/yqms/dashboard-icon.svg",
                                               color:
-                                                "bg-slate-500 text-white",
-                                              galleryImages: [
-                                                "assets/yqms/dashboard/dashboard1.png",
-                                              ],
+                                                "bg-white text-blue-600",
+                                              action: "/dashboard/yqms/dashboard",
                                             },
                                             {
                                               title: "Report",
                                               image:
-                                                "https://cdn-icons-png.flaticon.com/128/1321/1321938.png",
+                                                "assets/yqms/report-icon.svg",
                                               color:
-                                                "bg-slate-500 text-white",
+                                                "bg-white text-blue-600",
+                                              action: "/dashboard/yqms/report",
                                             },
                                           ],
                                         },
@@ -806,7 +791,7 @@ const AppLayout = () => {
                                                     "Accessories Receiving",
                                                   icon: "Package",
                                                   color:
-                                                    "bg-teal-500/30 text-white",
+                                                    "bg-cyan-500/30 text-white",
                                                   image:
                                                     "assets/fc/accessories-receiving.jpg",
                                                 },
@@ -819,7 +804,7 @@ const AppLayout = () => {
                                                   title: "Fabric Inspection",
                                                   icon: "Search",
                                                   color:
-                                                    "bg-green-500/30 text-white",
+                                                    "bg-indigo-500/30 text-white",
                                                   image:
                                                     "assets/fc/fabric-inspection.jpg",
                                                 },
@@ -836,7 +821,7 @@ const AppLayout = () => {
                                                     "Accessories Inspection",
                                                   icon: "Search",
                                                   color:
-                                                    "bg-emerald-500/30 text-white",
+                                                    "bg-pink-500/30 text-white",
                                                   image:
                                                     "assets/fc/accessories-inspection.jpg",
                                                 },
@@ -850,7 +835,7 @@ const AppLayout = () => {
                                                     "Warehouse Tracking Location",
                                                   icon: "MapPin",
                                                   color:
-                                                    "bg-indigo-500/30 text-white",
+                                                    "bg-teal-500/30 text-white",
                                                   image:
                                                     "assets/fc/warehouse-tracking-location.jpg",
                                                 },
@@ -863,7 +848,7 @@ const AppLayout = () => {
                                                   title: "Consumptions",
                                                   icon: "Calculator",
                                                   color:
-                                                    "bg-cyan-500/30 text-white",
+                                                    "bg-green-500/30 text-white",
                                                   image:
                                                     "assets/fc/consumption.png",
                                                 },
@@ -871,7 +856,7 @@ const AppLayout = () => {
                                                   title: "Calculator",
                                                   icon: "Calculator",
                                                   color:
-                                                    "bg-sky-500/30 text-white",
+                                                    "bg-emerald-500/30 text-white",
                                                   image:
                                                     "assets/fc/calculator.png",
                                                 },
@@ -884,7 +869,7 @@ const AppLayout = () => {
                                                   title: "Fabric Issuing",
                                                   icon: "ArrowUpRight",
                                                   color:
-                                                    "bg-orange-500/30 text-white",
+                                                    "bg-amber-500/30 text-white",
                                                   image:
                                                     "assets/fc/fabric-issuing.jpg",
                                                 },
@@ -893,7 +878,7 @@ const AppLayout = () => {
                                                     "Accessories Issuing",
                                                   icon: "ArrowUpRight",
                                                   color:
-                                                    "bg-yellow-500/30 text-white",
+                                                    "bg-orange-500/30 text-white",
                                                   image:
                                                     "assets/fc/accessories-issuing.jpg",
                                                 },
@@ -901,7 +886,7 @@ const AppLayout = () => {
                                                   title: "Delivery Tracking",
                                                   icon: "Truck",
                                                   color:
-                                                    "bg-red-500/30 text-white",
+                                                    "bg-yellow-500/30 text-white",
                                                   image:
                                                     "assets/fc/delivery-tracking.jpg",
                                                 },
@@ -914,7 +899,7 @@ const AppLayout = () => {
                                                   title: "Return Fabric",
                                                   icon: "ArrowDownLeft",
                                                   color:
-                                                    "bg-pink-500/30 text-white",
+                                                    "bg-rose-500/30 text-white",
                                                   image:
                                                     "assets/fc/return-fabric.jpg",
                                                 },
@@ -922,7 +907,7 @@ const AppLayout = () => {
                                                   title: "Return Accessories",
                                                   icon: "ArrowDownLeft",
                                                   color:
-                                                    "bg-rose-500/30 text-white",
+                                                    "bg-red-500/30 text-white",
                                                   image:
                                                     "assets/fc/return-accessories.jpg",
                                                 },
@@ -949,7 +934,7 @@ const AppLayout = () => {
                                               title: "YAI",
                                               icon: "Building",
                                               color:
-                                                "bg-slate-500 text-white",
+                                                "bg-white text-blue-600",
                                             }, // Correct
                                             {
                                               title: "CSR",

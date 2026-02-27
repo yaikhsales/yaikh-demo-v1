@@ -21,14 +21,16 @@ import GeneralAIAgent from "../general-ag";
 import { useTranslation } from "../translate/TranslationContext";
 
 const teamPhotos = [
-  "/assets/about-us/teams/Dot-Sreynoch.jpeg",
-  "/assets/about-us/teams/Koem-Phanny.jpeg",
-  "/assets/about-us/teams/Mr-Arnold11.jpeg",
-  "/assets/about-us/teams/Sin-Khun.jpeg",
-  "/assets/about-us/teams/Voun-Thida.jpeg",
-  "/assets/about-us/teams/chhay.jpg",
-  "/assets/about-us/teams/daly.jpg",
-  "/assets/about-us/teams/yasomi.jpg",
+  "/assets/Yaikh-Uploads/H01_00004155_20251224132344.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004163_20260110104202.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004171_20260108143914.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004177_20260112101013.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004193_20260110100532.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004198_20251215163335.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004199_20260110100611.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004202_20260110100639.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004203_20250903122655.jpeg",
+  "/assets/Yaikh-Uploads/H01_00004216_20260114093811.jpeg",
 ];
 
 const Interview = ({ onBack }) => {
@@ -36,161 +38,163 @@ const Interview = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("interviews");
   const [isBotOpen, setIsBotOpen] = useState(false);
-  const [showSetupModal, setShowSetupModal] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [showSetupModal, setShowSetupModal] = useState(false);
+  const [showFailModal, setShowFailModal] = useState(false);
 
   const tabs = [{ id: "interviews", label: "Interviews", count: 2 }];
 
   const applicants = [
     {
       id: 1,
-      name: "Chhay",
-      gender: "MALE",
-      age: 29,
+      name: "Dot Sreynoch",
+      gender: "FEMALE",
+      age: 26,
       phone: "+855 081 223 998",
       department: "Production",
       position: "QA Tester",
       status: "PHASE 2: INTERVIEW",
-      subStatus: "TECHNICAL SCREENING",
-      type: "KHMER",
+      subStatus: "TECH SCREENING",
+      type: "EXPAT",
       date: "Feb 13, 2026",
-      time: "02:00 PM",
-      photo: "/assets/about-us/teams/chhay.jpg",
+      time: "09:45 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004155_20251224132344.jpeg",
     },
     {
       id: 2,
-      name: "Daly",
-      gender: "FEMALE",
-      age: 27,
-      phone: "+855 092 556 887",
-      department: "Marketing",
-      position: "Content Strategist",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "PORTFOLIO REVIEW",
-      type: "KHMER",
-      date: "Feb 13, 2026",
-      time: "03:00 PM",
-      photo: "/assets/about-us/teams/daly.jpg",
-    },
-    {
-      id: 3,
-      name: "Yasomi",
-      gender: "FEMALE",
-      age: 24,
-      phone: "+855 061 445 112",
-      department: "Design",
-      position: "UI/UX Designer",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "DESIGN CHALLENGE",
-      type: "KHMER",
-      date: "Feb 13, 2026",
-      time: "04:00 PM",
-      photo: "/assets/about-us/teams/yasomi.jpg",
-    },
-    {
-      id: 4,
-      name: "Sobon Menghorng",
-      gender: "MALE",
-      age: 28,
-      phone: "+855 010 778 334",
-      department: "Engineering",
-      position: "Frontend Lead",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "FINAL INTERVIEW",
-      type: "KHMER",
-      date: "Feb 14, 2026",
-      time: "10:00 AM",
-      photo: "/assets/about-us/teams/Sobon-Menghorng.jpg",
-    },
-    {
-      id: 5,
-      name: "Dot Sreynoch",
-      gender: "FEMALE",
-      age: 26,
-      phone: "+855 010 223 445",
-      department: "Production",
-      position: "QA Lead",
-      status: "PHASE 2: INTERVIEW",
-      subStatus: "MANAGEMENT ROUND",
-      type: "KHMER",
-      date: "Feb 14, 2026",
-      time: "11:30 AM",
-      photo: "/assets/about-us/teams/Dot-Sreynoch.jpeg",
-    },
-    {
-      id: 6,
       name: "Koem Phanny",
       gender: "FEMALE",
       age: 28,
-      phone: "+855 012 334 556",
-      department: "Logistics",
-      position: "Supply Chain",
+      phone: "+855 092 556 887",
+      department: "Marketing",
+      position: "Strategist",
       status: "PHASE 2: INTERVIEW",
-      subStatus: "SKILLS TEST",
-      type: "KHMER",
-      date: "Feb 14, 2026",
-      time: "02:00 PM",
-      photo: "/assets/about-us/teams/Koem-Phanny.jpeg",
+      subStatus: "INITIAL SCREEN",
+      type: "EXPAT",
+      date: "Feb 13, 2026",
+      time: "11:00 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004163_20260110104202.jpeg",
     },
     {
-      id: 7,
+      id: 3,
       name: "Sin Khun",
       gender: "MALE",
       age: 30,
+      phone: "+855 061 445 112",
+      department: "Design",
+      position: "Designer",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "PORTFOLIO",
+      type: "EXPAT",
+      date: "Feb 14, 2026",
+      time: "09:30 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004171_20260108143914.jpeg",
+    },
+    {
+      id: 4,
+      name: "Voun Samnang",
+      gender: "MALE",
+      age: 25,
+      phone: "+855 010 778 334",
+      department: "Engineering",
+      position: "Frontend",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "FINAL ROUND",
+      type: "EXPAT",
+      date: "Feb 14, 2026",
+      time: "01:30 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004177_20260112101013.jpeg",
+    },
+    {
+      id: 5,
+      name: "Set Sophy",
+      gender: "FEMALE",
+      age: 27,
+      phone: "+855 010 223 445",
+      department: "Production",
+      position: "QA Engineer",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "DEPT HEAD",
+      type: "EXPAT",
+      date: "Feb 15, 2026",
+      time: "10:30 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004193_20260110100532.jpeg",
+    },
+    {
+      id: 6,
+      name: "Ton Sreyneang",
+      gender: "FEMALE",
+      age: 32,
+      phone: "+855 012 334 556",
+      department: "Logistics",
+      position: "Coordinator",
+      status: "PHASE 2: INTERVIEW",
+      subStatus: "LOGISTICS TEST",
+      type: "EXPAT",
+      date: "Feb 15, 2026",
+      time: "03:00 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004198_20251215163335.jpeg",
+    },
+    {
+      id: 7,
+      name: "Proeurng Sokhim",
+      gender: "MALE",
+      age: 24,
       phone: "+855 015 445 667",
       department: "Engineering",
-      position: "Senior Dev",
+      position: "Developer",
       status: "PHASE 2: INTERVIEW",
-      subStatus: "TECH INTERVIEW",
-      type: "KHMER",
-      date: "Feb 15, 2026",
+      subStatus: "CODE REVIEW",
+      type: "EXPAT",
+      date: "Feb 16, 2026",
       time: "09:00 AM",
-      photo: "/assets/about-us/teams/Sin-Khun.jpeg",
+      photo: "/assets/Yaikh-Uploads/H01_00004199_20260110100611.jpeg",
     },
     {
       id: 8,
-      name: "Voun Thida",
+      name: "Sobon Sreypich",
       gender: "FEMALE",
-      age: 25,
+      age: 29,
       phone: "+855 099 556 778",
-      department: "HR",
-      position: "Coordinator",
+      department: "Admin",
+      position: "Assistant",
       status: "PHASE 2: INTERVIEW",
-      subStatus: "HR SCREENING",
-      type: "KHMER",
-      date: "Feb 15, 2026",
-      time: "10:30 AM",
-      photo: "/assets/about-us/teams/Voun-Thida.jpeg",
+      subStatus: "HR MANAGER",
+      type: "EXPAT",
+      date: "Feb 16, 2026",
+      time: "11:30 AM",
+      photo: "/assets/Yaikh-Uploads/H01_00004202_20260110100639.jpeg",
     },
     {
       id: 9,
-      name: "Proeurng Sokhim",
-      gender: "FEMALE",
-      age: 24,
+      name: "Van Phanith",
+      gender: "MALE",
+      age: 27,
       phone: "+855 011 222 333",
       department: "Design",
-      position: "Graphic Artist",
+      position: "Junior UI",
       status: "PHASE 2: INTERVIEW",
       subStatus: "PORTFOLIO",
-      type: "KHMER",
-      date: "Feb 15, 2026",
-      time: "03:00 PM",
-      photo: "/assets/about-us/teams/Proeurng-Sokhim.jpeg",
+      type: "EXPAT",
+      date: "Feb 17, 2026",
+      time: "02:00 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004203_20250903122655.jpeg",
     },
     {
       id: 10,
-      name: "Ton Noeun",
-      gender: "MALE",
-      age: 32,
+      name: "Yeom Sreysros",
+      gender: "FEMALE",
+      age: 31,
       phone: "+855 077 778 990",
       department: "Maintenance",
-      position: "Lead Tech",
+      position: "Technician",
       status: "PHASE 2: INTERVIEW",
-      subStatus: "PRACTICAL TEST",
-      type: "KHMER",
-      date: "Feb 16, 2026",
-      time: "11:00 AM",
-      photo: "/assets/about-us/teams/Ton-Noeun.jpeg",
+      subStatus: "SKILL TEST",
+      type: "EXPAT",
+      date: "Feb 17, 2026",
+      time: "04:30 PM",
+      photo: "/assets/Yaikh-Uploads/H01_00004216_20260114093811.jpeg",
     },
   ];
 
@@ -199,12 +203,14 @@ const Interview = ({ onBack }) => {
     else navigate(-1);
   };
 
-  const handlePass = (name) => {
-    alert(`${name} has passed the interview phase.`);
+  const handlePass = (applicant) => {
+    setSelectedApplicant(applicant);
+    setShowSetupModal(true);
   };
 
-  const handleFail = (name) => {
-    alert(`${name} has failed the interview phase.`);
+  const handleFail = (applicant) => {
+    setSelectedApplicant(applicant);
+    setShowFailModal(true);
   };
 
   return (
@@ -226,131 +232,264 @@ const Interview = ({ onBack }) => {
               </h2>
             </div>
             <div className="flex items-center gap-3">
-              <button className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center gap-2 active:scale-95">
-                Schedule Interview
-              </button>
+              {/* Button Removed */}
             </div>
           </div>
 
-          <div className="flex-1 overflow-auto">
-            <table className="w-full text-left border-collapse min-w-[1100px]">
-              <thead>
-                <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                  <th className="px-8 py-5">Photo</th>
-                  <th className="px-4 py-5">Applicant / Contact</th>
-                  <th className="px-4 py-5">Department</th>
-                  <th className="px-4 py-5 text-center">Status</th>
-                  <th className="px-4 py-5 text-center">Type</th>
-                  <th className="px-4 py-5">Submitted</th>
-                  <th className="px-8 py-5 text-right whitespace-nowrap">
-                    Action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {applicants.map((applicant) => (
-                  <tr
-                    key={applicant.id}
-                    className="group hover:bg-slate-50/50 transition-all duration-200"
-                  >
-                    <td className="px-8 py-6">
-                      <div className="relative w-12 h-12 rounded-xl border-2 border-slate-100 overflow-hidden shadow-sm group-hover:border-blue-100 transition-colors">
-                        <img
-                          src={applicant.photo}
-                          alt={applicant.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col gap-1">
-                        <span className="font-black text-slate-800 text-sm tracking-tight">
-                          {applicant.name}
-                        </span>
-                        <div className="flex items-center gap-2 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                          <span>
-                            {applicant.gender} • {applicant.age} YRS
+          <div className="flex-1 overflow-auto px-8 pb-8">
+            <div className="bg-white border-t border-l border-black shadow-sm overflow-hidden">
+              <table className="w-full text-left border-collapse min-w-[1100px]">
+                <thead>
+                  <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-[16px] font-bold text-white uppercase tracking-widest sticky top-0 z-10">
+                    <th className="px-6 py-4 border-r border-b border-black text-center w-20">
+                      Photo
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-black">
+                      Applicant / Contact
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-black">
+                      Department
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-black text-center">
+                      Status
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-black text-center">
+                      Type
+                    </th>
+                    <th className="px-6 py-4 border-r border-b border-black">
+                      Interview Date
+                    </th>
+                    <th className="px-6 py-4 border-b border-black text-center whitespace-nowrap">
+                      Action
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {applicants.map((applicant) => (
+                    <tr
+                      key={applicant.id}
+                      className="hover:bg-slate-50 transition-colors"
+                    >
+                      <td className="px-6 py-4 border-r border-b border-black text-center">
+                        <div className="inline-block relative w-28 h-28 rounded-lg border-2 border-black overflow-hidden shadow-sm">
+                          <img
+                            src={applicant.photo}
+                            alt={applicant.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-black">
+                        <div className="flex flex-col gap-1">
+                          <span className="font-bold text-black text-[18px] tracking-tight">
+                            {applicant.name}
+                          </span>
+                          <div className="flex items-center gap-2 text-[18px] font-bold text-black uppercase">
+                            <span>{applicant.age} YRS</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-[18px] font-bold text-black">
+                            <Phone size={18} className="text-blue-400" />
+                            <span>{applicant.phone}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-black">
+                        <div className="flex flex-col text-[18px] font-bold text-black">
+                          <span>{applicant.department}</span>
+                          <span className="text-[18px] font-medium text-black">
+                            {applicant.position}
                           </span>
                         </div>
-                        <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-500">
-                          <Phone size={10} className="text-slate-300" />
-                          <span>{applicant.phone}</span>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-black">
+                        <div className="flex flex-col items-center gap-2 text-center">
+                          <span className="text-[18px] font-bold text-black uppercase tracking-widest italic leading-none">
+                            {applicant.status}
+                          </span>
+                          <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-md text-[18px] font-black tracking-widest border border-blue-100">
+                            {applicant.subStatus}
+                          </span>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col">
-                        <span className="font-black text-slate-700 text-xs">
-                          {applicant.department}
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-black text-center">
+                        <span className="px-2 py-0.5 bg-slate-100 border border-black rounded text-[18px] font-bold text-black uppercase">
+                          {applicant.type}
                         </span>
-                        <span className="text-[10px] font-bold text-slate-400">
-                          {applicant.position}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col items-center gap-2">
-                        <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.15em]">
-                          {applicant.status}
-                        </span>
-                        <span className="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-md text-[9px] font-black tracking-widest border border-emerald-100/50">
-                          {applicant.subStatus}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-6 text-center">
-                      <span className="px-2.5 py-1 bg-white border border-slate-200 rounded text-[9px] font-black text-blue-600 shadow-sm">
-                        {applicant.type}
-                      </span>
-                    </td>
-                    <td className="px-4 py-6">
-                      <div className="flex flex-col">
-                        <span className="font-black text-slate-700 text-xs">
-                          {applicant.date}
-                        </span>
-                        <span className="text-[10px] font-bold text-slate-400">
-                          {applicant.time}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-8 py-6">
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          onClick={() => handlePass(applicant.name)}
-                          className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white rounded-lg text-[9px] font-black uppercase hover:bg-blue-700 transition-colors shadow-sm"
-                        >
-                          <User size={12} strokeWidth={3} />
-                          Pass
-                        </button>
-                        <button
-                          onClick={() => handleFail(applicant.name)}
-                          className="px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[9px] font-black uppercase hover:bg-rose-100 transition-colors"
-                        >
-                          Fail
-                        </button>
-                        <div className="flex items-center gap-1 ml-2 border-l border-slate-100 pl-3">
-                          <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
-                            <FileText size={14} />
-                          </button>
-                          <button className="p-1.5 text-slate-300 hover:text-blue-600 hover:bg-white hover:shadow-sm rounded transition-all">
-                            <Eye size={14} />
-                          </button>
-                          <button className="p-1.5 text-slate-300 hover:text-slate-600 hover:bg-white hover:shadow-sm rounded transition-all">
-                            <Edit2 size={14} />
-                          </button>
-                          <button className="p-1.5 text-slate-300 hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all">
-                            <Trash2 size={14} />
-                          </button>
+                      </td>
+                      <td className="px-6 py-4 border-r border-b border-black">
+                        <div className="flex flex-col text-[18px] font-bold text-black">
+                          <span>{applicant.date}</span>
+                          <span className="text-[18px] text-black uppercase tracking-tighter">
+                            {applicant.time}
+                          </span>
                         </div>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                      <td className="px-8 py-6 border-r border-b border-black">
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            onClick={() => handlePass(applicant)}
+                            className="flex items-center gap-1.5 px-4 py-1.5 bg-blue-600 text-white rounded-lg text-[18px] font-black uppercase hover:bg-blue-700 transition-colors shadow-sm"
+                          >
+                            <User size={12} strokeWidth={3} />
+                            Pass
+                          </button>
+                          <button
+                            onClick={() => handleFail(applicant)}
+                            className="px-4 py-1.5 bg-rose-50 border border-rose-100 text-rose-600 rounded-lg text-[18px] font-black uppercase hover:bg-rose-100 transition-colors"
+                          >
+                            Fail
+                          </button>
+                          <div className="flex items-center gap-1 ml-2 border-l border-black pl-3">
+                            <button className="p-1.5 text-black hover:text-black hover:bg-white hover:shadow-sm rounded transition-all">
+                              <FileText size={14} />
+                            </button>
+                            <button className="p-1.5 text-black hover:text-blue-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                              <Eye size={14} />
+                            </button>
+                            <button className="p-1.5 text-black hover:text-black hover:bg-white hover:shadow-sm rounded transition-all">
+                              <Edit2 size={14} />
+                            </button>
+                            <button className="p-1.5 text-black hover:text-red-500 hover:bg-white hover:shadow-sm rounded transition-all">
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Schedule Interview Modal */}
+      {showScheduleModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-2xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-100">
+                  <Calendar size={24} strokeWidth={3} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Schedule Interview
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Set up a new technical screening or meeting
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowScheduleModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400 hover:text-slate-600"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="border-b border-slate-100">
+                <div className="grid grid-cols-1 divide-y divide-slate-100">
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Select Applicant
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <select className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer">
+                        <option value="">Choose a candidate...</option>
+                        {applicants.map((a) => (
+                          <option key={a.id} value={a.id}>
+                            {a.name} - {a.position}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Interview Date
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <input
+                        type="date"
+                        className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Start Time
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <input
+                        type="time"
+                        className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Phase / Type
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <select className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer">
+                        <option>Technical Screening</option>
+                        <option>Management Round</option>
+                        <option>HR Screening</option>
+                        <option>Final Interview</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3">
+                    <div className="p-4 bg-slate-50/50 flex items-center">
+                      <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                        Room / Link
+                      </label>
+                    </div>
+                    <div className="col-span-2 p-4">
+                      <input
+                        type="text"
+                        placeholder="e.g. Room A or Zoom Link"
+                        className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex items-center justify-end gap-4">
+              <button
+                onClick={() => setShowScheduleModal(false)}
+                className="px-6 py-3 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert("Interview scheduled successfully!");
+                  setShowScheduleModal(false);
+                }}
+                className="px-10 py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-xl shadow-blue-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <Check size={16} strokeWidth={3} />
+                Confirm Schedule
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Contract Setup Modal */}
       {showSetupModal && (
@@ -476,6 +615,104 @@ const Interview = ({ onBack }) => {
         />
       )}
 
+      {/* Fail Interview Modal */}
+      {showFailModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100">
+            <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-white">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-rose-500 flex items-center justify-center text-white shadow-lg shadow-rose-100">
+                  <X size={24} strokeWidth={3} />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-800 tracking-tight uppercase">
+                    Interview Result: Fail
+                  </h3>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Record negative interview outcome
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowFailModal(false)}
+                className="p-2 hover:bg-slate-50 rounded-xl transition-all text-slate-400"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="p-0">
+              <div className="p-6 bg-rose-50/50 border-b border-rose-100 flex items-center gap-4 mx-4 my-4 rounded-2xl">
+                <img
+                  src={selectedApplicant?.photo}
+                  className="w-12 h-12 rounded-xl object-cover border-2 border-white shadow-sm opacity-50 grayscale"
+                  alt=""
+                />
+                <div>
+                  <h4 className="font-black text-slate-800 uppercase text-xs">
+                    {selectedApplicant?.name}
+                  </h4>
+                  <p className="text-[10px] font-bold text-rose-600 uppercase">
+                    Feedback for technical assessment
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 divide-y divide-slate-100 border-b border-slate-100">
+                <div className="grid grid-cols-3">
+                  <div className="p-5 bg-slate-50/50 flex items-center">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Reason
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <select className="w-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none cursor-pointer">
+                      <option>Low technical competency</option>
+                      <option>Communication barriers</option>
+                      <option>Expectations mismatch</option>
+                      <option>Overqualified / Underqualified</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 min-h-[120px]">
+                  <div className="p-5 bg-slate-50/50 flex items-start pt-6">
+                    <label className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                      Interview Notes
+                    </label>
+                  </div>
+                  <div className="col-span-2 p-5">
+                    <textarea
+                      placeholder="Detail the candidate's performance during the screening..."
+                      className="w-full h-full bg-transparent border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300 resize-none"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 bg-slate-50 flex justify-end gap-3">
+              <button
+                onClick={() => setShowFailModal(false)}
+                className="px-8 py-4 text-[10px] font-black uppercase text-slate-400 hover:text-slate-600 transition-colors tracking-widest"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  alert(
+                    `${selectedApplicant?.name} has been marked as failed.`,
+                  );
+                  setShowFailModal(false);
+                }}
+                className="px-12 py-4 bg-rose-600 text-white rounded-2xl text-[10px] font-black uppercase hover:bg-rose-700 shadow-xl shadow-rose-100 transition-all active:scale-95 flex items-center gap-2"
+              >
+                <X size={16} />
+                Submit Result
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <style jsx>{`
         .scroller-hide::-webkit-scrollbar {
           display: none;

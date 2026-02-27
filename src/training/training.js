@@ -189,7 +189,7 @@ const Training = ({ onBack }) => {
                 
                 {/* Content */}
                 <div className="flex-1 overflow-auto p-8">
-                <div className="max-w-6xl mx-auto">
+               <div className="w-full flex-1 flex flex-col">
 
                     {/* Three Cards */}
                     <div className="bg-white border-2 border-dashed border-gray-300 rounded-lg p-12 min-h-[500px] flex items-center justify-center">
@@ -265,7 +265,7 @@ const Training = ({ onBack }) => {
                 
                 {/* Content */}
                 <div className="flex-1 overflow-auto p-8">
-                <div className="max-w-7xl mx-auto">
+               <div className="w-full">
 
                     {/* Video Grid */}
                     <div className="bg-white rounded-lg p-8">
@@ -344,10 +344,10 @@ const Training = ({ onBack }) => {
                 
                 {/* Content */}
                 <div className="flex-1 overflow-auto p-8">
-                <div className="max-w-7xl mx-auto">
+                <div className="w-full">
 
                     {/* Header Image */}
-                    <div className="bg-white rounded-lg p-6 mb-6 overflow-hidden">
+                    {/* <div className="bg-white rounded-lg p-6 mb-6 overflow-hidden">
                         <img
                             src="/assets/icons/sub-icons/header.png"
                             alt="Company Header"
@@ -356,7 +356,7 @@ const Training = ({ onBack }) => {
                                 console.error('Header image failed to load:', e.target.src);
                             }}
                         />
-                    </div>
+                    </div> */}
 
                     {/* Lesson Cards Grid */}
                     <div className="grid grid-cols-3 gap-6">
@@ -419,7 +419,7 @@ const Training = ({ onBack }) => {
                 
                 {/* Content */}
                 <div className="flex-1 overflow-auto p-8">
-                <div className="max-w-7xl mx-auto">
+                <div className="w-full">
 
                     {/* Main Content Card */}
                     <div className="bg-white rounded-lg shadow-lg p-8">

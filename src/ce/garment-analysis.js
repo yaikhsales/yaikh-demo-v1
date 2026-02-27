@@ -129,25 +129,25 @@ const GarmentAnalysis = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Style Details</th>
-                <th className="px-4 py-5 text-center">Sections</th>
-                <th className="px-4 py-5 text-center">Op Count</th>
-                <th className="px-4 py-5 text-center">Difficulty</th>
-                <th className="px-4 py-5 text-center">Analyst</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Style Details</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Sections</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Op Count</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Difficulty</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Analyst</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Status</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {analyses.map((rec) => (
+            <tbody>
+              {analyses.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <div className="flex flex-col gap-1">
                       <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                         {rec.name}
@@ -157,23 +157,23 @@ const GarmentAnalysis = ({ onBack }) => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
                     {rec.sections}
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-700 font-black text-xs">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-700 font-black text-xs">
                     {rec.operations}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`text-[10px] font-black ${rec.difficulty === "HIGH" ? "text-rose-500" : rec.difficulty === "MEDIUM" ? "text-amber-500" : "text-emerald-500"}`}
                     >
                       {rec.difficulty}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-500 font-bold text-[10px] uppercase">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-500 font-bold text-[10px] uppercase">
                     {rec.analyst}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
                         rec.status === "APPROVED" || rec.status === "COMPLETED"
@@ -184,7 +184,7 @@ const GarmentAnalysis = ({ onBack }) => {
                       {rec.status}
                     </span>
                   </td>
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-b border-slate-200">
                     <div className="flex items-center justify-end gap-2 text-nowrap">
                       <button
                         onClick={() => handleAction("View", rec.name)}

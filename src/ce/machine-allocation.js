@@ -130,24 +130,24 @@ const MachineAllocation = ({ onBack }) => {
         <div className="flex-1 overflow-auto">
           <table className="w-full text-left border-collapse min-w-[1000px]">
             <thead>
-              <tr className="bg-white text-[10px] font-black text-slate-300 uppercase tracking-widest border-b border-slate-50">
-                <th className="px-8 py-5">Line / Machine</th>
-                <th className="px-4 py-5">Operation Details</th>
-                <th className="px-4 py-5 text-center">Operator</th>
-                <th className="px-4 py-5 text-center">Condition</th>
-                <th className="px-4 py-5 text-center">Status</th>
-                <th className="px-8 py-5 text-right whitespace-nowrap">
+              <tr className="bg-slate-100 text-[11px] font-bold text-black uppercase tracking-widest sticky top-0 z-10">
+                <th className="px-8 py-4 border-r border-b border-slate-200">Line / Machine</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200">Operation Details</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Operator</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Condition</th>
+                <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Status</th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
                   Action
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
-              {allocations.map((rec) => (
+            <tbody>
+              {allocations.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className="group hover:bg-slate-50/50 transition-all duration-200"
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
                 >
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-r border-b border-slate-200">
                     <div className="flex flex-col gap-1">
                       <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
                         {rec.machine}
@@ -157,7 +157,7 @@ const MachineAllocation = ({ onBack }) => {
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-6">
+                  <td className="px-4 py-4 border-r border-b border-slate-200">
                     <div className="flex flex-col">
                       <span className="font-black text-slate-700 text-xs text-nowrap">
                         {rec.opName}
@@ -167,17 +167,17 @@ const MachineAllocation = ({ onBack }) => {
                       </span>
                     </div>
                   </td>
-                  <td className="px-4 py-6 text-center text-slate-500 font-bold text-[10px] uppercase">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-slate-500 font-bold text-[10px] uppercase">
                     {rec.operator}
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`text-[10px] font-black ${rec.condition === "OPTIMAL" ? "text-emerald-500" : "text-amber-500"}`}
                     >
                       {rec.condition}
                     </span>
                   </td>
-                  <td className="px-4 py-6 text-center">
+                  <td className="px-4 py-4 border-r border-b border-slate-200 text-center">
                     <span
                       className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
                         rec.status === "RUNNING"
@@ -188,7 +188,7 @@ const MachineAllocation = ({ onBack }) => {
                       {rec.status}
                     </span>
                   </td>
-                  <td className="px-8 py-6">
+                  <td className="px-8 py-4 border-b border-slate-200">
                     <div className="flex items-center justify-end gap-2 text-nowrap">
                       <button
                         onClick={() => handleAction("View", rec.machine)}

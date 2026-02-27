@@ -100,7 +100,7 @@ const WeeklyIncentiveDashboard = ({ onBack }) => {
           </button>
           <div>
             <h1 className="text-xl font-bold text-slate-800">
-              Weekly Incentive Dashboard
+               Incentive Dashboard
             </h1>
             <p className="text-sm text-slate-500">
               Track production bonuses and line efficiency
@@ -138,7 +138,7 @@ const WeeklyIncentiveDashboard = ({ onBack }) => {
               <DollarSign size={80} className="text-blue-600" />
             </div>
             <p className="text-blue-600 text-sm font-black uppercase tracking-wider mb-2">
-              Total Weekly Payout
+              Total  Payout
             </p>
             <h3 className="text-4xl font-black text-slate-800">
               ${stats.totalPayout}

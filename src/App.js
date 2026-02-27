@@ -88,6 +88,7 @@ import WelcomePage from "./welcome-page";
 import HappyNewYear from "./happy-new-year";
 import QCFile from "./yqms/qc-file";
 import PreProductionMeeting from "./yqms/PPM/pre-production-meeting";
+import FinCheckDashboard from "./yqms/Fin-check/index";
 
 // FC Module Components
 import FabricReceiving from "./fc/FabricReceiving";
@@ -104,19 +105,22 @@ import DeliveryTracking from "./fc/DeliveryTracking";
 import ReturnFabric from "./fc/ReturnFabric";
 import ReturnAccessories from "./fc/ReturnAccessories";
 import BrandProtection from "./fc/BrandProtection";
-// import QCFile from "./yqms/QCFile";
 import InternalRollingQC from "./yqms/InternalRollingQC";
 import CuttingInspection from "./yqms/CuttingInspection";
 import GarmentCheckOutput from "./yqms/GarmentCheckOutput";
 import PackingInspection from "./yqms/PackingInspection";
 import FinalInspection from "./yqms/FinalInspection";
-// import PreProductionMeeting from "./yqms/PreProductionMeeting";
+
 import AuditReport from "./yqms/AuditReport";
 import BuyerFinalInspection from "./yqms/BuyerFinalInspection";
 import SupplierEvaluation from "./yqms/SupplierEvaluation";
 import CustomerComplainCap from "./yqms/CustomerComplainCap";
 import YQMSReport from "./yqms/YQMSReport";
 import YQMSGlobalDashboard from "./yqms/YQMSGlobalDashboard";
+import { YQMSDashboard } from "./yqms/YQMSDashboard";
+import HumidityReportAdd from "./yqms/HumidityReport/add-model";
+import HumidityReportList from "./yqms/HumidityReport/show-list";
+
 
 export default function App() {
   const navigate = useNavigate();
@@ -355,6 +359,7 @@ export default function App() {
           />
           <Route path="yqms/qc-file" element={<QCFile onBack={handleBack} />} />
           <Route path="yqms/pre-production-meeting" element={<PreProductionMeeting onBack={handleBack} />} />
+          <Route path="yqms/fin-check" element={<FinCheckDashboard onBack={handleBack} />} />
           <Route
             path="waste"
             element={<WasteDashboardView onBack={handleBack} />}
@@ -526,19 +531,23 @@ export default function App() {
           <Route
             path="yqms/aquaboy"
             element={
-              <AuditReport
-                title="Humidity Aquaboy Checking"
-                onBack={handleBack}
-              />
+              <HumidityReportAdd onBack={handleBack} />
             }
           />
+          <Route
+            path="yqms/aquaboy/list"
+            element={
+              <HumidityReportList onBack={handleBack} />
+            }
+          />
+
           <Route
             path="yqms/fin-check"
             element={<AuditReport title="Fin Check" onBack={handleBack} />}
           />
           <Route
             path="yqms/dashboard"
-            element={<YQMSGlobalDashboard onBack={handleBack} />}
+            element={<YQMSDashboard onBack={handleBack} />}
           />
           <Route
             path="yqms/first-output-print"
