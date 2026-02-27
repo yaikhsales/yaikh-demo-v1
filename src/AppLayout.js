@@ -719,9 +719,7 @@ const AppLayout = () => {
                                                 "assets/yqms/dashboard-icon.svg",
                                               color:
                                                 "bg-white text-blue-600",
-                                              galleryImages: [
-                                                "assets/yqms/dashboard/dashboard1.png",
-                                              ],
+                                              action: "/dashboard/yqms/dashboard",
                                             },
                                             {
                                               title: "Report",
@@ -729,6 +727,7 @@ const AppLayout = () => {
                                                 "assets/yqms/report-icon.svg",
                                               color:
                                                 "bg-white text-blue-600",
+                                              action: "/dashboard/yqms/report",
                                             },
                                           ],
                                         },
