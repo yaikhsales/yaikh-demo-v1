@@ -447,6 +447,9 @@ const renderCard = (
                 navigate(`/dashboard/image/${encodedPath}`);
               } else if (card.title === "Humidity Aquaboy Checking") {
                 navigate("/dashboard/yqms/aquaboy");
+              } else if (card.action) {
+                // Prioritize explicit action routes (e.g., custom dashboards)
+                navigate(card.action);
               } else if (
                 card.galleryImages &&
                 card.galleryImages.length > 0
@@ -494,9 +497,6 @@ const renderCard = (
                 navigate("/dashboard/yqms/qc-file");
               } else if (card.title === "Pre Production Meeting") {
                 navigate("/dashboard/yqms/pre-production-meeting");
-              } else if (isYQMSModule && !card.galleryImages) {
-                // YQMS sub-modules: maintain existing behavior for now if no gallery
-                return;
               } else if (card.image) {
                 // Encode the image path to handle slashes correctly
                 const encodedPath = encodeURIComponent(card.image);
