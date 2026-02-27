@@ -114,6 +114,7 @@ import SupplierEvaluation from "./yqms/SupplierEvaluation";
 import CustomerComplainCap from "./yqms/CustomerComplainCap";
 import YQMSReport from "./yqms/YQMSReport";
 import YQMSGlobalDashboard from "./yqms/YQMSGlobalDashboard";
+import { YQMSDashboard } from "./yqms/YQMSDashboard";
 import HumidityReportAdd from "./yqms/HumidityReport/add-model";
 import HumidityReportList from "./yqms/HumidityReport/show-list";
 
@@ -531,7 +532,7 @@ export default function App() {
           />
           <Route
             path="yqms/dashboard"
-            element={<YQMSGlobalDashboard onBack={handleBack} />}
+            element={<YQMSDashboard onBack={handleBack} />}
           />
           <Route
             path="yqms/first-output-print"
