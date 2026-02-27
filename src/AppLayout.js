@@ -324,7 +324,7 @@ const AppLayout = () => {
                             title: "Solar Dashboard",
                             icon: "Sun",
                             color: "bg-yellow-500 text-white",
-                            action: "/dashboard/energy/meters",
+                            action: "/dashboard/energy/solar-dashboard",
                           },
                           {
                             title: "Switch Board Ampere Load Monitoring",
@@ -336,7 +336,7 @@ const AppLayout = () => {
                             title: "Energy Source",
                             icon: "Power",
                             color: "bg-green-500 text-white",
-                            action: "/dashboard/energy/meters",
+                            action: "/dashboard/energy/energy-source",
                           },
                         ]
                         : demoType === "SUBMENU_WASTE"

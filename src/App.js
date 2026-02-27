@@ -51,12 +51,15 @@ import CPM from "./ce/cpm";
 import StyleCosting from "./ce/style-costing";
 import ComplianceCertificate from "./digital-audit/compliance-certificate";
 import AuditPlan from "./digital-audit/audit-plan";
+import Checklist6S from "./digital-audit/checklist-6s";
 import ShowListRequest from "./purchase-request/show-list-request";
 import MasterList from "./purchase-request/master-list";
 import MyConfirmReceived from "./purchase-request/my-confirm-received";
 import PurchaseRequisitionForm from "./purchase-request/purchase-requisition-form";
 import Meters from "./energy/meters";
 import SwitchBoard from "./energy/switch-board";
+import EnergySource from "./energy/energy-source";
+import SolarDashboard from "./energy/solar-dashboard";
 import Temperature from "./air/temperature";
 import Air from "./air/air";
 import RequestWorkerForm from "./temp-worker-request/request-worker-form";
@@ -101,13 +104,13 @@ import DeliveryTracking from "./fc/DeliveryTracking";
 import ReturnFabric from "./fc/ReturnFabric";
 import ReturnAccessories from "./fc/ReturnAccessories";
 import BrandProtection from "./fc/BrandProtection";
-import QCFile from "./yqms/QCFile";
+// import QCFile from "./yqms/QCFile";
 import InternalRollingQC from "./yqms/InternalRollingQC";
 import CuttingInspection from "./yqms/CuttingInspection";
 import GarmentCheckOutput from "./yqms/GarmentCheckOutput";
 import PackingInspection from "./yqms/PackingInspection";
 import FinalInspection from "./yqms/FinalInspection";
-import PreProductionMeeting from "./yqms/PreProductionMeeting";
+// import PreProductionMeeting from "./yqms/PreProductionMeeting";
 import AuditReport from "./yqms/AuditReport";
 import BuyerFinalInspection from "./yqms/BuyerFinalInspection";
 import SupplierEvaluation from "./yqms/SupplierEvaluation";
@@ -282,6 +285,10 @@ export default function App() {
             element={<AuditPlan onBack={handleBack} />}
           />
           <Route
+            path="checklist-6s"
+            element={<Checklist6S onBack={handleBack} />}
+          />
+          <Route
             path="purchase-requisition-form"
             element={<PurchaseRequisitionForm onBack={handleBack} />}
           />
@@ -308,6 +315,14 @@ export default function App() {
           <Route
             path="energy/switch-board"
             element={<SwitchBoard onBack={handleBack} />}
+          />
+          <Route
+            path="energy/energy-source"
+            element={<EnergySource onBack={handleBack} />}
+          />
+          <Route
+            path="energy/solar-dashboard"
+            element={<SolarDashboard onBack={handleBack} />}
           />
           <Route
             path="air/temperature"
