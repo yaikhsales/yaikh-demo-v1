@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -10,9 +10,16 @@ import {
   MapPin,
   Calendar,
   MessageCircle,
+  Upload,
+  Clock,
+  Plus,
+  Edit,
+  Trash2,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
 import { useTranslation } from "../translate/TranslationContext";
+import AuditPlanTimeline from "./audit-timeline";
+import AuditCalendar from "./audit-calendar";
 
 const AuditPlan = ({ onBack }) => {
   const navigate = useNavigate();
@@ -21,6 +28,186 @@ const AuditPlan = ({ onBack }) => {
   const [isBotOpen, setIsBotOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editingPlanId, setEditingPlanId] = useState(null);
+  const [isViewMode, setIsViewMode] = useState(false);
+  const [isTimelineOpen, setIsTimelineOpen] = useState(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [selectedStageFilter, setSelectedStageFilter] = useState(null);
+  const fileInputRef = useRef(null);
+
+  // Create Audit Plan form state
+  const [createForm, setCreateForm] = useState({
+    auditLocation: "",
+    auditStage: "",
+    requestedParticipants: "",
+    auditFrom: "",
+    auditor: "",
+    typeOfAudit: "",
+    auditName: "",
+    specialRequest: "",
+    auditDate: new Date().toISOString().split("T")[0],
+    auditTime: "09:00",
+    preAuditDate: new Date().toISOString().split("T")[0],
+    preAuditTime: "09:00",
+    files: [],
+  });
+
+  const handleCreateFormChange = (field, value) => {
+    setCreateForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+    setCreateForm((prev) => ({ ...prev, files: [...prev.files, ...selectedFiles] }));
+  };
+
+  const handleRemoveFile = (index) => {
+    setCreateForm((prev) => ({
+      ...prev,
+      files: prev.files.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleCreateSubmit = (e) => {
+    e.preventDefault();
+
+    // Format dates for display (DD MMM YYYY)
+    const formatDate = (dateStr) => {
+      if (!dateStr) return "";
+      const date = new Date(dateStr);
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+    };
+
+    const newAuditPlan = {
+      id: editingPlanId || auditPlans.length + 1,
+      location: createForm.auditLocation,
+      company: createForm.auditName || "New Company",
+      form: createForm.auditFrom,
+      // Store all details for editing/viewing later
+      details: { ...createForm },
+      stages: [
+        {
+          name: "Pre-Audit",
+          date: formatDate(createForm.preAuditDate),
+          status: createForm.auditStage === "Pre-Audit" ? "active" : "pending",
+        },
+        {
+          name: "On-site Audit",
+          date: formatDate(createForm.auditDate),
+          status: createForm.auditStage === "On-site Audit" ? "active" : "pending",
+        },
+        {
+          name: "Reporting",
+          date: formatDate(createForm.auditDate),
+          status: createForm.auditStage === "Reporting" ? "active" : "pending",
+        },
+        {
+          name: "Post-Audit",
+          date: formatDate(createForm.auditDate),
+          status: createForm.auditStage === "Post-Audit" ? "active" : "pending",
+        },
+        {
+          name: "Completed",
+          date: "",
+          status: "pending",
+        },
+      ],
+    };
+
+    if (editingPlanId) {
+      setAuditPlans((prev) =>
+        prev.map((plan) => (plan.id === editingPlanId ? newAuditPlan : plan)),
+      );
+      alert("Audit Plan updated successfully!");
+    } else {
+      setAuditPlans((prev) => [newAuditPlan, ...prev]);
+      alert(t("auditPlanCreatedSuccess") || "Audit Plan created successfully!");
+    }
+
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setIsCreateModalOpen(false);
+    setEditingPlanId(null);
+    setIsViewMode(false);
+    setCreateForm({
+      auditLocation: "",
+      auditStage: "",
+      requestedParticipants: "",
+      auditFrom: "",
+      auditor: "",
+      typeOfAudit: "",
+      auditName: "",
+      specialRequest: "",
+      auditDate: new Date().toISOString().split("T")[0],
+      auditTime: "09:00",
+      preAuditDate: new Date().toISOString().split("T")[0],
+      preAuditTime: "09:00",
+      files: [],
+    });
+  };
+
+  const parseDateToISO = (dateStr) => {
+    // Helper to convert "08 Dec 202x" or "18 Feb 2026" to "YYYY-MM-DD"
+    // Note: "202x" year will result in Invalid Date usually, handle carefully
+    if (!dateStr) return new Date().toISOString().split("T")[0];
+    const date = new Date(dateStr);
+    if (!isNaN(date.getTime())) {
+      return date.toISOString().split("T")[0];
+    }
+    return new Date().toISOString().split("T")[0];
+  };
+
+  const handleEdit = (plan) => {
+    setEditingPlanId(plan.id);
+    setIsViewMode(false);
+
+    // Populate form with existing data or defaults
+    // Since we only just added 'details' to new items, legacy items might miss fields.
+    const details = plan.details || {};
+
+    // Attempt to extract dates from stages if not in details
+    const preAuditStage = plan.stages.find(s => s.name === "Pre-Audit");
+    const onSiteStage = plan.stages.find(s => s.name === "On-site Audit");
+    const activeStage = plan.stages.find(
+      s => s.status === "active" || s.status === "in-progress"
+    );
+
+    setCreateForm({
+      auditLocation: details.auditLocation || plan.location,
+      auditStage: details.auditStage || (activeStage ? activeStage.name : ""),
+      requestedParticipants: details.requestedParticipants || "",
+      auditFrom: details.auditFrom || plan.form,
+      auditor: details.auditor || "",
+      typeOfAudit: details.typeOfAudit || "",
+      auditName: details.auditName || plan.company,
+      specialRequest: details.specialRequest || "",
+      auditDate: details.auditDate || parseDateToISO(onSiteStage?.date),
+      auditTime: details.auditTime || "09:00",
+      preAuditDate: details.preAuditDate || parseDateToISO(preAuditStage?.date),
+      preAuditTime: details.preAuditTime || "09:00",
+      files: details.files || [],
+    });
+
+    setIsCreateModalOpen(true);
+  };
+
+  const handleView = (plan) => {
+    handleEdit(plan); // Re-use population logic
+    setIsViewMode(true);
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this plan?")) {
+      setAuditPlans((prev) => prev.filter((p) => p.id !== id));
+    }
+  };
 
   const openImageModal = (imagePath) => {
     setSelectedImage(imagePath);
@@ -28,117 +215,15 @@ const AuditPlan = ({ onBack }) => {
   };
 
   // Sample audit plan data
-  const auditPlans = [
-    {
-      id: 1,
-      location: "Yorktown (Cambodia)",
-      company: "Burwood MFG Co., LTD",
-      form: "Hybrid",
-      stages: [
-        {
-          name: "Pre-Audit",
-          date: "08 Dec 202x",
-          status: "active",
-          icon: FileText,
-        },
-        {
-          name: "On-site Audit",
-          date: "10 Dec 202x",
-          status: "pending",
-          icon: MapPin,
-        },
-        {
-          name: "Reporting",
-          date: "10 Dec 202x",
-          status: "pending",
-          icon: FileText,
-        },
-        {
-          name: "Post-Audit",
-          date: "10 Dec 202x",
-          status: "pending",
-          icon: MapPin,
-        },
-        { name: "Completed", date: "", status: "pending", icon: CheckCircle },
-      ],
-    },
-    {
-      id: 2,
-      location: "Yorktown (Cambodia)",
-      company: "Burwood MFG Co., LTD",
-      form: "GMP Follow up Audit",
-      stages: [
-        {
-          name: "Pre-Audit",
-          date: "01 Oct 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "On-site Audit",
-          date: "28 Oct 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "Reporting",
-          date: "28 Oct 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "Post-Audit",
-          date: "28 Oct 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "Completed",
-          date: "",
-          status: "in-progress",
-          icon: CheckCircle,
-        },
-      ],
-    },
-    {
-      id: 3,
-      location: "Yorktown (Cambodia)",
-      company: "Burwood MFG Co., LTD",
-      form: "Initial COSTCO GMP Audit",
-      stages: [
-        {
-          name: "Pre-Audit",
-          date: "01 Aug 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "On-site Audit",
-          date: "28 Aug 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "Reporting",
-          date: "28 Aug 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "Post-Audit",
-          date: "28 Aug 202x",
-          status: "completed",
-          icon: CheckCircle,
-        },
-        {
-          name: "Completed",
-          date: "",
-          status: "in-progress",
-          icon: CheckCircle,
-        },
-      ],
-    },
-  ];
+  const [auditPlans, setAuditPlans] = useState(() => {
+    const savedPlans = localStorage.getItem("auditPlans");
+    return savedPlans ? JSON.parse(savedPlans) : [];
+  });
+
+  // Save to localStorage whenever auditPlans changes
+  useEffect(() => {
+    localStorage.setItem("auditPlans", JSON.stringify(auditPlans));
+  }, [auditPlans]);
 
   const handleBack = () => {
     if (onBack) {
@@ -156,15 +241,59 @@ const AuditPlan = ({ onBack }) => {
     setSearchTerm("");
   };
 
+  // Calculate counts for each stage based on active audit plans
+  const stageCounts = auditPlans.reduce((acc, plan) => {
+    // Find the current active stage for this plan
+    const activeStage = plan.stages.find(s => s.status === 'active' || s.status === 'in-progress');
+    if (activeStage) {
+      acc[activeStage.name] = (acc[activeStage.name] || 0) + 1;
+    } else {
+      // Check if completed
+      const completedStage = plan.stages.find(s => s.name === 'Completed' && s.status === 'completed');
+      if (completedStage) {
+        acc['Completed'] = (acc['Completed'] || 0) + 1;
+      }
+    }
+    return acc;
+  }, {});
+
   const filteredPlans = auditPlans.filter(
-    (plan) =>
-      searchTerm === "" ||
-      plan.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plan.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      plan.form.toLowerCase().includes(searchTerm.toLowerCase()),
+    (plan) => {
+      const matchesSearch = searchTerm === "" ||
+        plan.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        plan.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        plan.form.toLowerCase().includes(searchTerm.toLowerCase());
+
+      const matchesStage = selectedStageFilter
+        ? plan.stages.some(s => s.name === selectedStageFilter && (s.status === 'active' || s.status === 'in-progress' || s.status === 'completed'))
+        // Or strictly matching current active stage?
+        // Usually "filter by stage" means "show plans currently in this stage"
+        // Let's refine: show plans where this stage is ACTIVE or IN-PROGRESS.
+        // If filtering by "Completed", show plans where "Completed" stage is active/completed.
+        // To be simple: check if the plan's current active stage matches selectedStageFilter.
+        // We can find the active stage of the plan.
+        : true;
+
+
+      if (selectedStageFilter) {
+        const activeStage = plan.stages.find(s => s.status === 'active' || s.status === 'in-progress');
+        if (activeStage) {
+          return matchesSearch && activeStage.name === selectedStageFilter;
+        }
+        // If no active stage found (maybe all pending or something), it won't match.
+        // Special case: Completed plans might have 'Completed' status on the last stage.
+        if (selectedStageFilter === 'Completed') {
+          const completedStage = plan.stages.find(s => s.name === 'Completed' && s.status === 'completed');
+          return matchesSearch && !!completedStage;
+        }
+        return false;
+      }
+
+      return matchesSearch;
+    }
   );
 
-  const renderProcessFlow = (stages, isMainFlow = false) => {
+  const renderProcessFlow = (stages, isMainFlow = false, onStageClick = null, badges = {}) => {
     const stageNameMap = {
       "Pre-Audit": t("preAudit"),
       "On-site Audit": t("onSiteAudit"),
@@ -177,16 +306,41 @@ const AuditPlan = ({ onBack }) => {
     const stageColors = {
       "Pre-Audit": isMainFlow ? "bg-yellow-500" : "bg-blue-500",
       "On-site Audit": "bg-blue-500",
-      Reporting: "bg-purple-500",
+      "Reporting": "bg-purple-500",
       "Reporting & Assessment": "bg-purple-500",
       "Post-Audit": "bg-orange-500",
       Completed: "bg-green-500",
     };
 
+    const stageIconMap = {
+      "Pre-Audit": FileText,
+      "On-site Audit": MapPin,
+      "Reporting": FileText,
+      "Reporting & Assessment": FileText,
+      "Post-Audit": MapPin,
+      "Completed": CheckCircle,
+    };
+
+    const flowColors = [
+      "bg-yellow-400", // Pre-Audit
+      "bg-blue-400",   // On-site Audit
+      "bg-purple-400", // Reporting
+      "bg-orange-400", // Post-Audit
+      "bg-green-400",  // Completed
+    ];
+
+    const flowRingColors = [
+      "ring-yellow-300",
+      "ring-blue-300",
+      "ring-purple-300",
+      "ring-orange-300",
+      "ring-green-300",
+    ];
+
     return (
       <div className="flex items-center gap-2 relative">
         {stages.map((stage, idx) => {
-          const Icon = stage.icon;
+          const Icon = stageIconMap[stage.name] || FileText;
           const isActive =
             stage.status === "active" ||
             stage.status === "completed" ||
@@ -200,28 +354,40 @@ const AuditPlan = ({ onBack }) => {
               ? "bg-green-500"
               : "bg-slate-300";
 
+          const activeColor = isMainFlow && idx < flowColors.length
+            ? flowColors[idx]
+            : stageColors[stage.name] || "bg-blue-500";
+
+          const activeRingColor = isMainFlow && idx < flowRingColors.length
+            ? flowRingColors[idx]
+            : "ring-blue-300";
+
           return (
             <React.Fragment key={idx}>
-              <div className="flex flex-col items-center relative z-10">
+              <div
+                className={`flex flex-col items-center relative z-10 ${onStageClick ? "cursor-pointer group" : ""}`}
+                onClick={() => onStageClick && onStageClick(stage.name)}
+              >
                 <div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                    isActive && !isPending
-                      ? stageColors[stage.name] || "bg-blue-500"
+                  className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 relative shadow-lg ring-4
+                    ${isMainFlow || (isActive && !isPending)
+                      ? activeColor
                       : "bg-slate-300"
-                  } ${isMainFlow && idx === 0 ? "bg-yellow-500" : ""} ${isMainFlow && idx === 1 ? "bg-blue-500" : ""} ${isMainFlow && idx === 2 ? "bg-purple-500" : ""} ${isMainFlow && idx === 3 ? "bg-orange-500" : ""} ${isMainFlow && idx === 4 ? "bg-green-500" : ""}`}
+                    }
+                    ${onStageClick && selectedStageFilter === stage.name
+                      ? `${activeRingColor} ring-offset-2 scale-110`
+                      : "ring-white"
+                    }
+                    ${onStageClick ? "group-hover:scale-105" : ""}
+                  `}
                 >
                   {isMainFlow ? (
                     idx === 4 ? (
                       <>
-                        <CheckCircle size={20} className="text-white" />
-                        {idx === 4 && (
-                          <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
-                            3
-                          </div>
-                        )}
+                        <CheckCircle size={24} className="text-white" />
                       </>
                     ) : (
-                      <span className="text-white font-bold text-lg">
+                      <span className="text-white font-bold text-xl">
                         {idx + 1}
                       </span>
                     )
@@ -233,34 +399,32 @@ const AuditPlan = ({ onBack }) => {
                       }
                     />
                   )}
+
+                  {/* Badge Notification */}
+                  {badges && badges[stage.name] > 0 && (
+                    <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 border-2 border-white rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                      {badges[stage.name]}
+                    </div>
+                  )}
                 </div>
-                <div className="mt-2 text-center max-w-[120px]">
+
+                <div className="mt-3 text-center min-w-[140px]">
                   <div
-                    className={`text-xs font-semibold ${isActive && !isPending ? "text-slate-700" : "text-slate-400"}`}
+                    className={`text-sm font-bold mb-0.5 ${isActive && !isPending ? "text-slate-800" : "text-slate-400"}`}
                   >
                     {stageNameMap[stage.name] || stage.name}
                   </div>
                   {stage.date && (
                     <div
-                      className={`text-xs mt-1 ${isActive && !isPending ? "text-slate-600" : "text-slate-400"}`}
+                      className={`text-xs ${isActive && !isPending ? "text-slate-500" : "text-slate-400"}`}
                     >
-                      {stage.date}
-                    </div>
-                  )}
-                  {isInProgress && (
-                    <div className="text-xs mt-1 text-green-600 font-semibold">
-                      {t("inProgress")}
-                    </div>
-                  )}
-                  {isCompleted && stage.name === "Completed" && (
-                    <div className="text-xs mt-1 text-green-600 font-semibold">
-                      {t("completed")}
+                      ({stage.date})
                     </div>
                   )}
                 </div>
               </div>
               {idx < stages.length - 1 && (
-                <div className={`h-0.5 flex-1 ${lineColor} -mx-2`}></div>
+                <div className={`h-1 flex-1 ${lineColor} -mx-4 mt-7 rounded-full`}></div>
               )}
             </React.Fragment>
           );
@@ -300,7 +464,7 @@ const AuditPlan = ({ onBack }) => {
           </h1>
         </div>
         <button
-          onClick={() => openImageModal("/assets/digital-audit/calendar.png")}
+          onClick={() => setIsCalendarOpen(true)}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2 flex-shrink-0"
         >
           <Calendar size={16} />
@@ -336,7 +500,7 @@ const AuditPlan = ({ onBack }) => {
             {t("reset")}
           </button>
           <button
-            onClick={() => openImageModal("/assets/digital-audit/calendar.png")}
+            onClick={() => setIsCalendarOpen(true)}
             className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2"
           >
             <Calendar size={16} />
@@ -390,21 +554,56 @@ const AuditPlan = ({ onBack }) => {
               },
             ],
             true,
+            (stageName) => {
+              setSelectedStageFilter(prev => prev === stageName ? null : stageName);
+            },
+            // Dynamics badge counts from actual data
+            stageCounts
           )}
+
+          {/* Color Legend */}
+          <div className="mt-8 pt-4 border-t border-slate-100">
+            <h3 className="text-sm font-bold text-slate-800 mb-3">Legend</h3>
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-yellow-400 border border-yellow-200"></div>
+                <span className="text-sm text-slate-600 font-medium">Pre-Audit</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-blue-400 border border-blue-200"></div>
+                <span className="text-sm text-slate-600 font-medium">On-Site Audit</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-purple-400 border border-purple-200"></div>
+                <span className="text-sm text-slate-600 font-medium">Reporting</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-orange-400 border border-orange-200"></div>
+                <span className="text-sm text-slate-600 font-medium">Post-Audit</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 rounded bg-green-400 border border-green-200"></div>
+                <span className="text-sm text-slate-600 font-medium">Completed</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex items-center gap-3">
+
           <button
-            onClick={() =>
-              openImageModal("/assets/digital-audit/view-audit-plan.png")
-            }
+            onClick={() => setIsCreateModalOpen(true)}
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm"
+          >
+            {t("addAuditPlan")}
+          </button>
+
+          <button
+            onClick={() => setIsTimelineOpen(true)}
             className="bg-green-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors text-sm"
           >
             {t("viewAuditPlan")}
-          </button>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm">
-            {t("addAuditPlan")}
           </button>
         </div>
       </div>
@@ -476,9 +675,29 @@ const AuditPlan = ({ onBack }) => {
                       </div>
                     </td>
                     <td className="px-4 py-4 border border-slate-200 text-center">
-                      <button className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center hover:bg-blue-700 transition-colors">
-                        <Eye size={16} className="text-white" />
-                      </button>
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => handleView(plan)}
+                          className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center hover:bg-blue-700 transition-colors"
+                          title="View"
+                        >
+                          <Eye size={16} className="text-white" />
+                        </button>
+                        <button
+                          onClick={() => handleEdit(plan)}
+                          className="w-8 h-8 bg-amber-500 rounded flex items-center justify-center hover:bg-amber-600 transition-colors"
+                          title="Edit"
+                        >
+                          <Edit size={16} className="text-white" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(plan.id)}
+                          className="w-8 h-8 bg-red-500 rounded flex items-center justify-center hover:bg-red-600 transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 size={16} className="text-white" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -499,50 +718,453 @@ const AuditPlan = ({ onBack }) => {
       </button>
 
       {/* Bot Modal for All Modules */}
-      {isBotOpen && (
-        <GeneralAIAgent
-          onClose={() => setIsBotOpen(false)}
-          moduleContext="Audit Plan"
+      {
+        isBotOpen && (
+          <GeneralAIAgent
+            onClose={() => setIsBotOpen(false)}
+            moduleContext="Audit Plan"
+          />
+        )
+      }
+
+      {/* Audit Plan Calendar View */}
+      {isCalendarOpen && (
+        <AuditCalendar
+          plans={auditPlans}
+          onBack={() => setIsCalendarOpen(false)}
+          onCreateEvent={() => {
+            setIsCalendarOpen(false);
+            setIsCreateModalOpen(true);
+            setEditingPlanId(null);
+            setCreateForm({
+              auditLocation: "",
+              auditStage: "",
+              requestedParticipants: "",
+              auditFrom: "",
+              auditor: "",
+              typeOfAudit: "",
+              auditName: "",
+              specialRequest: "",
+              auditDate: new Date().toISOString().split("T")[0],
+              auditTime: "09:00",
+              preAuditDate: new Date().toISOString().split("T")[0],
+              preAuditTime: "09:00",
+              files: [],
+            });
+          }}
+        />
+      )}
+
+      {/* Audit Plan Timeline View */}
+      {isTimelineOpen && (
+        <AuditPlanTimeline
+          plans={auditPlans}
+          onBack={() => setIsTimelineOpen(false)}
         />
       )}
 
       {/* Image Preview Modal */}
-      {isImageModalOpen && (
-        <div className="fixed inset-0 z-[300] bg-white flex flex-col animate-in fade-in duration-300">
-          {/* Modal Header */}
-          <div className="bg-white p-4 border-b flex items-center justify-between flex-shrink-0 shadow-sm relative z-10">
-            <div className="flex items-center gap-3">
+      {
+        isImageModalOpen && (
+          <div className="fixed inset-0 z-[300] bg-white flex flex-col animate-in fade-in duration-300">
+            {/* Modal Header */}
+            <div className="bg-white p-4 border-b flex items-center justify-between flex-shrink-0 shadow-sm relative z-10">
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsImageModalOpen(false)}
+                  className="flex items-center gap-2 px-4 py-2 hover:bg-slate-800 rounded transition-colors flex-shrink-0 bg-black text-white font-semibold text-sm"
+                >
+                  <ArrowLeft size={16} /> {t("back")}
+                </button>
+                <h2 className="text-xl font-bold text-slate-800">
+                  {selectedImage?.includes("calendar")
+                    ? t("calendar")
+                    : t("auditPlan")}
+                </h2>
+              </div>
               <button
                 onClick={() => setIsImageModalOpen(false)}
-                className="flex items-center gap-2 px-4 py-2 hover:bg-slate-800 rounded transition-colors flex-shrink-0 bg-black text-white font-semibold text-sm"
+                className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-600"
               >
-                <ArrowLeft size={16} /> {t("back")}
+                <X size={24} />
               </button>
-              <h2 className="text-xl font-bold text-slate-800">
-                {selectedImage?.includes("calendar")
-                  ? t("calendar")
-                  : t("auditPlan")}
-              </h2>
             </div>
-            <button
-              onClick={() => setIsImageModalOpen(false)}
-              className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-600"
-            >
-              <X size={24} />
-            </button>
-          </div>
 
-          {/* Modal Content - Full Screen Image */}
-          <div className="flex-1 overflow-auto bg-slate-100 p-0 flex items-start justify-center">
-            <img
-              src={selectedImage}
-              alt="Audit Plan Content"
-              className="w-full h-auto object-contain min-h-full shadow-2xl"
-            />
+            {/* Modal Content - Full Screen Image */}
+            <div className="flex-1 overflow-auto bg-slate-100 p-0 flex items-start justify-center">
+              <img
+                src={selectedImage}
+                alt="Audit Plan Content"
+                className="w-full h-auto object-contain min-h-full shadow-2xl"
+              />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+      {/* Create Audit Plan Modal */}
+      {
+        isCreateModalOpen && (
+          <div className="fixed inset-0 z-[300] bg-black/50 flex items-center justify-center animate-in fade-in duration-300">
+            <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl m-4">
+              {/* Header */}
+              <div className="flex items-center justify-between p-6 border-b flex-shrink-0">
+                <h2 className="text-xl font-bold text-slate-800">
+                  {isViewMode
+                    ? "View Audit Plan"
+                    : editingPlanId
+                      ? "Edit Audit Plan"
+                      : "Create Audit Plan"}
+                </h2>
+                <button
+                  onClick={resetForm}
+                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                  aria-label="Close"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto p-6 bg-slate-50">
+                <form onSubmit={handleCreateSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Audit Location */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Audit Location <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        required
+                        disabled={isViewMode}
+                        type="text"
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                        placeholder="Enter audit location"
+                        value={createForm.auditLocation}
+                        onChange={(e) =>
+                          handleCreateFormChange("auditLocation", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {/* Audit Stage */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Audit Stage
+                      </label>
+                      <div className="relative">
+                        <select
+                          disabled={isViewMode}
+                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white appearance-none disabled:bg-slate-100 disabled:text-slate-500"
+                          value={createForm.auditStage}
+                          onChange={(e) =>
+                            handleCreateFormChange("auditStage", e.target.value)
+                          }
+                        >
+                          <option value="">Select Audit Stage</option>
+                          <option value="Pre-Audit">Pre-Audit</option>
+                          <option value="On-site Audit">On-site Audit</option>
+                          <option value="Reporting">Reporting</option>
+                          <option value="Post-Audit">Post-Audit</option>
+                        </select>
+                        <div className="absolute right-4 top-3.5 pointer-events-none text-slate-500">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="m6 9 6 6 6-6" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Requested Factory Participants */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Requested Factory Participants{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        required
+                        disabled={isViewMode}
+                        type="text"
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                        placeholder="Type participants separated by comma"
+                        value={createForm.requestedParticipants}
+                        onChange={(e) =>
+                          handleCreateFormChange(
+                            "requestedParticipants",
+                            e.target.value,
+                          )
+                        }
+                      />
+                    </div>
+
+                    {/* Audit From */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Audit From <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        required
+                        disabled={isViewMode}
+                        type="text"
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                        placeholder="Enter Audit Form"
+                        value={createForm.auditFrom}
+                        onChange={(e) =>
+                          handleCreateFormChange("auditFrom", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {/* Auditor */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Auditor <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        required
+                        disabled={isViewMode}
+                        type="text"
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                        placeholder="Enter auditor name"
+                        value={createForm.auditor}
+                        onChange={(e) =>
+                          handleCreateFormChange("auditor", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {/* Type of Audit */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Type of Audit <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        required
+                        disabled={isViewMode}
+                        type="text"
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                        placeholder="Type or select visit type"
+                        value={createForm.typeOfAudit}
+                        onChange={(e) =>
+                          handleCreateFormChange("typeOfAudit", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {/* Audit Name */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Audit Name
+                      </label>
+                      <input
+                        type="text"
+                        disabled={isViewMode}
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                        placeholder="Type or select a audit name"
+                        value={createForm.auditName}
+                        onChange={(e) =>
+                          handleCreateFormChange("auditName", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {/* Special Request */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Special Request
+                      </label>
+                      <textarea
+                        disabled={isViewMode}
+                        className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white h-[90px] resize-none disabled:bg-slate-100 disabled:text-slate-500"
+                        placeholder="Enter any special requests"
+                        value={createForm.specialRequest}
+                        onChange={(e) =>
+                          handleCreateFormChange("specialRequest", e.target.value)
+                        }
+                      />
+                    </div>
+
+                    {/* Audit Date */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Audit Date <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          required
+                          disabled={isViewMode}
+                          type="date"
+                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white pl-10 disabled:bg-slate-100 disabled:text-slate-500"
+                          value={createForm.auditDate}
+                          onChange={(e) =>
+                            handleCreateFormChange("auditDate", e.target.value)
+                          }
+                        />
+                        <Calendar
+                          className="absolute left-3 top-3.5 text-slate-500"
+                          size={18}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Audit Time */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Audit Time <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          required
+                          disabled={isViewMode}
+                          type="time"
+                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                          value={createForm.auditTime}
+                          onChange={(e) =>
+                            handleCreateFormChange("auditTime", e.target.value)
+                          }
+                        />
+                        <div className="absolute right-3 top-3.5 pointer-events-none text-slate-500">
+                          <Clock size={18} />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Pre Audit Date */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Pre Audit Date <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          required
+                          disabled={isViewMode}
+                          type="date"
+                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white pl-10 disabled:bg-slate-100 disabled:text-slate-500"
+                          value={createForm.preAuditDate}
+                          onChange={(e) =>
+                            handleCreateFormChange("preAuditDate", e.target.value)
+                          }
+                        />
+                        <Calendar
+                          className="absolute left-3 top-3.5 text-slate-500"
+                          size={18}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Pre Audit Time */}
+                    <div className="space-y-2">
+                      <label className="text-sm font-bold text-slate-700">
+                        Pre Audit Time <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          required
+                          disabled={isViewMode}
+                          type="time"
+                          className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-500"
+                          value={createForm.preAuditTime}
+                          onChange={(e) =>
+                            handleCreateFormChange("preAuditTime", e.target.value)
+                          }
+                        />
+                        <div className="absolute right-3 top-3.5 pointer-events-none text-slate-500">
+                          <Clock size={18} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* File Upload */}
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-center gap-2 text-sm font-bold text-slate-700">
+                      <Upload size={18} />
+                      Upload Files & Images (Multiple)
+                    </div>
+                    <div className="border border-slate-300 rounded-lg p-1.5 bg-white flex items-center shadow-sm">
+                      {!isViewMode && (
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="bg-slate-800 text-white px-4 py-2 rounded m-0.5 text-sm font-bold hover:bg-slate-700 transition-colors"
+                        >
+                          Choose files
+                        </button>
+                      )}
+                      <span className="ml-3 text-slate-500 text-sm">
+                        {createForm.files.length > 0
+                          ? `${createForm.files.length} file(s) chosen`
+                          : "No file chosen"}
+                      </span>
+                      <input
+                        type="file"
+                        multiple
+                        className="hidden"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        disabled={isViewMode}
+                      />
+                    </div>
+                    {!isViewMode && (
+                      <p className="text-xs text-slate-500">
+                        You can select multiple images (JPG, PNG, WEBP) and files
+                        (PDF, DOC, XLS, PPT, etc.)
+                      </p>
+                    )}
+
+                    {/* File List */}
+                    {createForm.files.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {createForm.files.map((file, idx) => (
+                          <div
+                            key={idx}
+                            className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs flex items-center gap-2 border border-blue-100 font-medium"
+                          >
+                            <span className="truncate max-w-[150px]">
+                              {file.name}
+                            </span>
+                            {!isViewMode && (
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveFile(idx)}
+                                className="hover:text-blue-900 bg-blue-200 rounded-full p-0.5"
+                              >
+                                <X size={10} />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer Actions */}
+                  <div className="pt-4 pb-2">
+                    {!isViewMode && (
+                      <button
+                        type="submit"
+                        className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-blue-200"
+                      >
+                        {editingPlanId ? "Update" : "Submit"}
+                      </button>
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    </div >
   );
 };
 
