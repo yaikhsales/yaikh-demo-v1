@@ -217,7 +217,121 @@ const AuditPlan = ({ onBack }) => {
   // Sample audit plan data
   const [auditPlans, setAuditPlans] = useState(() => {
     const savedPlans = localStorage.getItem("auditPlans");
-    return savedPlans ? JSON.parse(savedPlans) : [];
+    if (savedPlans && JSON.parse(savedPlans).length > 0) {
+      return JSON.parse(savedPlans);
+    }
+    return [
+      {
+        id: 1,
+        location: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        company: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        form: "CTPAT",
+        details: {
+          auditLocation: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditName: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditFrom: "CTPAT",
+          auditor: "BV",
+          auditDate: "2026-01-16",
+          auditStage: "Reporting",
+          preAuditDate: "2026-01-10",
+        },
+        stages: [
+          { name: "Pre-Audit", date: "10 Jan 2026", status: "completed" },
+          { name: "On-site Audit", date: "16 Jan 2026", status: "completed" },
+          { name: "Reporting", date: "16 Jan 2026", status: "active" },
+          { name: "Post-Audit", date: "", status: "pending" },
+          { name: "Completed", date: "", status: "pending" },
+        ],
+      },
+      {
+        id: 2,
+        location: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        company: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        form: "WRAP",
+        details: {
+          auditLocation: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditName: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditFrom: "WRAP",
+          auditor: "BV",
+          auditDate: "2026-01-21",
+          auditStage: "Pre-Audit",
+          preAuditDate: "2026-01-15",
+        },
+        stages: [
+          { name: "Pre-Audit", date: "15 Jan 2026", status: "active" },
+          { name: "On-site Audit", date: "21 Jan 2026", status: "pending" },
+          { name: "Reporting", date: "", status: "pending" },
+          { name: "Post-Audit", date: "", status: "pending" },
+          { name: "Completed", date: "", status: "pending" },
+        ],
+      },
+      {
+        id: 3,
+        location: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        company: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        form: "HIGG",
+        details: {
+          auditLocation: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditName: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditFrom: "HIGG",
+          auditor: "IDFL",
+          auditDate: "2026-04-22",
+          auditStage: "Pre-Audit",
+          preAuditDate: "2026-04-15",
+        },
+        stages: [
+          { name: "Pre-Audit", date: "15 Apr 2026", status: "active" },
+          { name: "On-site Audit", date: "22 Apr 2026", status: "pending" },
+          { name: "Reporting", date: "", status: "pending" },
+          { name: "Post-Audit", date: "", status: "pending" },
+          { name: "Completed", date: "", status: "pending" },
+        ],
+      },
+      {
+        id: 4,
+        location: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        company: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        form: "ILO",
+        details: {
+          auditLocation: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditName: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditFrom: "ILO",
+          auditor: "ILO",
+          auditDate: "2026-06-03",
+          auditStage: "Pre-Audit",
+          preAuditDate: "2026-05-28",
+        },
+        stages: [
+          { name: "Pre-Audit", date: "28 May 2026", status: "active" },
+          { name: "On-site Audit", date: "03 Jun 2026", status: "pending" },
+          { name: "Reporting", date: "", status: "pending" },
+          { name: "Post-Audit", date: "", status: "pending" },
+          { name: "Completed", date: "", status: "pending" },
+        ],
+      },
+      {
+        id: 5,
+        location: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        company: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+        form: "BSCI",
+        details: {
+          auditLocation: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditName: "Yorkmars (Cambodia) Garment MFG Co., LTD",
+          auditFrom: "BSCI",
+          auditor: "BV",
+          auditDate: "2026-05-26",
+          auditStage: "Pre-Audit",
+          preAuditDate: "2026-05-20",
+        },
+        stages: [
+          { name: "Pre-Audit", date: "20 May 2026", status: "active" },
+          { name: "On-site Audit", date: "26 May 2026", status: "pending" },
+          { name: "Reporting", date: "", status: "pending" },
+          { name: "Post-Audit", date: "", status: "pending" },
+          { name: "Completed", date: "", status: "pending" },
+        ],
+      },
+    ];
   });
 
   // Save to localStorage whenever auditPlans changes
@@ -562,7 +676,7 @@ const AuditPlan = ({ onBack }) => {
           )}
 
           {/* Color Legend */}
-          <div className="mt-8 pt-4 border-t border-slate-100">
+          {/* <div className="mt-8 pt-4 border-t border-slate-100">
             <h3 className="text-sm font-bold text-slate-800 mb-3">Legend</h3>
             <div className="flex flex-wrap items-center gap-6">
               <div className="flex items-center gap-2">
@@ -586,7 +700,7 @@ const AuditPlan = ({ onBack }) => {
                 <span className="text-sm text-slate-600 font-medium">Completed</span>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Action Buttons */}
@@ -628,11 +742,8 @@ const AuditPlan = ({ onBack }) => {
           <table className="w-full text-sm border-collapse">
             <thead className="bg-slate-50">
               <tr>
-                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">
-                  {t("auditLocation")}
-                </th>
-                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">
-                  {t("auditForm")}
+                <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left" colSpan={2}>
+                  {t("auditDetails")}
                 </th>
                 <th className="px-4 py-3 border border-slate-200 text-slate-600 font-bold text-xs text-left">
                   {t("activityProcessFlow")}
@@ -655,19 +766,21 @@ const AuditPlan = ({ onBack }) => {
                     key={plan.id}
                     className="hover:bg-blue-50 transition-colors"
                   >
-                    <td className="px-4 py-4 border border-slate-200">
-                      <div className="bg-blue-100 text-blue-800 px-3 py-2 rounded text-sm font-semibold inline-block">
-                        {plan.location}
+                    <td className="px-4 py-4 border border-slate-200" colSpan={2}>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <div className="bg-blue-100 text-blue-800 px-3 py-1.5 rounded text-xs font-bold border border-blue-200">
+                          {plan.company}
+                        </div>
+                        <div className="bg-blue-600 text-white px-3 py-1.5 rounded text-xs font-bold shadow-sm">
+                          {plan.form}
+                        </div>
+                        <div className="bg-blue-50 text-blue-600 px-3 py-1.5 border border-blue-100 rounded text-xs font-bold">
+                          {plan.details?.auditDate ? new Date(plan.details.auditDate).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : ''}
+                        </div>
+                        <div className="bg-blue-100 text-blue-800 px-3 py-1.5 rounded text-xs font-bold border border-blue-200">
+                          {plan.details?.auditor || 'BV'}
+                        </div>
                       </div>
-                      <div className="text-slate-700 mt-1">{plan.company}</div>
-                    </td>
-                    <td className="px-4 py-4 border border-slate-200">
-                      <a
-                        href="#"
-                        className="text-blue-600 hover:underline font-semibold"
-                      >
-                        {plan.form}
-                      </a>
                     </td>
                     <td className="px-4 py-4 border border-slate-200">
                       <div className="py-2">

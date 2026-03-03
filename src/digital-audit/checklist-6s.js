@@ -69,16 +69,29 @@ const Checklist6S = ({ onBack }) => {
     /* ── records checklist-by-dept view ── */
     const [recDept, setRecDept] = useState(DEPT_CHECKLISTS[0].department);
     const [itemAnswers, setItemAnswers] = useState(() => {
-        try {
-            const saved = localStorage.getItem("6s_itemAnswers_v2");
-            if (saved) return JSON.parse(saved);
-        } catch { }
-        // default empty structure
         const init = {};
         DEPT_CHECKLISTS.forEach((d) => {
             init[d.department] = {};
             d.items.forEach((it) => { init[d.department][it.id] = { yes: 0, no: 0, remark: "" }; });
         });
+
+        try {
+            const saved = localStorage.getItem("6s_itemAnswers_v2");
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                // Merge saved data into the template to handle new departments/items
+                Object.keys(parsed).forEach(dept => {
+                    if (init[dept]) {
+                        Object.keys(parsed[dept]).forEach(id => {
+                            if (init[dept][id]) {
+                                init[dept][id] = { ...init[dept][id], ...parsed[dept][id] };
+                            }
+                        });
+                    }
+                });
+            }
+        } catch (err) { console.error("Error loading itemAnswers:", err); }
+
         return init;
     });
     useEffect(() => {
@@ -101,7 +114,7 @@ const Checklist6S = ({ onBack }) => {
         try {
             const saved = localStorage.getItem("6s_itemImages_v2");
             return saved ? JSON.parse(saved) : {};
-        } catch { return {}; }
+        } catch (err) { console.error("Error loading itemImages:", err); return {}; }
     });
     useEffect(() => {
         try { localStorage.setItem("6s_itemImages_v2", JSON.stringify(itemImages)); } catch { }
@@ -416,53 +429,52 @@ const Checklist6S = ({ onBack }) => {
                                         <div key={item.id} className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
                                             {/* Note header */}
                                             <div className="px-4 pt-4 pb-2">
-                                                <p className="text-xs text-slate-600 leading-relaxed">
-                                                    <span className="font-semibold">Note:</span> {item.note_en}
+                                                <p className="text-[13px] text-slate-700 leading-relaxed font-medium">
+                                                    <span className="text-slate-500">Note:</span> {item.note_en} {item.note_kh && <span className="text-slate-400 font-normal"> ( {item.note_kh} )</span>}
                                                 </p>
-                                                {item.note_kh && (
-                                                    <p className="text-xs text-slate-500 font-khmer mt-0.5">{item.note_kh}</p>
-                                                )}
                                             </div>
 
                                             {/* Yes / No counters */}
-                                            <div className="flex items-center gap-10 px-4 py-2">
+                                            <div className="flex items-center justify-around px-8 py-3 bg-slate-50/50 border-y border-slate-100/50">
                                                 <div className="flex flex-col items-center">
-                                                    <span className="text-3xl font-bold text-green-500 leading-none">{ans.yes}</span>
-                                                    <span className="text-xs font-bold text-slate-400 mt-0.5">Yes</span>
+                                                    <span className="text-5xl font-bold text-green-500 leading-none">{ans.yes}</span>
+                                                    <span className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">Yes</span>
                                                 </div>
                                                 <div className="flex flex-col items-center">
-                                                    <span className="text-3xl font-bold text-red-500 leading-none">{ans.no}</span>
-                                                    <span className="text-xs font-bold text-slate-400 mt-0.5">No</span>
+                                                    <span className="text-5xl font-bold text-red-500 leading-none">{ans.no}</span>
+                                                    <span className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-wider">No</span>
                                                 </div>
                                             </div>
 
                                             {/* Images row — Standard Ref + Upload Evidence */}
-                                            <div className="grid grid-cols-2 gap-3 px-4 pb-3">
+                                            <div className="grid grid-cols-2 gap-4 px-4 py-4">
                                                 <div>
-                                                    <div className="text-xs font-bold text-blue-600 mb-1">Standard Reference</div>
-                                                    <img
-                                                        src={item.refImg}
-                                                        alt="Standard Reference"
-                                                        className="w-full h-28 object-cover rounded-lg border border-slate-200"
-                                                        onError={(e) => { e.target.style.display = "none"; }}
-                                                    />
+                                                    <div className="text-[11px] font-bold text-slate-700 mb-2 uppercase tracking-tight">Standard Reference</div>
+                                                    <div className="relative group">
+                                                        <img
+                                                            src={item.refImg}
+                                                            alt="Standard Reference"
+                                                            className="w-full h-32 object-cover rounded-xl border border-slate-200 shadow-sm transition-transform duration-300 group-hover:scale-[1.02]"
+                                                            onError={(e) => { e.target.style.display = "none"; }}
+                                                        />
+                                                    </div>
                                                 </div>
                                                 <div>
-                                                    <div className="text-xs font-bold text-blue-600 mb-1">Upload Evidence <span className="text-slate-400 font-normal">(Optional)</span></div>
+                                                    <div className="text-[11px] font-bold text-slate-700 mb-2 uppercase tracking-tight">Upload Evidence <span className="text-slate-400 font-normal italic">(Optional)</span></div>
                                                     {(() => {
                                                         const imgKey = `${deptData.department}_${item.id}`;
                                                         const previewUrl = itemImages[imgKey];
                                                         return previewUrl ? (
-                                                            <div className="relative w-full h-28 rounded-lg overflow-hidden border border-slate-200">
+                                                            <div className="relative w-full h-32 rounded-xl overflow-hidden border border-slate-200 shadow-sm group">
                                                                 <img src={previewUrl} alt="Evidence" className="w-full h-full object-cover" />
                                                                 <button
                                                                     onClick={() => clearItemImage(deptData.department, item.id)}
-                                                                    className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                                                                    className="absolute top-2 right-2 w-7 h-7 bg-red-500/90 text-white rounded-full flex items-center justify-center text-sm hover:bg-red-600 transition-all opacity-0 group-hover:opacity-100 shadow-lg"
                                                                     title="Remove image"
                                                                 >✕</button>
                                                             </div>
                                                         ) : (
-                                                            <label className="w-full h-28 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors text-slate-400">
+                                                            <label className="w-full h-32 border-2 border-dashed border-slate-200 rounded-xl flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-cyan-400 hover:bg-cyan-50/50 transition-all text-slate-400 group">
                                                                 <input
                                                                     type="file"
                                                                     accept="image/png,image/jpeg,image/jpg"
@@ -476,11 +488,11 @@ const Checklist6S = ({ onBack }) => {
                                                                         e.target.value = "";
                                                                     }}
                                                                 />
-                                                                <Camera size={20} />
-                                                                <p className="text-xs text-center leading-tight px-2">
-                                                                    <span className="text-cyan-600 font-semibold">Click to upload</span> or drag and drop
+                                                                <Camera size={22} className="group-hover:text-cyan-500 transition-colors" />
+                                                                <p className="text-[10px] text-center leading-tight px-3 mt-1">
+                                                                    <span className="text-cyan-600 font-bold">Click to upload</span> or drag and drop
                                                                 </p>
-                                                                <p className="text-[10px]">PNG, JPG (MAX. 5MB)</p>
+                                                                <p className="text-[9px] opacity-70">PNG, JPG (MAX. 5MB)</p>
                                                             </label>
                                                         );
                                                     })()}
@@ -488,28 +500,28 @@ const Checklist6S = ({ onBack }) => {
                                             </div>
 
                                             {/* Remark */}
-                                            <div className="px-4 pb-3">
-                                                <label className="block text-xs font-bold text-slate-600 mb-1">Remark</label>
+                                            <div className="px-4 pb-5">
+                                                <label className="block text-[11px] font-bold text-slate-700 mb-2 uppercase tracking-tight">Remark</label>
                                                 <input
                                                     type="text"
                                                     placeholder="Add remark..."
                                                     value={ans.remark}
                                                     onChange={(e) => setRemark(deptData.department, item.id, e.target.value)}
-                                                    className="w-full border border-slate-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                                                    className="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 bg-slate-50 shadow-inner"
                                                 />
                                             </div>
 
                                             {/* Yes / No action buttons */}
-                                            <div className="grid grid-cols-2">
+                                            <div className="grid grid-cols-2 gap-3 px-4 pb-4">
                                                 <button
                                                     onClick={() => answerItem(deptData.department, item.id, "yes", 1)}
-                                                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 text-sm transition-colors rounded-bl-xl"
+                                                    className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-3 text-sm transition-all rounded-xl shadow-lg shadow-emerald-200 hover:shadow-emerald-300 hover:-translate-y-0.5"
                                                 >
                                                     Yes
                                                 </button>
                                                 <button
                                                     onClick={() => answerItem(deptData.department, item.id, "no", 1)}
-                                                    className="bg-red-500 hover:bg-red-600 text-white font-bold py-2.5 text-sm transition-colors rounded-br-xl"
+                                                    className="bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 text-sm transition-all rounded-xl shadow-lg shadow-rose-200 hover:shadow-rose-300 hover:-translate-y-0.5"
                                                 >
                                                     No
                                                 </button>

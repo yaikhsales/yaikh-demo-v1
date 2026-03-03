@@ -1,6 +1,6 @@
 export const DEPARTMENTS = [
     "Cutting", "Sewing", "Finishing", "Packing", "Warehouse",
-    "QA / QC", "Maintenance", "Office", "Canteen", "Security",
+    "QA / QC", "Maintenance", "Office", "Canteen", "Security", "Factory",
 ];
 
 export const S_CRITERIA = [
@@ -91,10 +91,11 @@ export const DEPT_CHECKLISTS = [
         category: "Production",
         checklist: "6S Standard – Walk way",
         items: [
-            { id: 1, note_en: "Floor clean and dry. Walkways free from tools, trash, or obstructions.", note_kh: "1-ឥដ្ឋដីស្អាតនិងស្ងួត 2-ផ្លូវដើរមិនមានឧបករណ៍ ឬរបស់ រារាំង", refImg: "https://images.unsplash.com/photo-1581579186913-45ac3e6efe93?w=200&h=130&fit=crop" },
-            { id: 2, note_en: "Yellow lines clearly visible and not faded.", note_kh: "បន្ទាត់លឿងច្បាស់លាស់ មិនស្រពោន", refImg: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=130&fit=crop" },
-            { id: 3, note_en: "No personal items or bags placed on walkways.", note_kh: "មិនមានទ្រព្យផ្ទាល់ខ្លួននៅលើផ្លូវដើរ", refImg: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=200&h=130&fit=crop" },
-            { id: 4, note_en: "Emergency exit routes clearly marked and unobstructed.", note_kh: "ផ្លូវចេញពេលអាសន្នច្បាស់លាស់ មិនមានរបស់ blocked", refImg: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=200&h=130&fit=crop" },
+            { id: 1, note_en: "Floor clean and dry", note_kh: "ផ្ទៃឥដ្ឋស្អាត និង ស្ងួត", refImg: "https://images.unsplash.com/photo-1581579186913-45ac3e6efe93?w=500&h=350&fit=crop" },
+            { id: 2, note_en: "Walkways free from tools, trash, or obstructions", note_kh: "ផ្លូវដើរគ្មានឧបករណ៍ ឬ របស់ រារាំង", refImg: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=500&h=350&fit=crop" },
+            { id: 3, note_en: "Yellow lines clearly visible and not faded", note_kh: "ខ្សែបន្ទាត់លឿងច្បាស់ និង មិនបែក", refImg: "https://images.unsplash.com/photo-1558486012-817176f84c6d?w=500&h=350&fit=crop" },
+            { id: 4, note_en: "No personal items or bags placed on walkways", note_kh: "មិនមានទ្រព្យផ្ទាល់ខ្លួននៅលើផ្លូវដើរ", refImg: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=500&h=350&fit=crop" },
+            { id: 5, note_en: "Emergency exit routes clearly marked and unobstructed", note_kh: "ផ្លូវចេញពេលអាសន្នច្បាស់លាស់ មិនមានរបស់ blocked", refImg: "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=500&h=350&fit=crop" },
         ],
     },
     {
@@ -246,6 +247,62 @@ export const DEPT_CHECKLISTS = [
             { id: 2, note_en: "Incompatible chemicals stored separately.", note_kh: "គីមី incompatible stored separately", refImg: "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=200&h=130&fit=crop" },
             { id: 3, note_en: "Eye wash station functional and easily accessible.", note_kh: "Eye wash station functional ហើយ accessible", refImg: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=200&h=130&fit=crop" },
             { id: 4, note_en: "Spill kit stocked and visible near chemical storage.", note_kh: "Spill kit stocked ហើយ visible ជិត chemical storage", refImg: "https://images.unsplash.com/photo-1581579186913-45ac3e6efe93?w=200&h=130&fit=crop" },
+        ],
+    },
+    {
+        department: "Factory",
+        area: "Factory Surroundings (បរិវេណរោងចក្រ)",
+        category: "Environment",
+        checklist: "6S Standard – Factory Environment",
+        items: [
+            { id: 1, note_en: "Factory main gate and entrance clean and tidy", note_kh: "ខ្លោងទ្វារ និង ច្រកចូលរោងចក្រស្អាត", refImg: "https://images.unsplash.com/photo-1590633711984-75053787752e?w=500&h=350&fit=crop" },
+            { id: 2, note_en: "Parking area organized and vehicles parked in lines", note_kh: "កន្លែងចតឡាន ម៉ូតូរៀបចំមានសណ្តាប់ធ្នាប់", refImg: "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=500&h=350&fit=crop" },
+            { id: 3, note_en: "Common walkways outside buildings swept and clear", note_kh: "ផ្លូវដើរខាងក្រៅអាគារបោសសំអាតស្អាត", refImg: "https://images.unsplash.com/photo-1541888946425-d81bb19480c5?w=500&h=350&fit=crop" },
+            { id: 4, note_en: "Waste collection area contained and not overflowing", note_kh: "កន្លែងប្រមូលសម្រាមរៀបចំទុកដាក់ត្រឹមត្រូវ", refImg: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=500&h=350&fit=crop" },
+        ],
+    },
+    {
+        department: "Canteen",
+        area: "Staff Canteen (អាហារដ្ឋាន)",
+        category: "Support",
+        checklist: "6S Standard – Food & Hygiene",
+        items: [
+            { id: 1, note_en: "Dining tables and chairs wiped clean after use", note_kh: "តុ និង កៅអីញ៉ាំបាយត្រូវបោសសំអាតក្រោយប្រើ", refImg: "https://images.unsplash.com/photo-1560624052-449f5ddf0c31?w=500&h=350&fit=crop" },
+            { id: 2, note_en: "Food service counters clean and free of spills", note_kh: "កន្លែងចែកអាហារស្អាត គ្មានកាកសំណល់", refImg: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=500&h=350&fit=crop" },
+            { id: 3, note_en: "Hand washing stations stocked with soap and dry", note_kh: "កន្លែងលាងដៃមានសាប៊ូ និង ស្ងួតស្អាត", refImg: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=350&fit=crop" },
+        ],
+    },
+    {
+        department: "Office",
+        area: "General Office (ការិយាល័យ)",
+        category: "Administration",
+        checklist: "6S Standard – Office Area",
+        items: [
+            { id: 1, note_en: "Desks free of unnecessary papers and personal items", note_kh: "លើតុគ្មានឯកសារមិនចាំបាច់ និង របស់ផ្ទាល់ខ្លួន", refImg: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=350&fit=crop" },
+            { id: 2, note_en: "Filing cabinets labeled and drawers closed when not in use", note_kh: "ទូឯកសារមានស្លាកសញ្ញា និង បិទជិតល្អ", refImg: "https://images.unsplash.com/photo-1512418490979-92798ccc13b0?w=500&h=350&fit=crop" },
+            { id: 3, note_en: "Electrical cables organized and not creating trip hazards", note_kh: "ខ្សែភ្លើងរៀបចំបានល្អ មិនងាយជំពប់ជើង", refImg: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?w=500&h=350&fit=crop" },
+        ],
+    },
+    {
+        department: "Maintenance",
+        area: "Maintenance Workshop (ផ្នែកថែទាំ)",
+        category: "Utility",
+        checklist: "6S Standard – Workshop",
+        items: [
+            { id: 1, note_en: "Tools returned to shadow boards and cleaned after use", note_kh: "ឧបករណ៍ត្រូវយកទៅដាក់លើ shadow board និង សំអាតក្រោយប្រើ", refImg: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=500&h=350&fit=crop" },
+            { id: 2, note_en: "Workbenches clear and free of old spare parts", note_kh: "តុធ្វើការស្អាត គ្មានគ្រឿងបន្លាស់ចាស់ៗរាយប៉ាយ", refImg: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=500&h=350&fit=crop" },
+            { id: 3, note_en: "Oils and lubricants stored in secondary containment", note_kh: "ប្រេង និង ខ្លាញ់គោត្រូវទុកដាក់លើថាសការពារកំពប់", refImg: "https://images.unsplash.com/photo-1541888946425-d81bb19480c5?w=500&h=350&fit=crop" },
+        ],
+    },
+    {
+        department: "Security",
+        area: "Guard House & Gate (ផ្នែកសន្តិសុខ)",
+        category: "Safety",
+        checklist: "6S Standard – Security Post",
+        items: [
+            { id: 1, note_en: "Security post interior clean and organized", note_kh: "ក្នុងបន្ទប់សន្តិសុខស្អាត និង មានសណ្តាប់ធ្នាប់", refImg: "https://images.unsplash.com/photo-1541884061246-86438096333c?w=500&h=350&fit=crop" },
+            { id: 2, note_en: "Visitor log and records up to date and filed", note_kh: "សៀវភៅតាមដានភ្ញៀវមានសណ្តាប់ធ្នាប់ និង ទាន់សម័យ", refImg: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=500&h=350&fit=crop" },
+            { id: 3, note_en: "Security equipment (mirrors, wands) in good condition", note_kh: "ឧបករណ៍សន្តិសុខ (កញ្ចក់, ម៉ាស៊ីនរាវ) ស្ថិតក្នុងស្ថានភាពល្អ", refImg: "https://images.unsplash.com/photo-1533077155304-1823948acaec?w=500&h=350&fit=crop" },
         ],
     },
 ];

@@ -15,7 +15,7 @@ const translations = {
     menu: "菜单",
     quickActions: "快速操作",
     language: "语言",
-    
+
     // Common
     close: "关闭",
     cancel: "取消",
@@ -53,7 +53,7 @@ const translations = {
     viewAll: "查看全部",
     showMore: "显示更多",
     showLess: "显示更少",
-    
+
     // User
     user: "用户",
     profile: "个人资料",
@@ -66,23 +66,23 @@ const translations = {
     phone: "电话",
     name: "姓名",
     id: "ID",
-    
+
     // Notifications
     notifications: "通知",
     noNotifications: "无通知",
-    
+
     // Language names
     english: "英语",
     khmer: "高棉语",
     chinese: "中文",
     switchToEnglish: "切换到英文版本",
     switchToChinese: "切换到中文版本",
-    
+
     // Sections
     administration: "行政管理",
     managementDashboard: "管理仪表板",
     operations: "运营",
-    
+
     // Module Groups
     accountant: "会计",
     admin: "管理",
@@ -92,7 +92,7 @@ const translations = {
     qa: "质量保证",
     internalLogistics: "内部物流",
     production: "生产",
-    
+
     // Modules - Administration
     eInvoicing: "电子发票",
     purchaseRequest: "采购申请",
@@ -118,7 +118,7 @@ const translations = {
     chemical: "化学品",
     eGovernment: "电子政务",
     systemAnalysis: "系统分析",
-    
+
     // Modules - Operations
     yqms: "YQMS",
     callOut: "呼叫",
@@ -136,7 +136,7 @@ const translations = {
     pps: "PPS",
     sample: "样品",
     materialPurchase: "材料采购",
-    
+
     // Sub-modules - YHR
     recruitment: "招聘",
     interview: "面试",
@@ -148,7 +148,7 @@ const translations = {
     visaAndWorkPermit: "签证和工作许可",
     fwcms: "FWCMS",
     canteen: "食堂",
-    
+
     // Sub-modules - Training Departments
     onlineTraining: "在线培训",
     yai: "YAI",
@@ -173,7 +173,7 @@ const translations = {
     warehouse: "仓库",
     ie: "IE",
     qaFabric: "QA（面料）",
-    
+
     // Sub-modules - YTM
     ytm: "YTM",
     machineLocation: "机器位置",
@@ -186,13 +186,13 @@ const translations = {
     downloadData: "下载",
     analysis: "分析",
     report: "报告",
-    
+
     // Additional YHR sub-modules
     checklistAttendant: "考勤清单",
     myAttendant: "我的考勤",
     fwcmsPortal: "FWCMS门户",
     ministryOfLabour: "劳动部",
-    
+
     // Form Labels - Common
     date: "日期",
     time: "时间",
@@ -212,7 +212,7 @@ const translations = {
     subtotal: "小计",
     unit: "单位",
     unitPrice: "单价",
-    
+
     // Form Labels - Purchase Request
     purchaseRequisitionForm: "采购申请表",
     purchaseList: "采购清单",
@@ -245,12 +245,12 @@ const translations = {
     gm: "总经理",
     purchaser: "采购员",
     stationery: "文具",
-    
+
     // Form Labels - Support Ticket
     subject: "主题",
     nature: "性质",
     keyword: "关键词",
-    
+
     // Status
     active: "活跃",
     inactive: "非活跃",
@@ -261,7 +261,7 @@ const translations = {
     inProgress: "进行中",
     cancelled: "已取消",
     comingSoon: "即将推出",
-    
+
     // Messages
     noData: "无数据",
     noResults: "无结果",
@@ -271,7 +271,7 @@ const translations = {
     operationFailed: "操作失败",
     requiredField: "此字段为必填项",
     invalidInput: "输入无效",
-    
+
     // Time
     today: "今天",
     yesterday: "昨天",
@@ -282,7 +282,7 @@ const translations = {
     lastWeek: "上周",
     lastMonth: "上月",
     lastYear: "去年",
-    
+
     // Actions
     viewDetails: "查看详情",
     editItem: "编辑项目",
@@ -293,13 +293,13 @@ const translations = {
     actions: "操作",
     addProduct: "添加产品",
     remove: "移除",
-    
+
     // Salary Bill Sub-modules
     monthlySalary: "月薪",
     weeklyIncentive: "周激励",
     permitFee: "许可证费",
     resignPayment: "辞职付款",
-    
+
     // Gate Pass
     visitor: "访客",
     personalRequest: "个人申请",
@@ -326,7 +326,7 @@ const translations = {
     healthIssue: "健康问题",
     personalEmergency: "个人紧急情况",
     other: "其他",
-    
+
     // Support Ticket Form
     details: "详情",
     uploadImage: "上传图片",
@@ -335,7 +335,7 @@ const translations = {
     imageFormatWarning: "并且应为",
     format: "格式",
     or: "或",
-    
+
     // Common Form Fields
     employeeName: "员工姓名",
     jobTitle: "职位",
@@ -354,7 +354,7 @@ const translations = {
     year: "年",
     month: "月",
     week: "周",
-    
+
     // Gate Pass Table Headers
     no: "编号",
     employeeIdHeader: "员工ID",
@@ -384,7 +384,7 @@ const translations = {
     submitRequest: "提交申请",
     hour: "小时",
     minute: "分钟",
-    
+
     // Training
     course: "课程",
     lessons: "课程 (PDF)",
@@ -399,7 +399,7 @@ const translations = {
     end: "结束",
     trainingLesson: "培训课程",
     listAndScheduleTrainingCourse: "列出和安排培训课程",
-    
+
     // Accountant Module
     checkRequestLists: "检查申请列表",
     code: "代码",
@@ -427,7 +427,7 @@ const translations = {
     paid: "已付款",
     by: "由",
     accApprovePay: "会计批准和付款",
-    
+
     // Recruitment Form
     positionInformation: "职位信息",
     positionTitle: "职位名称",
@@ -472,7 +472,7 @@ const translations = {
     shortlisted: "已入围",
     rejected: "已拒绝",
     hired: "已录用",
-    
+
     // Interview Form
     interviewArrangement: "面试安排",
     interviewDetails: "面试详情",
@@ -503,7 +503,7 @@ const translations = {
     technicalInterview: "技术面试",
     finalInterview: "最终面试",
     scheduled: "已安排",
-    
+
     // Onboarding Form
     onboarding: "入职",
     employeeInformation: "员工信息",
@@ -516,7 +516,7 @@ const translations = {
     trainingCompleted: "培训已完成",
     systemAccess: "系统访问",
     saveOnboarding: "保存入职",
-    
+
     // Temp Worker Request Form
     temporaryWorkerRequest: "临时工申请",
     requestor: "申请人",
@@ -1369,10 +1369,24 @@ const translations = {
     viewAuditPlan: "查看审计计划",
     addAuditPlan: "添加审计计划",
     auditPlanList: "审计计划列表",
+    auditDetails: "审计详情",
     totalReports: "总计",
     reports: "报告",
     planningPreparation: "规划与准备",
     verificationFinal: "验证与最终",
+    syncToDrive: "同步到云端硬盘",
+    allAudits: "所有审计",
+    addAudit: "添加审计",
+    import: "导入",
+    export: "导出",
+    editAudit: "编辑审计",
+    explanation: "说明",
+    sourceConsulted: "咨询来源",
+    legalReference: "法律依据",
+    contents: "内容",
+    issue: "问题",
+    attachments: "附件",
+    seeMore: "查看更多",
     temperatureHumiditySensorDeviceList: "温湿度传感器设备列表",
     newBoiler: "新锅炉",
     pressing: "熨烫",
@@ -1434,7 +1448,7 @@ const translations = {
     energyConsumedB: "能耗B",
     energyConsumedC: "能耗C",
     energyConsumedD: "能耗D",
-    
+
 
     // YQMS
     finCheckSetting: "Fincheck 设置",
@@ -1455,10 +1469,10 @@ const translations = {
     totalSwitchBoards: "开关板总数",
     totalEquipments: "设备总数",
     averageEquipments: "平均设备数 / 板",
-    
+
     // Air - Air Quality Detector
     airQualityDetectorDeviceList: "空气质量检测器设备列表",
-    
+
     // Waste - Boiler
     boiler: "锅炉",
     addBoiler: "添加锅炉",
@@ -1469,7 +1483,7 @@ const translations = {
     electricBoiler: "电锅炉",
     totalBoiler: "锅炉总数",
     daysTracked: "跟踪天数",
-    
+
     // Digital Audit - Compliance Certificate
     complianceCertificate: "合规证书",
     search: "搜索",
@@ -1488,14 +1502,14 @@ const translations = {
     expired: "已过期",
     viewCertificate: "查看证书",
     noCertificatesFound: "未找到证书",
-    
+
     // Purchase Request - Approval
     requestDetails: "请求详情",
     approvalApplicationList: "批准申请列表",
     accountantApproval: "会计批准",
     accountantApprovalAndPayment: "会计批准和付款",
     approvedAndPaid: "已批准 & 已支付",
-    
+
     // Call Out / KANBAN
     allLocation: "所有位置",
     refresh: "刷新",
@@ -1511,7 +1525,7 @@ const translations = {
     line9: "生产线 9",
     line10: "生产线 10",
     line11: "生产线 11",
-    
+
     // CE Module
     stStandardTime: "ST标准时间",
     productDevelopment: "产品开发",
@@ -1525,18 +1539,18 @@ const translations = {
     costCentersDirectIndirectCost: "成本中心，直接/间接成本",
     cpm: "CPM",
     styleCosting: "款式成本",
-    
+
     // FC Module
     accessoriesReceiving: "辅料接收",
     accessoriesInspection: "辅料检验",
     accessoriesIssuing: "辅料发放",
     warehouseTrackingLocation: "仓库跟踪位置",
-    
+
     // YQMS - Final Production
     qaAuditFinishingPacking: "QA审计整理包装",
     humidityAquaboyChecking: "湿度Aquaboy检查",
     firstOutputFinishingAndPacking: "首次产出整理和包装",
-    
+
     // Compliance Certificate - Additional
     certificateAndReport: "证书和报告",
     typeOfMinistries: "部门类型",
@@ -1568,12 +1582,12 @@ const translations = {
     certificates: "证书",
     board: "板",
     equipments: "设备",
-    
+
     // Water Module
     waterProductList: "水产品列表",
     totalWaterConsumed: "总耗水量",
     waterMeter: "水表",
-    
+
     // Phone Viewer
     phoneScreenshots: "手机截图",
     images: "图片",
