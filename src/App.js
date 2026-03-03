@@ -52,6 +52,7 @@ import StyleCosting from "./ce/style-costing";
 import ComplianceCertificate from "./digital-audit/compliance-certificate";
 import AuditPlan from "./digital-audit/audit-plan";
 import Checklist6S from "./digital-audit/checklist-6s";
+import AuditQuestions from "./digital-audit/audit-questions";
 import ShowListRequest from "./purchase-request/show-list-request";
 import MasterList from "./purchase-request/master-list";
 import MyConfirmReceived from "./purchase-request/my-confirm-received";
@@ -291,6 +292,10 @@ export default function App() {
           <Route
             path="checklist-6s"
             element={<Checklist6S onBack={handleBack} />}
+          />
+          <Route
+            path="digital-audit-questions"
+            element={<AuditQuestions onBack={handleBack} />}
           />
           <Route
             path="purchase-requisition-form"
