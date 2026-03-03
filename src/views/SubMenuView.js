@@ -383,11 +383,7 @@ const renderCard = (
               } else if (card.title === "Checklist 6s") {
                 navigate("/dashboard/checklist-6s");
               } else if (card.title === "Digital Audit") {
-                // Show Digital Audit image
-                const encodedPath = encodeURIComponent(
-                  "assets/digital-audit.jpg",
-                );
-                navigate(`/dashboard/image/${encodedPath}`);
+                navigate("/dashboard/digital-audit-questions");
               } else if (card.title === "Compliance Certificate") {
                 navigate("/dashboard/compliance-certificate");
               } else if (card.title === "Audit Plan") {
