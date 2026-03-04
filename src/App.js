@@ -341,9 +341,6 @@ export default function App() {
             path="system-analysis"
             element={<SystemAnalyze onBack={handleBack} />}
           />
-          <Route path="yqms/qc-file" element={<QCFile onBack={handleBack} />} />
-          <Route path="yqms/pre-production-meeting" element={<PreProductionMeeting onBack={handleBack} />} />
-          <Route path="yqms/fin-check" element={<FinCheckDashboard onBack={handleBack} />} />
           <Route
             path="waste"
             element={<WasteDashboardView onBack={handleBack} />}
@@ -413,6 +410,14 @@ export default function App() {
 
           {/* YQMS Module Routes */}
           <Route path="yqms/qc-file" element={<QCFile onBack={handleBack} />} />
+          <Route
+            path="yqms/pre-production-meeting"
+            element={<PreProductionMeeting onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/fin-check"
+            element={<FinCheckDashboard onBack={handleBack} />}
+          />
           <Route
             path="yqms/rolling-qc"
             element={<InternalRollingQC onBack={handleBack} />}
@@ -525,10 +530,6 @@ export default function App() {
             }
           />
 
-          <Route
-            path="yqms/fin-check"
-            element={<AuditReport title="Fin Check" onBack={handleBack} />}
-          />
           <Route
             path="yqms/dashboard"
             element={<YQMSGlobalDashboard onBack={handleBack} />}
