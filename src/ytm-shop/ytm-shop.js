@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search, Calendar, AlertTriangle, CheckCircle, ShoppingBag, Stethoscope, Wrench, X, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search, AlertTriangle, CheckCircle, ShoppingBag, Stethoscope, Wrench, ArrowLeft } from 'lucide-react';
 import ImageViewer from '../components/ImageViewer';
+import ModuleBotButton from '../components/ModuleBotButton';
 
 const YShop = ({ onBack }) => {
     const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState('');
-    const [dateRange, setDateRange] = useState('01/12/2025 / 30/12/2025');
-    const [department, setDepartment] = useState('Office');
-    const [supplier, setSupplier] = useState('All Suppliers');
-    const [subCategory, setSubCategory] = useState('All Categories');
     const [selectedImage, setSelectedImage] = useState(null);
     
     // Pagination states
@@ -58,6 +54,11 @@ const YShop = ({ onBack }) => {
             unit: 'pcs',
             max: 20,
             min: 5,
+
+
+
+
+            
             needBuy: 20, // max - inStock = 20 - 0
             stockIn: 0,
             stockOut: 3,
@@ -280,7 +281,6 @@ const YShop = ({ onBack }) => {
 
     const totalLowStock = lowStockProducts.length;
     const totalHealthyStock = healthyStockProducts.length;
-    const totalProducts = totalLowStock + totalHealthyStock;
 
     // Calculate pagination
     const lowStockStart = (lowStockPage - 1) * itemsPerPage;
@@ -628,6 +628,8 @@ const YShop = ({ onBack }) => {
                     onClose={() => setSelectedImage(null)} 
                 />
             )}
+
+            <ModuleBotButton moduleName="YTM Shop" />
         </div>
     );
 };
