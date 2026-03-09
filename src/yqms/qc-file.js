@@ -135,14 +135,11 @@ const QCFile = ({ onBack }) => {
     };
 
     const handleDownloadPDF = (record) => {
-        // The file is now correctly located in the /public directory for the dev server
-        const fileName = 'GPAR12356 制单 2026-2-2.pdf';
-        // We use the absolute path from the root as it's served from the public folder
-        const fileUrl = `/${fileName}`;
+    const fileName = "GPAR12356 制单 2026-2-2.pdf";
+    const fileUrl = `/pdf/${fileName}`;
 
-        // Open in new tab for direct viewing and download
-        window.open(fileUrl, '_blank');
-    };
+    window.open(fileUrl, "_blank");
+};
 
     return (
         <div className="flex flex-col h-screen bg-slate-50 text-slate-900 font-sans overflow-hidden">
