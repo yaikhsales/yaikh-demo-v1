@@ -452,8 +452,24 @@ const AppLayout = () => {
                                           ],
                                         },
                                         {
-                                          label: "First Output ",
+                                          label: "Cut",
                                           cards: [
+                                            {
+                                              title: "Cutting Inspection",
+                                              icon: "Search",
+                                              color:
+                                                "bg-white text-blue-600",
+                                              image:
+                                                "assets/fc/cutting-inspection.jpg",
+                                            },
+                                            {
+                                              title: "QA Cutting",
+                                              icon: "Search",
+                                              color:
+                                                "bg-white text-blue-600",
+                                              image:
+                                                "assets/yqms/qa-cutting.jpg",
+                                            },
                                             {
                                               title: "First Output Cutting",
                                               icon: "Scissors",
@@ -462,6 +478,35 @@ const AppLayout = () => {
                                               image:
                                                 "assets/yqms/first-output-cutting.jpg",
                                             },
+                                            {
+                                              title: "Cutting Panel Inspection",
+                                              icon: "Search",
+                                              color:
+                                                "bg-white text-blue-600",
+                                              image:
+                                                "assets/fc/cut-panel-inspection.jpg",
+                                            },
+                                            {
+                                              title: "Printing Inspection",
+                                              icon: "Search",
+                                              color:
+                                                "bg-white text-blue-600",
+                                              image:
+                                                "assets/fc/printing-inspection.jpg",
+                                            },
+                                            {
+                                              title: "Embroidery Inspection",
+                                              icon: "Search",
+                                              color:
+                                                "bg-white text-blue-600",
+                                              image:
+                                                "assets/fc/embroidery-inspection.jpg",
+                                            },
+                                          ],
+                                        },
+                                        {
+                                          label: "First Output ",
+                                          cards: [
                                             {
                                               title:
                                                 "First Output Printing Embroidery",
@@ -478,14 +523,6 @@ const AppLayout = () => {
                                                 "bg-white text-blue-600",
                                               image:
                                                 "assets/yqms/first-output-sewing.jpg",
-                                            },
-                                            {
-                                              title: "QA Cutting",
-                                              icon: "Search",
-                                              color:
-                                                "bg-white text-blue-600",
-                                              image:
-                                                "assets/yqms/qa-cutting.jpg",
                                             },
                                             {
                                               title: "QA Printing Embroidery",
@@ -545,43 +582,7 @@ const AppLayout = () => {
                                             },
                                           ],
                                         },
-                                        {
-                                          label: "Cut",
-                                          cards: [
-                                            {
-                                              title: "Cutting Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-white text-blue-600",
-                                              image:
-                                                "assets/fc/cutting-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Cut Panel Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-white text-blue-600",
-                                              image:
-                                                "assets/fc/cut-panel-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Printing Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-white text-blue-600",
-                                              image:
-                                                "assets/fc/printing-inspection.jpg",
-                                            },
-                                            {
-                                              title: "Embroidery Inspection",
-                                              icon: "Search",
-                                              color:
-                                                "bg-white text-blue-600",
-                                              image:
-                                                "assets/fc/embroidery-inspection.jpg",
-                                            },
-                                          ],
-                                        },
+
                                         {
                                           label: "Sew",
                                           cards: [
@@ -669,7 +670,7 @@ const AppLayout = () => {
                                               title: "Customer Complaint CAP",
                                               icon: "AlertTriangle",
                                               color: "bg-white text-blue-600",
-                                              image: "assets/yqms/customer-complaint-cap-icon.svg",
+                                              image: "assets/yqms/customer_complaint_cap_new.png",
                                             },
                                           ],
                                         },

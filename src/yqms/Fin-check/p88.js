@@ -8,8 +8,9 @@ import {
     Hammer, Tag, Shirt, ClipboardList,
     Zap, Factory, Microscope, MessageSquare
 } from 'lucide-react';
+import InspectionReportDetail from './inspection-report-detail';
 
-const SummaryView = () => {
+const SummaryView = ({ onViewReport }) => {
     const filters = [
         { label: 'Inspector', icon: User2 },
         { label: 'Status', icon: CheckCircle2, type: 'select', options: ['All Status', 'Accepted', 'Reworked', 'Pending'] },
@@ -255,7 +256,10 @@ const SummaryView = () => {
                                     </td>
                                     <td className="px-16 py-4 text-[10px] font-bold text-gray-600 uppercase">{row.factory}</td>
                                     <td className="px-4 py-4">
-                                        <button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-xl text-[10px] font-black shadow-lg shadow-blue-500/20 active:scale-95 transition-all">
+                                        <button
+                                            onClick={onViewReport}
+                                            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-xl text-[10px] font-black shadow-lg shadow-blue-500/20 active:scale-95 transition-all"
+                                        >
                                             <div className="w-6 h-6 bg-white/20 rounded-md flex items-center justify-center">
                                                 <BarChart3 size={12} className="text-white" />
                                             </div>
@@ -300,6 +304,7 @@ const UploadView = () => (
 
 const P88LegacySystem = ({ onBack }) => {
     const [activeTab, setActiveTab] = React.useState('Upload P88 Data');
+    const [showReport, setShowReport] = React.useState(false);
 
     const navItems = [
         { label: 'Upload P88 Data', icon: Upload },
@@ -310,82 +315,88 @@ const P88LegacySystem = ({ onBack }) => {
 
     return (
         <div className="w-full min-h-screen bg-[#F1F5F9] flex flex-col font-sans">
-            {/* Professional Purple Header */}
-            <div className="w-full bg-gradient-to-r from-[#5340C7] via-[#9F37B3] to-[#C9338D] p-5 shadow-2xl relative z-50">
-                <div className="w-full flex items-center justify-between gap-4 max-w-full mx-auto px-4">
-                    {/* Brand Section */}
-                    <div className="flex items-center gap-4 shrink-0">
-                        <button
-                            onClick={onBack}
-                            className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center border border-white/20 hover:scale-105 transition-all shadow-lg text-white font-black active:scale-95"
-                        >
-                            <ArrowLeft size={20} strokeWidth={3} />
-                        </button>
-                        <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shadow-inner">
-                            <Shield className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex flex-col">
-                            <div className="flex items-center gap-3">
-                                <h1 className="text-2xl font-black text-white leading-none tracking-tight">P88 Legacy System</h1>
-                                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm group/pro cursor-help">
-                                    <Sparkles size={11} className="text-yellow-400 fill-yellow-400" />
-                                    <span className="text-[10px] font-black tracking-wider text-white uppercase">PRO</span>
+            {showReport ? (
+                <InspectionReportDetail onClose={() => setShowReport(false)} />
+            ) : (
+                <>
+                    {/* Professional Purple Header */}
+                    <div className="w-full bg-gradient-to-r from-[#5340C7] via-[#9F37B3] to-[#C9338D] p-5 shadow-2xl relative z-50">
+                        <div className="w-full flex items-center justify-between gap-4 max-w-full mx-auto px-4">
+                            {/* Brand Section */}
+                            <div className="flex items-center gap-4 shrink-0">
+                                <button
+                                    onClick={onBack}
+                                    className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center border border-white/20 hover:scale-105 transition-all shadow-lg text-white font-black active:scale-95"
+                                >
+                                    <ArrowLeft size={20} strokeWidth={3} />
+                                </button>
+                                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shadow-inner">
+                                    <Shield className="w-6 h-6 text-white" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <div className="flex items-center gap-3">
+                                        <h1 className="text-2xl font-black text-white leading-none tracking-tight">P88 Legacy System</h1>
+                                        <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm group/pro cursor-help">
+                                            <Sparkles size={11} className="text-yellow-400 fill-yellow-400" />
+                                            <span className="text-[10px] font-black tracking-wider text-white uppercase">PRO</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-white/90 text-[11px] font-bold uppercase tracking-wider mt-1.5 opacity-90">Legacy Management & Control System</p>
                                 </div>
                             </div>
-                            <p className="text-white/90 text-[11px] font-bold uppercase tracking-wider mt-1.5 opacity-90">Legacy Management & Control System</p>
+
+                            {/* Navigation Bar */}
+                            <div className="flex bg-white/10 backdrop-blur-md rounded-2xl p-1 border border-white/20 items-center gap-1 shadow-inner">
+                                {navItems.map((item) => {
+                                    const isActive = activeTab === item.label;
+                                    return (
+                                        <button
+                                            key={item.label}
+                                            onClick={() => setActiveTab(item.label)}
+                                            className={`relative flex flex-col items-center justify-center min-w-[110px] py-2 px-3 rounded-xl transition-all group ${isActive ? 'bg-white shadow-xl scale-105' : 'text-white hover:bg-white/5'}`}
+                                        >
+                                            {isActive && (
+                                                <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_#34D399]" />
+                                            )}
+                                            <item.icon size={18} className={`mb-1 transition-transform group-hover:scale-110 ${isActive ? 'text-[#5340C7]' : 'text-white'}`} />
+                                            <span className={`text-[9px] font-black text-center whitespace-nowrap leading-tight uppercase ${isActive ? 'text-[#5340C7]' : 'text-white'}`}>
+                                                {item.label}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Right Section: Status Indicator and User */}
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-3 py-2.5 px-5 bg-white/10 rounded-xl border border-white/20 min-w-[160px] shadow-sm backdrop-blur-sm">
+                                    <div className="w-2 h-2 bg-emerald-400 rounded-lg shadow-[0_0_10px_#34D399] shrink-0" />
+                                    <div className="flex flex-col">
+                                        <span className="text-[11px] font-black uppercase text-white leading-none tracking-tight">{activeTab}</span>
+                                        <span className="text-[9px] font-bold text-white/60 uppercase mt-1">Active Module</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-4 py-2 px-4 bg-black/10 rounded-2xl border border-white/10 shadow-lg">
+                                    <div className="w-10 h-10 rounded-xl bg-orange-400 flex items-center justify-center shadow-lg border border-white/10">
+                                        <User className="text-white w-6 h-6" />
+                                    </div>
+                                    <div className="flex flex-col pr-2">
+                                        <span className="text-[12px] font-black text-white leading-tight uppercase">QA Officer</span>
+                                        <span className="text-[10px] font-bold text-white/60 uppercase tracking-tighter mt-0.5">ID: YM7625</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Navigation Bar */}
-                    <div className="flex bg-white/10 backdrop-blur-md rounded-2xl p-1 border border-white/20 flex items-center gap-1 shadow-inner">
-                        {navItems.map((item) => {
-                            const isActive = activeTab === item.label;
-                            return (
-                                <button
-                                    key={item.label}
-                                    onClick={() => setActiveTab(item.label)}
-                                    className={`relative flex flex-col items-center justify-center min-w-[110px] py-2 px-3 rounded-xl transition-all group ${isActive ? 'bg-white shadow-xl scale-105' : 'text-white hover:bg-white/5'}`}
-                                >
-                                    {isActive && (
-                                        <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_#34D399]" />
-                                    )}
-                                    <item.icon size={18} className={`mb-1 transition-transform group-hover:scale-110 ${isActive ? 'text-[#5340C7]' : 'text-white'}`} />
-                                    <span className={`text-[9px] font-black text-center whitespace-nowrap leading-tight uppercase ${isActive ? 'text-[#5340C7]' : 'text-white'}`}>
-                                        {item.label}
-                                    </span>
-                                </button>
-                            );
-                        })}
-                    </div>
+                    {/* Main Content Area */}
+                    {activeTab === 'Upload P88 Data' ? <UploadView /> : <SummaryView onViewReport={() => setShowReport(true)} />}
 
-                    {/* Right Section: Status Indicator and User */}
-                    <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-3 py-2.5 px-5 bg-white/10 rounded-xl border border-white/20 min-w-[160px] shadow-sm backdrop-blur-sm">
-                            <div className="w-2 h-2 bg-emerald-400 rounded-lg shadow-[0_0_10px_#34D399] shrink-0" />
-                            <div className="flex flex-col">
-                                <span className="text-[11px] font-black uppercase text-white leading-none tracking-tight">{activeTab}</span>
-                                <span className="text-[9px] font-bold text-white/60 uppercase mt-1">Active Module</span>
-                            </div>
-                        </div>
-
-                        <div className="flex items-center gap-4 py-2 px-4 bg-black/10 rounded-2xl border border-white/10 shadow-lg">
-                            <div className="w-10 h-10 rounded-xl bg-orange-400 flex items-center justify-center shadow-lg border border-white/10">
-                                <User className="text-white w-6 h-6" />
-                            </div>
-                            <div className="flex flex-col pr-2">
-                                <span className="text-[12px] font-black text-white leading-tight uppercase">QA Officer</span>
-                                <span className="text-[10px] font-bold text-white/60 uppercase tracking-tighter mt-0.5">ID: YM7625</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Main Content Area */}
-            {activeTab === 'Upload P88 Data' ? <UploadView /> : <SummaryView />}
-
-            {/* Subtle Gradient Overlay */}
-            <div className="fixed inset-0 pointer-events-none bg-gradient-to-tr from-indigo-500/0 via-transparent to-purple-500/0" />
+                    {/* Subtle Gradient Overlay */}
+                    <div className="fixed inset-0 pointer-events-none bg-gradient-to-tr from-indigo-500/0 via-transparent to-purple-500/0" />
+                </>
+            )}
         </div>
     );
 };

@@ -21,13 +21,14 @@ export const YQMSDashboard = ({ onBack }) => {
 
     const cards = [
         {
-            title: "QC Roving",
-            icon: "Search",
-            imageIcon: "qc_(quality_control)_department.png",
-            color: "blue",
-            stats: "98.5%",
-            label: "Efficiency",
-            delay: "0ms"
+            title: "Cutting",
+            icon: "Scissors",
+            imageIcon: "cutting.png",
+            color: "cyan",
+            stats: "On-Track",
+            label: "Ops",
+            delay: "0ms",
+            path: "/dashboard/yqms/qc-roving"
         },
         {
             title: "Order Data",
@@ -130,13 +131,14 @@ export const YQMSDashboard = ({ onBack }) => {
             delay: "550ms"
         },
         {
-            title: "Cutting",
-            icon: "Scissors",
-            imageIcon: "cutting.png",
-            color: "cyan",
-            stats: "On-Track",
-            label: "Ops",
-            delay: "600ms"
+            title: "QC Roving",
+            icon: "Search",
+            imageIcon: "qc_(quality_control)_department.png",
+            color: "blue",
+            stats: "98.5%",
+            label: "Efficiency",
+            delay: "600ms",
+            path: "/dashboard/yqms/cutting"
         },
     ];
 
@@ -218,6 +220,7 @@ export const YQMSDashboard = ({ onBack }) => {
                         return (
                             <div
                                 key={idx}
+                                onClick={() => card.path && navigate(card.path)}
                                 style={{
                                     animationDelay: card.delay,
                                     transform: isVisible ? 'translateY(0)' : 'translateY(20px)',

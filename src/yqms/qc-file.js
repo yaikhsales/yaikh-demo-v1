@@ -22,13 +22,16 @@ import {
     ThumbsUp,
     MessageSquare,
     X,
-    Send
+    Send,
+    FileUp,
+    Loader2
 } from 'lucide-react';
 import { useTranslation } from '../translate/TranslationContext';
 
 const QCFile = ({ onBack }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const fileInputRef = React.useRef(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(7);
@@ -36,8 +39,11 @@ const QCFile = ({ onBack }) => {
     const [selectedRecord, setSelectedRecord] = useState(null);
     const [modalType, setModalType] = useState('recommend'); // 'recommend' or 'feedback'
     const [commentText, setCommentText] = useState('');
+    const [uploadingId, setUploadingId] = useState(null);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
-    const records = [
+    const initialRecords = [
         { id: 'GPAR12376NOS', date: '2024-02-14', buyer: 'Aritzia', style: 'FFS 99-06-60284-R-SU26', rolls: 45, qty: '2,250m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_001.pdf', comments: 12 },
         { id: 'GPAR12261', date: '2024-02-14', buyer: 'Aritzia', style: 'RBCY 02-01-10008-SU26(RMG0546)', rolls: 12, qty: '600m', status: 'In-Progress', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'QC_Report_002.pdf', comments: 5 },
         { id: 'PTCOC400A', date: '2024-02-13', buyer: 'Costco', style: 'CR1411CC-01', rolls: 88, qty: '4,000m', status: 'Pending', statusColor: 'text-amber-700 bg-amber-100 border-amber-200', file: 'Pending', comments: 0 },
@@ -53,6 +59,15 @@ const QCFile = ({ onBack }) => {
         { id: 'GPAR12220', date: '2024-02-02', buyer: 'Aritzia', style: 'RBC 02-01-52114-SU26(AG2276)', rolls: 55, qty: '2,750m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_012.pdf', comments: 11 },
         { id: 'GPAR12274-1', date: '2024-02-01', buyer: 'Aritzia', style: 'FFS 99-03-44504-SU26', rolls: 10, qty: '500m', status: 'In-Progress', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'QC_Report_013.pdf', comments: 7 }
     ];
+
+    const [records, setRecords] = useState(() => {
+        const saved = localStorage.getItem('qc_records_demo');
+        return saved ? JSON.parse(saved) : initialRecords;
+    });
+
+    React.useEffect(() => {
+        localStorage.setItem('qc_records_demo', JSON.stringify(records));
+    }, [records]);
 
     const totalMeters = records.reduce((sum, r) => sum + parseInt(r.qty.replace(/,/g, '')), 0);
     const totalRolls = records.reduce((sum, r) => sum + r.rolls, 0);
@@ -81,33 +96,77 @@ const QCFile = ({ onBack }) => {
         else navigate(-1);
     };
 
+    const handleFileClick = (record) => {
+        setSelectedRecord(record);
+        fileInputRef.current?.click();
+    };
+
+    const handleFileUpload = async (event) => {
+        const file = event.target.files?.[0] || event.dataTransfer?.files?.[0];
+        if (!file || !selectedRecord) return;
+
+        setUploadingId(selectedRecord.id);
+        setUploadProgress(10);
+
+        // Simulate upload progress
+        for (let i = 20; i <= 100; i += 20) {
+            await new Promise(r => setTimeout(r, 200));
+            setUploadProgress(i);
+        }
+
+        // In a real app, this URL would be a permanent link from a server.
+        // For this demo, we use a blob URL which is session-bound.
+        const fileUrl = URL.createObjectURL(file);
+
+        setRecords(prev => prev.map(rec =>
+            rec.id === selectedRecord.id
+                ? { ...rec, file: file.name, fileUrl: fileUrl, status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' }
+                : rec
+        ));
+
+        setTimeout(() => {
+            setUploadingId(null);
+            setSelectedRecord(null);
+            setUploadProgress(0);
+            setIsUploadModalOpen(false);
+            if (event.target) event.target.value = '';
+        }, 500);
+    };
+
     return (
         <div className="flex flex-col h-screen bg-slate-50 text-slate-900 font-sans overflow-hidden">
             {/* Header */}
-            <header className="flex items-center justify-between px-8 py-4 border-b border-slate-200 bg-white/80 backdrop-blur-md z-10">
+            <header className="flex items-center justify-between px-8 py-5 border-b border-slate-200/60 bg-white/70 backdrop-blur-xl sticky top-0 z-30">
                 <div className="flex items-center gap-6">
                     <button
                         onClick={handleBack}
-                        className="p-2 hover:bg-slate-100 rounded-full transition-colors group text-slate-600"
+                        className="p-2.5 hover:bg-slate-100/80 rounded-2xl transition-all group text-slate-600 border border-transparent hover:border-slate-200 shadow-sm hover:shadow"
                     >
                         <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                     </button>
                     <div>
-                        <h1 className="text-xl font-bold tracking-tight text-slate-900 uppercase flex items-center gap-2">
-                            QC<span className="text-blue-600">File</span>
-                        </h1>
-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Material Inflow & Documentation Tracking</p>
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+                                <FileText className="w-5 h-5 text-white" />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-black tracking-tight text-slate-900 uppercase flex items-center gap-2 leading-none">
+                                    QC<span className="text-blue-600">File</span>
+                                </h1>
+                                <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mt-1">Material Inflow & Documentation</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold transition-all text-slate-700">
+                    <button className="flex items-center gap-2 px-4 py-2.5 hover:bg-white border border-slate-200 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all text-slate-600 hover:shadow-sm">
                         <Maximize2 className="w-4 h-4" /> Full Screen
                     </button>
-                    <button className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold transition-all text-slate-700">
-                        <Download className="w-4 h-4" /> Export Report
+                    <button className="flex items-center gap-2 px-4 py-2.5 hover:bg-white border border-slate-200 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all text-slate-600 hover:shadow-sm">
+                        <Download className="w-4 h-4" /> Export
                     </button>
-                    <button className="flex items-center gap-2 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold shadow-md shadow-blue-200 transition-all">
+                    <button className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-[11px] font-black uppercase tracking-widest shadow-xl shadow-slate-200 transition-all hover:-translate-y-0.5 active:translate-y-0">
                         <Plus className="w-4 h-4" /> New Entry
                     </button>
                 </div>
@@ -243,14 +302,43 @@ const QCFile = ({ onBack }) => {
                                         <div className="flex justify-center">
                                             {record.file !== 'Pending' ? (
                                                 <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        if (record.fileUrl) {
+                                                            window.open(record.fileUrl, '_blank');
+                                                        } else if (record.file !== 'Pending') {
+                                                            // Handle cases where session URL is lost or it's mock data
+                                                            alert(`Downloading ${record.file}... (Demo Mode)`);
+                                                        } else {
+                                                            setSelectedRecord(record);
+                                                            setIsUploadModalOpen(true);
+                                                        }
+                                                    }}
                                                     className="flex items-center gap-2 px-2 py-1.5 hover:bg-red-200 rounded-lg text-red-600 transition-all border border-slate-200 group/down"
-                                                    title={`Download ${record.file}`}
+                                                    title={record.fileUrl ? `View ${record.file}` : `Click to upload a real file for ${record.file}`}
                                                 >
                                                     <Download className="w-4 h-4 text-red-600 group-hover/down:scale-110 transition-transform" />
                                                     <span className="text-[10px] font-bold uppercase tracking-tight">{record.file.split('.').pop()}</span>
                                                 </button>
                                             ) : (
-                                                <span className="text-[10px] px-2 py-1.5 rounded-lg font-bold border border-red-200 text-red-400 uppercase tracking-widest italic">No File</span>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        setSelectedRecord(record);
+                                                        setIsUploadModalOpen(true);
+                                                    }}
+                                                    disabled={uploadingId === record.id}
+                                                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 rounded-xl text-blue-600 transition-all border border-blue-200 group/upload cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-95"
+                                                >
+                                                    {uploadingId === record.id ? (
+                                                        <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
+                                                    ) : (
+                                                        <FileUp className="w-4 h-4 text-blue-600 group-hover/upload:-translate-y-0.5 transition-transform" />
+                                                    )}
+                                                    <span className="text-[10px] font-black uppercase tracking-widest font-sans">
+                                                        {uploadingId === record.id ? 'Uploading...' : 'Upload'}
+                                                    </span>
+                                                </button>
                                             )}
                                         </div>
                                     </td>
@@ -323,8 +411,120 @@ const QCFile = ({ onBack }) => {
                 </div>
             </main>
 
-            {/* Conditional Modal */}
-            {isCommentModalOpen && selectedRecord && (
+            {/* File Upload Modal */}
+            {isUploadModalOpen && selectedRecord && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                    <div
+                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity animate-in fade-in duration-300"
+                        onClick={() => !uploadingId && setIsUploadModalOpen(false)}
+                    />
+                    <div className="relative bg-white rounded-[32px] shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 animate-in zoom-in-95 duration-300">
+                        {/* Modal Header */}
+                        <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className="p-3 bg-blue-50 rounded-2xl text-blue-600 border border-blue-100 shadow-sm transition-transform hover:rotate-3">
+                                    <FileUp className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Upload Documentation</h3>
+                                    <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">{selectedRecord.id} • {selectedRecord.buyer}</p>
+                                </div>
+                            </div>
+                            {!uploadingId && (
+                                <button
+                                    onClick={() => setIsUploadModalOpen(false)}
+                                    className="p-2.5 hover:bg-slate-100 rounded-full transition-all text-slate-400 hover:text-slate-600 hover:rotate-90"
+                                >
+                                    <X className="w-6 h-6" />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Modal Body */}
+                        <div className="p-8">
+                            {uploadingId === selectedRecord.id ? (
+                                <div className="py-12 flex flex-col items-center justify-center">
+                                    <div className="relative w-32 h-32 mb-8">
+                                        <svg className="w-full h-full transform -rotate-90">
+                                            <circle
+                                                cx="64" cy="64" r="60"
+                                                fill="transparent"
+                                                stroke="currentColor"
+                                                strokeWidth="8"
+                                                className="text-slate-100"
+                                            />
+                                            <circle
+                                                cx="64" cy="64" r="60"
+                                                fill="transparent"
+                                                stroke="currentColor"
+                                                strokeWidth="8"
+                                                strokeDasharray={2 * Math.PI * 60}
+                                                strokeDashoffset={2 * Math.PI * 60 * (1 - uploadProgress / 100)}
+                                                className="text-blue-600 transition-all duration-300 ease-out"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                            <span className="text-2xl font-black text-slate-900 leading-none">{uploadProgress}%</span>
+                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Uploading</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm font-bold text-slate-600 animate-pulse uppercase tracking-widest">Processing Secure Transfer...</p>
+                                </div>
+                            ) : (
+                                <div
+                                    onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-blue-500', 'bg-blue-50/50'); }}
+                                    onDragLeave={(e) => { e.preventDefault(); e.currentTarget.classList.remove('border-blue-500', 'bg-blue-50/50'); }}
+                                    onDrop={(e) => { e.preventDefault(); handleFileUpload(e); }}
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="border-2 border-dashed border-slate-200 rounded-[24px] p-12 flex flex-col items-center justify-center gap-4 hover:border-blue-400 hover:bg-blue-50/30 transition-all cursor-pointer group relative overflow-hidden"
+                                >
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm border border-slate-100">
+                                        <FileUp className="w-8 h-8 text-blue-500" />
+                                    </div>
+                                    <div className="text-center">
+                                        <h4 className="text-base font-black text-slate-900 uppercase tracking-tight">Drop documents here</h4>
+                                        <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-1">or click to browse files</p>
+                                    </div>
+                                    <div className="flex items-center gap-6 mt-4">
+                                        <div className="flex flex-col items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity">
+                                            <div className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center bg-white shadow-sm">
+                                                <span className="text-[10px] font-black text-slate-600">PDF</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity">
+                                            <div className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center bg-white shadow-sm">
+                                                <span className="text-[10px] font-black text-slate-600">JPG</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity">
+                                            <div className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center bg-white shadow-sm">
+                                                <span className="text-[10px] font-black text-slate-600">PNG</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Modal Footer */}
+                        {!uploadingId && (
+                            <div className="px-8 py-6 border-t border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest max-w-[200px]">Maximum file size: 25MB. All transfers are encrypted.</span>
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="px-6 py-3 bg-slate-900 text-white rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-lg active:scale-95"
+                                >
+                                    Select File
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+            {/* Feedback Modal */}
+            {isCommentModalOpen && selectedRecord && !isUploadModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div
                         className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity"
@@ -345,7 +545,7 @@ const QCFile = ({ onBack }) => {
                                         <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">{selectedRecord.id} • {selectedRecord.buyer}</p>
                                     </div>
                                 </div>
-                                <button onClick={() => setIsCommentModalOpen(false)} className="p-2 hover:bg-slate-100 rounded-full transition-all text-slate-400">
+                                <button onClick={() => setIsCommentModalOpen(false)} className="p-2.5 hover:bg-slate-100 rounded-full transition-all text-slate-400">
                                     <X className="w-6 h-6" />
                                 </button>
                             </div>
@@ -445,6 +645,14 @@ const QCFile = ({ onBack }) => {
                     )}
                 </div>
             )}
+
+            {/* Hidden File Input */}
+            <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileUpload}
+            />
         </div>
     );
 };
