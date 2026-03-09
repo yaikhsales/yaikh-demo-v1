@@ -114,9 +114,11 @@ import SupplierEvaluation from "./yqms/SupplierEvaluation";
 import CustomerComplainCap from "./yqms/CustomerComplainCap";
 import YQMSReport from "./yqms/YQMSReport";
 import YQMSGlobalDashboard from "./yqms/YQMSGlobalDashboard";
-import { YQMSDashboard } from "./yqms/YQMSDashboard";
+import { YQMSDashboard } from "./yqms/Fin-check/Dashboard/YQMSDashboard";
 import HumidityReportAdd from "./yqms/HumidityReport/add-model";
 import HumidityReportList from "./yqms/HumidityReport/show-list";
+import QCRovingDashboard from "./yqms/Fin-check/Dashboard/QCRovingDashboard";
+import CuttingDashboard from "./yqms/Fin-check/Dashboard/CuttingDashboard";
 
 
 export default function App() {
@@ -533,6 +535,14 @@ export default function App() {
           <Route
             path="yqms/dashboard"
             element={<YQMSDashboard onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/qc-roving"
+            element={<CuttingDashboard onBack={handleBack} />}
+          />
+          <Route
+            path="yqms/cutting"
+            element={<QCRovingDashboard onBack={handleBack} />}
           />
           <Route
             path="yqms/first-output-print"

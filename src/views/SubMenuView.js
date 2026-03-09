@@ -149,7 +149,7 @@ const getSubIconImage = (title) => {
     "Pre Final Inspection": "pre-final-inspection.jpg",
     "Final Inspection": "final-inspection.jpg",
     "Buyer Final Inspection": "buyer-final-inspection.jpg",
-    "Customer Complain Cap": "customer-complain-cap.jpg",
+    "Customer Complaint CAP": "customer.png",
     "Fin Check": "fincheck.png",
   };
 
@@ -549,7 +549,9 @@ const renderCard = (
                     ? "flex-shrink-0"
                     : "p-0 rounded-lg relative"
                   : isYQMSOrFC && card.color && card.color.includes("bg-white")
-                    ? "p-6 rounded-3xl relative bg-slate-100/80 shadow-inner flex flex-col items-center gap-2" // Gray container from screenshot
+                    ? card.title === "Customer Complaint CAP"
+                      ? "p-0 rounded-3xl relative flex flex-col items-center gap-2"
+                      : "p-6 rounded-3xl relative bg-slate-100/80 shadow-inner flex flex-col items-center gap-2"
                     : theme === "normal"
                       ? "p-3 rounded-lg relative bg-white/20 backdrop-blur-sm"
                       : "p-3 rounded-lg relative bg-white/10 backdrop-blur-sm"
@@ -584,13 +586,20 @@ const renderCard = (
                           maxHeight: "100%",
                         }
                         : isYQMSOrFC && card.color && card.color.includes("bg-white")
-                          ? {
-                            backgroundColor: "white",
-                            border: "2px solid #3b82f6",
-                            padding: "8px",
-                            borderRadius: "16px",
-                            boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                          }
+                          ? card.title === "Customer Complaint CAP"
+                            ? {
+                              backgroundColor: "transparent",
+                              border: "2px solid #3b82f6",
+                              padding: "8px",
+                              borderRadius: "16px",
+                            }
+                            : {
+                              backgroundColor: "white",
+                              border: "2px solid #3b82f6",
+                              padding: "8px",
+                              borderRadius: "16px",
+                              boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                            }
                           : isNonClickableModule
                             ? {
                               backgroundColor: "transparent",
