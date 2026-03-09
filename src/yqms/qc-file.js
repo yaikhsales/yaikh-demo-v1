@@ -45,24 +45,25 @@ const QCFile = ({ onBack }) => {
 
     const initialRecords = [
         { id: 'GPAR12376NOS', date: '2024-02-14', buyer: 'Aritzia', style: 'FFS 99-06-60284-R-SU26', rolls: 45, qty: '2,250m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_001.pdf', comments: 12 },
-        { id: 'GPAR12261', date: '2024-02-14', buyer: 'Aritzia', style: 'RBCY 02-01-10008-SU26(RMG0546)', rolls: 12, qty: '600m', status: 'In-Progress', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'QC_Report_002.pdf', comments: 5 },
-        { id: 'PTCOC400A', date: '2024-02-13', buyer: 'Costco', style: 'CR1411CC-01', rolls: 88, qty: '4,000m', status: 'Pending', statusColor: 'text-amber-700 bg-amber-100 border-amber-200', file: 'Pending', comments: 0 },
+        { id: 'GPAR12261', date: '2024-02-14', buyer: 'Aritzia', style: 'RBCY 02-01-10008-SU26(RMG0546)', rolls: 12, qty: '600m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_002.pdf', comments: 5 },
+        { id: 'PTCOC400A', date: '2024-02-13', buyer: 'Costco', style: 'CR1411CC-01', rolls: 88, qty: '4,000m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_003.pdf', comments: 5 },
         { id: 'GPAF6007RGD', date: '2024-02-11', buyer: 'ANF', style: 'S261220001', rolls: 25, qty: '1,250m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_004.pdf', comments: 8 },
         { id: 'GPAR12343NOS', date: '2024-02-10', buyer: 'Aritzia', style: 'FFS 99-03-44504-SU26-02', rolls: 30, qty: '1,500m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_005.pdf', comments: 3 },
         { id: 'GPRT00188A', date: '2024-02-09', buyer: 'Reitmans', style: 'W02-493553', rolls: 50, qty: '2,500m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_006.pdf', comments: 15 },
-        { id: 'PTAF0449', date: '2024-02-08', buyer: 'ANF', style: '134F0410', rolls: 40, qty: '2,000m', status: 'In-Progress', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'QC_Report_007.pdf', comments: 2 },
+        { id: 'PTAF0449', date: '2024-02-08', buyer: 'ANF', style: '134F0410', rolls: 40, qty: '2,000m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_007.pdf', comments: 2 },
         { id: 'GPRT00174A', date: '2024-02-07', buyer: 'Reitmans', style: 'P21-470072', rolls: 60, qty: '3,000m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_008.pdf', comments: 20 },
-        { id: 'GPAF6137R', date: '2024-02-06', buyer: 'ANF', style: 'S261220058', rolls: 15, qty: '750m', status: 'In-Progress', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'QC_Report_009.pdf', comments: 4 },
+        { id: 'GPAF6137R', date: '2024-02-06', buyer: 'ANF', style: 'S261220058', rolls: 15, qty: '750m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_009.pdf', comments: 4 },
         { id: 'PTCOC381R', date: '2024-02-05', buyer: 'Costco', style: 'STCO6690', rolls: 35, qty: '1,750m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_010.pdf', comments: 6 },
         { id: 'GPAR12167GD-2', date: '2024-02-04', buyer: 'Aritzia', style: 'FFS 99-03-32364-SU26(DW1830)', rolls: 20, qty: '1,000m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_011.pdf', comments: 9 },
-        { id: 'GPAR12275-1', date: '2024-02-03', buyer: 'Aritzia', style: 'FFS 99-03-44514-SU26', rolls: 45, qty: '2,250m', status: 'Pending', statusColor: 'text-amber-700 bg-amber-100 border-amber-200', file: 'Pending', comments: 0 },
-        { id: 'GPAR12220', date: '2024-02-02', buyer: 'Aritzia', style: 'RBC 02-01-52114-SU26(AG2276)', rolls: 55, qty: '2,750m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_012.pdf', comments: 11 },
-        { id: 'GPAR12274-1', date: '2024-02-01', buyer: 'Aritzia', style: 'FFS 99-03-44504-SU26', rolls: 10, qty: '500m', status: 'In-Progress', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'QC_Report_013.pdf', comments: 7 }
+        { id: 'GPAR12275-1', date: '2024-02-03', buyer: 'Aritzia', style: 'FFS 99-03-44514-SU26', rolls: 45, qty: '2,250m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_012.pdf', comments: 2 },
+        { id: 'GPAR12220', date: '2024-02-02', buyer: 'Aritzia', style: 'RBC 02-01-52114-SU26(AG2276)', rolls: 55, qty: '2,750m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_013.pdf', comments: 11 },
+        { id: 'GPAR12274-1', date: '2024-02-01', buyer: 'Aritzia', style: 'FFS 99-03-44504-SU26', rolls: 10, qty: '500m', status: 'Completed', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'QC_Report_014.pdf', comments: 7 }
     ];
 
     const [records, setRecords] = useState(() => {
-        const saved = localStorage.getItem('qc_records_demo');
-        return saved ? JSON.parse(saved) : initialRecords;
+        // We forcibly update to initialRecords to reflect the "No Upload" state for the demo
+        localStorage.removeItem('qc_records_demo');
+        return initialRecords;
     });
 
     React.useEffect(() => {
@@ -131,6 +132,16 @@ const QCFile = ({ onBack }) => {
             setIsUploadModalOpen(false);
             if (event.target) event.target.value = '';
         }, 500);
+    };
+
+    const handleDownloadPDF = (record) => {
+        // The file is now correctly located in the /public directory for the dev server
+        const fileName = 'GPAR12356 制单 2026-2-2.pdf';
+        // We use the absolute path from the root as it's served from the public folder
+        const fileUrl = `/${fileName}`;
+
+        // Open in new tab for direct viewing and download
+        window.open(fileUrl, '_blank');
     };
 
     return (
@@ -300,46 +311,22 @@ const QCFile = ({ onBack }) => {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex justify-center">
-                                            {record.file !== 'Pending' ? (
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        if (record.fileUrl) {
-                                                            window.open(record.fileUrl, '_blank');
-                                                        } else if (record.file !== 'Pending') {
-                                                            // Handle cases where session URL is lost or it's mock data
-                                                            alert(`Downloading ${record.file}... (Demo Mode)`);
-                                                        } else {
-                                                            setSelectedRecord(record);
-                                                            setIsUploadModalOpen(true);
-                                                        }
-                                                    }}
-                                                    className="flex items-center gap-2 px-2 py-1.5 hover:bg-red-200 rounded-lg text-red-600 transition-all border border-slate-200 group/down"
-                                                    title={record.fileUrl ? `View ${record.file}` : `Click to upload a real file for ${record.file}`}
-                                                >
-                                                    <Download className="w-4 h-4 text-red-600 group-hover/down:scale-110 transition-transform" />
-                                                    <span className="text-[10px] font-bold uppercase tracking-tight">{record.file.split('.').pop()}</span>
-                                                </button>
-                                            ) : (
-                                                <button
-                                                    onClick={(e) => {
-                                                        e.stopPropagation();
-                                                        setSelectedRecord(record);
-                                                        setIsUploadModalOpen(true);
-                                                    }}
-                                                    disabled={uploadingId === record.id}
-                                                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 hover:bg-blue-100 rounded-xl text-blue-600 transition-all border border-blue-200 group/upload cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-95"
-                                                >
-                                                    {uploadingId === record.id ? (
-                                                        <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
-                                                    ) : (
-                                                        <FileUp className="w-4 h-4 text-blue-600 group-hover/upload:-translate-y-0.5 transition-transform" />
-                                                    )}
-                                                    <span className="text-[10px] font-black uppercase tracking-widest font-sans">
-                                                        {uploadingId === record.id ? 'Uploading...' : 'Upload'}
-                                                    </span>
-                                                </button>
-                                            )}
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (record.fileUrl) {
+                                                        window.open(record.fileUrl, '_blank');
+                                                    } else {
+                                                        // Trigger the real download for already existing/persisted files
+                                                        handleDownloadPDF(record);
+                                                    }
+                                                }}
+                                                className="flex items-center gap-2 px-2 py-1.5 hover:bg-red-200 rounded-lg text-red-600 transition-all border border-slate-200 group/down"
+                                                title={record.fileUrl ? `View ${record.file}` : `Click to view report`}
+                                            >
+                                                <Download className="w-4 h-4 text-red-600 group-hover/down:scale-110 transition-transform" />
+                                                <span className="text-[10px] font-bold uppercase tracking-tight">{record.file ? record.file.split('.').pop() : 'PDF'}</span>
+                                            </button>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-center">
