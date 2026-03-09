@@ -150,7 +150,7 @@ const PreProductionMeeting = ({ onBack }) => {
                             </form>
                         </div>
                         <div className="flex items-center gap-2">
-                            <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold uppercase tracking-tight hover:border-slate-300 transition-all shadow-sm text-slate-700">
+                            <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-xs font-bold hover:border-slate-300 transition-all shadow-sm text-slate-700">
                                 <Filter className="w-4 h-4 text-red-600" /> Advanced Filters
                             </button>
                             <div className="h-6 w-px bg-slate-200 mx-2"></div>

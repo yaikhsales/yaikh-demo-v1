@@ -100,16 +100,7 @@ const ImageView = ({ onBack }) => {
                     className="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out"
                     style={{ transform: `scale(${zoom})` }}
                 >
-                    <img
-                        src={gallery[currentIndex]}
-                        alt={title}
-                        className="max-w-full max-h-full object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.8)] rounded-2xl"
-                        onError={(e) => {
-                            // Fallback if image fails to load
-                            e.target.src = "https://images.unsplash.com/photo-1594818379496-da1e345b0ded?q=80&w=1470&auto=format&fit=crop";
-                            e.target.onerror = null;
-                        }}
-                    />
+                   
                 </div>
 
                 {/* Subtle Bottom Ambient Glow */}
