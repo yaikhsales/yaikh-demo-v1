@@ -177,7 +177,7 @@ const AddMeeting = ({ onCancel, onSave }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="w-full max-w-4xl bg-white border border-slate-200 rounded-[2.5rem] shadow-2xl shadow-slate-900/20 overflow-hidden animate-in zoom-in-95 duration-300 max-h-[90vh] flex flex-col">
                 {/* Form Header */}
-                <div className="flex items-center justify-between px-6 py-6 border-b border-slate-100 bg-white z-10">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-white z-10">
                     <div>
                         <h2 className="text-2xl font-bold text-slate-800 tracking-tight flex items-center gap-3">
                             <div className="p-2 bg-red-50 rounded-xl text-red-600">
@@ -185,7 +185,7 @@ const AddMeeting = ({ onCancel, onSave }) => {
                             </div>
                             Schedule New Meeting
                         </h2>
-                        <p className="text-slate-500 text-xs font-bold mt-1 tracking-widest opacity-80">Initialize Pre-Production Strategy & Alignment</p>
+                        <p className="ml-12 text-slate-500 text-xs font-bold mt-1">Initialize Pre-Production Strategy & Alignment</p>
                     </div>
                     <button
                         onClick={onCancel}
