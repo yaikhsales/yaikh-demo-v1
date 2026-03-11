@@ -10,9 +10,56 @@ import {
   CheckCircle2,
   AlertCircle,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const FabricTest = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Test ID",
+      accessor: "id",
+      render: (val) => (
+        <span className="font-mono font-bold text-purple-400 uppercase">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Target Roll",
+      accessor: "rollId",
+      render: (val) => (
+        <span className="text-sm font-black text-white uppercase italic">
+          {val}
+        </span>
+      ),
+    },
+    { header: "Analysis Category", accessor: "testType" },
+    {
+      header: "Result Data",
+      accessor: "result",
+      align: "center",
+      render: (val) => (
+        <span className="px-3 py-1 bg-slate-900 rounded-lg text-xs font-black text-white border border-slate-800">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "center",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${val === "Completed" ? "bg-emerald-500/10 text-emerald-500" : "bg-rose-500/10 text-rose-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+    { header: "Date", accessor: "date", align: "right" },
+  ];
 
   // Mock data for Fabric Testing (Shrinkage, Shade, Weight)
   const testData = [
@@ -52,6 +99,14 @@ const FabricTest = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Fabric Test Lab Report"
+        data={testData}
+        columns={reportColumns}
+        colorClass="purple"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -70,10 +125,21 @@ const FabricTest = ({ onBack }) => {
               </p>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl">
-            <FlaskConical size={18} />
-            New Lab Test
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              Report
+            </button>
+            <button
+              onClick={() => alert("New Lab Test Triggered")}
+              className="flex items-center gap-2 px-6 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <FlaskConical size={18} />
+              New Lab Test
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">

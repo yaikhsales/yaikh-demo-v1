@@ -1,28 +1,77 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ModuleBotButton from "../components/ModuleBotButton";
 import {
-  Search,
-  Eye,
-  Edit2,
-  Trash2,
-  Plus,
-  MessageCircle,
   ArrowLeft,
-  Activity,
-  BarChart3,
   TrendingUp,
   ChevronDown,
-  ChevronRight,
+  Search,
 } from "lucide-react";
-import GeneralAIAgent from "../general-ag";
-import { useTranslation } from "../translate/TranslationContext";
+
+// InfoModal component for showing details
+const InfoModal = ({ open, onClose, type, data }) => {
+  if (!open || !data) return null;
+  let title = "";
+  let content = null;
+  if (type === "line") {
+    title = `Line Detail: ${data.line}`;
+    content = (
+      <div className="space-y-2">
+        <div><b>Style:</b> {data.style}</div>
+        <div><b>Section:</b> {data.section}</div>
+        <div><b>Department:</b> {data.department}</div>
+        <div><b>Target:</b> {data.target}</div>
+        <div><b>Actual:</b> {data.actual}</div>
+        <div><b>Efficiency:</b> {data.efficiency}</div>
+        <div><b>Status:</b> {data.status}</div>
+      </div>
+    );
+  } else if (type === "section") {
+    title = `Section Analytics: ${data.label}`;
+    content = (
+      <div className="space-y-2">
+        <div><b>Total Lines:</b> {data.linesCount}</div>
+        <div><b>Target:</b> {data.target}</div>
+        <div><b>Actual:</b> {data.actual}</div>
+        <div><b>Efficiency:</b> {data.efficiency}</div>
+        <div><b>Status:</b> {data.status}</div>
+      </div>
+    );
+  } else if (type === "department") {
+    title = `Department Health: ${data.label}`;
+    content = (
+      <div className="space-y-2">
+        <div><b>Total Sections:</b> {data.sectionsCount}</div>
+        <div><b>Target:</b> {data.target}</div>
+        <div><b>Actual:</b> {data.actual}</div>
+        <div><b>Efficiency:</b> {data.efficiency}</div>
+        <div><b>Status:</b> {data.status}</div>
+      </div>
+    );
+  }
+  return (
+    <div className="fixed inset-0 bg-black/40 z-[300] flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-slate-400 hover:text-orange-600 text-xl font-black"
+        >
+          ×
+        </button>
+        <h3 className="text-xl font-black mb-4 text-orange-600">{title}</h3>
+        {content}
+      </div>
+    </div>
+  );
+};
 
 const Productivity = ({ onBack }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState([]);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [infoModal, setInfoModal] = useState({ open: false, type: null, data: null });
 
   const toggleSection = (sectionLabel) => {
     setExpandedSections((prev) =>
@@ -334,8 +383,28 @@ const Productivity = ({ onBack }) => {
   };
 
   const handleAction = (type, name) => {
-    alert(`${type} - Real-time productivity for ${name}`);
+    if (activeTab === "all") {
+      // Find line by name
+      const line = lines.find((l) => l.line === name);
+      setInfoModal({ open: true, type: "line", data: line });
+    } else if (activeTab === "section") {
+      // Find section by label
+      const section = sectionsData.find((s) => s.label === name);
+      setInfoModal({ open: true, type: "section", data: section });
+    } else if (activeTab === "department") {
+      // Find department by label
+      const dept = departmentsData.find((d) => d.label === name);
+      setInfoModal({ open: true, type: "department", data: dept });
+    }
   };
+
+  // Report calculation logic
+  const totalLines = lines.length;
+  const totalTarget = lines.reduce((sum, l) => sum + l.target, 0);
+  const totalActual = lines.reduce((sum, l) => sum + l.actual, 0);
+  const avgEfficiency = (lines.reduce((sum, l) => sum + parseFloat(l.efficiency), 0) / totalLines).toFixed(2) + "%";
+  const bestLine = lines.reduce((best, l) => parseFloat(l.efficiency) > parseFloat(best.efficiency) ? l : best, lines[0]);
+  const worstLine = lines.reduce((worst, l) => parseFloat(l.efficiency) < parseFloat(worst.efficiency) ? l : worst, lines[0]);
 
   const renderContent = () => {
     if (activeTab === "all") {
@@ -621,6 +690,12 @@ const Productivity = ({ onBack }) => {
                 Live Tracking
               </span>
             </div>
+            <button
+              onClick={() => setIsReportOpen(true)}
+              className="px-4 py-2 bg-orange-600 text-white rounded-xl font-black text-xs shadow hover:bg-orange-700 transition-all"
+            >
+              Report
+            </button>
           </div>
         </div>
 
@@ -692,18 +767,158 @@ const Productivity = ({ onBack }) => {
       </div>
 
       {/* AI Bot */}
-      <button
-        onClick={() => setIsBotOpen(true)}
-        className="fixed bottom-8 right-8 z-[150] w-14 h-14 bg-orange-600 text-white rounded-2xl shadow-xl hover:scale-110 transition-all flex items-center justify-center group"
-      >
-        <MessageCircle className="w-7 h-7 group-hover:rotate-12 transition-transform" />
-      </button>
-
-      {isBotOpen && (
-        <GeneralAIAgent
-          onClose={() => setIsBotOpen(false)}
-          moduleContext="Production Line Monitoring"
-        />
+      <InfoModal open={infoModal.open} type={infoModal.type} data={infoModal.data} onClose={() => setInfoModal({ open: false, type: null, data: null })} />
+      {/* Use the same ModuleBotButton as other modules for chatbot */}
+      <ModuleBotButton
+        isOpen={isBotOpen}
+        setIsOpen={setIsBotOpen}
+        className="fixed bottom-8 right-8 z-[150]"
+        module="productivity"
+      />
+      {isReportOpen && (
+        <div className="fixed inset-0 bg-black/40 z-[200] flex items-center justify-center print:bg-white print:relative print:inset-auto print:z-auto">
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-3xl relative print:shadow-none print:rounded-none print:p-4 print:max-w-full print:w-full print:overflow-visible" style={{ maxHeight: '90vh', overflowY: 'auto', boxSizing: 'border-box' }} data-print-modal>
+            <button
+              onClick={() => setIsReportOpen(false)}
+              className="absolute top-3 right-3 text-slate-400 hover:text-orange-600 text-xl font-black print:hidden"
+            >
+              ×
+            </button>
+            <div className="flex justify-between items-center mb-2 print:mb-4">
+              <h3 className="text-2xl font-black mb-4 text-orange-600 print:text-black print:text-xl">Productivity Dashboard Report</h3>
+              <div className="space-x-2 print:hidden">
+                <button
+                  className="px-4 py-1.5 bg-orange-600 text-white rounded font-bold text-xs hover:bg-orange-700 transition-all"
+                  onClick={() => {
+                    // Remove scroll and modal restrictions for print
+                    const modal = document.querySelector('[data-print-modal]');
+                    if (modal) {
+                      modal.style.maxHeight = 'none';
+                      modal.style.overflow = 'visible';
+                    }
+                    setTimeout(() => window.print(), 100);
+                  }}
+                >
+                  Print / Save PDF
+                </button>
+              </div>
+            </div>
+            <div className="mb-6 grid grid-cols-3 gap-4 text-base">
+              <div className="bg-orange-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-2xl font-black text-orange-700">{totalLines}</span>
+                <span className="text-xs font-bold text-orange-900 mt-1">Total Lines</span>
+              </div>
+              <div className="bg-emerald-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-2xl font-black text-emerald-700">{totalTarget}</span>
+                <span className="text-xs font-bold text-emerald-900 mt-1">Total Target</span>
+              </div>
+              <div className="bg-blue-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-2xl font-black text-blue-700">{totalActual}</span>
+                <span className="text-xs font-bold text-blue-900 mt-1">Total Actual</span>
+              </div>
+              <div className="bg-yellow-50 rounded-xl p-4 flex flex-col items-center col-span-3">
+                <span className="text-lg font-black text-yellow-700">Average Efficiency</span>
+                <span className="text-xl font-black text-yellow-900">{avgEfficiency}</span>
+              </div>
+            </div>
+            <div className="mb-6 grid grid-cols-2 gap-4 text-sm">
+              <div className="bg-emerald-100 rounded-xl p-4 flex flex-col items-center">
+                <span className="font-bold text-emerald-700">Best Line</span>
+                <span className="font-black text-lg">{bestLine.line}</span>
+                <span className="text-xs">{bestLine.section} / {bestLine.department}</span>
+                <span className="text-emerald-700 font-black">{bestLine.efficiency}</span>
+                <span className="text-xs">Target: {bestLine.target} | Actual: {bestLine.actual}</span>
+              </div>
+              <div className="bg-rose-100 rounded-xl p-4 flex flex-col items-center">
+                <span className="font-bold text-rose-700">Worst Line</span>
+                <span className="font-black text-lg">{worstLine.line}</span>
+                <span className="text-xs">{worstLine.section} / {worstLine.department}</span>
+                <span className="text-rose-700 font-black">{worstLine.efficiency}</span>
+                <span className="text-xs">Target: {worstLine.target} | Actual: {worstLine.actual}</span>
+              </div>
+            </div>
+            <h4 className="font-bold text-slate-700 mt-6 mb-2 text-lg">Section Summary</h4>
+            <table className="w-full text-xs mb-6 border">
+              <thead>
+                <tr className="bg-slate-100">
+                  <th className="p-2 text-left">Section</th>
+                  <th className="p-2 text-right">Lines</th>
+                  <th className="p-2 text-right">Target</th>
+                  <th className="p-2 text-right">Actual</th>
+                  <th className="p-2 text-right">Efficiency</th>
+                  <th className="p-2 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sectionsData.map((s, i) => (
+                  <tr key={i}>
+                    <td className="p-2">{s.label}</td>
+                    <td className="p-2 text-right">{s.linesCount}</td>
+                    <td className="p-2 text-right">{s.target}</td>
+                    <td className="p-2 text-right">{s.actual}</td>
+                    <td className="p-2 text-right">{s.efficiency}</td>
+                    <td className="p-2 text-right">{s.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <h4 className="font-bold text-slate-700 mt-6 mb-2 text-lg">Department Summary</h4>
+            <table className="w-full text-xs mb-6 border">
+              <thead>
+                <tr className="bg-slate-100">
+                  <th className="p-2 text-left">Department</th>
+                  <th className="p-2 text-right">Sections</th>
+                  <th className="p-2 text-right">Target</th>
+                  <th className="p-2 text-right">Actual</th>
+                  <th className="p-2 text-right">Efficiency</th>
+                  <th className="p-2 text-right">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {departmentsData.map((d, i) => (
+                  <tr key={i}>
+                    <td className="p-2">{d.label}</td>
+                    <td className="p-2 text-right">{d.sectionsCount}</td>
+                    <td className="p-2 text-right">{d.target}</td>
+                    <td className="p-2 text-right">{d.actual}</td>
+                    <td className="p-2 text-right">{d.efficiency}</td>
+                    <td className="p-2 text-right">{d.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <h4 className="font-bold text-slate-700 mt-6 mb-2 text-lg">All Lines Detail</h4>
+            <div className="overflow-x-auto max-h-64 print:max-h-none">
+              <table className="w-full text-xs border">
+                <thead>
+                  <tr className="bg-slate-100">
+                    <th className="p-2 text-left">Line</th>
+                    <th className="p-2 text-left">Section</th>
+                    <th className="p-2 text-left">Department</th>
+                    <th className="p-2 text-right">Target</th>
+                    <th className="p-2 text-right">Actual</th>
+                    <th className="p-2 text-right">Efficiency</th>
+                    <th className="p-2 text-right">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {lines.map((l, i) => (
+                    <tr key={i}>
+                      <td className="p-2">{l.line}</td>
+                      <td className="p-2">{l.section}</td>
+                      <td className="p-2">{l.department}</td>
+                      <td className="p-2 text-right">{l.target}</td>
+                      <td className="p-2 text-right">{l.actual}</td>
+                      <td className="p-2 text-right">{l.efficiency}</td>
+                      <td className="p-2 text-right">{l.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="text-xs text-slate-400 mt-4 print:hidden">Tip: Use the Print button to save this dashboard as a PDF.</div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -10,9 +10,82 @@ import {
   Zap,
   Scissors,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const Consumptions = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Job ID",
+      accessor: "id",
+      render: (val, row) => (
+        <div>
+          <div className="text-sm font-black text-white">{val}</div>
+          <div className="text-[10px] font-bold text-slate-500 uppercase">
+            {row.style}
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Buyer",
+      accessor: "buyer",
+      render: (val) => (
+        <span className="text-sm font-bold text-slate-300">{val}</span>
+      ),
+    },
+    {
+      header: "Material",
+      accessor: "item",
+      render: (val) => (
+        <span className="text-xs font-medium text-slate-400 italic font-mono">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Planned",
+      accessor: "target",
+      align: "center",
+      render: (val) => (
+        <span className="text-sm font-bold text-slate-400">{val}</span>
+      ),
+    },
+    {
+      header: "Actual",
+      accessor: "actual",
+      align: "center",
+      render: (val) => (
+        <span className="text-sm font-black text-white">{val}</span>
+      ),
+    },
+    {
+      header: "Variance",
+      accessor: "variance",
+      align: "center",
+      render: (val, row) => (
+        <div
+          className={`text-xs font-black font-mono ${row.status === "Alert" ? "text-rose-500" : row.status === "Warning" ? "text-amber-500" : "text-emerald-500"}`}
+        >
+          {val}
+        </div>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "right",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${val === "Alert" || val === "Warning" ? "bg-amber-500/10 text-amber-500" : "bg-emerald-500/10 text-emerald-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Fabric/Accessory Consumption
   const consumptionData = [
@@ -101,6 +174,14 @@ const Consumptions = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Consumptions Analytics Report"
+        data={consumptionData}
+        columns={reportColumns}
+        colorClass="yellow"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-4">
@@ -121,11 +202,17 @@ const Consumptions = ({ onBack }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700">
-              <PieIcon size={18} />
-              Waste View
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700"
+            >
+              <FileSpreadsheet size={18} />
+              Export Report
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+            <button
+              onClick={() => alert("Consumption Calculator Triggered")}
+              className="flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(234,179,8,0.3)]"
+            >
               <CalcIcon size={18} />
               Consumption Calculator
             </button>

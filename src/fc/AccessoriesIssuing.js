@@ -9,11 +9,58 @@ import {
   Clock,
   CheckCircle2,
   Tag,
-  Hash,
+  Download,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const AccessoriesIssuing = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Line Target",
+      accessor: "line",
+      render: (val, row) => (
+        <div>
+          <div className="text-sm font-black text-white">{val}</div>
+          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-tight italic">
+            {row.style}
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Accessory Item",
+      accessor: "item",
+      render: (val) => (
+        <span className="text-sm font-bold text-emerald-400 uppercase tracking-tight">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Batch Quantity",
+      accessor: "qty",
+      align: "center",
+      render: (val) => (
+        <span className="px-3 py-1 bg-slate-900 rounded-lg text-xs font-black text-white italic border border-slate-800 shadow-inner">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Process Status",
+      accessor: "status",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${val === "Delivered" ? "text-emerald-500" : "text-amber-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Accessories Issuing
   const issuingData = [
@@ -61,6 +108,14 @@ const AccessoriesIssuing = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Accessories Issuing Report"
+        data={issuingData}
+        columns={reportColumns}
+        colorClass="emerald"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -79,10 +134,22 @@ const AccessoriesIssuing = ({ onBack }) => {
               </p>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl">
-            <Package size={18} />
-            Issue New Trims
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Download size={18} />
+              Export
+            </button>
+            <button
+              onClick={() => alert("Issue New Trims Triggered")}
+              className="flex items-center gap-2 px-6 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Package size={18} />
+              Issue New Trims
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -137,7 +204,10 @@ const AccessoriesIssuing = ({ onBack }) => {
               />
             </div>
             <div className="flex gap-2">
-              <button className="p-3 bg-slate-800 rounded-xl text-slate-400 hover:text-white transition-all border border-slate-700/50 shadow-lg">
+              <button
+                onClick={() => alert("Tag Modal Active")}
+                className="p-3 bg-slate-800 rounded-xl text-slate-400 hover:text-white transition-all border border-slate-700/50 shadow-lg"
+              >
                 <Tag size={18} />
               </button>
             </div>
@@ -190,7 +260,10 @@ const AccessoriesIssuing = ({ onBack }) => {
                       </span>
                     </td>
                     <td className="p-6 text-right">
-                      <button className="p-2 hover:bg-slate-800 rounded-xl transition-all text-slate-600 hover:text-white">
+                      <button
+                        onClick={() => alert("Chevron Action")}
+                        className="p-2 hover:bg-slate-800 rounded-xl transition-all text-slate-600 hover:text-white"
+                      >
                         <ChevronRight size={18} />
                       </button>
                     </td>

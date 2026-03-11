@@ -9,6 +9,7 @@ const StandardTime = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const tabs = [{ id: "all", label: "SAM DATABASE", count: 12 }];
 
@@ -231,6 +232,15 @@ const StandardTime = ({ onBack }) => {
     },
   ];
 
+  const totalRecords = records.length;
+  const prodSams = records.map(r => parseFloat(r.prodSam));
+  const avgProdSam = (prodSams.reduce((a, b) => a + b, 0) / prodSams.length).toFixed(2);
+  const maxProdSam = Math.max(...prodSams);
+  const minProdSam = Math.min(...prodSams);
+  const maxRecord = records.find(r => parseFloat(r.prodSam) === maxProdSam);
+  const minRecord = records.find(r => parseFloat(r.prodSam) === minProdSam);
+  const customerCount = [...new Set(records.map(r => r.customer))].length;
+
   const handleBack = () => {
     if (onBack) onBack();
     else navigate(-1);
@@ -272,6 +282,12 @@ const StandardTime = ({ onBack }) => {
             <button className="px-6 py-2.5 bg-blue-600 text-white rounded-2xl text-[11px] font-black uppercase hover:bg-blue-700 shadow-xl shadow-blue-200 transition-all flex items-center gap-2 active:scale-95">
               <Plus size={16} strokeWidth={3} />
               Add Tracking Record
+            </button>
+            <button
+              className="px-6 py-2.5 bg-emerald-600 text-white rounded-2xl text-[11px] font-black uppercase hover:bg-emerald-700 shadow-xl shadow-emerald-200 transition-all flex items-center gap-2 active:scale-95"
+              onClick={() => setShowReport(true)}
+            >
+              View Report
             </button>
           </div>
         </div>
@@ -417,6 +433,94 @@ const StandardTime = ({ onBack }) => {
           onClose={() => setIsBotOpen(false)}
           moduleContext="Standard Time monitoring and variance analysis database"
         />
+      )}
+
+      {showReport && (
+        <div className="fixed inset-0 bg-black/30 z-[200] flex items-center justify-center print:bg-white print:relative print:inset-auto print:z-auto">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 min-w-[350px] max-w-[90vw] w-full max-w-2xl relative print:shadow-none print:rounded-none print:p-4">
+            <button
+              className="absolute top-3 right-3 text-slate-400 hover:text-red-500 text-xl font-black print:hidden"
+              onClick={() => setShowReport(false)}
+            >
+              ×
+            </button>
+            <div className="flex justify-between items-center mb-2 print:mb-4">
+              <h3 className="text-2xl font-black text-blue-700 print:text-black print:text-xl">Standard Time (SAM) Dashboard</h3>
+              <div className="space-x-2 print:hidden">
+                <button
+                  className="px-4 py-1.5 bg-blue-600 text-white rounded font-bold text-xs hover:bg-blue-700 transition-all"
+                  onClick={() => window.print()}
+                >
+                  Print / Save PDF
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              <div className="bg-blue-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-3xl font-black text-blue-700">{totalRecords}</span>
+                <span className="text-xs font-bold text-blue-900 mt-1">Total Styles</span>
+              </div>
+              <div className="bg-emerald-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-3xl font-black text-emerald-700">{customerCount}</span>
+                <span className="text-xs font-bold text-emerald-900 mt-1">Unique Customers</span>
+              </div>
+              <div className="bg-orange-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-3xl font-black text-orange-600">{avgProdSam}</span>
+                <span className="text-xs font-bold text-orange-900 mt-1">Avg. Prod. SAM</span>
+              </div>
+              <div className="bg-rose-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-3xl font-black text-rose-600">{minProdSam}</span>
+                <span className="text-xs font-bold text-rose-900 mt-1">Lowest Prod. SAM</span>
+              </div>
+              <div className="bg-emerald-100 rounded-xl p-4 flex flex-col items-center col-span-2">
+                <span className="text-lg font-black text-emerald-700">Highest Prod. SAM</span>
+                <span className="text-2xl font-black text-emerald-900">{maxProdSam} <span className="text-base font-bold">({maxRecord?.item}, {maxRecord?.customer})</span></span>
+              </div>
+            </div>
+            <div className="mb-4">
+              <h4 className="text-lg font-black text-slate-700 mb-2">Customer Breakdown</h4>
+              <div className="grid grid-cols-2 gap-2">
+                {Array.from(new Set(records.map(r => r.customer))).map((customer, i) => {
+                  const custRecords = records.filter(r => r.customer === customer);
+                  const avgSam = (custRecords.reduce((a, b) => a + parseFloat(b.prodSam), 0) / custRecords.length).toFixed(2);
+                  return (
+                    <div key={i} className="bg-slate-50 rounded-lg p-3 flex flex-col">
+                      <span className="font-black text-blue-700">{customer}</span>
+                      <span className="text-xs font-bold text-slate-600">Styles: {custRecords.length}</span>
+                      <span className="text-xs font-bold text-slate-600">Avg. SAM: {avgSam}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="mb-2">
+              <h4 className="text-lg font-black text-slate-700 mb-2">Recent Styles & Variance</h4>
+              <div className="max-h-40 overflow-y-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr className="text-slate-500">
+                      <th className="text-left font-bold">Style</th>
+                      <th className="text-left font-bold">Customer</th>
+                      <th className="text-center font-bold">Prod. SAM</th>
+                      <th className="text-left font-bold">Variance Reason</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {records.slice(-5).reverse().map((rec, i) => (
+                      <tr key={i} className="border-b last:border-0">
+                        <td className="py-1 font-black">{rec.styleNumber}</td>
+                        <td className="py-1">{rec.customer}</td>
+                        <td className="py-1 text-center font-black text-blue-700">{rec.prodSam}</td>
+                        <td className="py-1 italic text-slate-500">{rec.varianceReason}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="text-xs text-slate-400 mt-4 print:hidden">Tip: Use the Print button to save this dashboard as a PDF.</div>
+          </div>
+        </div>
       )}
     </div>
   );

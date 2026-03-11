@@ -14,9 +14,40 @@ import {
   Tag,
   Truck,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const AccessoriesReceiving = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "ID",
+      accessor: "id",
+      render: (val) => <span className="font-bold text-amber-400">{val}</span>,
+    },
+    { header: "Lot", accessor: "lot" },
+    {
+      header: "Supplier",
+      accessor: "supplier",
+      render: (val) => <span className="font-bold text-white">{val}</span>,
+    },
+    { header: "ItemType", accessor: "itemType" },
+    { header: "Cartons", accessor: "cartons", align: "center" },
+    { header: "Units", accessor: "units", align: "right" },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "center",
+      render: (val) => (
+        <span
+          className={`px-2 py-1 rounded-full text-[10px] uppercase font-bold ${val === "Completed" ? "bg-emerald-500/10 text-emerald-500" : val === "In-Progress" ? "bg-amber-500/10 text-amber-500" : "bg-slate-500/10 text-slate-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Accessories Receiving
   const receivingData = [
@@ -105,6 +136,14 @@ const AccessoriesReceiving = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Accessories Receiving Report"
+        data={receivingData}
+        columns={reportColumns}
+        colorClass="amber"
+      />
       {/* Header Section */}
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -126,11 +165,17 @@ const AccessoriesReceiving = ({ onBack }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700 shadow-lg">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700 shadow-lg"
+            >
               <Download size={18} />
               Export
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(217,119,6,0.4)]">
+            <button
+              onClick={() => alert("Receive New Trims Triggered")}
+              className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(217,119,6,0.4)]"
+            >
               <Plus size={18} />
               Receive New Trims
             </button>
@@ -176,7 +221,10 @@ const AccessoriesReceiving = ({ onBack }) => {
             />
           </div>
           <div className="flex items-center gap-2 w-full md:w-auto">
-            <button className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 rounded-xl text-sm font-bold text-slate-300 hover:bg-slate-700 transition-all border border-slate-700">
+            <button
+              onClick={() => alert("Filter Lots Active")}
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 rounded-xl text-sm font-bold text-slate-300 hover:bg-slate-700 transition-all border border-slate-700"
+            >
               <Filter size={16} />
               Filter Lot
             </button>

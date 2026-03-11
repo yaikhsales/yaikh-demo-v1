@@ -11,9 +11,58 @@ import {
   Box,
   Hash,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const WarehouseTracking = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Location",
+      accessor: "zone",
+      render: (val, row) => (
+        <div>
+          <div className="text-sm font-black text-white">
+            {row.zone} / {row.aisle}
+          </div>
+          <div className="text-[10px] font-bold text-slate-600 font-mono uppercase">
+            Rack: {row.rack} | Lvl: {row.level}
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Stashed Item",
+      accessor: "item",
+      render: (val) => (
+        <span className="text-sm font-bold text-slate-200 uppercase">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Quantity Info",
+      accessor: "rolls",
+      align: "center",
+      render: (val, row) => (
+        <span className="px-3 py-1 bg-slate-900 rounded-lg text-xs font-black text-white border border-slate-700">
+          {row.rolls || row.cartons} {row.rolls ? "Rolls" : "Ctns"}
+        </span>
+      ),
+    },
+    {
+      header: "Storage Load",
+      accessor: "capacity",
+      render: (val) => (
+        <div
+          className={`text-[10px] font-black font-mono ${parseInt(val) > 80 ? "text-amber-500" : "text-slate-400"}`}
+        >
+          {val}
+        </div>
+      ),
+    },
+  ];
 
   // Mock data for Warehouse Tracking
   const warehouseData = [
@@ -93,6 +142,14 @@ const WarehouseTracking = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Warehouse Inventory Report"
+        data={warehouseData}
+        columns={reportColumns}
+        colorClass="blue"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <div className="flex items-center gap-4">
@@ -113,10 +170,19 @@ const WarehouseTracking = ({ onBack }) => {
           </div>
 
           <div className="flex items-center bg-slate-900/50 p-1 rounded-xl border border-white/5 shadow-xl">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="px-4 py-2 bg-slate-800 text-white mr-2 hover:bg-slate-700 rounded-lg text-xs font-black uppercase tracking-widest shadow-lg transition-all"
+            >
+              Summary Report
+            </button>
             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-black uppercase tracking-widest shadow-lg">
               List View
             </button>
-            <button className="px-4 py-2 text-slate-500 hover:text-slate-300 transition-colors text-xs font-black uppercase tracking-widest flex items-center gap-2">
+            <button
+              onClick={() => alert("Map View Coming Soon")}
+              className="px-4 py-2 text-slate-500 hover:text-slate-300 transition-colors text-xs font-black uppercase tracking-widest flex items-center gap-2"
+            >
               <Map size={14} />
               Map View
             </button>

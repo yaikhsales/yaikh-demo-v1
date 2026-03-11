@@ -10,12 +10,17 @@ import {
 } from "lucide-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
+import { Video } from "lucide-react";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 import { useTranslation } from "../translate/TranslationContext";
 
 const ChecklistAttendance = ({ onBack }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const [sectionName, setSectionName] = useState("All Sc");
   const [fromDate, setFromDate] = useState("2025-12-01");
   const [toDate, setToDate] = useState("2025-12-23");
@@ -461,6 +466,26 @@ const ChecklistAttendance = ({ onBack }) => {
         </div>
 
         <div className="flex items-center gap-4">
+          <button
+            onClick={() =>
+              setSelectedVideo("/assets/short-video-training/yhr-training.mov")
+            }
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+            title="Video Training"
+          >
+            <Video size={18} className="text-blue-600" />
+          </button>
+          <button
+            onClick={() =>
+              setSelectedDocument(
+                "/assets/report-training/checklist-attendance.pdf",
+              )
+            }
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+            title="Report Training"
+          >
+            <FileText size={18} className="text-blue-600" />
+          </button>
           <div className="flex -space-x-2">
             {[1, 2, 3, 4].map((i) => (
               <div
@@ -789,6 +814,18 @@ const ChecklistAttendance = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="Checklist Attendance"
+        />
+      )}
+      {selectedVideo && (
+        <VideoViewer
+          videoUrl={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+      {selectedDocument && (
+        <DocumentViewer
+          documentUrl={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
     </div>

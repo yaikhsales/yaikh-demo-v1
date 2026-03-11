@@ -7,11 +7,14 @@ import {
   Eye,
   X,
   MessageCircle,
+  Video,
 } from "lucide-react";
 import RequestDetailModal from "../components/RequestDetailModal";
 import InvoiceModal from "../components/InvoiceModal";
 import ImageViewer from "../components/ImageViewer";
 import PdfViewer from "../components/PdfViewer";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 import GeneralAIAgent from "../general-ag";
 import { useTranslation } from "../translate/TranslationContext";
 
@@ -19,6 +22,8 @@ const VerifyPR = ({ onBack }) => {
   const navigate = useNavigate();
   const { t, translateModuleTitle } = useTranslation();
   const [activeTab, setActiveTab] = useState("new");
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const [searchCode, setSearchCode] = useState("");
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
@@ -1680,7 +1685,31 @@ const VerifyPR = ({ onBack }) => {
   return (
     <div className="fixed inset-0 bg-white flex flex-col animate-in fade-in duration-500 z-10">
       {/* Header with Breadcrumb and Back Button */}
-      <div className="bg-slate-100 p-4 border-b flex flex-col gap-3 flex-shrink-0 shadow-sm">
+      <div className="bg-slate-100 p-4 border-b flex flex-col gap-3 flex-shrink-0 shadow-sm relative">
+        <div className="absolute top-4 right-4 hidden sm:flex items-center gap-2">
+          <button
+            onClick={() =>
+              setSelectedVideo(
+                "/assets/short-video-training/accounting-training.mp4",
+              )
+            }
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Video Training"
+          >
+            <Video size={20} className="text-blue-600" />
+          </button>
+          <button
+            onClick={() =>
+              setSelectedDocument(
+                "/assets/report-training/accounting-training-report.pdf",
+              )
+            }
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Report Training"
+          >
+            <FileText size={20} className="text-blue-600" />
+          </button>
+        </div>
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={handleBack}
@@ -2032,6 +2061,22 @@ const VerifyPR = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="Verify PR"
+        />
+      )}
+
+      {/* Video Viewer Modal */}
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
+      {/* Document Viewer Modal */}
+      {selectedDocument && (
+        <DocumentViewer
+          documentPath={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
     </div>

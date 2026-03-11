@@ -10,10 +10,61 @@ import {
   Trash2,
   FileCheck,
   AlertTriangle,
+  Download,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const BrandProtection = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Security ID",
+      accessor: "id",
+      render: (val) => (
+        <span className="font-mono uppercase text-blue-400">{val}</span>
+      ),
+    },
+    {
+      header: "Target Brand",
+      accessor: "brand",
+      render: (val) => (
+        <span className="text-sm font-black text-white uppercase italic">
+          {val}
+        </span>
+      ),
+    },
+    { header: "Material Description", accessor: "item" },
+    {
+      header: "Action Taken",
+      accessor: "action",
+      render: (val) => (
+        <div className="flex items-center gap-2 text-xs font-black text-rose-500 uppercase">
+          <Trash2 size={12} /> {val}
+        </div>
+      ),
+    },
+    {
+      header: "Verified Witness",
+      accessor: "witness",
+      render: (val) => (
+        <span className="text-xs font-bold text-slate-500 italic">{val}</span>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "right",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${val === "Verified" ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Brand Protection
   const protectionData = [
@@ -88,6 +139,14 @@ const BrandProtection = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Brand Protection Report"
+        data={protectionData}
+        columns={reportColumns}
+        colorClass="blue"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -106,10 +165,22 @@ const BrandProtection = ({ onBack }) => {
               </p>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl">
-            <Shield size={18} />
-            New Security Audit
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Download size={18} />
+              Export
+            </button>
+            <button
+              onClick={() => alert("New Security Audit Triggered")}
+              className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Shield size={18} />
+              New Security Audit
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
