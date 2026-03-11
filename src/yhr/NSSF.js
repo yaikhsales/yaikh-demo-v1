@@ -16,6 +16,9 @@ import {
   FileText,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
+import { Video } from "lucide-react";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 import { useTranslation } from "../translate/TranslationContext";
 
 const NSSF = ({ onBack }) => {
@@ -27,6 +30,8 @@ const NSSF = ({ onBack }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
   const tabs = [{ id: "all", label: "NSSF Records", count: 7 }];
 
@@ -151,7 +156,28 @@ const NSSF = ({ onBack }) => {
               NSSF Management
             </h2>
           </div>
-          <div className="flex items-center gap-3">{/* Button Removed */}</div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() =>
+                setSelectedVideo(
+                  "/assets/short-video-training/yhr-training.mov",
+                )
+              }
+              className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+              title="Video Training"
+            >
+              <Video size={18} className="text-blue-600" />
+            </button>
+            <button
+              onClick={() =>
+                setSelectedDocument("/assets/report-training/nssf.pdf")
+              }
+              className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+              title="Report Training"
+            >
+              <FileText size={18} className="text-blue-600" />
+            </button>
+          </div>
         </div>
 
         {/* Search & Tabs */}
@@ -605,6 +631,18 @@ const NSSF = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="NSSF"
+        />
+      )}
+      {selectedVideo && (
+        <VideoViewer
+          videoUrl={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+      {selectedDocument && (
+        <DocumentViewer
+          documentUrl={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
     </div>

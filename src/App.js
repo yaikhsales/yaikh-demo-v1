@@ -124,7 +124,6 @@ import HumidityReportList from "./yqms/HumidityReport/show-list";
 import QCRovingDashboard from "./yqms/Fin-check/Dashboard/QCRovingDashboard";
 import CuttingDashboard from "./yqms/Fin-check/Dashboard/CuttingDashboard";
 
-
 export default function App() {
   const navigate = useNavigate();
   const handleBack = () => navigate(-1);
@@ -161,7 +160,7 @@ export default function App() {
           <Route path="call-out" element={<CallOut onBack={handleBack} />} />
           <Route
             path="meeting"
-            element={<TimelineView onBack={handleBack} onAdd={() => { }} />}
+            element={<TimelineView onBack={handleBack} onAdd={() => {}} />}
           />
           <Route
             path="meeting-room"
@@ -542,15 +541,11 @@ export default function App() {
           />
           <Route
             path="yqms/aquaboy"
-            element={
-              <HumidityReportAdd onBack={handleBack} />
-            }
+            element={<HumidityReportAdd onBack={handleBack} />}
           />
           <Route
             path="yqms/aquaboy/list"
-            element={
-              <HumidityReportList onBack={handleBack} />
-            }
+            element={<HumidityReportList onBack={handleBack} />}
           />
 
           <Route

@@ -11,15 +11,12 @@ import {
   RefreshCw,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
-import { useTranslation } from "../translate/TranslationContext";
 
 const CPM = ({ onBack }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
-
-  const tabs = [{ id: "all", label: "CPM Breakdown", count: 1 }];
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [infoModal, setInfoModal] = useState({ open: false, data: null });
 
   const calculation = [
     {
@@ -56,6 +53,43 @@ const CPM = ({ onBack }) => {
     else navigate(-1);
   };
 
+  const handleRowClick = (item) => {
+    setInfoModal({ open: true, data: item });
+  };
+
+  // InfoModal for CPM details (inline, not imported)
+  const InfoModal = ({ open, onClose, type, data }) => {
+    if (!open || !data) return null;
+    let title = '';
+    let content = null;
+    if (type === 'factor') {
+      title = `Factor: ${data.factor}`;
+      content = (
+        <div className="space-y-2">
+          <div><b>Description:</b> {data.description}</div>
+          <div><b>Value:</b> {data.value}</div>
+        </div>
+      );
+    } else {
+      title = data.title || 'Info';
+      content = <div>{data.description}</div>;
+    }
+    return (
+      <div className="fixed inset-0 bg-black/40 z-[300] flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative">
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 text-slate-400 hover:text-emerald-600 text-xl font-black"
+          >
+            ×
+          </button>
+          <h3 className="text-xl font-black mb-4 text-emerald-600">{title}</h3>
+          {content}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="fixed inset-0 bg-white flex flex-col z-[50] font-sans text-slate-900 overflow-hidden">
       <div className="flex-1 flex flex-col min-h-0 bg-white">
@@ -81,6 +115,12 @@ const CPM = ({ onBack }) => {
                 ${cpm.toFixed(4)}
               </span>
             </div>
+            <button
+              onClick={() => setIsReportOpen(true)}
+              className="px-4 py-2 bg-emerald-600 text-white rounded-xl font-black text-xs shadow hover:bg-emerald-700 transition-all ml-4"
+            >
+              Report
+            </button>
           </div>
         </div>
 
@@ -120,7 +160,9 @@ const CPM = ({ onBack }) => {
                 <h4 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em]">
                   Calculation Factors
                 </h4>
-                <button className="text-[10px] font-black text-emerald-600 uppercase hover:underline">
+                <button className="text-[10px] font-black text-emerald-600 uppercase hover:underline"
+                  onClick={() => setInfoModal({ open: true, data: { title: 'Update Factors', description: 'Update CPM calculation factors here.' } })}
+                >
                   Update Factors
                 </button>
               </div>
@@ -129,7 +171,8 @@ const CPM = ({ onBack }) => {
                   {calculation.map((item) => (
                     <tr
                       key={item.id}
-                      className="group hover:bg-slate-50/50 transition-colors"
+                      className="group hover:bg-slate-50/50 transition-colors cursor-pointer"
+                      onClick={() => handleRowClick(item)}
                     >
                       <td className="px-8 py-6">
                         <div className="flex flex-col">
@@ -164,6 +207,78 @@ const CPM = ({ onBack }) => {
           </div>
         </div>
       </div>
+
+      {/* Info Modal */}
+      {infoModal.open && (
+        <InfoModal
+          open={infoModal.open}
+          onClose={() => setInfoModal({ open: false, data: null })}
+          type={infoModal.data?.factor ? 'factor' : 'update'}
+          data={infoModal.data}
+        />
+      )}
+
+      {/* Report Modal */}
+      {isReportOpen && (
+        <div className="fixed inset-0 bg-black/40 z-[200] flex items-center justify-center print:bg-white print:relative print:inset-auto print:z-auto">
+          <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-2xl relative print:shadow-none print:rounded-none print:p-4 print:max-w-full print:w-full print:overflow-visible" style={{ maxHeight: '90vh', overflowY: 'auto', boxSizing: 'border-box' }} data-print-modal>
+            <button
+              onClick={() => setIsReportOpen(false)}
+              className="absolute top-3 right-3 text-slate-400 hover:text-emerald-600 text-xl font-black print:hidden"
+            >
+              ×
+            </button>
+            <div className="flex justify-between items-center mb-2 print:mb-4">
+              <h3 className="text-2xl font-black mb-4 text-emerald-600 print:text-black print:text-xl">CPM Report</h3>
+              <div className="space-x-2 print:hidden">
+                <button
+                  className="px-4 py-1.5 bg-emerald-600 text-white rounded font-bold text-xs hover:bg-emerald-700 transition-all"
+                  onClick={() => {
+                    const modal = document.querySelector('[data-print-modal]');
+                    if (modal) {
+                      modal.style.maxHeight = 'none';
+                      modal.style.overflow = 'visible';
+                    }
+                    setTimeout(() => window.print(), 100);
+                  }}
+                >
+                  Print / Save PDF
+                </button>
+              </div>
+            </div>
+            <div className="mb-6 grid grid-cols-2 gap-4 text-base">
+              <div className="bg-emerald-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-2xl font-black text-emerald-700">${cpm.toFixed(4)}</span>
+                <span className="text-xs font-bold text-emerald-900 mt-1">Current CPM</span>
+              </div>
+              <div className="bg-blue-50 rounded-xl p-4 flex flex-col items-center">
+                <span className="text-2xl font-black text-blue-700">{totalMinutes.toLocaleString()}</span>
+                <span className="text-xs font-bold text-blue-900 mt-1">Total Minutes (Month)</span>
+              </div>
+            </div>
+            <h4 className="font-bold text-slate-700 mt-6 mb-2 text-lg">Calculation Factors</h4>
+            <table className="w-full text-xs mb-6 border">
+              <thead>
+                <tr className="bg-slate-100">
+                  <th className="p-2 text-left">Factor</th>
+                  <th className="p-2 text-left">Description</th>
+                  <th className="p-2 text-right">Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                {calculation.map((item, i) => (
+                  <tr key={i}>
+                    <td className="p-2">{item.factor}</td>
+                    <td className="p-2">{item.description}</td>
+                    <td className="p-2 text-right">{item.value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="text-xs text-slate-400 mt-4 print:hidden">Tip: Use the Print button to save this report as a PDF.</div>
+          </div>
+        </div>
+      )}
 
       {/* AI Bot */}
       <button

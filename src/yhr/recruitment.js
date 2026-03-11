@@ -18,6 +18,9 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
+import { Video } from "lucide-react";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 import { useTranslation } from "../translate/TranslationContext";
 
 const teamPhotos = [
@@ -38,6 +41,8 @@ const Recruitment = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const [showSetupModal, setShowSetupModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -356,6 +361,26 @@ const Recruitment = ({ onBack }) => {
               </h2>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() =>
+                  setSelectedVideo(
+                    "/assets/short-video-training/yhr-training.mov",
+                  )
+                }
+                className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+                title="Video Training"
+              >
+                <Video size={18} className="text-blue-600" />
+              </button>
+              <button
+                onClick={() =>
+                  setSelectedDocument("/assets/report-training/recruitment.pdf")
+                }
+                className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+                title="Report Training"
+              >
+                <FileText size={18} className="text-blue-600" />
+              </button>
               <button
                 onClick={() => setShowAddModal(true)}
                 className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-[10px] font-black uppercase hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all flex items-center gap-2 active:scale-95"
@@ -1252,6 +1277,18 @@ const Recruitment = ({ onBack }) => {
           scrollbar-width: none;
         }
       `}</style>
+      {selectedVideo && (
+        <VideoViewer
+          videoUrl={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+      {selectedDocument && (
+        <DocumentViewer
+          documentUrl={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
+        />
+      )}
     </div>
   );
 };

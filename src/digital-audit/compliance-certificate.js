@@ -10,10 +10,13 @@ import {
   MoreVertical,
   FileText,
   MessageCircle,
+  Video,
 } from "lucide-react";
 import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
 import { useTranslation } from "../translate/TranslationContext";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 
 const ComplianceCertificate = ({ onBack }) => {
   const navigate = useNavigate();
@@ -25,6 +28,8 @@ const ComplianceCertificate = ({ onBack }) => {
   const [toDate, setToDate] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const itemsPerPage = 10;
 
   // Sample certificate data
@@ -345,10 +350,34 @@ const ComplianceCertificate = ({ onBack }) => {
             {t("certificateAndReport")}
           </h1>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2 flex-shrink-0">
-          <Calendar size={16} />
-          {t("calendar")}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() =>
+              setSelectedVideo(
+                "/assets/short-video-training/Compliance-certificate.mp4",
+              )
+            }
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0"
+            title="Video Training"
+          >
+            <Video size={20} className="text-blue-600" />
+          </button>
+          <button
+            onClick={() =>
+              setSelectedDocument(
+                "/assets/report-training/Compliance-certificate-report.pdf",
+              )
+            }
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0"
+            title="Report Training"
+          >
+            <FileText size={20} className="text-blue-600" />
+          </button>
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-colors text-sm flex items-center gap-2 flex-shrink-0 ml-2">
+            <Calendar size={16} />
+            {t("calendar")}
+          </button>
+        </div>
       </div>
 
       {/* Search and Filter Section */}
@@ -667,6 +696,22 @@ const ComplianceCertificate = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="Compliance Certificate"
+        />
+      )}
+
+      {/* Video Viewer Modal */}
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
+      {/* Document Viewer Modal */}
+      {selectedDocument && (
+        <DocumentViewer
+          documentPath={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
     </div>

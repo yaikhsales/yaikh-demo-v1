@@ -14,9 +14,66 @@ import {
   ClipboardList,
   Maximize,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const FabricInspection = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Roll ID",
+      accessor: "rollId",
+      render: (val) => (
+        <span className="font-bold text-white uppercase">{val}</span>
+      ),
+    },
+    {
+      header: "Fabric",
+      accessor: "fabric",
+      render: (val, row) => (
+        <div>
+          <div className="text-slate-200 font-bold">{val}</div>
+          <div className="text-[10px] italic">{row.supplier}</div>
+        </div>
+      ),
+    },
+    {
+      header: "Defects Points",
+      accessor: "points",
+      align: "center",
+      render: (val) => (
+        <span
+          className={`font-mono font-bold ${val > 20 ? "text-rose-500" : "text-emerald-500"}`}
+        >
+          {val} pts
+        </span>
+      ),
+    },
+    {
+      header: "Grade",
+      accessor: "grade",
+      align: "center",
+      render: (val) => (
+        <span className="px-2 py-0.5 bg-slate-800 rounded text-xs font-bold text-white border border-slate-700">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Decision",
+      accessor: "status",
+      align: "center",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${val === "Passed" ? "bg-emerald-500/10 text-emerald-500" : val === "Hold" ? "bg-amber-500/10 text-amber-500" : "bg-rose-500/10 text-rose-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+    { header: "Date", accessor: "date", align: "right" },
+  ];
 
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
@@ -116,6 +173,14 @@ const FabricInspection = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Fabric Inspection Report"
+        data={inspectionData}
+        columns={reportColumns}
+        colorClass="emerald"
+      />
       <div className="w-full p-4 md:p-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -143,11 +208,17 @@ const FabricInspection = ({ onBack }) => {
               <Maximize size={18} />
               Full Screen
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700"
+            >
               <Download size={18} />
               Full Report
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+            <button
+              onClick={() => alert("New Inspection Triggered")}
+              className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(16,185,129,0.4)]"
+            >
               <Plus size={18} />
               New Inspection
             </button>

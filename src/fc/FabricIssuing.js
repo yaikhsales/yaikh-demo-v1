@@ -10,10 +10,67 @@ import {
   CheckCircle2,
   Truck,
   Hash,
+  Download,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const FabricIssuing = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Line Destination",
+      accessor: "line",
+      render: (val, row) => (
+        <div>
+          <div className="text-sm font-black text-white">{val}</div>
+          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-tight italic">
+            {row.style}
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Fabric Type",
+      accessor: "fabric",
+      render: (val) => (
+        <span className="text-sm font-bold text-blue-400 uppercase tracking-tight">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Roll Numbers",
+      accessor: "rolls",
+      align: "center",
+      render: (val) => (
+        <span className="text-sm font-bold text-slate-200">{val}</span>
+      ),
+    },
+    {
+      header: "Meters",
+      accessor: "qty",
+      align: "center",
+      render: (val) => (
+        <span className="px-3 py-1 bg-slate-900 rounded-lg text-xs font-black text-white italic border border-slate-800 shadow-inner">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "right",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${val === "Delivered" ? "text-emerald-500" : "text-amber-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Fabric Issuing
   const issuingData = [
@@ -97,6 +154,14 @@ const FabricIssuing = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Fabric Issuing Report"
+        data={issuingData}
+        columns={reportColumns}
+        colorClass="orange"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -117,11 +182,24 @@ const FabricIssuing = ({ onBack }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700"
+            >
+              <Download size={18} />
+              Export Record
+            </button>
+            <button
+              onClick={() => alert("Scan Requisition Triggered")}
+              className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl transition-all font-bold border border-slate-700"
+            >
               <Hash size={18} />
               Scan Requisition
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(234,88,12,0.3)]">
+            <button
+              onClick={() => alert("Create Issuing Batch Triggered")}
+              className="flex items-center gap-2 px-4 py-2 bg-orange-600 hover:bg-orange-500 text-white rounded-xl transition-all font-bold shadow-[0_0_20px_rgba(234,88,12,0.3)]"
+            >
               <ArrowUpRight size={18} />
               Create Issuing Batch
             </button>
@@ -182,7 +260,10 @@ const FabricIssuing = ({ onBack }) => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <button className="px-5 py-3 bg-slate-800 rounded-2xl text-slate-400 hover:text-white border border-slate-700/50 hover:bg-slate-750 transition-all">
+              <button
+                onClick={() => alert("Filter By Package Area")}
+                className="px-5 py-3 bg-slate-800 rounded-2xl text-slate-400 hover:text-white border border-slate-700/50 hover:bg-slate-750 transition-all"
+              >
                 <Package size={20} />
               </button>
             </div>
@@ -261,7 +342,10 @@ const FabricIssuing = ({ onBack }) => {
           </div>
 
           <div className="p-8 flex justify-center border-t border-white/5">
-            <button className="flex items-center gap-2 text-[10px] font-black text-slate-500 hover:text-orange-500 uppercase tracking-[0.3em] transition-all">
+            <button
+              onClick={() => alert("Load Older Transfers")}
+              className="flex items-center gap-2 text-[10px] font-black text-slate-500 hover:text-orange-500 uppercase tracking-[0.3em] transition-all"
+            >
               View Older Transfers
               <ChevronRight size={14} strokeWidth={3} />
             </button>

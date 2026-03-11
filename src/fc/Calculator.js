@@ -11,9 +11,86 @@ import {
   Grid,
   Zap,
   Box,
+  Download,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const Calculator = ({ onBack }) => {
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Calculation ID",
+      accessor: "id",
+      render: (val) => (
+        <span className="font-black text-cyan-400 uppercase tracking-widest">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Style Detail",
+      accessor: "style",
+      render: (val, row) => (
+        <div>
+          <div className="text-sm font-black text-white">{val}</div>
+          <div className="text-[10px] font-bold text-slate-500 uppercase">
+            {row.buyer} - {row.qty} Units
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Fabric",
+      accessor: "fabric",
+      align: "right",
+      render: (val) => (
+        <span className="text-xs font-bold text-slate-300">{val} m</span>
+      ),
+    },
+    {
+      header: "Trim Pack",
+      accessor: "trim",
+      align: "right",
+      render: (val) => (
+        <span className="text-xs font-bold text-slate-300">{val} sets</span>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "right",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${val === "Approved" ? "bg-emerald-500/10 text-emerald-500" : "bg-cyan-500/10 text-cyan-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
+
+  const historyData = [
+    {
+      id: "CALC-001",
+      style: "Style_XP_22",
+      buyer: "Nike",
+      qty: 1200,
+      fabric: "1.240",
+      trim: 2,
+      status: "Approved",
+    },
+    {
+      id: "CALC-002",
+      style: "Denim_Jk_01",
+      buyer: "Adidas",
+      qty: 850,
+      fabric: "2.145",
+      trim: 4,
+      status: "Pending",
+    },
+  ];
+
   const [inputs, setInputs] = useState({
     style: "",
     buyer: "",
@@ -41,6 +118,14 @@ const Calculator = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Consumption Estimations Report"
+        data={historyData}
+        columns={reportColumns}
+        colorClass="cyan"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -243,7 +328,10 @@ const Calculator = ({ onBack }) => {
                   </div>
                 </div>
 
-                <button className="w-full mt-8 bg-white text-slate-950 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-cyan-500 hover:text-white transition-all shadow-xl active:scale-95">
+                <button
+                  onClick={() => alert("Push to Production Triggered")}
+                  className="w-full mt-8 bg-white text-slate-950 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-cyan-500 hover:text-white transition-all shadow-xl active:scale-95"
+                >
                   Push to Production
                 </button>
               </div>

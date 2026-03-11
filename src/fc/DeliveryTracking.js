@@ -9,12 +9,67 @@ import {
   Clock,
   CheckCircle2,
   Navigation,
-  Shield,
   Activity,
+  Shield,
+  Download,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const DeliveryTracking = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Tracking ID",
+      accessor: "id",
+      render: (val) => (
+        <span className="font-mono uppercase text-indigo-500">{val}</span>
+      ),
+    },
+    {
+      header: "Driver & Vehicle",
+      accessor: "driver",
+      render: (val, row) => (
+        <div>
+          <div className="text-sm font-black text-white">{row.vehicle}</div>
+          <div className="text-[10px] font-bold text-slate-500">
+            {row.driver}
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Route",
+      accessor: "from",
+      render: (val, row) => (
+        <div className="text-xs text-slate-300">
+          {row.from} &rarr; {row.to}
+        </div>
+      ),
+    },
+    { header: "Payload", accessor: "items" },
+    {
+      header: "ETA",
+      accessor: "eta",
+      align: "center",
+      render: (val) => (
+        <span className="text-indigo-400 font-bold italic">{val}</span>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "right",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${val === "In Transit" ? "bg-blue-500/10 text-blue-500" : val === "Completed" ? "bg-emerald-500/10 text-emerald-500" : "bg-amber-500/10 text-amber-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Delivery Tracking
   const deliveryData = [
@@ -93,6 +148,14 @@ const DeliveryTracking = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Delivery Tracking Log"
+        data={deliveryData}
+        columns={reportColumns}
+        colorClass="indigo"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -111,10 +174,22 @@ const DeliveryTracking = ({ onBack }) => {
               </p>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl">
-            <Navigation size={18} />
-            GPS Live Map
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Download size={18} />
+              Export Log
+            </button>
+            <button
+              onClick={() => alert("GPS Live Map Activated")}
+              className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Navigation size={18} />
+              GPS Live Map
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">

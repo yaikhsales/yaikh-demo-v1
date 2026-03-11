@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MessageCircle } from "lucide-react";
+import { ArrowLeft, MessageCircle, Video, FileText } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 import { useTranslation } from "../translate/TranslationContext";
 
 // Mapping function to match module titles to sub-icon image filenames
@@ -29,6 +31,8 @@ const YHR = ({ onBack }) => {
   const [showFWCMSSubMenu, setShowFWCMSSubMenu] = useState(false);
   const [showBenefitSubMenu, setShowBenefitSubMenu] = useState(false);
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
   const handleBack = () => {
     if (showAttendantSubMenu) {
@@ -158,7 +162,7 @@ const YHR = ({ onBack }) => {
       handleAttendantClick();
       return;
     }
-    
+
     const routeMap = {
       "Monthly Salary": "/dashboard/monthly-salary",
       Incentive: "/dashboard/weekly-incentive",
@@ -207,8 +211,29 @@ const YHR = ({ onBack }) => {
             </button>
           </div>
 
-          {/* Right: Empty space for balance */}
-          <div className="flex-1"></div>
+          {/* Right: Actions */}
+          <div className="flex-1 flex justify-end gap-3 px-4">
+            <button
+              onClick={() =>
+                setSelectedVideo(
+                  "/assets/short-video-training/yhr-training.mov",
+                )
+              }
+              className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+              title="Video Training"
+            >
+              <Video size={18} className="text-blue-600" />
+            </button>
+            <button
+              onClick={() =>
+                setSelectedDocument("/assets/report-training/index.pdf")
+              }
+              className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+              title="Report Training"
+            >
+              <FileText size={18} className="text-blue-600" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -220,7 +245,9 @@ const YHR = ({ onBack }) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 relative">
               {/* Left Column - YHR Modules */}
               <div className="flex flex-col pr-0 lg:pr-12 pb-8 lg:pb-0">
-                <h2 className="text-2xl font-bold text-black mb-6">{t("yhr")}</h2>
+                <h2 className="text-2xl font-bold text-black mb-6">
+                  {t("yhr")}
+                </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 auto-rows-fr">
                   {yhrModules.map((module, idx) => {
                     const iconImage = getYHRIconImage(module.title);
@@ -244,7 +271,8 @@ const YHR = ({ onBack }) => {
                               Onboarding: "/dashboard/onboarding",
                               "Benefit Profile": "/dashboard/benefit-profile",
                               Payroll: "/dashboard/payroll",
-                              "Visa and Work Permit": "/dashboard/visa-work-permit",
+                              "Visa and Work Permit":
+                                "/dashboard/visa-work-permit",
                               Canteen: "/dashboard/canteen",
                             };
 
@@ -323,10 +351,12 @@ const YHR = ({ onBack }) => {
 
               {/* Vertical Divider */}
               <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-[1px] bg-black transform -translate-x-1/2"></div>
-              
+
               {/* Right Column - Salary Bill Modules */}
               <div className="flex flex-col pl-0 lg:pl-12">
-                <h2 className="text-2xl font-bold text-black mb-6">{t("salaryBill")}</h2>
+                <h2 className="text-2xl font-bold text-black mb-6">
+                  {t("salaryBill")}
+                </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6 auto-rows-fr">
                   {salaryBillModules.map((module, idx) => {
                     const iconImage = getSalaryBillIconImage(module.title);
@@ -550,6 +580,18 @@ const YHR = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="YHR"
+        />
+      )}
+      {selectedVideo && (
+        <VideoViewer
+          videoUrl={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+      {selectedDocument && (
+        <DocumentViewer
+          documentUrl={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
     </div>
