@@ -6,7 +6,11 @@ import {
   TrendingUp,
   ChevronDown,
   Search,
+  Video,
+  FileText,
 } from "lucide-react";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 
 // InfoModal component for showing details
 const InfoModal = ({ open, onClose, type, data }) => {
@@ -65,6 +69,9 @@ const InfoModal = ({ open, onClose, type, data }) => {
   );
 };
 
+const CE_VIDEO_PATH = "/assets/short-video-training/ce.mp4";
+const CE_REPORT_PATH = "/assets/report-training/ce-report.pdf";
+
 const Productivity = ({ onBack }) => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("all");
@@ -72,6 +79,8 @@ const Productivity = ({ onBack }) => {
   const [expandedSections, setExpandedSections] = useState([]);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [infoModal, setInfoModal] = useState({ open: false, type: null, data: null });
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
   const toggleSection = (sectionLabel) => {
     setExpandedSections((prev) =>
@@ -684,6 +693,20 @@ const Productivity = ({ onBack }) => {
             </h2>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSelectedVideo(CE_VIDEO_PATH)}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+              title="Video Training"
+            >
+              <Video size={20} className="text-blue-600" />
+            </button>
+            <button
+              onClick={() => setSelectedDocument(CE_REPORT_PATH)}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+              title="Report Training"
+            >
+              <FileText size={20} className="text-blue-600" />
+            </button>
             <div className="flex items-center gap-1.5 px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-100">
               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
               <span className="text-[10px] font-black text-emerald-600 uppercase">
@@ -919,6 +942,20 @@ const Productivity = ({ onBack }) => {
             <div className="text-xs text-slate-400 mt-4 print:hidden">Tip: Use the Print button to save this dashboard as a PDF.</div>
           </div>
         </div>
+      )}
+
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
+      {selectedDocument && (
+        <DocumentViewer
+          documentPath={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
+        />
       )}
     </div>
   );

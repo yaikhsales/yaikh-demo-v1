@@ -612,7 +612,7 @@ const AuditPlan = ({ onBack }) => {
         <div className="flex items-center gap-2">
           <button
             onClick={() =>
-              setSelectedVideo("/assets/short-video-training/Audit-plan.mp4")
+              setSelectedVideo("/assets/short-video-training/audit-plan.mp4")
             }
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0"
             title="Video Training"

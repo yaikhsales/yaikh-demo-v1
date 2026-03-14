@@ -354,7 +354,7 @@ const ComplianceCertificate = ({ onBack }) => {
           <button
             onClick={() =>
               setSelectedVideo(
-                "/assets/short-video-training/Compliance-certificate.mp4",
+                "/assets/short-video-training/compliance-certificate.mp4",
               )
             }
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0"

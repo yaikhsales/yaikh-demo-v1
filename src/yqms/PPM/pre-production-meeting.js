@@ -19,9 +19,15 @@ import {
     FileUp,
     Loader2,
     X,
+    Video,
+    FileText,
 } from 'lucide-react';
 import { useTranslation } from '../../translate/TranslationContext';
 import AddMeeting from './add-meeting';
+import VideoViewer from '../../components/VideoViewer';
+import ModuleBotButton from '../../components/ModuleBotButton';
+
+const PPM_VIDEO_PATH = '/assets/short-video-training/Ppm.mp4';
 
 const PreProductionMeeting = ({ onBack }) => {
     const navigate = useNavigate();
@@ -34,6 +40,7 @@ const PreProductionMeeting = ({ onBack }) => {
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploadingId, setUploadingId] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState(null);
     const itemsPerPage = 8;
 
     const initialMeetings = [
@@ -136,12 +143,24 @@ const PreProductionMeeting = ({ onBack }) => {
                 </div>
 
                 <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => setSelectedVideo(PPM_VIDEO_PATH)}
+                        className="flex items-center justify-center w-9 h-9 rounded-full border border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-red-600 transition-all"
+                        title="Video Training"
+                    >
+                        <Video className="w-4 h-4" />
+                    </button>
+                    <button
+                        className="flex items-center justify-center w-9 h-9 rounded-full border border-dashed border-slate-200 text-slate-300 cursor-default"
+                        title="Report Training (coming soon)"
+                    >
+                        <FileText className="w-4 h-4" />
+                    </button>
                     <button className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold transition-all text-slate-700">
                         <Download className="w-4 h-4" /> Export Summary
                     </button>
                     <button
                         onClick={() => setShowForm(true)}
-               
                         className="flex items-center gap-2 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-md shadow-red-200 transition-all active:scale-95"
                     >
                         <Plus className="w-4 h-4" /> New Meeting
@@ -477,6 +496,14 @@ const PreProductionMeeting = ({ onBack }) => {
                     }}
                 />
             )}
+            {selectedVideo && (
+                <VideoViewer
+                    videoPath={selectedVideo}
+                    onClose={() => setSelectedVideo(null)}
+                />
+            )}
+
+            <ModuleBotButton moduleName="YQMS - PPM" />
         </div>
     );
 };

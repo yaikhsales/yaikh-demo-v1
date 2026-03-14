@@ -1,40 +1,51 @@
 import React, { useState } from "react";
 import {
-    ArrowLeft,
-    Calendar,
-    Layers,
-    ClipboardList,
-    FileText,
-    Scissors,
-    Settings,
-    MoreVertical,
-    ChevronDown,
-    Layout,
-    BarChart3,
-    CheckCircle2,
-    Package,
-    History,
-    AlertTriangle,
-    Send,
+  ArrowLeft,
+  Calendar,
+  Layers,
+  ClipboardList,
+  FileText,
+  Scissors,
+  Settings,
+  MoreVertical,
+  ChevronDown,
+  Layout,
+  BarChart3,
+  CheckCircle2,
+  Package,
+  History,
+  AlertTriangle,
+  Send,
+  Video,
 } from "lucide-react";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
+import ModuleBotButton from "../components/ModuleBotButton";
+
+const CUTTING_PANEL_VIDEO_PATH =
+  "/assets/short-video-training/Cutting-panel.mp4";
+const CUTTING_PANEL_REPORT_PATH =
+  "/assets/report-training/yhr-report.xlsx";
 
 const CuttingPanel = ({ onBack }) => {
-    const [activeTab, setActiveTab] = useState("form");
-    const [isSubmitted, setIsSubmitted] = useState(false);
+  const [activeTab, setActiveTab] = useState("form");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
-    const handleSubmit = () => {
-        setIsSubmitted(true);
-        setTimeout(() => setIsSubmitted(false), 3000);
-    };
+  const handleSubmit = () => {
+    setIsSubmitted(true);
+    setTimeout(() => setIsSubmitted(false), 3000);
+  };
 
-    const mockData = [
+  const mockData = [
         { id: 1, buyer: "A & F", style: "6261340003", date: "03/11/2026", qty: 50, status: "Passed", color: "Blue" },
         { id: 2, buyer: "Nike", style: "NK-9920", date: "03/10/2026", qty: 120, status: "Passed", color: "Black" },
         { id: 3, buyer: "Adidas", style: "AD-5512", date: "03/10/2026", qty: 85, status: "Failed", color: "White" },
         { id: 4, buyer: "GAP", style: "GP-1102", date: "03/09/2026", qty: 200, status: "Passed", color: "Green" },
     ];
 
-    const tabs = [
+  const tabs = [
         { id: "form", label: "Cutting Form", icon: ClipboardList },
         { id: "data", label: "Data", icon: BarChart3 },
         { id: "report", label: "Report", icon: FileText },
@@ -43,64 +54,84 @@ const CuttingPanel = ({ onBack }) => {
         { id: "dr", label: "DR", icon: History },
     ];
 
-    return (
-        <div className="fixed inset-0 bg-slate-50 flex flex-col z-[50] animate-in fade-in duration-500 overflow-hidden font-sans">
-            {/* Premium Header */}
-            <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 px-6 py-4 flex items-center justify-between shrink-0 shadow-lg border-b border-white/10">
-                <div className="flex items-center gap-4">
-                    <button
-                        onClick={onBack}
-                        className="p-3.5 bg-white/20 rounded-xl backdrop-blur-md hover:bg-white/30 transition-colors"
-                    >
-                        <ArrowLeft className="text-white" size={16} strokeWidth={3} />
+  return (
+    <div className="fixed inset-0 bg-slate-50 flex flex-col z-[50] animate-in fade-in duration-500 overflow-hidden font-sans">
+      {/* Premium Header */}
+      <div className="bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 px-6 py-4 flex items-center justify-between shrink-0 shadow-lg border-b border-white/10">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onBack}
+            className="p-3.5 bg-white/20 rounded-xl backdrop-blur-md hover:bg-white/30 transition-colors"
+          >
+            <ArrowLeft className="text-white" size={16} strokeWidth={3} />
+          </button>
 
-                    </button>
-
-                    <div className="flex items-center gap-3">
-                        <div className="p-2 bg-white/20 rounded-xl backdrop-blur-md">
-                            <Scissors className="text-white" size={24} strokeWidth={2.5} />
-                        </div>
-                        <div>
-                            <h1 className="text-xl font-black text-white tracking-tight leading-tight">
-                                Cutting Inspection
-                            </h1>
-                            <p className="text-xs font-bold text-white/70">
-                                Quality Control Data Management
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Navigation Tabs */}
-                <div className="flex items-center gap-1 bg-white/10 p-1.5 rounded-2xl backdrop-blur-sm border border-white/40">
-                    {tabs.map((tab) => (
-                        <button
-                            key={tab.id}
-                            onClick={() => setActiveTab(tab.id)}
-                            className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all duration-300 ${activeTab === tab.id
-                                ? "bg-white text-purple-700 shadow-xl scale-105"
-                                : "text-white hover:text-white hover:bg-white/10"
-                                }`}
-                        >
-                            <tab.icon size={18} strokeWidth={activeTab === tab.id ? 2.5 : 2} />
-                            <span className="text-[11px] font-black tracking-tighter">
-                                {tab.label}
-                            </span>
-                        </button>
-                    ))}
-                </div>
-
-                <div className="flex items-center gap-4 px-4 py-2 bg-black/20 rounded-2xl border border-white/40">
-                <div className="w-10 h-10 rounded-xl bg-yellow-500 flex items-center justify-center border-2 border-white/20 shadow-inner">
-                        <span className="text-white font-black text-xs">PS</span>
-                    </div>
-                    <div className="text-left">
-                        <p className="text-xs font-black text-white leading-none">Proeurng Sokhim</p>
-                        <p className="text-[10px] font-bold tracking-tighter text-start text-white/80 uppercase mt-1">TL18</p>
-                    </div>
-                   
-                </div>
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white/20 rounded-xl backdrop-blur-md">
+              <Scissors className="text-white" size={24} strokeWidth={2.5} />
             </div>
+            <div>
+              <h1 className="text-xl font-black text-white tracking-tight leading-tight">
+                Cutting Inspection
+              </h1>
+              <p className="text-xs font-bold text-white/70">
+                Quality Control Data Management
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="flex items-center gap-1 bg-white/10 p-1.5 rounded-2xl backdrop-blur-sm border border-white/40">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all duration-300 ${
+                activeTab === tab.id
+                  ? "bg-white text-purple-700 shadow-xl scale-105"
+                  : "text-white hover:text-white hover:bg-white/10"
+              }`}
+            >
+              <tab.icon
+                size={18}
+                strokeWidth={activeTab === tab.id ? 2.5 : 2}
+              />
+              <span className="text-[11px] font-black tracking-tighter">
+                {tab.label}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-4 px-4 py-2 bg-black/20 rounded-2xl border border-white/40">
+          <button
+            onClick={() => setSelectedVideo(CUTTING_PANEL_VIDEO_PATH)}
+            className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors flex items-center justify-center"
+            title="Video Training"
+          >
+            <Video size={20} className="text-white" />
+          </button>
+          <button
+            onClick={() => setSelectedDocument(CUTTING_PANEL_REPORT_PATH)}
+            className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors flex items-center justify-center"
+            title="Report Training"
+          >
+            <FileText size={18} className="text-white" />
+          </button>
+          <div className="w-10 h-10 rounded-xl bg-yellow-500 flex items-center justify-center border-2 border-white/20 shadow-inner">
+            <span className="text-white font-black text-xs">PS</span>
+          </div>
+          <div className="text-left">
+            <p className="text-xs font-black text-white leading-none">
+              Proeurng Sokhim
+            </p>
+            <p className="text-[10px] font-bold tracking-tighter text-start text-white/80 uppercase mt-1">
+              TL18
+            </p>
+          </div>
+        </div>
+      </div>
 
             {/* Main Content Area */}
             <div className="flex-1 overflow-auto p-8 bg-slate-50/50">
@@ -679,6 +710,22 @@ const CuttingPanel = ({ onBack }) => {
                     </div>
                 </div>
             </div>
+
+            {selectedVideo && (
+                <VideoViewer
+                    videoPath={selectedVideo}
+                    onClose={() => setSelectedVideo(null)}
+                />
+            )}
+
+            {selectedDocument && (
+                <DocumentViewer
+                    documentPath={selectedDocument}
+                    onClose={() => setSelectedDocument(null)}
+                />
+            )}
+
+            <ModuleBotButton moduleName="YQMS - Cutting Panel" />
         </div>
     );
 };
