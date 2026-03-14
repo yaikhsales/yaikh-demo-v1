@@ -2,24 +2,44 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Search,
-  Eye,
-  MessageCircle,
   ArrowLeft,
-  Zap,
-  LineChart,
-  BarChart,
   ArrowRight,
+  LineChart,
+  MessageCircle,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
-import { useTranslation } from "../translate/TranslationContext";
+
+const InfoModal = ({ open, onClose, data }) => {
+  if (!open || !data) return null;
+  return (
+    <div className="fixed inset-0 bg-black/40 z-[300] flex items-center justify-center">
+      <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md relative">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-slate-400 hover:text-pink-600 text-xl font-black"
+        >
+          ×
+        </button>
+        <h3 className="text-xl font-black mb-4 text-pink-600">Learning Curve Detail</h3>
+        <div className="space-y-2">
+          <div><b>Style:</b> {data.style}</div>
+          <div><b>Run Day:</b> {data.runDay}</div>
+          <div><b>Start Efficiency:</b> {data.startEfficiency}</div>
+          <div><b>Current Efficiency:</b> {data.currentEfficiency}</div>
+          <div><b>Target Efficiency:</b> {data.targetEfficiency}</div>
+          <div><b>Days to Maturity:</b> {data.daysToMaturity}</div>
+          <div><b>Status:</b> {data.status}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const LearningCurve = ({ onBack }) => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
-
-  const tabs = [{ id: "all", label: "Style Maturity", count: 6 }];
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [infoModal, setInfoModal] = useState({ open: false, data: null });
 
   const styles = [
     {
@@ -76,38 +96,18 @@ const LearningCurve = ({ onBack }) => {
             </h2>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 px-4 py-2 bg-pink-50 rounded-xl border border-pink-100">
+            <button
+              onClick={() => setIsReportOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-pink-50 rounded-xl border border-pink-100 hover:bg-pink-100 transition-all text-pink-600 font-black text-[10px] uppercase shadow"
+            >
               <LineChart size={14} className="text-pink-600" />
-              <span className="text-[10px] font-black text-pink-600 uppercase">
-                Trend Analysis
-              </span>
-            </div>
+              Report
+            </button>
           </div>
         </div>
 
-        {/* Search & Tabs */}
-        <div className="px-8 py-4 bg-white border-b border-slate-50 flex items-center justify-between shrink-0">
-          <div className="flex items-center gap-8">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 pb-4 -mb-4 transition-all relative ${activeTab === tab.id ? "text-pink-600 font-black" : "text-slate-400 font-bold hover:text-slate-600"}`}
-              >
-                <span className="text-xs uppercase tracking-widest">
-                  {tab.label}
-                </span>
-                <span
-                  className={`px-1.5 py-0.5 rounded-md text-[9px] ${activeTab === tab.id ? "bg-pink-50 text-pink-600" : "bg-slate-50 text-slate-400"}`}
-                >
-                  {tab.count}
-                </span>
-                {activeTab === tab.id && (
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-pink-600 rounded-full"></div>
-                )}
-              </button>
-            ))}
-          </div>
+        {/* Search */}
+        <div className="px-8 py-4 bg-white border-b border-slate-50 flex items-center justify-end shrink-0">
           <div className="relative group w-72">
             <Search
               size={14}
@@ -132,16 +132,15 @@ const LearningCurve = ({ onBack }) => {
                 <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Current Progress</th>
                 <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Days to Mature</th>
                 <th className="px-4 py-4 border-r border-b border-slate-200 text-center">Status</th>
-                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">
-                  Action
-                </th>
+                <th className="px-8 py-4 border-b border-slate-200 text-right whitespace-nowrap">Action</th>
               </tr>
             </thead>
             <tbody>
               {styles.map((rec, idx) => (
                 <tr
                   key={rec.id}
-                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200`}
+                  className={`${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50'} hover:bg-slate-100 transition-all duration-200 cursor-pointer`}
+                  onClick={() => setInfoModal({ open: true, data: rec })}
                 >
                   <td className="px-8 py-4 border-r border-b border-slate-200">
                     <span className="font-black text-slate-800 text-sm tracking-tight text-nowrap">
@@ -171,20 +170,18 @@ const LearningCurve = ({ onBack }) => {
                     {rec.daysToMaturity} Days
                   </td>
                   <td className="px-4 py-4 border-r border-b border-slate-200 text-center text-nowrap">
-                    <span
-                      className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border ${
-                        rec.status === "COMPLETED"
-                          ? "bg-emerald-50 text-emerald-600 border-emerald-100/50"
-                          : rec.status === "MATURING"
-                            ? "bg-blue-50 text-blue-600 border-blue-100/50"
-                            : "bg-pink-50 text-pink-600 border-pink-100/50"
-                      }`}
+                    <button
+                      className={`px-3 py-1 rounded-md text-[9px] font-black tracking-widest border focus:outline-none ${rec.status === "COMPLETED" ? "bg-emerald-50 text-emerald-600 border-emerald-100/50" : rec.status === "MATURING" ? "bg-blue-50 text-blue-600 border-blue-100/50" : "bg-pink-50 text-pink-600 border-pink-100/50"}`}
+                      onClick={e => { e.stopPropagation(); setInfoModal({ open: true, data: rec }); }}
                     >
                       {rec.status}
-                    </span>
+                    </button>
                   </td>
                   <td className="px-8 py-4 border-b border-slate-200 text-right">
-                    <button className="p-2 text-slate-300 hover:text-pink-600 hover:bg-white hover:shadow-sm rounded transition-all">
+                    <button
+                      className="p-2 text-slate-300 hover:text-pink-600 hover:bg-white hover:shadow-sm rounded transition-all"
+                      onClick={e => { e.stopPropagation(); setInfoModal({ open: true, data: rec }); }}
+                    >
                       <LineChart size={16} />
                     </button>
                   </td>
@@ -194,6 +191,88 @@ const LearningCurve = ({ onBack }) => {
           </table>
         </div>
       </div>
+
+      {/* Info Modal */}
+      <InfoModal open={infoModal.open} data={infoModal.data} onClose={() => setInfoModal({ open: false, data: null })} />
+
+      {/* Report Modal */}
+      {isReportOpen && (
+        <div className="fixed inset-0 bg-black/40 z-[200] flex items-center justify-center print:bg-white print:relative print:inset-auto print:z-auto">
+          <div
+            className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-3xl relative print:shadow-none print:rounded-none print:p-8 print:max-w-full print:w-full print:overflow-visible print:text-black"
+            style={{ maxHeight: '90vh', overflowY: 'auto', boxSizing: 'border-box', fontSize: '16px' }}
+            data-print-modal
+          >
+            <button
+              onClick={() => setIsReportOpen(false)}
+              className="absolute top-3 right-3 text-slate-400 hover:text-pink-600 text-xl font-black print:hidden"
+            >
+              ×
+            </button>
+            <div className="flex flex-col gap-2 mb-6 print:mb-4">
+              <h3 className="text-3xl font-black mb-1 text-pink-600 print:text-black print:text-2xl">Learning Curve Report</h3>
+              <div className="text-xs text-slate-500 print:text-black">Generated: {new Date().toLocaleString()}</div>
+            </div>
+            <div className="mb-8 grid grid-cols-3 gap-4 text-base print:gap-8">
+              <div className="bg-pink-50 rounded-xl p-4 flex flex-col items-center border border-pink-100 print:bg-white print:border print:border-pink-300">
+                <span className="text-3xl font-black text-pink-700 print:text-black">{styles.length}</span>
+                <span className="text-xs font-bold text-pink-900 mt-1 print:text-black">Total Styles</span>
+              </div>
+              <div className="bg-blue-50 rounded-xl p-4 flex flex-col items-center border border-blue-100 print:bg-white print:border print:border-blue-300">
+                <span className="text-3xl font-black text-blue-700 print:text-black">{styles.filter(s => s.status === 'MATURING').length}</span>
+                <span className="text-xs font-bold text-blue-900 mt-1 print:text-black">Maturing</span>
+              </div>
+              <div className="bg-emerald-50 rounded-xl p-4 flex flex-col items-center border border-emerald-100 print:bg-white print:border print:border-emerald-300">
+                <span className="text-3xl font-black text-emerald-700 print:text-black">{styles.filter(s => s.status === 'COMPLETED').length}</span>
+                <span className="text-xs font-bold text-emerald-900 mt-1 print:text-black">Completed</span>
+              </div>
+            </div>
+            <h4 className="font-bold text-slate-700 mt-6 mb-2 text-lg print:text-black print:mt-0">Learning Curves (Detailed)</h4>
+            <table className="w-full text-sm mb-6 border border-slate-300 print:border-black print:text-base">
+              <thead>
+                <tr className="bg-slate-100 print:bg-white">
+                  <th className="p-2 border border-slate-200 print:border-black">Style</th>
+                  <th className="p-2 border border-slate-200 print:border-black">Run Day</th>
+                  <th className="p-2 border border-slate-200 print:border-black">Start Eff.</th>
+                  <th className="p-2 border border-slate-200 print:border-black">Current Eff.</th>
+                  <th className="p-2 border border-slate-200 print:border-black">Target Eff.</th>
+                  <th className="p-2 border border-slate-200 print:border-black">Days to Maturity</th>
+                  <th className="p-2 border border-slate-200 print:border-black">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {styles.map((s, i) => (
+                  <tr key={i} className="print:bg-white">
+                    <td className="p-2 border border-slate-100 print:border-black">{s.style}</td>
+                    <td className="p-2 border border-slate-100 print:border-black">{s.runDay}</td>
+                    <td className="p-2 border border-slate-100 print:border-black">{s.startEfficiency}</td>
+                    <td className="p-2 border border-slate-100 print:border-black">{s.currentEfficiency}</td>
+                    <td className="p-2 border border-slate-100 print:border-black">{s.targetEfficiency}</td>
+                    <td className="p-2 border border-slate-100 print:border-black">{s.daysToMaturity}</td>
+                    <td className="p-2 border border-slate-100 print:border-black">{s.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="text-xs text-slate-400 mt-4 print:hidden">Tip: Use the Print button to save this report as a PDF.</div>
+            <div className="space-x-2 print:hidden mt-4 flex justify-end">
+              <button
+                className="px-4 py-1.5 bg-pink-600 text-white rounded font-bold text-xs hover:bg-pink-700 transition-all"
+                onClick={() => {
+                  const modal = document.querySelector('[data-print-modal]');
+                  if (modal) {
+                    modal.style.maxHeight = 'none';
+                    modal.style.overflow = 'visible';
+                  }
+                  setTimeout(() => window.print(), 100);
+                }}
+              >
+                Print / Save PDF
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* AI Bot */}
       <button

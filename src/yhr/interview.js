@@ -18,6 +18,9 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
+import { Video } from "lucide-react";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 import { useTranslation } from "../translate/TranslationContext";
 
 const teamPhotos = [
@@ -38,6 +41,8 @@ const Interview = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("interviews");
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
   const [showSetupModal, setShowSetupModal] = useState(false);
@@ -232,6 +237,26 @@ const Interview = ({ onBack }) => {
               </h2>
             </div>
             <div className="flex items-center gap-3">
+              <button
+                onClick={() =>
+                  setSelectedVideo(
+                    "/assets/short-video-training/yhr-training.mp4",
+                  )
+                }
+                className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+                title="Video Training"
+              >
+                <Video size={18} className="text-blue-600" />
+              </button>
+              <button
+                onClick={() =>
+                  setSelectedDocument("/assets/report-training/yhr-report.xlsx")
+                }
+                className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+                title="Report Training"
+              >
+                <FileText size={18} className="text-blue-600" />
+              </button>
               {/* Button Removed */}
             </div>
           </div>
@@ -722,6 +747,18 @@ const Interview = ({ onBack }) => {
           scrollbar-width: none;
         }
       `}</style>
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+      {selectedDocument && (
+        <DocumentViewer
+          documentUrl={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
+        />
+      )}
     </div>
   );
 };

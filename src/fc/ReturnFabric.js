@@ -7,12 +7,78 @@ import {
   RefreshCcw,
   CheckCircle2,
   AlertCircle,
-  Scissors,
   ClipboardList,
+  Download,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const ReturnFabric = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "Transaction ID",
+      accessor: "id",
+      render: (val) => (
+        <span className="font-black text-rose-400 uppercase tracking-widest">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Line Origin",
+      accessor: "line",
+      render: (val, row) => (
+        <div>
+          <div className="text-sm font-black text-white">{val}</div>
+          <div className="text-[10px] font-bold text-slate-500 uppercase">
+            {row.style}
+          </div>
+        </div>
+      ),
+    },
+    {
+      header: "Item / Roll",
+      accessor: "rollId",
+      render: (val) => (
+        <span className="text-sm font-bold text-slate-200 uppercase">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Return Qty",
+      accessor: "qty",
+      align: "center",
+      render: (val) => (
+        <span className="px-3 py-1 bg-slate-900 rounded-lg text-xs font-black text-white border border-slate-800">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Reason Case",
+      accessor: "reason",
+      render: (val) => (
+        <span className="text-xs font-bold text-slate-400 uppercase">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: "status",
+      align: "right",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${val === "In Stock" ? "bg-emerald-500/10 text-emerald-500" : val === "Holding" ? "bg-amber-500/10 text-amber-500" : "bg-rose-500/10 text-rose-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Fabric Returns
   const returnData = [
@@ -56,6 +122,14 @@ const ReturnFabric = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Fabric Return Report"
+        data={returnData}
+        columns={reportColumns}
+        colorClass="rose"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -74,10 +148,22 @@ const ReturnFabric = ({ onBack }) => {
               </p>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl">
-            <RefreshCcw size={18} />
-            Process New Return
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Download size={18} />
+              Export
+            </button>
+            <button
+              onClick={() => alert("Process New Return Triggered")}
+              className="flex items-center gap-2 px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <RefreshCcw size={18} />
+              Process New Return
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

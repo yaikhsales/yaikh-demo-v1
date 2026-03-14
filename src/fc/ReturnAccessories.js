@@ -7,12 +7,71 @@ import {
   RefreshCcw,
   CheckCircle2,
   AlertCircle,
-  Tag,
   PackageOpen,
+  Download,
 } from "lucide-react";
+import ReportModal from "../components/ReportModal";
 
 const ReturnAccessories = ({ onBack }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportOpen, setReportOpen] = useState(false);
+
+  const reportColumns = [
+    {
+      header: "TR ID",
+      accessor: "id",
+      render: (val) => (
+        <span className="font-black text-white uppercase">{val}</span>
+      ),
+    },
+    {
+      header: "Origin",
+      accessor: "line",
+      render: (val) => (
+        <span className="text-sm font-black text-slate-300 italic">{val}</span>
+      ),
+    },
+    {
+      header: "Accessory Name",
+      accessor: "item",
+      render: (val) => (
+        <span className="text-sm font-bold text-amber-500 uppercase">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Qty Returned",
+      accessor: "qty",
+      align: "center",
+      render: (val) => (
+        <span className="px-3 py-1 bg-slate-900 rounded-lg text-xs font-black text-white italic border border-slate-800">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Reason for Return",
+      accessor: "reason",
+      render: (val) => (
+        <span className="text-xs font-bold text-slate-500 uppercase">
+          {val}
+        </span>
+      ),
+    },
+    {
+      header: "Inventory Status",
+      accessor: "status",
+      align: "right",
+      render: (val) => (
+        <span
+          className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${val === "In Stock" ? "bg-emerald-500/10 text-emerald-500" : "bg-rose-500/10 text-rose-500"}`}
+        >
+          {val}
+        </span>
+      ),
+    },
+  ];
 
   // Mock data for Accessories Returns
   const returnData = [
@@ -52,6 +111,14 @@ const ReturnAccessories = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-200 p-4 md:p-8 font-sans">
+      <ReportModal
+        isOpen={reportOpen}
+        onClose={() => setReportOpen(false)}
+        title="Accessories Return Report"
+        data={returnData}
+        columns={reportColumns}
+        colorClass="amber"
+      />
       <div className="w-full mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
@@ -70,10 +137,22 @@ const ReturnAccessories = ({ onBack }) => {
               </p>
             </div>
           </div>
-          <button className="flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl">
-            <PackageOpen size={18} />
-            Process Return
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setReportOpen(true)}
+              className="flex items-center gap-2 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <Download size={18} />
+              Export
+            </button>
+            <button
+              onClick={() => alert("Process Return Triggered")}
+              className="flex items-center gap-2 px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white rounded-2xl transition-all font-black uppercase tracking-widest text-xs shadow-2xl"
+            >
+              <PackageOpen size={18} />
+              Process Return
+            </button>
+          </div>
         </div>
 
         <div className="bg-slate-900/40 backdrop-blur-3xl border border-white/5 rounded-3xl overflow-hidden shadow-2xl">

@@ -16,6 +16,9 @@ import {
   FileText,
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
+import { Video } from "lucide-react";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 import { useTranslation } from "../translate/TranslationContext";
 
 const BenefitProfile = ({ onBack }) => {
@@ -23,6 +26,8 @@ const BenefitProfile = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -200,6 +205,26 @@ const BenefitProfile = ({ onBack }) => {
             </h2>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              onClick={() =>
+                setSelectedVideo(
+                  "/assets/short-video-training/yhr-training.mp4",
+                )
+              }
+              className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+              title="Video Training"
+            >
+              <Video size={18} className="text-blue-600" />
+            </button>
+            <button
+              onClick={() =>
+                setSelectedDocument("/assets/report-training/yhr-report.xlsx")
+              }
+              className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
+              title="Report Training"
+            >
+              <FileText size={18} className="text-blue-600" />
+            </button>
             <button className="px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-[10px] font-black uppercase hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all flex items-center gap-2">
               Add Profile
             </button>
@@ -537,6 +562,18 @@ const BenefitProfile = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="Benefit Profile"
+        />
+      )}
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+      {selectedDocument && (
+        <DocumentViewer
+          documentUrl={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
     </div>
