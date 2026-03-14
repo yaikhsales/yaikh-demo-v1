@@ -137,7 +137,7 @@ const AuditQuestions = ({ onBack }) => {
           <button
             onClick={() =>
               setSelectedVideo(
-                "/assets/short-video-training/Digital-Audit .mp4",
+                "/assets/short-video-training/digital-audit.mp4",
               )
             }
             className="p-2 hover:bg-slate-700 rounded-full transition-colors text-slate-300 hover:text-white"

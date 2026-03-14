@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, MessageCircle, ArrowLeft } from "lucide-react";
+import { Search, Plus, MessageCircle, ArrowLeft, Video, FileText } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
 import { useTranslation } from "../translate/TranslationContext";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
+
+const CE_VIDEO_PATH = "/assets/short-video-training/ce.mp4";
+const CE_REPORT_PATH = "/assets/report-training/ce-report.pdf";
 
 const StandardTime = ({ onBack }) => {
   const navigate = useNavigate();
@@ -10,6 +15,8 @@ const StandardTime = ({ onBack }) => {
   const [activeTab, setActiveTab] = useState("all");
   const [isBotOpen, setIsBotOpen] = useState(false);
   const [showReport, setShowReport] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
   const tabs = [{ id: "all", label: "SAM DATABASE", count: 12 }];
 
@@ -268,6 +275,20 @@ const StandardTime = ({ onBack }) => {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setSelectedVideo(CE_VIDEO_PATH)}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+              title="Video Training"
+            >
+              <Video size={20} className="text-blue-600" />
+            </button>
+            <button
+              onClick={() => setSelectedDocument(CE_REPORT_PATH)}
+              className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+              title="Report Training"
+            >
+              <FileText size={20} className="text-blue-600" />
+            </button>
             <div className="relative group w-72">
               <Search
                 size={14}
@@ -432,6 +453,20 @@ const StandardTime = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="Standard Time monitoring and variance analysis database"
+        />
+      )}
+
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
+      {selectedDocument && (
+        <DocumentViewer
+          documentPath={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
 

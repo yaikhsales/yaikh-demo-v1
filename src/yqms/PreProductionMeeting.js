@@ -16,9 +16,16 @@ import {
   Search,
 } from "lucide-react";
 import { useTranslation } from "../translate/TranslationContext";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
+
+const PPM_VIDEO_PATH = "/assets/short-video-training/PPM.mp4";
+const PPM_REPORT_PATH = "/assets/report-training/PPM-report.pdf";
 
 const PreProductionMeeting = ({ onBack }) => {
   const { t } = useTranslation();
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
   const meetings = [
     {
@@ -83,6 +90,20 @@ const PreProductionMeeting = ({ onBack }) => {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setSelectedVideo(PPM_VIDEO_PATH)}
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+            title="Video Training"
+          >
+            <Video size={20} className="text-blue-600" />
+          </button>
+          <button
+            onClick={() => setSelectedDocument(PPM_REPORT_PATH)}
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+            title="Report Training"
+          >
+            <FileText size={20} className="text-blue-600" />
+          </button>
           <button className="flex items-center gap-2 px-6 py-2 bg-slate-800 text-white rounded-xl font-black text-[10px] tracking-widest uppercase shadow-lg hover:shadow-xl transition-all active:scale-95">
             <Calendar size={14} /> Schedule New PPM
           </button>
@@ -284,6 +305,20 @@ const PreProductionMeeting = ({ onBack }) => {
           </div>
         </div>
       </div>
+
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
+      {selectedDocument && (
+        <DocumentViewer
+          documentPath={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
+        />
+      )}
     </div>
   );
 };

@@ -14,12 +14,24 @@ import {
   ChevronRight,
   TrendingUp,
   History,
+  Video,
+  FileText,
 } from "lucide-react";
 import { useTranslation } from "../translate/TranslationContext";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
+import ModuleBotButton from "../components/ModuleBotButton";
+
+const INTERNAL_QC_VIDEO_PATH =
+  "/assets/short-video-training/Internal-rolling-qc.mp4";
+const INTERNAL_QC_REPORT_PATH =
+  "/assets/report-training/Internal-rolling-qc-report.pdf";
 
 const InternalRollingQC = ({ onBack }) => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("all");
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
 
   const rollRecords = [
     {
@@ -89,6 +101,20 @@ const InternalRollingQC = ({ onBack }) => {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => setSelectedVideo(INTERNAL_QC_VIDEO_PATH)}
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+            title="Video Training"
+          >
+            <Video size={20} className="text-blue-600" />
+          </button>
+          <button
+            onClick={() => setSelectedDocument(INTERNAL_QC_REPORT_PATH)}
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+            title="Report Training"
+          >
+            <FileText size={20} className="text-blue-600" />
+          </button>
           <button className="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl font-black text-[10px] tracking-widest uppercase border border-blue-100 hover:bg-blue-100 transition-all">
             <History size={14} /> Audit Trail
           </button>
@@ -307,6 +333,22 @@ const InternalRollingQC = ({ onBack }) => {
           </div>
         </div>
       </div>
+
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
+      {selectedDocument && (
+        <DocumentViewer
+          documentPath={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
+        />
+      )}
+
+      <ModuleBotButton moduleName="YQMS - Internal Rolling QC" />
     </div>
   );
 };

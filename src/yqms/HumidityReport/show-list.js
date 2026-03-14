@@ -18,11 +18,18 @@ import {
     Eye,
     FileEdit,
     Trash2,
-    CheckCircle
+    CheckCircle,
+    Video
 } from 'lucide-react';
 
 import { useTranslation } from '../../translate/TranslationContext';
 import HumidityReportDetail from './HumidityReportDetail';
+import VideoViewer from '../../components/VideoViewer';
+import DocumentViewer from '../../components/DocumentViewer';
+import ModuleBotButton from '../../components/ModuleBotButton';
+
+const HUMIDITY_VIDEO_PATH = '/assets/short-video-training/Humidity.mp4';
+const HUMIDITY_REPORT_PATH = '/assets/report-training/yhr-report.xlsx';
 
 const HumidityReportList = ({ onBack }) => {
     const navigate = useNavigate();
@@ -31,6 +38,8 @@ const HumidityReportList = ({ onBack }) => {
     const [activeTab, setActiveTab] = useState('Qc-daily-report');
     const [showDetail, setShowDetail] = useState(false);
     const [selectedReport, setSelectedReport] = useState(null);
+    const [selectedVideo, setSelectedVideo] = useState(null);
+    const [selectedDocument, setSelectedDocument] = useState(null);
 
     const tabs = [
         { id: 'Inspection', label: 'Inspection', icon: Check },
@@ -130,6 +139,20 @@ const HumidityReportList = ({ onBack }) => {
 
                     {/* Right Section */}
                     <div className="flex items-center gap-4 shrink-0">
+                        <button
+                            onClick={() => setSelectedVideo(HUMIDITY_VIDEO_PATH)}
+                            className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 border border-white/40 text-white shadow-lg transition-all"
+                            title="Video Training"
+                        >
+                            <Video size={18} />
+                        </button>
+                        <button
+                            onClick={() => setSelectedDocument(HUMIDITY_REPORT_PATH)}
+                            className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 border border-white/40 text-white shadow-lg transition-all"
+                            title="Report Training"
+                        >
+                            <FileText size={16} />
+                        </button>
                         <button
                             onClick={() => {
                                 // Simulate bulk export
@@ -378,6 +401,22 @@ const HumidityReportList = ({ onBack }) => {
                     onClose={() => setShowDetail(false)}
                 />
             )}
+
+            {selectedVideo && (
+                <VideoViewer
+                    videoPath={selectedVideo}
+                    onClose={() => setSelectedVideo(null)}
+                />
+            )}
+
+            {selectedDocument && (
+                <DocumentViewer
+                    documentPath={selectedDocument}
+                    onClose={() => setSelectedDocument(null)}
+                />
+            )}
+
+            <ModuleBotButton moduleName="YQMS - Humidity Aquaboy" />
         </div>
     );
 };
