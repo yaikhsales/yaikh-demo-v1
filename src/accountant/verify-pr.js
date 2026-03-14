@@ -1686,7 +1686,7 @@ const VerifyPR = ({ onBack }) => {
     <div className="fixed inset-0 bg-white flex flex-col animate-in fade-in duration-500 z-10">
       {/* Header with Breadcrumb and Back Button */}
       <div className="bg-slate-100 p-4 border-b flex flex-col gap-3 flex-shrink-0 shadow-sm relative">
-        <div className="absolute top-4 right-4 hidden sm:flex items-center gap-2">
+        {/* <div className="absolute top-4 right-4 hidden sm:flex items-center gap-2">
           <button
             onClick={() =>
               setSelectedVideo(
@@ -1700,9 +1700,46 @@ const VerifyPR = ({ onBack }) => {
           </button>
           <button
             onClick={() =>
-              setSelectedDocument(
-                "/assets/report-training/accounting-training-report.pdf",
+              setSelectedDocument("/assets/accountant/verify-pr/view-pdf.pdf")
+            }
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Report Training"
+          >
+            <FileText size={20} className="text-blue-600" />
+          </button>
+        </div> */}
+
+        <div className="absolute top-4 right-4 hidden sm:flex items-center gap-2">
+          {/* 1. Existing Short Video Button */}
+          <button
+            onClick={() =>
+              setSelectedVideo(
+                "/assets/short-video-training/accounting-training.mp4",
               )
+            }
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Short Video Training"
+          >
+            <Video size={20} className="text-blue-600" />
+          </button>
+
+          {/* 2. NEW: Normal Video Button */}
+          {/* <button
+            onClick={() =>
+              setSelectedVideo(
+                "/assets/short-video-training/normal-video-training/accounting-training-normal.mp4",
+              )
+            }
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Normal Video Training"
+          >
+            <Video size={20} className="text-emerald-600" />
+          </button> */}
+
+          {/* 3. Existing Document Button */}
+          <button
+            onClick={() =>
+              setSelectedDocument("/assets/accountant/verify-pr/view-pdf.pdf")
             }
             className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
             title="Report Training"
@@ -2065,10 +2102,35 @@ const VerifyPR = ({ onBack }) => {
       )}
 
       {/* Video Viewer Modal */}
+      {/* {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )} */}
+
+      {/* Video Viewer Modal */}
       {selectedVideo && (
         <VideoViewer
           videoPath={selectedVideo}
           onClose={() => setSelectedVideo(null)}
+          onSwitch={() => {
+            // Define the two paths
+            const shortVideo = "/assets/short-video-training/accounting-training.mp4";
+            const normalVideo = "/assets/short-video-training/normal-video-training/accounting-training-normal.mp4";
+            
+            // Toggle between them
+            if (selectedVideo === shortVideo) {
+              setSelectedVideo(normalVideo);
+            } else {
+              setSelectedVideo(shortVideo);
+            }
+          }}
+          switchLabel={
+            selectedVideo.includes("short") 
+              ? "Watch Normal Video" 
+              : "Watch Short Video"
+          }
         />
       )}
 
