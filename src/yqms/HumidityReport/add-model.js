@@ -14,15 +14,18 @@ import {
     Sparkles,
     User,
     X,
-    Save
+    Save,
+    Download
 } from 'lucide-react';
 import { useTranslation } from '../../translate/TranslationContext';
+import HumidityReportDetail from './HumidityReportDetail';
 
 const HumidityReportAdd = ({ onBack }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
     const [activeTab, setActiveTab] = useState('Inspection');
+    const [showDetail, setShowDetail] = useState(false);
     const [reportType, setReportType] = useState('Inline');
     const [factoryStyleNo, setFactoryStyleNo] = useState('');
     const [buyerStyleNo, setBuyerStyleNo] = useState('');
@@ -367,6 +370,13 @@ const HumidityReportAdd = ({ onBack }) => {
                     {/* Action Buttons */}
                     <div className="flex items-center justify-end gap-3 py-3 px-4">
                         <button
+                            onClick={() => setShowDetail(true)}
+                            className="flex items-center gap-2 px-5 py-3 bg-emerald-500 text-white rounded-xl font-bold text-sm shadow-xl shadow-emerald-500/20 hover:scale-105 transition-all active:scale-95"
+                        >
+                            <Download size={18} strokeWidth={3} />
+                            Preview & Export
+                        </button>
+                        <button
                             className="flex items-center gap-2 px-5 py-3 bg-blue-600 text-white rounded-xl font-bold text-sm shadow-xl shadow-blue-500/20 hover:scale-105 transition-all active:scale-95"
                         >
                             <Check size={18} strokeWidth={3} />
@@ -375,6 +385,28 @@ const HumidityReportAdd = ({ onBack }) => {
                     </div>
                 </div>
             </div>
+
+            {showDetail && (
+                <HumidityReportDetail
+                    onClose={() => setShowDetail(false)}
+                    data={{
+                        id: factoryStyleNo,
+                        buyerStyle: buyerStyleNo,
+                        customer: customer,
+                        fabrication: fabrication,
+                        color: colorName,
+                        spec: aquaboyReadingSpec,
+                        beforeDry: beforeDryRoom,
+                        afterDry: 'N/A',
+                        sections: {
+                            top: { body: readings.topBody, status: 'PASS' },
+                            middle: { body: readings.middleBody, status: 'PASS' },
+                            bottom: { body: readings.bottomBody, status: 'PASS' }
+                        },
+                        totalResult: 'PASS'
+                    }}
+                />
+            )}
         </div>
     );
 };

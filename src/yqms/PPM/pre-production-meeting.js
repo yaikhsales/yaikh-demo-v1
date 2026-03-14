@@ -15,7 +15,10 @@ import {
     Pencil,
     Trash2,
     CalendarDays,
-    LayoutDashboard
+    LayoutDashboard,
+    FileUp,
+    Loader2,
+    X,
 } from 'lucide-react';
 import { useTranslation } from '../../translate/TranslationContext';
 import AddMeeting from './add-meeting';
@@ -23,22 +26,36 @@ import AddMeeting from './add-meeting';
 const PreProductionMeeting = ({ onBack }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const fileInputRef = React.useRef(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [showForm, setShowForm] = useState(false);
+    const [selectedMeeting, setSelectedMeeting] = useState(null);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploadingId, setUploadingId] = useState(null);
     const itemsPerPage = 8;
 
-    const meetings = [
-        { id: 'PPM-2024-001', date: '2024-02-18', buyer: 'Aritzia', style: 'AR-701-BLU', attendees: 12, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
-        { id: 'PPM-2024-002', date: '2024-02-18', buyer: 'Costco', style: 'CS-SILK-TW', attendees: 8, status: 'In-Progress', statusColor: 'text-amber-700 bg-amber-100 border-amber-200' },
-        { id: 'PPM-2024-003', date: '2024-02-17', buyer: 'Arizia', style: 'LL-FAST-BLK', attendees: 15, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
-        { id: 'PPM-2024-004', date: '2024-02-17', buyer: 'ANF', style: 'NK-TECH-GRY', attendees: 10, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
-        { id: 'PPM-2024-005', date: '2024-02-19', buyer: 'Reitmans', style: 'GP-DENIM-99', attendees: 6, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
-        { id: 'PPM-2024-006', date: '2024-02-20', buyer: 'Arizia', style: 'UQ-AIR-772', attendees: 14, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
-        { id: 'PPM-2024-007', date: '2024-02-16', buyer: 'Arizia', style: 'ZR-COAT-W24', attendees: 20, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' },
-        { id: 'PPM-2024-008', date: '2024-02-15', buyer: 'Costco', style: 'HM-KNIT-PR', attendees: 5, status: 'Cancelled', statusColor: 'text-slate-700 bg-slate-100 border-slate-200' },
-        { id: 'PPM-2024-009', date: '2024-02-21', buyer: 'ANF', style: 'AD-PERF-RUN', attendees: 9, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200' },
+    const initialMeetings = [
+        { id: 'PPM-2024-001', date: '2024-02-18', buyer: 'Aritzia', style: 'AR-701-BLU', attendees: 12, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'PPM_Plan.pdf' },
+        { id: 'PPM-2024-002', date: '2024-02-18', buyer: 'Costco', style: 'CS-SILK-TW', attendees: 8, status: 'In-Progress', statusColor: 'text-amber-700 bg-amber-100 border-amber-200', file: 'Pending' },
+        { id: 'PPM-2024-003', date: '2024-02-17', buyer: 'Arizia', style: 'LL-FAST-BLK', attendees: 15, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'Meeting_Notes.pdf' },
+        { id: 'PPM-2024-004', date: '2024-02-17', buyer: 'ANF', style: 'NK-TECH-GRY', attendees: 10, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'Meeting_Notes.pdf' },
+        { id: 'PPM-2024-005', date: '2024-02-19', buyer: 'Reitmans', style: 'GP-DENIM-99', attendees: 6, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'Pending' },
+        { id: 'PPM-2024-006', date: '2024-02-20', buyer: 'Arizia', style: 'UQ-AIR-772', attendees: 14, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'Pending' },
+        { id: 'PPM-2024-007', date: '2024-02-16', buyer: 'Arizia', style: 'ZR-COAT-W24', attendees: 20, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200', file: 'Meeting_Notes.pdf' },
+        { id: 'PPM-2024-008', date: '2024-02-15', buyer: 'Costco', style: 'HM-KNIT-PR', attendees: 5, status: 'Cancelled', statusColor: 'text-slate-700 bg-slate-100 border-slate-200', file: 'Pending' },
+        { id: 'PPM-2024-009', date: '2024-02-21', buyer: 'ANF', style: 'AD-PERF-RUN', attendees: 9, status: 'Scheduled', statusColor: 'text-red-700 bg-red-100 border-red-200', file: 'Pending' },
     ];
+
+    const [meetings, setMeetings] = useState(() => {
+        const saved = localStorage.getItem('ppm_meetings_demo');
+        return saved ? JSON.parse(saved) : initialMeetings;
+    });
+
+    React.useEffect(() => {
+        localStorage.setItem('ppm_meetings_demo', JSON.stringify(meetings));
+    }, [meetings]);
 
     const stats = [
         { label: 'Total Meetings', value: meetings.length, icon: LayoutDashboard, color: 'text-red-600', bgColor: 'bg-red-50' },
@@ -61,6 +78,42 @@ const PreProductionMeeting = ({ onBack }) => {
     const handleBack = () => {
         if (onBack) onBack();
         else navigate(-1);
+    };
+
+    const handleDownload = (meeting) => {
+        const fileName = 'PP meeting form (3).xlsx';
+        const fileUrl = `/${fileName}`;
+        window.open(fileUrl, '_blank');
+    };
+
+    const handleFileUpload = async (event) => {
+        const file = event.target.files?.[0] || event.dataTransfer?.files?.[0];
+        if (!file || !selectedMeeting) return;
+
+        setUploadingId(selectedMeeting.id);
+        setUploadProgress(10);
+
+        // Simulate upload progress
+        for (let i = 20; i <= 100; i += 20) {
+            await new Promise(r => setTimeout(r, 200));
+            setUploadProgress(i);
+        }
+
+        const fileUrl = URL.createObjectURL(file);
+
+        setMeetings(prev => prev.map(m =>
+            m.id === selectedMeeting.id
+                ? { ...m, file: file.name, fileUrl: fileUrl, status: 'Finished', statusColor: 'text-emerald-700 bg-emerald-100 border-emerald-200' }
+                : m
+        ));
+
+        setTimeout(() => {
+            setUploadingId(null);
+            setSelectedMeeting(null);
+            setUploadProgress(0);
+            setIsUploadModalOpen(false);
+            if (event.target) event.target.value = '';
+        }, 500);
     };
 
     return (
@@ -88,6 +141,7 @@ const PreProductionMeeting = ({ onBack }) => {
                     </button>
                     <button
                         onClick={() => setShowForm(true)}
+               
                         className="flex items-center gap-2 px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold shadow-md shadow-red-200 transition-all active:scale-95"
                     >
                         <Plus className="w-4 h-4" /> New Meeting
@@ -170,6 +224,7 @@ const PreProductionMeeting = ({ onBack }) => {
                                     <th className="px-6 py-5">Buyer</th>
                                     <th className="px-6 py-5 text-center">Attendees</th>
                                     <th className="px-6 py-5 text-center">Status</th>
+                                    <th className="px-6 py-5 text-center">Report</th>
                                     <th className="px-12 py-5 text-right w-24">Action</th>
                                 </tr>
                             </thead>
@@ -204,9 +259,49 @@ const PreProductionMeeting = ({ onBack }) => {
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex justify-center">
-                                                <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-[0.1em] uppercase border shadow-sm ${meeting.statusColor}`}>
+                                                <span className={`px-3 py-1 rounded-full text-xs font-black border shadow-sm ${meeting.statusColor}`}>
                                                     {meeting.status}
                                                 </span>
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <div className="flex justify-center">
+                                                {meeting.file !== 'Pending' ? (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            if (meeting.fileUrl) {
+                                                                window.open(meeting.fileUrl, '_blank');
+                                                            } else {
+                                                                handleDownload(meeting);
+                                                            }
+                                                        }}
+                                                        className="flex items-center gap-2 px-2 py-1.5 hover:bg-red-200 rounded-lg text-red-600 transition-all border border-slate-200 group/down"
+                                                        title={meeting.fileUrl ? `View ${meeting.file}` : `Download Template`}
+                                                    >
+                                                        <Download className="w-4 h-4 text-red-600 group-hover/down:scale-110 transition-transform" />
+                                                        <span className="text-[10px] font-bold uppercase tracking-tight">XLSX</span>
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setSelectedMeeting(meeting);
+                                                            setIsUploadModalOpen(true);
+                                                        }}
+                                                        disabled={uploadingId === meeting.id}
+                                                        className="flex items-center gap-2 px-4 py-2 bg-red-50 hover:bg-red-100 rounded-xl text-red-600 transition-all border border-red-200 group/upload cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-sm active:scale-95"
+                                                    >
+                                                        {uploadingId === meeting.id ? (
+                                                            <Loader2 className="w-4 h-4 text-red-600 animate-spin" />
+                                                        ) : (
+                                                            <FileUp className="w-4 h-4 text-red-600 group-hover/upload:-translate-y-0.5 transition-transform" />
+                                                        )}
+                                                        <span className="text-[10px] font-black uppercase tracking-widest">
+                                                            {uploadingId === meeting.id ? 'Uploading...' : 'Upload'}
+                                                        </span>
+                                                    </button>
+                                                )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-right w-24 ">
@@ -259,6 +354,118 @@ const PreProductionMeeting = ({ onBack }) => {
                     </div>
                 </div>
             </main>
+
+            {/* File Upload Modal */}
+            {isUploadModalOpen && selectedMeeting && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+                    <div
+                        className="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity animate-in fade-in duration-300"
+                        onClick={() => !uploadingId && setIsUploadModalOpen(false)}
+                    />
+                    <div className="relative bg-white rounded-[32px] shadow-2xl w-full max-w-lg overflow-hidden border border-slate-200 animate-in zoom-in-95 duration-300">
+                        {/* Modal Header */}
+                        <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className="p-3 bg-red-50 rounded-2xl text-red-600 border border-red-100 shadow-sm transition-transform hover:rotate-3">
+                                    <FileUp className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-black text-slate-900 uppercase tracking-tight">Upload Meeting Report</h3>
+                                    <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">{selectedMeeting.id} • {selectedMeeting.buyer}</p>
+                                </div>
+                            </div>
+                            {!uploadingId && (
+                                <button
+                                    onClick={() => setIsUploadModalOpen(false)}
+                                    className="p-2.5 hover:bg-slate-100 rounded-full transition-all text-slate-400 hover:text-slate-600 hover:rotate-90"
+                                >
+                                    <X className="w-6 h-6" />
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Modal Body */}
+                        <div className="p-8">
+                            {uploadingId === selectedMeeting.id ? (
+                                <div className="py-12 flex flex-col items-center justify-center">
+                                    <div className="relative w-32 h-32 mb-8">
+                                        <svg className="w-full h-full transform -rotate-90">
+                                            <circle
+                                                cx="64" cy="64" r="60"
+                                                fill="transparent"
+                                                stroke="currentColor"
+                                                strokeWidth="8"
+                                                className="text-slate-100"
+                                            />
+                                            <circle
+                                                cx="64" cy="64" r="60"
+                                                fill="transparent"
+                                                stroke="currentColor"
+                                                strokeWidth="8"
+                                                strokeDasharray={2 * Math.PI * 60}
+                                                strokeDashoffset={2 * Math.PI * 60 * (1 - uploadProgress / 100)}
+                                                className="text-red-600 transition-all duration-300 ease-out"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+                                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                                            <span className="text-2xl font-black text-slate-900 leading-none">{uploadProgress}%</span>
+                                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Uploading</span>
+                                        </div>
+                                    </div>
+                                    <p className="text-sm font-bold text-slate-600 animate-pulse uppercase tracking-widest">Processing Secure Transfer...</p>
+                                </div>
+                            ) : (
+                                <div
+                                    onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-red-500', 'bg-red-50/50'); }}
+                                    onDragLeave={(e) => { e.preventDefault(); e.currentTarget.classList.remove('border-red-500', 'bg-red-50/50'); }}
+                                    onDrop={(e) => { e.preventDefault(); handleFileUpload(e); }}
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="border-2 border-dashed border-slate-200 rounded-[24px] p-12 flex flex-col items-center justify-center gap-4 hover:border-red-400 hover:bg-red-50/30 transition-all cursor-pointer group relative overflow-hidden"
+                                >
+                                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm border border-slate-100">
+                                        <FileUp className="w-8 h-8 text-red-500" />
+                                    </div>
+                                    <div className="text-center">
+                                        <h4 className="text-base font-black text-slate-900 uppercase tracking-tight">Drop meeting report here</h4>
+                                        <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mt-1">or click to browse XLSX files</p>
+                                    </div>
+                                    <div className="flex items-center gap-6 mt-4">
+                                        <div className="flex flex-col items-center gap-1 opacity-40 group-hover:opacity-100 transition-opacity">
+                                            <div className="w-10 h-10 rounded-lg border border-slate-200 flex items-center justify-center bg-white shadow-sm">
+                                                <span className="text-[10px] font-black text-slate-600">XLSX</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Modal Footer */}
+                        {!uploadingId && (
+                            <div className="px-8 py-6 border-t border-slate-50 bg-slate-50/50 flex items-center justify-between">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest max-w-[200px]">Maximum file size: 25MB. All transfers are encrypted.</span>
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="px-6 py-3 bg-slate-900 text-white rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-black transition-all shadow-lg active:scale-95"
+                                >
+                                    Select File
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+
+            {/* Hidden File Input */}
+            <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept=".xlsx"
+                onChange={handleFileUpload}
+            />
 
             {/* Modal Popup */}
             {showForm && (

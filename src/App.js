@@ -123,6 +123,8 @@ import HumidityReportAdd from "./yqms/HumidityReport/add-model";
 import HumidityReportList from "./yqms/HumidityReport/show-list";
 import QCRovingDashboard from "./yqms/Fin-check/Dashboard/QCRovingDashboard";
 import CuttingDashboard from "./yqms/Fin-check/Dashboard/CuttingDashboard";
+import CuttingPanel from "./yqms/Cutting-panel";
+
 
 export default function App() {
   const navigate = useNavigate();
@@ -587,10 +589,9 @@ export default function App() {
           />
           <Route
             path="yqms/cut-panel-inspection"
-            element={
-              <AuditReport title="Cut Panel Inspection" onBack={handleBack} />
-            }
+            element={<CuttingPanel onBack={handleBack} />}
           />
+
           <Route
             path="yqms/printing-inspection"
             element={
