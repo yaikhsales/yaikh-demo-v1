@@ -411,13 +411,13 @@ const AddMeeting = ({ onCancel, onSave }) => {
                 <div className="flex items-center justify-end gap-4 p-6 bg-slate-50/50 border-t border-slate-100">
                     <button
                         onClick={onCancel}
-                        className="px-6 py-3 bg-white border border-gray-200 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition-all uppercase tracking-[0.2em] shadow-sm active:scale-95"
+                        className="px-6 py-3 bg-white border border-gray-200 rounded-xl text-sm font-bold text-slate-600 hover:bg-slate-100 transition-all shadow-sm active:scale-95"
                     >
                         Discard
                     </button>
                     <button
                         onClick={() => onSave(formData)}
-                        className="px-6 py-3 bg-red-600 text-white rounded-xl text-xs font-bold hover:bg-red-700 transition-all flex items-center uppercase tracking-[0.2em] shadow-xl shadow-red-200 active:scale-95"
+                        className="px-6 py-3 bg-red-600 text-white rounded-xl text-sm font-bold hover:bg-red-700 transition-all flex items-center shadow-xl shadow-red-200 active:scale-95"
                     >
                         <Save className="w-5 h-5 text-white/90" /> Confirm Schedule
                     </button>
