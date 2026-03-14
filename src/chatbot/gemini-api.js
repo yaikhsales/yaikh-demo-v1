@@ -1,5 +1,5 @@
 // Gemini API Integration for Yaikh Dashboard
-const GEMINI_API_KEY = "AIzaSyAlBmcylEUnznbkCoC4sUXMBPlnXMW0Qa4";
+const GEMINI_API_KEY = "AIzaSyC1XlCYxAVcyoiIOQJm8cbqKNmIciuPlB8";
 const GEMINI_MODEL = "gemini-2.5-flash"; // Using gemini-2.5-flash model
 
 /**
@@ -11,6 +11,127 @@ const GEMINI_MODEL = "gemini-2.5-flash"; // Using gemini-2.5-flash model
  * @param {Array} chatHistory - Previous messages in the conversation
  * @returns {Promise<string>} - The AI-generated response
  */
+// export const generateGeminiResponse = async (
+//   userMessage,
+//   botName = "Yai 2",
+//   botContext = "",
+//   chatHistory = [],
+// ) => {
+//   try {
+//     // Build context about Yaikh platform
+//     // If botContext is very long (like the full module list), use it as the main context
+//     // Otherwise, build a standard context
+//     let yaikhContext;
+//     if (botContext && botContext.length > 500) {
+//       // botContext is the full comprehensive context, use it directly
+//       yaikhContext = botContext;
+//     } else {
+//       // Build standard context
+//       yaikhContext = `You are ${botName}, an AI assistant for Yaikh (Yaikh.com), an AI platform developed by TexLink Technologies Co., Ltd. 
+
+// Yaikh specializes in:
+// - Yai Digitalization: Digital transformation solutions
+// - Yai AiOT: AI and Internet of Things integration
+// - Yai Bots: AI-powered chatbot solutions
+// - Yai E-com: E-commerce solutions
+// - Yai Gov: Government digitalization solutions
+
+// The platform website: https://yaikh.com/ (demo/portfolio site)
+// The main application: https://ym.yaikh.com/ (real production system)
+
+// ${botContext ? `Your specific role: ${botContext}` : "You are a general assistant helping users with the Yaikh platform."}
+
+// IMPORTANT: Keep responses SHORT and CONCISE. Aim for 2-4 sentences maximum unless the user specifically asks for detailed information. Be direct and to the point. Use emojis sparingly (1-2 per response). Format text with clear structure using bullet points when listing items.`;
+//     }
+
+//     // Build conversation history for context
+//     const recentHistory = chatHistory.slice(-10); // Keep last 10 messages for context
+
+//     // Build contents array for Gemini API (proper format)
+//     const contents = [];
+
+//     // Add system instruction as first user message with model acknowledgment
+//     contents.push({
+//       role: "user",
+//       parts: [{ text: yaikhContext }]
+//     });
+//     contents.push({
+//       role: "model",
+//       parts: [{ text: "I understand. I'm ready to help users with the Yaikh platform." }]
+//     });
+
+//     // Add conversation history if available
+//     if (recentHistory.length > 0) {
+//       recentHistory.forEach((msg) => {
+//         contents.push({
+//           role: msg.from === "user" ? "user" : "model",
+//           parts: [{ text: msg.text }]
+//         });
+//       });
+//     }
+
+//     // Add current user message
+//     contents.push({
+//       role: "user",
+//       parts: [{ text: userMessage }]
+//     });
+
+//     // Call Gemini API using REST endpoint
+//     // Try v1 first for gemini-2.5-flash, fallback to v1beta if needed
+//    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+    
+//     const response = await fetch(apiUrl, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({
+//         contents: contents,
+//         generationConfig: {
+//           temperature: 0.7,
+//           topK: 40,
+//           topP: 0.95,
+//           maxOutputTokens: 512, // Very short responses for mockup/demo
+//         },
+//       }),
+//     });
+
+//     if (!response.ok) {
+//       const errorText = await response.text();
+//       let errorData;
+//       try {
+//         errorData = JSON.parse(errorText);
+//       } catch {
+//         errorData = { error: errorText };
+//       }
+//       console.error("Gemini API HTTP Error:", response.status, errorData);
+//       throw new Error(`API request failed: ${response.status} - ${JSON.stringify(errorData)}`);
+//     }
+
+//     const data = await response.json();
+//     console.log("Gemini API Response:", data); // Debug log
+
+//     // Extract the response text from Gemini API response
+//     if (data && data.candidates && data.candidates.length > 0) {
+//       const candidate = data.candidates[0];
+//       if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
+//         const responseText = candidate.content.parts[0].text;
+//         if (responseText) {
+//           return responseText.trim();
+//         }
+//       }
+//     }
+
+//     console.error("Invalid response format:", data);
+//     throw new Error("Invalid response format from Gemini API");
+//   } catch (error) {
+//     console.error("Gemini API Error:", error);
+//     // Return a fallback response
+//     return `I apologize, but I'm having trouble processing your request right now. Please try again or rephrase your question. If the issue persists, you can contact support at [email protected] or call +855 96 575 4574.`;
+//   }
+// };
+
+
 export const generateGeminiResponse = async (
   userMessage,
   botName = "Yai 2",
@@ -18,119 +139,44 @@ export const generateGeminiResponse = async (
   chatHistory = [],
 ) => {
   try {
-    // Build context about Yaikh platform
-    // If botContext is very long (like the full module list), use it as the main context
-    // Otherwise, build a standard context
-    let yaikhContext;
-    if (botContext && botContext.length > 500) {
-      // botContext is the full comprehensive context, use it directly
-      yaikhContext = botContext;
-    } else {
-      // Build standard context
-      yaikhContext = `You are ${botName}, an AI assistant for Yaikh (Yaikh.com), an AI platform developed by TexLink Technologies Co., Ltd. 
-
-Yaikh specializes in:
-- Yai Digitalization: Digital transformation solutions
-- Yai AiOT: AI and Internet of Things integration
-- Yai Bots: AI-powered chatbot solutions
-- Yai E-com: E-commerce solutions
-- Yai Gov: Government digitalization solutions
-
-The platform website: https://yaikh.com/ (demo/portfolio site)
-The main application: https://ym.yaikh.com/ (real production system)
-
-${botContext ? `Your specific role: ${botContext}` : "You are a general assistant helping users with the Yaikh platform."}
-
-IMPORTANT: Keep responses SHORT and CONCISE. Aim for 2-4 sentences maximum unless the user specifically asks for detailed information. Be direct and to the point. Use emojis sparingly (1-2 per response). Format text with clear structure using bullet points when listing items.`;
-    }
-
-    // Build conversation history for context
-    const recentHistory = chatHistory.slice(-10); // Keep last 10 messages for context
-
-    // Build contents array for Gemini API (proper format)
-    const contents = [];
-
-    // Add system instruction as first user message with model acknowledgment
-    contents.push({
-      role: "user",
-      parts: [{ text: yaikhContext }]
-    });
-    contents.push({
-      role: "model",
-      parts: [{ text: "I understand. I'm ready to help users with the Yaikh platform." }]
-    });
-
-    // Add conversation history if available
-    if (recentHistory.length > 0) {
-      recentHistory.forEach((msg) => {
-        contents.push({
-          role: msg.from === "user" ? "user" : "model",
-          parts: [{ text: msg.text }]
-        });
-      });
-    }
-
-    // Add current user message
-    contents.push({
-      role: "user",
-      parts: [{ text: userMessage }]
-    });
-
-    // Call Gemini API using REST endpoint
-    // Try v1 first for gemini-2.5-flash, fallback to v1beta if needed
-    const apiUrl = `https://generativelanguage.googleapis.com/v1/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+    // 1. Point directly to your custom backend API
+    const apiUrl = "https://yaikh-ai-agent-77568730259.asia-southeast1.run.app/api/ai-agent";
     
+    // 2. Send the data in the format your backend likely expects
     const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        // Add an authorization header here if your backend requires a token!
+        // "Authorization": `Bearer ${YOUR_AUTH_TOKEN}`
       },
       body: JSON.stringify({
-        contents: contents,
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 512, // Very short responses for mockup/demo
-        },
+        message: userMessage,
+        botName: botName,
+        context: botContext,
+        history: chatHistory
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      let errorData;
-      try {
-        errorData = JSON.parse(errorText);
-      } catch {
-        errorData = { error: errorText };
-      }
-      console.error("Gemini API HTTP Error:", response.status, errorData);
-      throw new Error(`API request failed: ${response.status} - ${JSON.stringify(errorData)}`);
+      console.error("Backend API Error:", response.status, errorText);
+      throw new Error(`Custom API request failed: ${response.status}`);
     }
 
     const data = await response.json();
-    console.log("Gemini API Response:", data); // Debug log
+    console.log("Backend Response:", data);
+    
+    // 3. Extract the text based on how your backend formats the response.
+    // Assuming your backend returns something like { reply: "Hello!" } or { text: "..." }
+    // You may need to adjust this depending on what your console.log(data) shows!
+    return data.reply || data.text || data.message || data.response || "No response received from backend.";
 
-    // Extract the response text from Gemini API response
-    if (data && data.candidates && data.candidates.length > 0) {
-      const candidate = data.candidates[0];
-      if (candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
-        const responseText = candidate.content.parts[0].text;
-        if (responseText) {
-          return responseText.trim();
-        }
-      }
-    }
-
-    console.error("Invalid response format:", data);
-    throw new Error("Invalid response format from Gemini API");
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    // Return a fallback response
-    return `I apologize, but I'm having trouble processing your request right now. Please try again or rephrase your question. If the issue persists, you can contact support at [email protected] or call +855 96 575 4574.`;
+    console.error("API Error:", error);
+    return "I apologize, but I'm having trouble connecting to my server right now. Please try again later.";
   }
 };
-
 /**
  * Check if a message should use Gemini API (when no predefined response matches)
  * @param {string} message - The user's message

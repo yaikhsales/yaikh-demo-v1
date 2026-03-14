@@ -160,9 +160,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
             </button>
             <button
               onClick={() =>
-                setSelectedDocument(
-                  "/assets/report-training/purchase-requisition-form.pdf",
-                )
+                setSelectedDocument("/assets/purchase/view-pdf.pdf")
               }
               className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
               title="Report Training"

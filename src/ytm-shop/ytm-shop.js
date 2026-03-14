@@ -528,7 +528,7 @@ const YShop = ({ onBack }) => {
               <button
                 onClick={() =>
                   setSelectedVideo(
-                    "/assets/short-video-training/YTM-shop-training.mp4",
+                    "/assets/short-video-training/Y-shop-training.mp4",
                   )
                 }
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -539,7 +539,7 @@ const YShop = ({ onBack }) => {
               <button
                 onClick={() =>
                   setSelectedDocument(
-                    "/assets/report-training/YTM-shop-report.xlsx",
+                    "/assets/report-training/Y-shop-report.xlsx",
                   )
                 }
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"

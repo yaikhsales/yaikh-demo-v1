@@ -8,14 +8,17 @@ import {
 } from "lucide-react";
 import * as XLSX from "xlsx";
 
-const DocumentViewer = ({ documentPath, onClose }) => {
+const DocumentViewer = ({ documentPath, documentUrl, onClose }) => {
   const navigate = useNavigate();
   const [htmlContent, setHtmlContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const activePath = documentPath || documentUrl;
 
   // Extract filename from the path
-  const filename = documentPath ? documentPath.split("/").pop() : "Report";
+  const filename = activePath ? activePath.split("/").pop() : "Report";
 
   useEffect(() => {
     let isMounted = true;
@@ -23,13 +26,14 @@ const DocumentViewer = ({ documentPath, onClose }) => {
     const fetchAndParseExcel = async () => {
       setLoading(true);
       setError(false);
+      setErrorMessage("");
       try {
-        const response = await fetch(documentPath);
+        const response = await fetch(activePath);
         if (!response.ok) throw new Error("Network response was not ok");
         const arrayBuffer = await response.arrayBuffer();
 
-        // Parse the excel file
-        const workbook = XLSX.read(arrayBuffer, { type: "array" });
+        // Parse the excel file by passing the ArrayBuffer
+        const workbook = XLSX.read(arrayBuffer);
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
 
@@ -41,25 +45,25 @@ const DocumentViewer = ({ documentPath, onClose }) => {
         }
       } catch (err) {
         console.error("Failed to load Excel file:", err);
-        if (isMounted) setError(true);
+        if (isMounted) {
+          setError(true);
+          setErrorMessage(err.message || String(err));
+        }
       } finally {
         if (isMounted) setLoading(false);
       }
     };
 
-    if (!documentPath) {
+    if (!activePath) {
       setError(true);
       setLoading(false);
       return;
     }
 
-    if (documentPath.endsWith(".pdf")) {
+    if (activePath.endsWith(".pdf")) {
       setLoading(false);
       setError(false);
-    } else if (
-      documentPath.endsWith(".xlsx") ||
-      documentPath.endsWith(".xls")
-    ) {
+    } else if (activePath.endsWith(".xlsx") || activePath.endsWith(".xls")) {
       fetchAndParseExcel();
     } else {
       setError(true);
@@ -69,7 +73,7 @@ const DocumentViewer = ({ documentPath, onClose }) => {
     return () => {
       isMounted = false;
     };
-  }, [documentPath]);
+  }, [activePath]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -83,7 +87,7 @@ const DocumentViewer = ({ documentPath, onClose }) => {
   const handleDownload = (e) => {
     e.stopPropagation(); // Prevent modal from closing if someone clicks exactly on download
     const link = document.createElement("a");
-    link.href = documentPath;
+    link.href = activePath;
     link.download = filename;
     document.body.appendChild(link);
     link.click();
@@ -171,16 +175,21 @@ const DocumentViewer = ({ documentPath, onClose }) => {
                 <p className="text-slate-600 max-w-md">
                   We couldn't load the file. It might have been moved, or it's
                   not a supported format.
+                  <br />
+                  <br />
+                  <span className="text-red-500 font-bold">
+                    Error: {errorMessage || "Unknown error"}
+                  </span>
                 </p>
                 <div className="bg-slate-100 p-3 rounded-lg mt-2 overflow-x-auto w-full max-w-lg">
                   <p className="text-slate-500 text-xs font-mono">
-                    {documentPath}
+                    {activePath}
                   </p>
                 </div>
               </div>
-            ) : documentPath && documentPath.endsWith(".pdf") ? (
+            ) : activePath && activePath.endsWith(".pdf") ? (
               <iframe
-                src={`${documentPath}#view=FitH`}
+                src={`${activePath}#view=FitH`}
                 title="PDF Document"
                 className="w-full h-full border-none"
               />

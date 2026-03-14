@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download, AlertCircle } from "lucide-react";
+import { ArrowLeft, Download, AlertCircle, Video } from "lucide-react";
 
-const VideoViewer = ({ videoPath, onClose }) => {
+const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
   const navigate = useNavigate();
   const [hasError, setHasError] = useState(false);
 
@@ -36,9 +36,13 @@ const VideoViewer = ({ videoPath, onClose }) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
+
+     
+
       {/* Header Controls */}
       <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between p-4 bg-gradient-to-b from-black/80 to-transparent">
         {/* Left: Empty space for balance */}
+        
         <div className="flex-1"></div>
 
         {/* Center: Home Button and Back Button */}
@@ -61,6 +65,19 @@ const VideoViewer = ({ videoPath, onClose }) => {
               className="w-full h-full object-cover"
             />
           </button>
+        </div>
+        {/* Left: Switch Video Button (If provided) */}
+        <div className="flex-1 flex justify-start">
+          {onSwitch && (
+            <button
+              onClick={onSwitch}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-500/80 hover:bg-blue-500 text-white rounded-lg transition-all backdrop-blur-sm border border-blue-400/30 shadow-lg"
+              title="Switch Video Version"
+            >
+              <Video size={18} />
+              <span className="text-sm font-medium">{switchLabel}</span>
+            </button>
+          )}
         </div>
 
         {/* Right: Controls */}
@@ -102,12 +119,19 @@ const VideoViewer = ({ videoPath, onClose }) => {
         ) : (
           <div className="relative w-full h-full flex items-center justify-center animate-in zoom-in-95 duration-500">
             <video
-              src={videoPath}
+              key={videoPath}
               controls
               autoPlay
+              playsInline
               className="max-w-full max-h-full object-contain shadow-2xl rounded-xl bg-black border border-white/20"
-              onError={() => setHasError(true)}
+              onError={(e) => {
+                // Ignore generic MEDIA_ERR_ABORTED (code: 1) firing during unmounts
+                if (e.target.error && e.target.error.code !== 1) {
+                  setHasError(true);
+                }
+              }}
             >
+              <source src={`${videoPath}?v=${Date.now()}`} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

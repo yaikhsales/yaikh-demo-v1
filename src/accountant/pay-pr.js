@@ -1437,9 +1437,7 @@ const PayPR = ({ onBack }) => {
           </button>
           <button
             onClick={() =>
-              setSelectedDocument(
-                "/assets/report-training/accounting-training-report.pdf",
-              )
+              setSelectedDocument("/assets/accountant/pay-pr/view-pdf.pdf")
             }
             className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
             title="Report Training"
