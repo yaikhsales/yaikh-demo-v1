@@ -6,7 +6,7 @@ import {
     Copy, Edit2, RefreshCw, MoreVertical,
     Menu, Trash2, ChevronRight, ChevronDown
 } from 'lucide-react';
-import { generateGeminiResponse, shouldUseGemini } from './gemini-api';
+import { generateGeminiResponse, generateDirectGeminiResponse, shouldUseGemini } from './gemini-api';
 
 // Predefined 10 bots for each moduleContext
 const PREDEFINED_BOTS = [
@@ -4236,185 +4236,44 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
             }
 
-            // For Admin PA, Finance PA, HR PA, CSR PA: if no module is selected and no predefined response, use "global" module to call API
-            // This allows users to ask general questions without selecting a specific module
-            if (botId === 'admin-bot' && !adminPAModule && !hasPredefinedResponse) {
-                // Add user message and set typing state
-                setBotStates(prev => {
-                    const botState = prev[botId];
-                    
-                    // Check for duplicate message before adding
-                    if (botState.messages.length > 0) {
-                        const lastMsg = botState.messages[botState.messages.length - 1];
-                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
-                            return prev; // Don't add duplicate
-                        }
-                    }
-                    
-                    const userMsg = { from: 'user', text: message };
-                    const updatedMessages = [...botState.messages, userMsg];
-                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                    ) : botState.chatHistory;
-                    return {
-                        ...prev,
-                        [botId]: {
-                            ...prev[botId],
-                            messages: updatedMessages,
-                            isTyping: true,
-                            chatHistory: updatedHistory
-                        }
-                    };
-                });
-
-                // Call API with "global" module (will be handled by callAdminPAAPI with null module)
-                const languageCode = botLanguages[botId]?.code || 'en';
-                callAdminPAAPI(message, null, languageCode).then(apiResponse => {
-                    streamBotResponse(botId, apiResponse);
-                }).catch(error => {
-                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
-                });
-                return; // Exit early - API call handles the response
-            } else if (botId === 'finance-bot' && !financePAModule && !hasPredefinedResponse) {
-                // Add user message and set typing state
-                setBotStates(prev => {
-                    const botState = prev[botId];
-                    
-                    // Check for duplicate message before adding
-                    if (botState.messages.length > 0) {
-                        const lastMsg = botState.messages[botState.messages.length - 1];
-                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
-                            return prev; // Don't add duplicate
-                        }
-                    }
-                    
-                    const userMsg = { from: 'user', text: message };
-                    const updatedMessages = [...botState.messages, userMsg];
-                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                    ) : botState.chatHistory;
-                    return {
-                        ...prev,
-                        [botId]: {
-                            ...prev[botId],
-                            messages: updatedMessages,
-                            isTyping: true,
-                            chatHistory: updatedHistory
-                        }
-                    };
-                });
-
-                // Call API with "global" module
-                const languageCode = botLanguages[botId]?.code || 'en';
-                callFinancePAAPI(message, null, languageCode).then(apiResponse => {
-                    streamBotResponse(botId, apiResponse);
-                }).catch(error => {
-                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
-                });
-                return; // Exit early - API call handles the response
-            } else if (botId === 'hr-bot' && !hrPAModule && !hasPredefinedResponse) {
-                // Add user message and set typing state
-                setBotStates(prev => {
-                    const botState = prev[botId];
-                    
-                    // Check for duplicate message before adding
-                    if (botState.messages.length > 0) {
-                        const lastMsg = botState.messages[botState.messages.length - 1];
-                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
-                            return prev; // Don't add duplicate
-                        }
-                    }
-                    
-                    const userMsg = { from: 'user', text: message };
-                    const updatedMessages = [...botState.messages, userMsg];
-                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                    ) : botState.chatHistory;
-                    return {
-                        ...prev,
-                        [botId]: {
-                            ...prev[botId],
-                            messages: updatedMessages,
-                            isTyping: true,
-                            chatHistory: updatedHistory
-                        }
-                    };
-                });
-
-                // Call API with "global" module
-                const languageCode = botLanguages[botId]?.code || 'en';
-                callHrPAAPI(message, null, languageCode).then(apiResponse => {
-                    streamBotResponse(botId, apiResponse);
-                }).catch(error => {
-                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
-                });
-                return; // Exit early - API call handles the response
-            } else if (botId === 'csr-bot' && !csrPAModule && !hasPredefinedResponse) {
-                // Add user message and set typing state
-                setBotStates(prev => {
-                    const botState = prev[botId];
-                    
-                    // Check for duplicate message before adding
-                    if (botState.messages.length > 0) {
-                        const lastMsg = botState.messages[botState.messages.length - 1];
-                        if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
-                            return prev; // Don't add duplicate
-                        }
-                    }
-                    
-                    const userMsg = { from: 'user', text: message };
-                    const updatedMessages = [...botState.messages, userMsg];
-                    const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                        chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                    ) : botState.chatHistory;
-                    return {
-                        ...prev,
-                        [botId]: {
-                            ...prev[botId],
-                            messages: updatedMessages,
-                            isTyping: true,
-                            chatHistory: updatedHistory
-                        }
-                    };
-                });
-
-                // Call API with "global" module
-                const languageCode = botLanguages[botId]?.code || 'en';
-                callCsrPAAPI(message, null, languageCode).then(apiResponse => {
-                    streamBotResponse(botId, apiResponse);
-                }).catch(error => {
-                    streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
-                });
-                return; // Exit early - API call handles the response
-            }
-            
             // Check if we should use Gemini API (ONLY when no predefined response found)
-            // Admin PA, Finance PA, HR PA, CSR PA should NEVER use Gemini API when no module is selected - they use the custom API endpoint
             const isDefaultResponse = botResponse === `Hello! I'm ${bot.name}. You asked: "${message}". ${bot.description}. How can I help you today?`;
             
-            // Only use Gemini API if there's NO predefined response AND it's NOT Admin PA, Finance PA, HR PA, CSR PA bots (or they have a module selected)
-            const shouldSkipGemini = 
-                (botId === 'admin-bot' && !adminPAModule) ||
-                (botId === 'finance-bot' && !financePAModule) ||
-                (botId === 'hr-bot' && !hrPAModule) ||
-                (botId === 'csr-bot' && !csrPAModule);
-            
-            if (!shouldSkipGemini && botId !== 'admin-bot' && !hasPredefinedResponse && (isDefaultResponse || shouldUseGemini(message, hasPredefinedResponse))) {
+            // Allow all bots to hit Gemini if there's no predefined response.
+            // If they are specific module agents (Admin, Finance, HR, CSR) but the user has NO module selected, 
+            // that means it's a general question, so use generateDirectGeminiResponse.
+            if (!hasPredefinedResponse && (isDefaultResponse || shouldUseGemini(message, hasPredefinedResponse))) {
                 try {
-                    // Generate response using Gemini API with stored chat history
-                    const geminiResponse = await generateGeminiResponse(
-                        message,
-                        bot.name,
-                        bot.description,
-                        chatHistoryForGemini
-                    );
+                    const isGeneralQuestion = 
+                        (botId === 'admin-bot' && !adminPAModule) ||
+                        (botId === 'finance-bot' && !financePAModule) ||
+                        (botId === 'hr-bot' && !hrPAModule) ||
+                        (botId === 'csr-bot' && !csrPAModule);
                     
-                    botResponse = geminiResponse;
+                    let aiResponse;
+                    if (isGeneralQuestion) {
+                        aiResponse = await generateDirectGeminiResponse(
+                            message,
+                            bot.name,
+                            bot.description,
+                            chatHistoryForGemini
+                        );
+                    } else {
+                        aiResponse = await generateGeminiResponse(
+                            message,
+                            bot.name,
+                            bot.description,
+                            chatHistoryForGemini,
+                            { module: adminPAModule || financePAModule || hrPAModule || csrPAModule }
+                        );
+                    }
+                    botResponse = aiResponse;
                 } catch (error) {
-                    console.error('Error calling Gemini API:', error);
+                    console.error('Error calling AI API:', error);
                     // Keep the default response if API fails
                 }
             }
+
 
             // For special response types (buttons, dropdowns, images), show instantly
             // For regular text responses, use streaming effect
