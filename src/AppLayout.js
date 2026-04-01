@@ -17,6 +17,7 @@ import { ThemeBackground } from "./thems";
 
 import GMChat from "./chatbot/GMChat";
 import GeneralAIAgent from "./general-ag";
+import KhmerNewYearSplash from "./components/KhmerNewYearSplash";
 
 // A new layout component to hold the shared UI (Header, Background)
 const AppLayout = () => {
@@ -1093,6 +1094,7 @@ const AppLayout = () => {
         if (id === "ticket") navigate("/dashboard/ticket");
         else navigate(`/dashboard/${id}`);
       } else if (demoType === "GRID_SHOP") navigate("/dashboard/y-shop");
+      else if (demoType === "SHIPPING_REQUEST") navigate("/dashboard/shipping/request");
     } else {
       // Handle modules without demoType - only navigate if explicitly handled
       if (module.title === "Bill Record") {
@@ -1145,7 +1147,10 @@ const AppLayout = () => {
         !location.pathname.includes("yhr") &&
         !location.pathname.includes("salary-bill") &&
         !location.pathname.includes("water") &&
+        !location.pathname.includes("shipping/request") &&
         !location.pathname.includes("ce") && <ThemeBackground />}
+
+      <KhmerNewYearSplash />
 
       <style>{`
                 * {
@@ -1175,6 +1180,7 @@ const AppLayout = () => {
         !location.pathname.includes("yhr") &&
         !location.pathname.includes("salary-bill") &&
         !location.pathname.includes("water") &&
+        !location.pathname.includes("shipping/request") &&
         !location.pathname.includes("ce") && <Header />}
 
       {/* Light Bulb - Center Top */}

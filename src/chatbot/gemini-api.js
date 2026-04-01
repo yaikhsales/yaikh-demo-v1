@@ -85,10 +85,34 @@ IMPORTANT: Keep responses SHORT and CONCISE. Aim for 2-4 sentences maximum unles
       });
     }
 
+    // Extract base64 image data if present
+    let actualMessage = userMessage;
+    let base64Image = null;
+    let mimeType = "image/jpeg";
+    
+    if (typeof userMessage === 'string') {
+      const imageMatch = userMessage.match(/\[IMAGE_DATA:(data:(image\/[^;]+);base64,([^\]]+))\]/);
+      if (imageMatch) {
+        actualMessage = userMessage.replace(imageMatch[0], '').trim();
+        mimeType = imageMatch[2];
+        base64Image = imageMatch[3];
+      }
+    }
+
     // Add current user message
+    const userParts = [{ text: actualMessage || "Analyze this image for me:" }];
+    if (base64Image) {
+      userParts.push({
+        inlineData: {
+          mimeType: mimeType,
+          data: base64Image
+        }
+      });
+    }
+
     contents.push({
       role: "user",
-      parts: [{ text: userMessage }]
+      parts: userParts
     });
 
     // Call Gemini API using REST endpoint
@@ -155,6 +179,12 @@ export const generateGeminiResponse = async (
   options = {},
 ) => {
   try {
+    // Intercept Multimodal Image Uploads and map directly to Vision Models internally
+    if (typeof userMessage === 'string' && userMessage.includes('[IMAGE_DATA:')) {
+      console.log('Intercepted image payload. Routing directly to Native Gemini Multimodal vision processor.');
+      return await generateDirectGeminiResponse(userMessage, botName, botContext, chatHistory);
+    }
+
     const apiUrl = getAgentUrl();
 
     const userToken =

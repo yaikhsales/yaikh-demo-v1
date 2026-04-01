@@ -90,6 +90,7 @@ import HappyNewYear from "./happy-new-year";
 import QCFile from "./yqms/qc-file";
 import PreProductionMeeting from "./yqms/PPM/pre-production-meeting";
 import FinCheckDashboard from "./yqms/Fin-check/index";
+import ShippingRequest from "./shipping/ShippingRequest";
 
 // FC Module Components
 import FabricReceiving from "./fc/FabricReceiving";
@@ -615,6 +616,11 @@ export default function App() {
             element={
               <AuditReport title="Ironing Inspection" onBack={handleBack} />
             }
+          />
+
+          <Route
+            path="shipping/request"
+            element={<ShippingRequest onBack={handleBack} />}
           />
 
           <Route path=":moduleId" element={<TableView onBack={handleBack} />} />

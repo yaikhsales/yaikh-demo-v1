@@ -27,6 +27,7 @@ import {
   deepResearch,
 } from "./chatbot/gemini-api";
 import { DASHBOARD_DATA } from "./data/module";
+import { KHMER_NEW_YEAR } from "./thems";
 
 const GeneralAIAgent = ({ onClose, moduleContext = null }) => {
   const [messages, setMessages] = useState([]);
@@ -1436,7 +1437,7 @@ RESPONSE FORMATTING RULES:
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() || isTyping}
-                    className="p-1.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full hover:from-orange-600 hover:to-amber-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className={`p-1.5 text-white rounded-full transition-all disabled:opacity-50 disabled:cursor-not-allowed ${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-r from-red-600 to-yellow-500 hover:from-red-500 hover:to-yellow-400 shadow-[0_0_10px_rgba(239,68,68,0.4)]' : 'bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600'}`}
                     aria-label="Send"
                   >
                     <Send className="w-4 h-4" />

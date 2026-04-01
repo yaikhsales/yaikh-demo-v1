@@ -4,10 +4,10 @@ import { useTranslation } from '../translate/TranslationContext';
 
 const ColumnGroup = ({ group, onModuleClick, botVersion = 'default', onBotModuleClick, isDropdownOpen = false, isLightOn = false, isAdministration = false, isOperations = false, theme = 'normal' }) => {
   const { translateModuleTitle } = useTranslation();
-  // Check if this group should have orange styling (QA, Internal Logistics/FC, Production, DT Sync)
-  const isOrangeGroup = group.id === 'qa' || group.id === 'internal-logistics' || group.id === 'prod' || group.id === 'dtsync';
+  // Check if this group should have orange styling (QA, Production, DT Sync)
+  const isOrangeGroup = group.id === 'qa-col' || group.id === 'prod-col' || group.id === 'dtsync-col';
   // Check if this group should have white styling (PRE PRO, Production Materials)
-  const isWhiteGroup = group.id === 'prepro' || group.id === 'prodmat';
+  const isWhiteGroup = group.id === 'prepro-col' || group.id === 'prodmat-col';
   
   return (
     <div className="flex flex-col min-w-[100px] flex-1">
