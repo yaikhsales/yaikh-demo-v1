@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Bell, Mic, MessageSquare, Layers, Database, Sparkles, Send, ChevronRight } from 'lucide-react';
 import { generateGeminiResponse } from './gemini-api';
+import { KHMER_NEW_YEAR } from "../thems";
+import { useKhmerTTS } from "./useKhmerTTS";
+import { Volume2, VolumeX } from "lucide-react";
 
 const GMChat = ({ onClose }) => {
     const [newMessage, setNewMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
+    const { speak, stop, isSpeaking } = useKhmerTTS();
+    const [autoSpeak, setAutoSpeak] = useState(false);
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -402,6 +407,10 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                             isStreaming: false
                         };
                     }
+                    // Execute AutoSpeak
+                    if (autoSpeak) {
+                        setTimeout(() => speak(fullText), 100);
+                    }
                     return updatedMessages;
                 });
                 return;
@@ -592,7 +601,8 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
             `}</style>
             
             {/* Main UI Frame - Full Screen Responsive Design */}
-            <div className="relative bg-black border border-white/10 md:rounded-3xl shadow-2xl w-full h-full md:h-[95vh] md:max-h-[900px] md:w-[95vw] md:max-w-[1400px] overflow-hidden flex flex-col text-white font-sans">
+            <div className="relative bg-black border border-white/10 md:rounded-3xl shadow-2xl w-full h-full md:h-[95vh] md:max-h-[900px] md:w-[95vw] md:max-w-[1400px] overflow-hidden flex flex-col text-white font-sans"
+             style={KHMER_NEW_YEAR.isActive ? { backgroundImage: 'url(/assets/theme/kbach-pattern.png)', backgroundSize: '300px', backgroundBlendMode: 'overlay', backgroundColor: 'rgba(15, 5, 5, 0.95)' } : {}}>
 
                 {/* Back Button - Top Left */}
                 <button 
@@ -625,6 +635,16 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                 <Bell size={16} className="md:w-5 md:h-5 text-white/80" />
                             </div>
                         </div>
+                        {/* AutoSpeak Toggle */}
+                        {KHMER_NEW_YEAR.isActive && (
+                            <button 
+                                onClick={() => setAutoSpeak(!autoSpeak)} 
+                                className={`relative flex-shrink-0 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors ${autoSpeak ? 'bg-yellow-500/20 text-yellow-400' : 'bg-slate-800/80 text-white/50 hover:bg-white/10'}`}
+                                title={autoSpeak ? "Auto-Voice Active" : "Enable Khmer Voice"}
+                            >
+                                {autoSpeak ? <Volume2 size={16} className="md:w-5 md:h-5 animate-pulse" /> : <VolumeX size={16} className="md:w-5 md:h-5" />}
+                            </button>
+                        )}
                     </div>
                     <p className="text-[10px] xs:text-xs md:text-sm lg:text-base text-white/70 mt-1 md:mt-2 leading-relaxed line-clamp-2">
                         Control tasks effortlessly, from creating visuals to organizing your calendar.
@@ -640,10 +660,10 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                 {/* Glowing Orb - Responsive sizing - Smaller on mobile to fit all content */}
                                 <div className="relative w-40 h-40 xs:w-44 xs:h-44 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 mb-6 md:mb-8 lg:mb-12 flex-shrink-0">
                                     {/* Outer Glow Ring */}
-                                    <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-400/30 via-pink-400/30 via-yellow-300/30 to-blue-300/30 blur-2xl animate-pulse"></div>
+                                    <div className={`absolute inset-0 rounded-full ${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-br from-yellow-500/30 via-red-500/30 to-orange-500/30' : 'bg-gradient-to-br from-purple-400/30 via-pink-400/30 via-yellow-300/30 to-blue-300/30'} blur-2xl animate-pulse`}></div>
                                     
                                     {/* Main Orb */}
-                                    <div className="absolute inset-2 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 via-yellow-400 to-blue-400 shadow-[0_0_80px_rgba(139,92,246,0.8),0_0_120px_rgba(236,72,153,0.6),0_0_160px_rgba(250,204,21,0.4),inset_0_0_40px_rgba(255,255,255,0.1)] animate-pulse"></div>
+                                    <div className={`absolute inset-2 rounded-full ${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-br from-yellow-400 via-orange-500 to-red-600 shadow-[0_0_80px_rgba(250,204,21,0.6),0_0_120px_rgba(239,68,68,0.5),inset_0_0_40px_rgba(255,255,255,0.2)]' : 'bg-gradient-to-br from-purple-500 via-pink-500 via-yellow-400 to-blue-400 shadow-[0_0_80px_rgba(139,92,246,0.8),0_0_120px_rgba(236,72,153,0.6),0_0_160px_rgba(250,204,21,0.4),inset_0_0_40px_rgba(255,255,255,0.1)]'} animate-pulse`}></div>
                                     
                                     {/* Inner Highlight */}
                                     <div className="absolute top-3 left-3 md:top-4 md:left-4 w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-white/20 blur-xl"></div>
@@ -657,7 +677,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                     </div>
                                     
                                     {/* Purple Glow Below - Elongated */}
-                                    <div className="absolute top-full left-1/2 -translate-x-1/2 w-28 h-20 md:w-32 md:h-24 lg:w-40 lg:h-32 bg-gradient-to-b from-purple-500/50 via-purple-400/30 to-transparent blur-3xl"></div>
+                                    <div className={`absolute top-full left-1/2 -translate-x-1/2 w-28 h-20 md:w-32 md:h-24 lg:w-40 lg:h-32 bg-gradient-to-b ${KHMER_NEW_YEAR.isActive ? 'from-orange-500/40 via-red-500/20 to-transparent' : 'from-purple-500/50 via-purple-400/30 to-transparent'} blur-3xl`}></div>
                                 </div>
 
                                 {/* Interaction Cards Grid - Responsive - Ensure all visible */}
@@ -665,7 +685,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                     {/* My Salary Bill - Top Left */}
                                     <button 
                                         onClick={() => handleActionClick('speak')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
+                                        className={`${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-br from-red-900/40 to-orange-950/40 border border-yellow-500/30 hover:border-yellow-400/50' : 'bg-gradient-to-br from-purple-600/80 to-blue-600/80 border border-white/10'} backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group`}
                                     >
                                         <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
                                             <Mic 
@@ -682,7 +702,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                     {/* My Group Chat - Top Right */}
                                     <button 
                                         onClick={() => handleActionClick('chat')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
+                                        className={`${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-br from-red-900/40 to-orange-950/40 border border-yellow-500/30 hover:border-yellow-400/50' : 'bg-gradient-to-br from-purple-600/80 to-blue-600/80 border border-white/10'} backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group`}
                                     >
                                         <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
                                             <MessageSquare 
@@ -699,7 +719,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                     {/* My Modules - Bottom Left */}
                                     <button 
                                         onClick={() => handleActionClick('modules')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
+                                        className={`${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-br from-red-900/40 to-orange-950/40 border border-yellow-500/30 hover:border-yellow-400/50' : 'bg-gradient-to-br from-purple-600/80 to-blue-600/80 border border-white/10'} backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group`}
                                     >
                                         <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
                                             <Layers 
@@ -716,7 +736,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                     {/* My Chat History - Bottom Right */}
                                     <button 
                                         onClick={() => handleActionClick('data')}
-                                        className="bg-gradient-to-br from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group"
+                                        className={`${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-br from-red-900/40 to-orange-950/40 border border-yellow-500/30 hover:border-yellow-400/50' : 'bg-gradient-to-br from-purple-600/80 to-blue-600/80 border border-white/10'} backdrop-blur-sm rounded-xl md:rounded-2xl p-3 xs:p-3.5 sm:p-4 md:p-5 lg:p-6 flex flex-col items-center justify-center gap-2 xs:gap-2.5 sm:gap-3 hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg border border-white/10 min-h-[90px] xs:min-h-[100px] sm:min-h-[110px] md:min-h-[120px] group`}
                                     >
                                         <div className="flex items-center justify-center w-10 h-10 xs:w-11 xs:h-11 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 mb-1">
                                             <Database 
@@ -739,7 +759,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                 {messages.map((message) => (
                                     <div
                                         key={message.id}
-                                        className={`flex items-start gap-2 md:gap-3 ${
+                                        className={`flex items-start gap-2 md:gap-3 group ${
                                             message.sender === 'user' ? 'justify-end' : 'justify-start'
                                         }`}
                                     >
@@ -753,8 +773,8 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                         <div
                                             className={`max-w-[75%] md:max-w-[70%] lg:max-w-[65%] rounded-2xl px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm lg:text-base ${
                                                 message.sender === 'user'
-                                                    ? 'bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-br-none'
-                                                    : 'bg-slate-800/80 text-white/90 rounded-bl-none border border-white/10'
+                                                    ? KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-900 rounded-br-none shadow-[0_0_15px_rgba(250,204,21,0.2)] border border-yellow-300 font-medium' : 'bg-gradient-to-br from-purple-600 to-blue-600 text-white rounded-br-none'
+                                                    : KHMER_NEW_YEAR.isActive ? 'bg-black/30 border-l-[3px] border-l-red-500 border-r border-t border-b border-white/10 text-white shadow-sm backdrop-blur-sm rounded-bl-none' : 'bg-slate-800/80 text-white/90 rounded-bl-none border border-white/10'
                                             }`}
                                         >
                                             {message.sender === 'bot' ? (
@@ -768,8 +788,18 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                                 <div className="whitespace-pre-wrap">{message.text}</div>
                                             )}
                                         </div>
-                                        {message.sender === 'user' && (
-                                            <div className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+                                        
+                {message.sender === 'bot' && (
+                    <button
+                        onClick={() => isSpeaking ? stop() : speak(message.text)}
+                        className="mt-1 p-1 hover:bg-white/10 rounded-full transition-colors flex items-center self-end opacity-0 group-hover:opacity-100"
+                        title="Read Aloud in Khmer"
+                    >
+                        {isSpeaking ? <VolumeX size={14} className="text-red-400" /> : <Volume2 size={14} className="text-white/50" />}
+                    </button>
+                )}
+    {message.sender === 'user' && (
+                                            <div className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 rounded-full ${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-r from-red-600 to-yellow-500 shadow-[0_0_10px_rgba(239,68,68,0.4)]' : 'bg-gradient-to-br from-purple-500 to-blue-500'} flex items-center justify-center flex-shrink-0">
                                                 <span className="text-white text-xs md:text-sm font-bold">SK</span>
                                             </div>
                                         )}
@@ -786,9 +816,9 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                                         />
                                         <div className="bg-slate-800/80 rounded-2xl rounded-bl-none px-3 py-2 md:px-4 md:py-3 border border-white/10">
                                             <div className="flex gap-1">
-                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 ${KHMER_NEW_YEAR.isActive ? 'bg-yellow-400' : 'bg-white/60'} rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 ${KHMER_NEW_YEAR.isActive ? 'bg-yellow-400' : 'bg-white/60'} rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 ${KHMER_NEW_YEAR.isActive ? 'bg-yellow-400' : 'bg-white/60'} rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
                                             </div>
                                         </div>
                                     </div>
@@ -811,7 +841,7 @@ Provide helpful, accurate, and professional responses. Be concise but informativ
                         />
                         <button 
                             type="submit" 
-                            className="w-9 h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity flex-shrink-0"
+                            className="w-9 h-9 md:w-10 md:h-10 lg:w-12 lg:h-12 ${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-r from-red-600 to-yellow-500 shadow-[0_0_10px_rgba(239,68,68,0.4)]' : 'bg-gradient-to-br from-purple-500 to-blue-500'} rounded-full flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity flex-shrink-0"
                         >
                             {newMessage.trim() ? (
                                 <Send size={16} className="md:w-4 md:h-4 lg:w-5 lg:h-5 text-white" />

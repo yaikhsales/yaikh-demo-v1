@@ -70,7 +70,7 @@ const InfoModal = ({ open, onClose, type, data }) => {
 };
 
 const CE_VIDEO_PATH = "/assets/short-video-training/ce.mp4";
-const CE_REPORT_PATH = "/assets/report-training/ce-report.pdf";
+const CE_REPORT_PATH = "/assets/report-training/ce-productivity-audit.html";
 
 const Productivity = ({ onBack }) => {
   const navigate = useNavigate();
@@ -703,7 +703,7 @@ const Productivity = ({ onBack }) => {
             <button
               onClick={() => setSelectedDocument(CE_REPORT_PATH)}
               className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
-              title="Report Training"
+              title="Executive Audit Report"
             >
               <FileText size={20} className="text-blue-600" />
             </button>

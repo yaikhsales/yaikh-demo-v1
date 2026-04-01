@@ -1,5 +1,7 @@
 import React from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Video, FileText, ChevronLeft } from 'lucide-react';
+import VideoViewer from '../../components/VideoViewer';
+import DocumentViewer from '../../components/DocumentViewer';
 import { useTranslation } from '../../translate/TranslationContext';
 
 // Import Modular Components
@@ -31,6 +33,11 @@ const FinCheckDashboard = ({ onBack }) => {
         "Label Placement": 1
     });
     const [decision, setDecision] = React.useState(null);
+    const [selectedVideo, setSelectedVideo] = React.useState(null);
+    const [selectedDocument, setSelectedDocument] = React.useState(null);
+
+    const FINCHECK_VIDEO_PATH = "/assets/yqms/Fin-Check/Fincheck.mp4";
+    const FINCHECK_REPORT_PATH = "/assets/yqms/Fin-Check/fin-check-report.pdf";
 
     const updateDefect = (label, delta) => {
         setDefects(prev => ({
@@ -78,7 +85,7 @@ const FinCheckDashboard = ({ onBack }) => {
         }
     ];
 
-    const DashboardCard = ({ module, isActive, onClick }) => {
+     const DashboardCard = ({ module, isActive, onClick }) => {
         const Icon = module.icon;
         const isDark = module.theme === 'dark';
 
@@ -140,22 +147,47 @@ const FinCheckDashboard = ({ onBack }) => {
     }
 
     return (
-        <div className="min-h-screen bg-[#F0F2F5] text-slate-600 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-[#F0F2F5] text-slate-600 flex flex-col items-center relative overflow-hidden">
             {/* Background Decoration */}
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full blur-3xl" />
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/5 rounded-full blur-3xl" />
 
-            {/* Context-aware Back Button */}
-            <button
-                onClick={onBack}
-                className="absolute top-10 left-10 flex items-center justify-center w-12 h-12 bg-white rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.08)] hover:shadow-[0_6px_16px_rgba(0,0,0,0.12)] transition-all group border border-slate-100 active:scale-95 z-50"
-                title="Back to YQMS"
-            >
-                <ArrowLeft size={20} className="text-slate-400 group-hover:text-slate-600 transition-colors" />
-            </button>
+            {/* Header Area (Standardized White Bar from Standard Time) */}
+            <div className="w-full px-8 py-5 border-b border-slate-200 flex items-center justify-between bg-white shadow-sm shrink-0 z-50">
+                <div className="flex items-center gap-6">
+                    <button
+                        onClick={onBack}
+                        className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-slate-500 hover:text-blue-600 border border-slate-100 shadow-sm bg-white active:scale-95"
+                    >
+                        <ArrowLeft size={18} />
+                    </button>
+                    <div className="flex flex-col">
+                        <h1 className="text-xl font-black text-slate-900 tracking-tight uppercase leading-none">FIN CHECK SYSTEM</h1>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Quality Control Management Dashboard</p>
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                    {/* Utility Icons synced from Standard Time module */}
+                    <button 
+                        onClick={() => setSelectedVideo(FINCHECK_VIDEO_PATH)}
+                        className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"
+                        title="Video Training"
+                    >
+                        <Video size={18} />
+                    </button>
+                    <button 
+                        onClick={() => setSelectedDocument(FINCHECK_REPORT_PATH)}
+                        className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"
+                        title="Report Training"
+                    >
+                        <FileText size={18} />
+                    </button>
+                </div>
+            </div>
 
             {/* Grid Container */}
-            <div className="w-full max-w-[1400px] px-8 relative z-10">
+            <div className="flex-1 w-full max-w-[1400px] px-8 py-20 relative z-10 overflow-y-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-x-12 gap-y-16 justify-items-center">
                     {modules.map((module) => (
                         <DashboardCard
@@ -172,6 +204,21 @@ const FinCheckDashboard = ({ onBack }) => {
                     ))}
                 </div>
             </div>
+
+            {/* Viewer Overlays synced from Standard Time module */}
+            {selectedVideo && (
+                <VideoViewer
+                    videoPath={selectedVideo}
+                    onClose={() => setSelectedVideo(null)}
+                />
+            )}
+
+            {selectedDocument && (
+                <DocumentViewer
+                    documentPath={selectedDocument}
+                    onClose={() => setSelectedDocument(null)}
+                />
+            )}
         </div>
     );
 };

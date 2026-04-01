@@ -488,10 +488,10 @@ const CE = ({ onBack }) => {
           {/* Instructions - Bottom */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 bg-black/50 text-white rounded-lg backdrop-blur-sm border border-white/20 shadow-lg text-xs text-center">
             <div>
-              Use mouse wheel to zoom â€¢ Drag to pan when zoomed â€¢ Press ESC to
+              Use mouse wheel to zoom â€?Drag to pan when zoomed â€?Press ESC to
               close
             </div>
-            <div className="mt-1">+ / - to zoom â€¢ R to rotate â€¢ 0 to reset</div>
+            <div className="mt-1">+ / - to zoom â€?R to rotate â€?0 to reset</div>
           </div>
         </div>
       )}

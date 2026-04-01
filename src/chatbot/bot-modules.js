@@ -4,9 +4,12 @@ import {
     Wallet, UserCog, HeartHandshake, Megaphone, Factory,
     BarChart3, Lightbulb, Handshake, ClipboardCheck, MessageCircle,
     Copy, Edit2, RefreshCw, MoreVertical,
-    Menu, Trash2, ChevronRight, ChevronDown
+    Menu, Trash2, ChevronRight, ChevronDown, Volume2
 } from 'lucide-react';
 import { generateGeminiResponse, generateDirectGeminiResponse, shouldUseGemini } from './gemini-api';
+import { KHMER_NEW_YEAR } from '../thems';
+import { useKhmerTTS } from "./useKhmerTTS";
+import { VolumeX } from "lucide-react";
 
 // Predefined 10 bots for each moduleContext
 const PREDEFINED_BOTS = [
@@ -248,6 +251,44 @@ const PhoneFrame = ({
     const inputRef = useRef(null);
     const [isHistoryOpen, setIsHistoryOpen] = useState(false);
     const [isLanguageDropdownOpen, setIsLanguageDropdownOpen] = useState(false);
+    const [isListening, setIsListening] = useState(false);
+    const [uploadedImage, setUploadedImage] = useState(null);
+    const fileInputRef = useRef(null);
+
+    const startListening = () => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            alert("Microphone access is not supported in this browser.");
+            return;
+        }
+        
+        const recognition = new SpeechRecognition();
+        recognition.lang = currentLanguageCode === 'kh' ? 'km-KH' : (currentLanguageCode === 'ch' ? 'zh-CN' : 'en-US');
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        
+        recognition.onstart = () => setIsListening(true);
+        recognition.onresult = (event) => {
+            const transcript = event.results[0][0].transcript;
+            setInputValue(transcript);
+        };
+        recognition.onerror = (event) => {
+            console.error("Speech recognition error", event.error);
+            setIsListening(false);
+        };
+        recognition.onend = () => setIsListening(false);
+        
+        recognition.start();
+    };
+
+    const handleImageUpload = (e) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setUploadedImage(reader.result);
+            reader.readAsDataURL(file);
+        }
+    };
     
     // Track current language - update when botLanguage prop changes
     const [currentLanguageCode, setCurrentLanguageCode] = useState(() => botLanguage?.code || 'en');
@@ -976,9 +1017,16 @@ const PhoneFrame = ({
 
     const handleSend = (e) => {
         e.preventDefault();
-        if (!inputValue.trim()) return;
-        onSendMessage(inputValue.trim());
+        if (!inputValue.trim() && !uploadedImage) return;
+        
+        let finalMessage = inputValue.trim();
+        if (uploadedImage) {
+            finalMessage += ` [IMAGE_DATA:${uploadedImage}]`;
+        }
+        
+        onSendMessage(finalMessage);
         setInputValue('');
+        setUploadedImage(null);
     };
 
     const handleKeyPress = (e) => {
@@ -1088,7 +1136,7 @@ const PhoneFrame = ({
                         )}
 
                         {/* Header with Bot Name and Avatar */}
-                        <div className={`flex-shrink-0 flex items-center justify-between px-4 pt-12 pb-3 border-b ${bot.borderColor || 'border-gray-200'} relative z-10`}>
+                        <div className={`flex-shrink-0 flex items-center justify-between px-4 pt-12 pb-3 border-b ${KHMER_NEW_YEAR.isActive ? 'border-red-400/50 bg-gradient-to-r from-red-600/10 via-orange-500/10 to-yellow-500/10' : bot.borderColor || 'border-gray-200'} relative z-10`}>
                             <div className="flex items-center gap-2">
                                 <button
                                     onClick={() => {
@@ -1212,8 +1260,11 @@ const PhoneFrame = ({
                                 </div>
                                 
                                 {/* Bot Avatar */}
-                                <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${bot.bgGradient} flex items-center justify-center border-2 border-white/20 shadow-md`}>
-                                    <bot.icon size={20} className="text-white" />
+                                <div className="relative">
+                                    <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${KHMER_NEW_YEAR.isActive ? 'from-red-500 to-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.4)]' : bot.bgGradient} flex items-center justify-center border-2 border-white/20 shadow-md`}>
+                                        <bot.icon size={20} className="text-white" />
+                                    </div>
+                                    {KHMER_NEW_YEAR.isActive && <div className="absolute -top-1 -right-1 z-10 text-xs drop-shadow-md cursor-default pointer-events-none">🌸</div>}
                                 </div>
                             </div>
                         </div>
@@ -1225,7 +1276,13 @@ const PhoneFrame = ({
                                 <div className="space-y-6 pt-8">
                                     <div>
                                         <p className={`text-sm ${bot.textColor || 'text-gray-600'} mb-2`}>Hi {GREETING_NAME}</p>
-                                        <h2 className={`text-3xl font-light leading-tight ${bot.textColor || 'text-gray-800'}`}>Where should we start?</h2>
+                                        {KHMER_NEW_YEAR.isActive ? (
+                                            <h2 className="text-3xl font-light leading-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-red-500 font-khmer">
+                                                សួស្តីឆ្នាំថ្មី I am {bot.name}.<br/><span className="text-2xl text-gray-700">How can I assist your enterprise today?</span>
+                                            </h2>
+                                        ) : (
+                                            <h2 className={`text-3xl font-light leading-tight ${bot.textColor || 'text-gray-800'}`}>Where should we start?</h2>
+                                        )}
                                     </div>
                                     {(botId === 'admin-bot' && !adminPAModule) || (botId === 'finance-bot' && !financePAModule) || (botId === 'csr-bot' && !csrPAModule) || (botId === 'hr-bot' && !hrPAModule) ? (
                                         // Module Boxes for Admin PA, Finance PA, CSR PA, or HR PA
@@ -1304,9 +1361,15 @@ const PhoneFrame = ({
                                                 >
                                                     {msg.type !== 'social-media' && (
                                                         <div className="markdown-content">
+                                                            {msg.from === 'user' && msg.text.includes('[IMAGE_DATA:') && (
+                                                                <div className="mb-2 rounded-lg overflow-hidden border border-white/30 bg-white/10">
+                                                                    <img src={msg.text.match(/\[IMAGE_DATA:(.*?)\]/)?.[1]} alt="Uploaded" className="max-w-full max-h-48 object-contain" />
+                                                                </div>
+                                                            )}
                                                             <div 
-                                                                className="prose prose-sm max-w-none"
-                                                                dangerouslySetInnerHTML={renderMarkdownContent(msg.text)}
+                                                                className="prose prose-sm max-w-none text-current"
+                                                                style={{ color: msg.from === 'user' ? 'white' : undefined }}
+                                                                dangerouslySetInnerHTML={renderMarkdownContent(msg.from === 'user' ? msg.text.replace(/\[IMAGE_DATA:.*?\]/g, '').trim() : msg.text)}
                                                             />
                                                         </div>
                                                     )}
@@ -1536,6 +1599,18 @@ const PhoneFrame = ({
                                                     <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity px-1">
                                                         <button
                                                             onClick={() => {
+                                                                const plainText = msg.text.replace(/<[^>]+>/g, '').replace(/\|/g, '').replace(/---/g, ''); 
+                                                                const speech = new SpeechSynthesisUtterance(plainText);
+                                                                speech.lang = currentLanguageCode === 'kh' ? 'km-KH' : (currentLanguageCode === 'ch' ? 'zh-CN' : 'en-US');
+                                                                window.speechSynthesis.speak(speech);
+                                                            }}
+                                                            className={`p-1.5 hover:bg-gray-100 rounded-full transition-colors`}
+                                                            title="Text to Speech"
+                                                        >
+                                                            <Volume2 size={14} className={bot.textColor || 'text-gray-600'} />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => {
                                                                 navigator.clipboard.writeText(msg.text);
                                                             }}
                                                             className={`p-1.5 hover:bg-gray-100 rounded-full transition-colors`}
@@ -1596,7 +1671,16 @@ const PhoneFrame = ({
 
                         {/* Input Field with Thinking Status */}
                         <div className={`flex-shrink-0 px-4 py-4 border-t ${bot.borderColor || 'border-gray-200'}`}>
+                            {uploadedImage && (
+                                <div className="relative inline-block mb-3 ml-4 border-2 border-slate-200 rounded-lg overflow-hidden shadow-sm">
+                                    <img src={uploadedImage} alt="Upload preview" className="h-16 w-auto object-cover bg-white" />
+                                    <button onClick={() => setUploadedImage(null)} type="button" className="absolute top-1 right-1 bg-gray-900/60 p-1 rounded-full text-white hover:bg-gray-900">
+                                        <X size={12} />
+                                    </button>
+                                </div>
+                            )}
                             <form onSubmit={handleSend} className="relative">
+                                <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
                                 <div className={`flex items-center px-4 py-3 rounded-full border ${bot.borderColor || 'border-gray-200'} bg-white shadow-md focus-within:ring-2 focus-within:ring-opacity-30 focus-within:border-transparent transition-all ${bot.bgGradient.includes('green') ? 'focus-within:ring-green-400' :
                                         bot.bgGradient.includes('blue') ? 'focus-within:ring-blue-400' :
                                             bot.bgGradient.includes('purple') ? 'focus-within:ring-purple-400' :
@@ -1611,6 +1695,8 @@ const PhoneFrame = ({
                                 >
                                     <button
                                         type="button"
+                                        onClick={() => fileInputRef.current?.click()}
+                                        title="Upload Image"
                                         className={`p-1.5 hover:bg-gray-100 rounded-full transition-colors mr-2`}
                                     >
                                         <Plus size={18} className={bot.textColor || 'text-gray-600'} />
@@ -1624,9 +1710,9 @@ const PhoneFrame = ({
                                         placeholder={`Ask ${bot.name}`}
                                         className={`flex-1 bg-transparent border-0 outline-none ${bot.textColor || 'text-gray-800'} placeholder:${bot.textColor || 'text-gray-400'} text-base`}
                                     />
-                                    {!inputValue.trim() && (
+                                    {(!inputValue.trim() && !uploadedImage) || isListening ? (
                                         <>
-                                            <span className={`text-xs ${bot.textColor || 'text-gray-500'} mr-2 hidden sm:inline`}>{isTyping ? 'Thinking' : 'Fast'}</span>
+                                            <span className={`text-xs ${bot.textColor || 'text-gray-500'} mr-2 hidden sm:inline`}>{isListening ? "Listening..." : (isTyping ? "Thinking" : "Fast")}</span>
                                             <button
                                                 type="button"
                                                 className={`p-1.5 hover:bg-gray-100 rounded-full transition-colors ml-2`}
@@ -1635,13 +1721,17 @@ const PhoneFrame = ({
                                             </button>
                                             <button
                                                 type="button"
-                                                className={`p-1.5 hover:bg-gray-100 rounded-full transition-colors ml-2`}
+                                                onClick={startListening}
+                                                disabled={isListening}
+                                                title="Dictate message"
+                                                className={`p-1.5 rounded-full transition-colors ml-2 relative ${isListening ? 'bg-red-500 hover:bg-red-600' : 'hover:bg-gray-100'}`}
                                             >
-                                                <Mic size={18} className={bot.textColor || 'text-gray-600'} />
+                                                <Mic size={18} className={isListening ? 'text-white animate-pulse' : (bot.textColor || 'text-gray-600')} />
+                                                {isListening && <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-400 rounded-full animate-ping"></span>}
                                             </button>
                                         </>
-                                    )}
-                                    {inputValue.trim() && (
+                                    ) : null}
+                                    {(inputValue.trim() || uploadedImage) && !isListening && (
                                         <button
                                             type="submit"
                                             className={`p-1.5 bg-gradient-to-r ${bot.bgGradient} hover:opacity-90 rounded-full transition-all ml-2 shadow-md`}
@@ -1985,7 +2075,37 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
 
     // Save chat history to localStorage
     const saveChatHistory = (botId, history) => {
-        localStorage.setItem(`yai1-chat-history-${botId}`, JSON.stringify(history));
+        try {
+            // Strip out large base64 strings before saving
+            const historyToSave = history.map(chat => ({
+                ...chat,
+                messages: chat.messages.map(msg => ({
+                    ...msg,
+                    text: msg.text ? msg.text.replace(/\[IMAGE_DATA:data:image\/[^;]+;base64,[^\]]+\]/g, '[IMAGE_DATA: Attached Image]') : msg.text
+                }))
+            }));
+            
+            localStorage.setItem(`yai1-chat-history-${botId}`, JSON.stringify(historyToSave));
+        } catch (error) {
+            console.error('Failed to save chat history to localStorage:', error);
+            if (error.name === 'QuotaExceededError') {
+                try {
+                    // Critical fallback: clear older chats if quota is reached
+                    if (history.length > 5) {
+                        const reducedHistory = history.slice(0, 5).map(chat => ({
+                            ...chat,
+                            messages: chat.messages.map(msg => ({
+                                ...msg,
+                                text: msg.text ? msg.text.replace(/\[IMAGE_DATA:data:image\/[^;]+;base64,[^\]]+\]/g, '[IMAGE_DATA: Attached Image]') : msg.text
+                            }))
+                        }));
+                        localStorage.setItem(`yai1-chat-history-${botId}`, JSON.stringify(reducedHistory));
+                    }
+                } catch (e) {
+                    console.error('Still exceeded quota after reducing chat count', e);
+                }
+            }
+        }
     };
 
     // State for each bot's messages, input, and chat history
@@ -3434,6 +3554,70 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                 }
             }
 
+            // Admin PA module API calls
+            if (botId === 'admin-bot' && adminPAModule) {
+                // Check if question is related to the selected module
+                const isModuleRelated = isQuestionModuleRelated(botId, adminPAModule, message);
+                // Use "global" if question is not related to the module, otherwise use the selected module
+                const moduleToUse = isModuleRelated ? adminPAModule : null;
+                
+                // Mark this action as used immediately if it matches a suggested action
+                if (adminPAModules[adminPAModule] && isModuleRelated) {
+                    const matchingAction = adminPAModules[adminPAModule].suggestedActions.find(
+                        action => action.text.toLowerCase() === message.toLowerCase().trim()
+                    );
+                    if (matchingAction) {
+                        markActionAsUsed(adminPAModule, matchingAction.text);
+                    }
+                }
+                
+                if (message.includes("[IMAGE_DATA:")) {
+                    // Bypass specific API call to let multimodal Gemini handle image analysis directly
+                } else {
+                    // User is asking a non-multimodal question - call API with appropriate module
+                    // Add user message and set typing state
+                    setBotStates(prev => {
+                        const botState = prev[botId];
+                        
+                        // Check for duplicate message before adding
+                        if (botState.messages.length > 0) {
+                            const lastMsg = botState.messages[botState.messages.length - 1];
+                            if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
+                                return prev; // Don't add duplicate
+                            }
+                        }
+                        
+                        const userMsg = { from: 'user', text: message };
+                        const updatedMessages = [...botState.messages, userMsg];
+                        const updatedHistory = botState.currentChatId ? 
+                            botState.chatHistory.map(chat => chat.id === botState.currentChatId ? 
+                                { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
+                            ) : botState.chatHistory;
+                            
+                        return {
+                            ...prev,
+                            [botId]: {
+                                ...prev[botId],
+                                messages: updatedMessages,
+                                isTyping: true,
+                                chatHistory: updatedHistory
+                            }
+                        };
+                    });
+                    
+                    // Call API with appropriate module (global if not module-related)
+                    const languageCode = botLanguages[botId]?.code || 'en';
+                    callAdminPAAPI(message, moduleToUse, languageCode)
+                        .then(apiResponse => {
+                            streamBotResponse(botId, apiResponse);
+                        })
+                        .catch(error => {
+                            streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
+                        });
+                    return; // Exit early - don't process further
+                }
+            }
+
             // Finance PA module API calls
             if (botId === 'finance-bot' && financePAModule) {
                 // Check if question is related to the selected module
@@ -3451,9 +3635,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }
                 }
                 
-                // User is asking a question - call API with appropriate module
-                // Add user message and set typing state
-                setBotStates(prev => {
+                if (message.includes("[IMAGE_DATA:")) {
+                    // Bypass specific API call to let multimodal Gemini handle image analysis directly
+                } else {
+                    // User is asking a question - call API with appropriate module
+                    // Add user message and set typing state
+                    setBotStates(prev => {
                     const botState = prev[botId];
                     
                     // Check for duplicate message before adding
@@ -3488,6 +3675,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
                 });
                 return; // Exit early - don't process further
+                }
             }
 
             // CSR PA module API calls
@@ -3507,9 +3695,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }
                 }
                 
-                // User is asking a question - call API with appropriate module
-                // Add user message and set typing state
-                setBotStates(prev => {
+                if (message.includes("[IMAGE_DATA:")) {
+                    // Bypass specific API call to let multimodal Gemini handle image analysis directly
+                } else {
+                    // User is asking a question - call API with appropriate module
+                    // Add user message and set typing state
+                    setBotStates(prev => {
                     const botState = prev[botId];
                     
                     // Check for duplicate message before adding
@@ -3545,6 +3736,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
                 });
                 return; // Exit early - don't process further
+                }
             }
 
             // HR PA module API calls
@@ -3564,9 +3756,12 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     }
                 }
                 
-                // User is asking a question - call API with appropriate module
-                // Add user message and set typing state
-                setBotStates(prev => {
+                if (message.includes("[IMAGE_DATA:")) {
+                    // Bypass specific API call to let multimodal Gemini handle image analysis directly
+                } else {
+                    // User is asking a question - call API with appropriate module
+                    // Add user message and set typing state
+                    setBotStates(prev => {
                     const botState = prev[botId];
                     
                     // Check for duplicate message before adding
@@ -3602,6 +3797,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                     streamBotResponse(botId, `Sorry, I encountered an error: ${error.message}. Please try again later.`);
                 });
                 return; // Exit early - don't process further
+                }
             }
 
             // Finance PA specific responses (original predefined responses - commented out but kept)
@@ -3783,64 +3979,8 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             }
 
             // Admin PA specific responses
-            if (botId === 'admin-bot') {
+            if (botId === 'admin-bot' && !adminPAModule) { // Only handle predefined if no module is selected
                 const messageLower = message.toLowerCase().trim();
-
-                // Check if a module is selected and handle API calls
-                if (adminPAModule) {
-                    // Check if question is related to the selected module
-                    const isModuleRelated = isQuestionModuleRelated(botId, adminPAModule, message);
-                    // Use "global" if question is not related to the module, otherwise use the selected module
-                    const moduleToUse = isModuleRelated ? adminPAModule : null;
-                    
-                    // Mark this action as used immediately if it matches a suggested action (only if module-related)
-                    if (adminPAModules[adminPAModule] && isModuleRelated) {
-                        const matchingAction = adminPAModules[adminPAModule].suggestedActions.find(
-                            action => action.text.toLowerCase() === message.toLowerCase().trim()
-                        );
-                        if (matchingAction) {
-                            markActionAsUsed(adminPAModule, matchingAction.text);
-                        }
-                    }
-                    
-                    // User is asking a question - call API with appropriate module
-                    // Add user message and set typing state
-                    setBotStates(prev => {
-                        const botState = prev[botId];
-                        
-                        // Check for duplicate message before adding
-                        if (botState.messages.length > 0) {
-                            const lastMsg = botState.messages[botState.messages.length - 1];
-                            if (lastMsg.from === 'user' && lastMsg.text.toLowerCase().trim() === message.toLowerCase().trim()) {
-                                return prev; // Don't add duplicate
-                            }
-                        }
-                        
-                        const userMsg = { from: 'user', text: message };
-                        const updatedMessages = [...botState.messages, userMsg];
-                        const updatedHistory = botState.currentChatId ? botState.chatHistory.map(chat =>
-                            chat.id === botState.currentChatId ? { ...chat, messages: updatedMessages, updatedAt: new Date().toISOString() } : chat
-                        ) : botState.chatHistory;
-                        return {
-                            ...prev,
-                            [botId]: {
-                                ...prev[botId],
-                                messages: updatedMessages,
-                                isTyping: true,
-                                chatHistory: updatedHistory
-                            }
-                        };
-                    });
-                    
-                    // Call API with appropriate module (global if not module-related)
-                    const languageCode = botLanguages[botId]?.code || 'en';
-                    callAdminPAAPI(message, moduleToUse, languageCode).then(apiResponse => {
-                        streamBotResponse(botId, apiResponse);
-                    }).catch(error => {
-                        streamBotResponse(botId, `Error: ${error.message}`);
-                    });
-                    return; // Exit early, API call handles the response
-                }
 
                 // 1. Food Menu
                 if (messageLower.includes('food menu') || messageLower === 'food menu') {
@@ -3952,7 +4092,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
             }
 
             // CSR PA specific responses
-            if (botId === 'csr-bot') {
+            if (botId === 'csr-bot' && !csrPAModule) { // Only handle predefined if no module is selected
                 const messageLower = message.toLowerCase().trim();
 
                 // 1. Induction Training
@@ -4251,7 +4391,7 @@ const BotModules = ({ onClose, moduleContext, onVersionChange, currentVersion = 
                         (botId === 'csr-bot' && !csrPAModule);
                     
                     let aiResponse;
-                    if (isGeneralQuestion) {
+                    if (isGeneralQuestion || message.includes("[IMAGE_DATA:")) {
                         aiResponse = await generateDirectGeminiResponse(
                             message,
                             bot.name,

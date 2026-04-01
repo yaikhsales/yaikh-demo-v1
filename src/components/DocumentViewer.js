@@ -60,7 +60,7 @@ const DocumentViewer = ({ documentPath, documentUrl, onClose }) => {
       return;
     }
 
-    if (activePath.endsWith(".pdf")) {
+    if (activePath.endsWith(".pdf") || activePath.endsWith(".html")) {
       setLoading(false);
       setError(false);
     } else if (activePath.endsWith(".xlsx") || activePath.endsWith(".xls")) {
@@ -187,10 +187,10 @@ const DocumentViewer = ({ documentPath, documentUrl, onClose }) => {
                   </p>
                 </div>
               </div>
-            ) : activePath && activePath.endsWith(".pdf") ? (
+            ) : activePath && (activePath.endsWith(".pdf") || activePath.endsWith(".html")) ? (
               <iframe
-                src={`${activePath}#view=FitH`}
-                title="PDF Document"
+                src={activePath.endsWith(".pdf") ? `${activePath}#view=FitH` : activePath}
+                title="Document"
                 className="w-full h-full border-none"
               />
             ) : (

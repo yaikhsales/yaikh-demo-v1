@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@100..700&family=Suwannaphum:wght@100;300;400;700;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,5 +11,11 @@
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+
+  .font-khmer {
+    font-family: "Kantumruy Pro", "Suwannaphum", sans-serif !important;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
   }
 }

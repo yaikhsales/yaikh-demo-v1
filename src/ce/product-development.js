@@ -3,12 +3,16 @@ import { useNavigate } from "react-router-dom";
 import {
   Search,
   Eye,
-  Trash2,
   Plus,
   MessageCircle,
   ArrowLeft,
+  Video,
+  FileText,
+  Trash2
 } from "lucide-react";
 import GeneralAIAgent from "../general-ag";
+import VideoViewer from "../components/VideoViewer";
+import DocumentViewer from "../components/DocumentViewer";
 
 const InfoModal = ({ open, onClose, data }) => {
   if (!open || !data) return null;
@@ -41,6 +45,11 @@ const ProductDevelopment = ({ onBack }) => {
   const [isBotOpen, setIsBotOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [infoModal, setInfoModal] = useState({ open: false, data: null });
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [selectedDocument, setSelectedDocument] = useState(null);
+
+  const CE_VIDEO_PATH = "/assets/short-video-training/ce.mp4";
+  const CE_REPORT_PATH = "/assets/report-training/ce-product-development-audit.html";
 
   const samples = [
     {
@@ -112,6 +121,20 @@ const ProductDevelopment = ({ onBack }) => {
           </div>
           <div className="flex items-center gap-3">
             <button
+              onClick={() => setSelectedVideo(CE_VIDEO_PATH)}
+              className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"
+              title="Video Training"
+            >
+              <Video size={18} />
+            </button>
+            <button
+              onClick={() => setSelectedDocument(CE_REPORT_PATH)}
+              className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"
+              title="Executive Audit Report"
+            >
+              <FileText size={18} />
+            </button>
+            <button
               onClick={() => setIsReportOpen(true)}
               className="px-6 py-2.5 bg-emerald-600 text-white rounded-xl text-[10px] font-black uppercase hover:bg-emerald-700 shadow-lg shadow-emerald-100 transition-all flex items-center gap-2"
             >
@@ -167,7 +190,7 @@ const ProductDevelopment = ({ onBack }) => {
                       </span>
                       <div className="flex items-center gap-1.5 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
                         <span>
-                          {rec.customer} â€¢ {rec.styleId}
+                          {rec.customer} â€?{rec.styleId}
                         </span>
                       </div>
                     </div>
@@ -325,6 +348,20 @@ const ProductDevelopment = ({ onBack }) => {
         <GeneralAIAgent
           onClose={() => setIsBotOpen(false)}
           moduleContext="Product Development Sampling"
+        />
+      )}
+
+      {selectedVideo && (
+        <VideoViewer
+          videoPath={selectedVideo}
+          onClose={() => setSelectedVideo(null)}
+        />
+      )}
+
+      {selectedDocument && (
+        <DocumentViewer
+          documentPath={selectedDocument}
+          onClose={() => setSelectedDocument(null)}
         />
       )}
     </div>

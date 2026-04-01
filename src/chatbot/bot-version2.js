@@ -18,6 +18,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { generateGeminiResponse, shouldUseGemini } from "./gemini-api";
+import { KHMER_NEW_YEAR } from "../thems";
+import { useKhmerTTS } from "./useKhmerTTS";
+import { Volume2, VolumeX } from "lucide-react";
 
 const GREETING_NAME = "Mr. Khun";
 
@@ -51,6 +54,10 @@ const BotVersion2 = ({
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const { speak, stop, isSpeaking } = useKhmerTTS();
+  const [autoSpeak, setAutoSpeak] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const fileInputRef = useRef(null);
 
   // Load chat history from localStorage on mount
   useEffect(() => {
@@ -63,7 +70,20 @@ const BotVersion2 = ({
   // Save chat history to localStorage whenever it changes
   useEffect(() => {
     if (chatHistory.length > 0) {
-      localStorage.setItem("yai2-chat-history", JSON.stringify(chatHistory));
+      // Sanitize out Base64 payload blobs to prevent LocalStorage QuotaExceededError
+      const sanitizedHistory = chatHistory.map(chat => ({
+        ...chat,
+        messages: chat.messages.map(msg => {
+          if (msg.from === 'user' && typeof msg.text === 'string' && msg.text.includes('[IMAGE_DATA:')) {
+            return {
+              ...msg,
+              text: msg.text.replace(/\[IMAGE_DATA:.*?\]/g, '[Image Attached]').trim()
+            };
+          }
+          return msg;
+        })
+      }));
+      localStorage.setItem("yai2-chat-history", JSON.stringify(sanitizedHistory));
     }
   }, [chatHistory]);
 
@@ -134,7 +154,8 @@ const BotVersion2 = ({
 
     // More flexible table regex - matches tables with various formats
     // Pattern 1: Standard markdown table with separator line
-    const tableRegex1 = /(\|[^\n\r]+\|[\r\n]+(?:\|[\s\-:]+\|[\r\n]+)(?:\|[^\n\r]+\|[\r\n]*)+)/g;
+    const tableRegex1 =
+      /(\|[^\n\r]+\|[\r\n]+(?:\|[\s\-:]+\|[\r\n]+)(?:\|[^\n\r]+\|[\r\n]*)+)/g;
     // Pattern 2: Table without explicit separator (just multiple pipe rows)
     const tableRegex2 = /((?:\|[^\n\r]+\|[\r\n]+){2,})/g;
 
@@ -168,27 +189,42 @@ const BotVersion2 = ({
     // Pattern 3: Convert numbered lists to tables (especially purchase requests, etc.)
     const numberedListRegex = /((?:^\d+\.\s+[^\n]+(?:\n|$)){3,})/gm;
     processedText = processedText.replace(numberedListRegex, (match) => {
-      const lines = match.trim().split(/\r?\n/).filter((l) => l.trim());
+      const lines = match
+        .trim()
+        .split(/\r?\n/)
+        .filter((l) => l.trim());
       // Check if this looks like structured data (e.g., "1. Request #PR001: "Description"")
       // More lenient: check if most lines have a colon or hash symbol (indicating structured data)
       const structuredLines = lines.filter((line) => {
         const trimmed = line.trim();
-        return /^\d+\.\s+.+[#:].+/.test(trimmed) || /^\d+\.\s+Request\s+#/.test(trimmed) || /^\d+\.\s+.+:\s*/.test(trimmed);
+        return (
+          /^\d+\.\s+.+[#:].+/.test(trimmed) ||
+          /^\d+\.\s+Request\s+#/.test(trimmed) ||
+          /^\d+\.\s+.+:\s*/.test(trimmed)
+        );
       });
-      const hasStructuredPattern = structuredLines.length >= Math.min(3, Math.max(1, lines.length * 0.5));
+      const hasStructuredPattern =
+        structuredLines.length >= Math.min(3, Math.max(1, lines.length * 0.5));
 
       // Also check if it's a simple numbered list (even without colons/hashes) with 5+ items
       const isLongList = lines.length >= 5;
-      
-      if ((hasStructuredPattern && lines.length >= 3) || (isLongList && hasStructuredPattern)) {
+
+      if (
+        (hasStructuredPattern && lines.length >= 3) ||
+        (isLongList && hasStructuredPattern)
+      ) {
         // Try to extract structured data
         const rows = [];
         lines.forEach((line) => {
           const trimmed = line.trim();
           // Match: "1. Request #PR001: "New Office Furniture""
-          const match1 = trimmed.match(/^\d+\.\s+Request\s+#([A-Z0-9]+):\s*"([^"]+)"(.*)$/);
+          const match1 = trimmed.match(
+            /^\d+\.\s+Request\s+#([A-Z0-9]+):\s*"([^"]+)"(.*)$/,
+          );
           // Match: "1. Request #PR001: Description" (without quotes)
-          const match2 = trimmed.match(/^\d+\.\s+Request\s+#([A-Z0-9]+):\s*(.+)$/);
+          const match2 = trimmed.match(
+            /^\d+\.\s+Request\s+#([A-Z0-9]+):\s*(.+)$/,
+          );
           // Match: "1. Item #ID: Description"
           const match3 = trimmed.match(/^\d+\.\s+.+?#([A-Z0-9]+):\s*(.+)$/);
           // Match: "1. Item: Description"
@@ -230,7 +266,7 @@ const BotVersion2 = ({
         if (rows.length >= 3) {
           // Convert to table
           const tableId = `__TABLE_${tableIndex}__`;
-          const hasAnyId = rows.some(r => r.id);
+          const hasAnyId = rows.some((r) => r.id);
           let tableContent = "| No. |";
           if (hasAnyId) {
             tableContent += " Request ID |";
@@ -243,9 +279,9 @@ const BotVersion2 = ({
           rows.forEach((row) => {
             tableContent += `| ${row.number} |`;
             if (hasAnyId) {
-              tableContent += ` ${row.id ? '#' + row.id : ''} |`;
+              tableContent += ` ${row.id ? "#" + row.id : ""} |`;
             }
-            tableContent += ` ${(row.description || '').replace(/"/g, '').trim()} |\n`;
+            tableContent += ` ${(row.description || "").replace(/"/g, "").trim()} |\n`;
           });
           tables.push({ id: tableId, content: tableContent });
           tableIndex++;
@@ -262,9 +298,15 @@ const BotVersion2 = ({
       // Italic text (but not if it's part of bold)
       .replace(/(?<!\*)\*([^*]+?)\*(?!\*)/g, '<em class="italic">$1</em>')
       // Code blocks
-      .replace(/```([\s\S]*?)```/g, '<pre class="bg-gray-100 p-3 rounded-lg my-2 overflow-x-auto border border-gray-200"><code class="text-xs">$1</code></pre>')
+      .replace(
+        /```([\s\S]*?)```/g,
+        '<pre class="bg-gray-100 p-3 rounded-lg my-2 overflow-x-auto border border-gray-200"><code class="text-xs">$1</code></pre>',
+      )
       // Inline code
-      .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">$1</code>')
+      .replace(
+        /`([^`]+)`/g,
+        '<code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs font-mono">$1</code>',
+      )
       // Line breaks (but preserve table placeholders)
       .replace(/\n/g, "<br />");
 
@@ -279,7 +321,10 @@ const BotVersion2 = ({
 
   // Helper function to parse markdown table into HTML
   const parseMarkdownTable = (markdownTable) => {
-    const lines = markdownTable.trim().split(/\r?\n/).filter((line) => line.trim());
+    const lines = markdownTable
+      .trim()
+      .split(/\r?\n/)
+      .filter((line) => line.trim());
     if (lines.length < 2) return markdownTable; // Not a valid table
 
     // Parse header - handle tables with or without leading/trailing pipes
@@ -313,10 +358,12 @@ const BotVersion2 = ({
     // Build HTML table with proper styling
     let tableHtml =
       '<div class="overflow-x-auto my-4" style="border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); background: white;">';
-    tableHtml += '<table class="min-w-full" style="border-collapse: collapse; width: 100%;">';
+    tableHtml +=
+      '<table class="min-w-full" style="border-collapse: collapse; width: 100%;">';
 
     // Header row with gradient background
-    tableHtml += '<thead><tr style="background: linear-gradient(to right, #3b82f6, #4f46e5);">';
+    tableHtml +=
+      '<thead><tr style="background: linear-gradient(to right, #3b82f6, #4f46e5);">';
     headers.forEach((header) => {
       const escapedHeader = header.replace(/</g, "&lt;").replace(/>/g, "&gt;");
       tableHtml += `<th style="border-bottom: 2px solid #1e40af; padding: 12px 16px; text-align: left; font-weight: 700; font-size: 0.875rem; color: white;">${escapedHeader}</th>`;
@@ -351,18 +398,29 @@ const BotVersion2 = ({
 
       paddedCells.slice(0, headers.length).forEach((cell, cellIndex) => {
         // Handle status colors and styling
-        let cellContent = (cell || "").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        let cellContent = (cell || "")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
         let cellStyle =
           "border-bottom: 1px solid #e5e7eb; padding: 12px 16px; font-size: 0.875rem; color: #374151;";
 
         const cellLower = cellContent.toLowerCase();
         if (cellLower.includes("pending") || cellLower.includes("waiting")) {
           cellStyle += " color: #ea580c; font-weight: 600;";
-        } else if (cellLower.includes("approved") || cellLower.includes("completed")) {
+        } else if (
+          cellLower.includes("approved") ||
+          cellLower.includes("completed")
+        ) {
           cellStyle += " color: #16a34a; font-weight: 600;";
-        } else if (cellLower.includes("rejected") || cellLower.includes("cancelled")) {
+        } else if (
+          cellLower.includes("rejected") ||
+          cellLower.includes("cancelled")
+        ) {
           cellStyle += " color: #dc2626; font-weight: 600;";
-        } else if (cellLower.includes("in progress") || cellLower.includes("processing")) {
+        } else if (
+          cellLower.includes("in progress") ||
+          cellLower.includes("processing")
+        ) {
           cellStyle += " color: #2563eb; font-weight: 600;";
         } else if (cellIndex === 0) {
           // First column (usually ID) - make it slightly bold
@@ -401,7 +459,10 @@ const BotVersion2 = ({
     for (let i = 0; i < words.length; i++) {
       currentChunk += words[i];
       // Create chunk after 1-3 words, or at punctuation, or at sentence end
-      const wordCount = currentChunk.trim().split(/\s+/).filter((w) => w).length;
+      const wordCount = currentChunk
+        .trim()
+        .split(/\s+/)
+        .filter((w) => w).length;
       const shouldChunk =
         (wordCount >= 2 && Math.random() > 0.4) ||
         /[.!?]\s*$/.test(currentChunk) ||
@@ -431,7 +492,11 @@ const BotVersion2 = ({
         setMessages((prev) => {
           const updatedMessages = [...prev];
           const lastMessage = updatedMessages[updatedMessages.length - 1];
-          if (lastMessage && lastMessage.from === "bot" && lastMessage.isStreaming) {
+          if (
+            lastMessage &&
+            lastMessage.from === "bot" &&
+            lastMessage.isStreaming
+          ) {
             updatedMessages[updatedMessages.length - 1] = {
               ...lastMessage,
               text: fullText,
@@ -488,7 +553,11 @@ const BotVersion2 = ({
       setMessages((prev) => {
         const updatedMessages = [...prev];
         const lastMessage = updatedMessages[updatedMessages.length - 1];
-        if (lastMessage && lastMessage.from === "bot" && lastMessage.isStreaming) {
+        if (
+          lastMessage &&
+          lastMessage.from === "bot" &&
+          lastMessage.isStreaming
+        ) {
           updatedMessages[updatedMessages.length - 1] = {
             ...lastMessage,
             text: currentText,
@@ -505,6 +574,19 @@ const BotVersion2 = ({
     setTimeout(streamNextChunk, 30 + Math.random() * 20);
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image must be less than 5MB');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => setUploadedImage(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSend = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
@@ -516,7 +598,9 @@ const BotVersion2 = ({
       setCurrentChatId(newChatId);
     }
 
-    const userMessage = { from: "user", text: input.trim() };
+    let finalInput = input.trim();
+    if (uploadedImage) finalInput += ` [IMAGE_DATA:${uploadedImage}]`;
+    const userMessage = { from: "user", text: finalInput };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput("");
@@ -525,7 +609,7 @@ const BotVersion2 = ({
     // Generate website-related response
     setTimeout(
       async () => {
-        let botResponse = generateWebsiteResponse(input.trim());
+        let botResponse = uploadedImage ? null : generateWebsiteResponse(input.trim());
         const lowerInput = input.trim().toLowerCase();
 
         // Check if we should use Gemini API (when no predefined response found)
@@ -1068,7 +1152,7 @@ const BotVersion2 = ({
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden w-full h-full min-h-0 flex-shrink relative z-20 pt-4">
         {/* Header with Bot Name and Avatar */}
-        <div className="flex-shrink-0 flex flex-col px-4 sm:px-6 py-3 pt-16 sm:pt-20 border-b border-white/10 bg-[#050505]/80 backdrop-blur-sm w-full h-auto relative z-30">
+        <div className={`flex-shrink-0 flex flex-col px-4 sm:px-6 py-3 pt-16 sm:pt-20 border-b ${KHMER_NEW_YEAR.isActive ? 'border-red-500/30 bg-gradient-to-b from-red-900/40 via-orange-900/20 to-[#050505]/80' : 'border-white/10 bg-[#050505]/80'} backdrop-blur-sm w-full h-auto relative z-30`}>
           <style>{`
                         @keyframes float {
                             0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -1265,8 +1349,13 @@ const BotVersion2 = ({
             </div>
             {/* Bot Avatar and Name - Centered */}
             <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-sky-500 flex items-center justify-center border-2 border-white/20 shadow-md">
-                <Database size={18} className="text-white" />
+              <div className="relative">
+                <div className={`w-8 h-8 rounded-full ${KHMER_NEW_YEAR.isActive ? 'bg-gradient-to-br from-red-600 via-orange-500 to-yellow-500' : 'bg-gradient-to-br from-purple-500 to-sky-500'} flex items-center justify-center border-2 border-white/20 shadow-md`}>
+                  <Database size={18} className="text-white" />
+                </div>
+                {KHMER_NEW_YEAR.isActive && (
+                  <div className="absolute -top-1 -right-1 z-10 text-xs drop-shadow-md">🌸</div>
+                )}
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-medium text-white/90">Yai 2</span>
@@ -1285,9 +1374,17 @@ const BotVersion2 = ({
             <div className="space-y-6 pt-8 max-w-3xl mx-auto relative z-20">
               <div>
                 <p className="text-sm text-white/70 mb-2">Hi {GREETING_NAME}</p>
-                <h2 className="text-3xl font-light leading-tight text-white">
-                  Where should we start?
-                </h2>
+                {KHMER_NEW_YEAR.isActive ? (
+                  <h2 className="text-3xl font-light leading-tight text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 font-khmer">
+                    សួស្តីឆ្នាំថ្មី I am Yai.
+                    <br />
+                    <span className="text-2xl text-white/90">How can I assist your enterprise today?</span>
+                  </h2>
+                ) : (
+                  <h2 className="text-3xl font-light leading-tight text-white">
+                    Where should we start?
+                  </h2>
+                )}
               </div>
               <div className="flex flex-col gap-2 mt-8">
                 {suggestedActions.map((action, idx) => (
@@ -1323,17 +1420,30 @@ const BotVersion2 = ({
                     <div
                       className={`rounded-2xl px-4 py-2.5 text-sm ${
                         msg.from === "user"
-                          ? "bg-blue-500 text-white rounded-br-none"
-                          : "bg-white/5 border border-white/10 text-white rounded-bl-none"
+                          ? KHMER_NEW_YEAR.isActive 
+                              ? "bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-900 border border-yellow-300 rounded-br-none shadow-[0_0_10px_rgba(250,204,21,0.2)]"
+                              : "bg-blue-500 text-white rounded-br-none"
+                          : KHMER_NEW_YEAR.isActive
+                              ? "bg-white/5 border-l-2 border-r border-t border-b border-l-red-500 border-white/10 text-white rounded-bl-none overflow-hidden relative shadow-[0_0_5px_rgba(220,38,38,0.1)]"
+                              : "bg-white/5 border border-white/10 text-white rounded-bl-none"
                       }`}
                     >
                       {msg.from === "bot" ? (
                         <div className="markdown-content">
                           <div
                             className="prose prose-sm max-w-none"
-                            dangerouslySetInnerHTML={renderMarkdownContent(msg.text)}
+                            dangerouslySetInnerHTML={renderMarkdownContent(
+                              msg.text,
+                            )}
                           />
                         </div>
+                      ) : msg.from === 'user' && typeof msg.text === 'string' && msg.text.includes('[IMAGE_DATA:') ? (
+                        <>
+                          <div className="mb-2 rounded-lg overflow-hidden border border-white/20">
+                            <img src={msg.text.match(/\[IMAGE_DATA:(.*?)\]/)?.[1]} alt="Uploaded" className="max-w-full max-h-48 object-contain" />
+                          </div>
+                          <div className="whitespace-pre-wrap">{msg.text.replace(/\[IMAGE_DATA:.*?\]/g, '').trim()}</div>
+                        </>
                       ) : (
                         <div className="whitespace-pre-wrap">{msg.text}</div>
                       )}
@@ -1348,6 +1458,13 @@ const BotVersion2 = ({
                           title="Copy"
                         >
                           <Copy size={14} className="text-white/70" />
+                        </button>
+                        <button
+                          onClick={() => isSpeaking ? stop() : speak(msg.text)}
+                          className="p-1.5 hover:bg-white/10 rounded-full transition-colors flex items-center"
+                          title="Read Aloud in Khmer"
+                        >
+                          {isSpeaking ? <VolumeX size={14} className="text-red-400" /> : <Volume2 size={14} className="text-white/70" />}
                         </button>
                         <button
                           className="p-1.5 hover:bg-white/10 rounded-full transition-colors"
@@ -1413,6 +1530,15 @@ const BotVersion2 = ({
         {/* Input Field with Thinking Status */}
         <div className="flex-shrink-0 px-4 sm:px-6 py-4 border-t border-white/10 bg-[#050505] w-full">
           <form onSubmit={handleSend} className="relative max-w-3xl mx-auto">
+        {uploadedImage && (
+          <div className="absolute bottom-full mb-3 left-0 p-2 bg-white/10 backdrop-blur-md rounded-xl border border-white/20 flex items-start gap-2 shadow-xl">
+              <img src={uploadedImage} alt="Upload preview" className="h-24 w-auto object-contain rounded-lg" />
+              <button onClick={() => setUploadedImage(null)} type="button" className="p-1 hover:bg-white/20 rounded-full transition-colors" title="Remove attachment">
+                  <X size={16} className="text-white" />
+              </button>
+          </div>
+        )}
+        <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleImageUpload} />
             <div className="flex items-center px-4 py-3 rounded-full border border-white/15 bg-white/5 focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all">
               <button
                 type="button"
