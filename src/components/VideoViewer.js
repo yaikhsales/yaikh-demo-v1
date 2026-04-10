@@ -5,15 +5,34 @@ import { ArrowLeft, Download, AlertCircle, Video } from "lucide-react";
 const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
   const navigate = useNavigate();
   const [hasError, setHasError] = useState(false);
+  const [isNormalVideo, setIsNormalVideo] = useState(false);
+
+  const getNormalVideoPath = (originalPath) => {
+    if (!originalPath) return null;
+    const lowerPath = originalPath.toLowerCase();
+
+    if (lowerPath.includes('gatepass')) return '/assets/short-video-training/normal-video-training/Gatepass-Normall.mp4';
+    if (lowerPath.includes('money') || lowerPath.includes('claim')) return '/assets/short-video-training/normal-video-training/Money-Claim-Normall.mp4';
+    if (lowerPath.includes('purchase')) return '/assets/short-video-training/normal-video-training/Purchase-Normall.mp4';
+    if (lowerPath.includes('support') || lowerPath.includes('ticket')) return '/assets/short-video-training/normal-video-training/Support-Ticket-Normall.mp4';
+    if (lowerPath.includes('y-shop')) return '/assets/short-video-training/normal-video-training/Y-Shop-Normall.mp4';
+    if (lowerPath.includes('yhr')) return '/assets/short-video-training/normal-video-training/Yhr-Video-Normall.mp4';
+    
+    return null;
+  };
+
+  const normalPath = getNormalVideoPath(videoPath);
+  const currentPathToPlay = isNormalVideo && normalPath ? normalPath : videoPath;
 
   useEffect(() => {
     setHasError(false);
+    setIsNormalVideo(false);
   }, [videoPath]);
 
   const handleDownload = () => {
     const link = document.createElement("a");
-    link.href = videoPath;
-    link.download = videoPath.split("/").pop();
+    link.href = currentPathToPlay;
+    link.download = currentPathToPlay.split("/").pop();
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -66,16 +85,24 @@ const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
             />
           </button>
         </div>
-        {/* Left: Switch Video Button (If provided) */}
-        <div className="flex-1 flex justify-start">
-          {onSwitch && (
+        {/* Left: Switch Video Button (If provided or auto-detected) */}
+        <div className="flex-1 flex justify-start pl-4 md:pl-0">
+          {(normalPath || onSwitch) && (
             <button
-              onClick={onSwitch}
-              className="flex items-center gap-2 px-4 py-2 bg-blue-500/80 hover:bg-blue-500 text-white rounded-lg transition-all backdrop-blur-sm border border-blue-400/30 shadow-lg"
+              onClick={() => {
+                if (onSwitch) onSwitch();
+                else setIsNormalVideo(!isNormalVideo);
+              }}
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600/90 hover:bg-blue-500 text-white rounded-lg transition-all backdrop-blur-sm border border-blue-400/30 shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:shadow-[0_0_25px_rgba(59,130,246,0.7)] hover:scale-105 active:scale-95 group"
               title="Switch Video Version"
             >
-              <Video size={18} />
-              <span className="text-sm font-medium">{switchLabel}</span>
+              <Video size={18} className="group-hover:animate-pulse" />
+              <span className="text-sm font-bold tracking-wide">
+                {onSwitch 
+                  ? switchLabel 
+                  : (isNormalVideo ? "Switch to Fast Video" : "Switch to Full Normal Video")
+                }
+              </span>
             </button>
           )}
         </div>
@@ -111,7 +138,7 @@ const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
               </p>
               <div className="bg-black/40 p-3 rounded-lg mt-4 inline-block">
                 <p className="text-white/50 text-xs font-mono break-all text-left">
-                  {videoPath}
+                  {currentPathToPlay}
                 </p>
               </div>
             </div>
@@ -119,7 +146,7 @@ const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
         ) : (
           <div className="relative w-full h-full flex items-center justify-center animate-in zoom-in-95 duration-500">
             <video
-              key={videoPath}
+              key={currentPathToPlay}
               controls
               autoPlay
               playsInline
@@ -131,7 +158,7 @@ const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
                 }
               }}
             >
-              <source src={`${videoPath}?v=${Date.now()}`} type="video/mp4" />
+              <source src={`${currentPathToPlay}?v=${Date.now()}`} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>

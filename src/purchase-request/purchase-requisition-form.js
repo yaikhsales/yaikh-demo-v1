@@ -151,7 +151,7 @@ const PurchaseRequisitionForm = ({ onBack }) => {
           <div className="absolute top-4 right-4 hidden sm:flex items-center gap-2">
             <button
               onClick={() =>
-                setSelectedVideo("/assets/short-video-training/purchase.mp4")
+                setSelectedVideo("/assets/short-video-training/new-updated-vd/Purchase.mp4")
               }
               className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
               title="Video Training"

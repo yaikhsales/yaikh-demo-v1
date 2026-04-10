@@ -3539,7 +3539,7 @@ const ShowListRequest = ({ onBack }) => {
         <div className="w-32 flex justify-end gap-2 pr-4 relative z-[202]">
           <button
             onClick={() =>
-              setSelectedVideo("/assets/short-video-training/purchase.mp4")
+              setSelectedVideo("/assets/short-video-training/new-updated-vd/Purchase.mp4")
             }
             className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
             title="Video Training"

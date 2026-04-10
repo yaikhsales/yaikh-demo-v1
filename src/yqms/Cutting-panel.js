@@ -107,11 +107,11 @@ const CuttingPanel = ({ onBack }) => {
         <div className="flex items-center gap-4 px-4 py-2 bg-black/20 rounded-2xl border border-white/40">
           <button
             onClick={() => setSelectedVideo(CUTTING_PANEL_VIDEO_PATH)}
-            className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors flex items-center justify-center"
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
             title="Video Training"
-          >
-            <Video size={20} className="text-white" />
-          </button>
+        >
+            <Video size={20} className="text-blue-600" />
+        </button>
           <button
             onClick={() => setSelectedDocument(CUTTING_PANEL_REPORT_PATH)}
             className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors flex items-center justify-center"

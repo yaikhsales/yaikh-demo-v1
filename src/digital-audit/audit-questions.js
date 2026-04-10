@@ -135,16 +135,12 @@ const AuditQuestions = ({ onBack }) => {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() =>
-              setSelectedVideo(
-                "/assets/short-video-training/digital-audit.mp4",
-              )
-            }
-            className="p-2 hover:bg-slate-700 rounded-full transition-colors text-slate-300 hover:text-white"
+            onClick={() => setSelectedVideo("/assets/short-video-training/digital-audit.mp4",)}
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
             title="Video Training"
-          >
-            <Video size={20} className="text-blue-400" />
-          </button>
+        >
+            <Video size={20} className="text-blue-600" />
+        </button>
           <button
             onClick={() =>
               setSelectedDocument(

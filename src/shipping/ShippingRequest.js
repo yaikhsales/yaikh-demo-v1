@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { 
-  ArrowLeft, Plus, FileText, Eye, Download, XCircle,
-  CheckCircle2, Clock, ChevronLeft, ChevronRight, MoreHorizontal, Video
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Video, FileText } from 'lucide-react';
 import ShippingFormModal from './ShippingFormModal';
 import VideoViewer from '../components/VideoViewer';
 import DocumentViewer from '../components/DocumentViewer';
@@ -17,215 +14,279 @@ const ShippingRequest = ({ onBack }) => {
   const CE_VIDEO_PATH = "/assets/short-video-training/ce.mp4";
   const CE_REPORT_PATH = "/assets/report-training/ce-shipping-request-audit.html";
 
-  // Mock data matching the screenshot Image 1
-  const [requests] = useState([
+  const requests = [
     {
-      code: '241',
+      code: '255',
       gmStatus: 'Approved',
-      gmDate: '2024-03-31 07:33:30',
+      gmUser: 'CHUI TATMINGSUNNY',
+      gmDate: '2026-04-08 07:34:16',
       accStatus: 'Pending',
-      requestedBy: 'Sin Khon',
-      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
-      payFor: '1. General Supply',
-      amount: '300.00 USD',
-      total: '300.00 USD',
-      date: '03-31-2024',
-    },
-    {
-      code: '240',
-      gmStatus: 'Approved',
-      gmDate: '2024-03-31 07:28:15',
-      accStatus: 'Pending',
-      requestedBy: 'Sin Khon',
+      requestedBy: 'UY SARIN',
       avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
       payFor: '1. Forwarder Handling Charge',
-      amount: '5,220.00 USD',
-      total: '5,220.00 USD',
-      date: '03-31-2024',
+      amount: '4,018.14 USD',
+      total: '4,018.14 USD',
+      date: '04-07-2026',
     },
     {
-      code: '239',
+      code: '255-b', // Duplicate code from image
       gmStatus: 'Approved',
-      gmDate: '2024-03-31 07:23:45',
-      accStatus: 'Approved',
-      accDate: '2024-03-31 07:23:45',
-      requestedBy: 'Sin Khon',
-      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
-      payFor: '1. Leading Team',
-      amount: '150.00 USD',
-      total: '150.00 USD',
-      date: '03-31-2024',
-    },
-    {
-      code: '238',
-      gmStatus: 'Approved',
-      gmDate: '2024-03-31 07:20:00',
-      accStatus: 'Approved',
-      accDate: '2024-03-31 07:20:00',
-      requestedBy: 'Sin Khon',
-      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
-      payFor: '1. MOP (Ministry of Commerce)',
-      amount: '1,050.00 USD',
-      total: '1,050.00 USD',
-      date: '03-31-2024',
-    },
-    {
-      code: '237',
-      gmStatus: 'Approved',
-      gmDate: '2024-03-31 06:58:10',
+      gmUser: 'CHUI TATMINGSUNNY',
+      gmDate: '2026-04-08 07:34:17',
       accStatus: 'Pending',
-      requestedBy: 'Sin Khon',
+      requestedBy: 'UY SARIN',
       avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
       payFor: '1. Forwarder Handling Charge',
-      amount: '530.00 USD',
-      total: '530.00 USD',
-      date: '03-31-2024',
+      amount: '678.06 USD',
+      total: '678.06 USD',
+      date: '04-07-2026',
     },
-  ]);
+    {
+      code: '254',
+      gmStatus: 'Approved',
+      gmUser: 'CHUI TATMINGSUNNY',
+      gmDate: '2026-04-07 08:22:47',
+      accStatus: 'Approved',
+      accUser: 'Ry Likeang',
+      accDate: '2026-04-08 10:24:16',
+      requestedBy: 'UY SARIN',
+      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
+      payFor: '1. Forwarder Handling Charge',
+      amount: '1,929.45 USD',
+      total: '1,929.45 USD',
+      date: '04-06-2026',
+    },
+    {
+      code: '253',
+      gmStatus: 'Approved',
+      gmUser: 'CHUI TATMINGSUNNY',
+      gmDate: '2026-04-06 09:12:00',
+      accStatus: 'Pending',
+      requestedBy: 'UY SARIN',
+      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
+      payFor: '1. Port Authority Fees',
+      amount: '350.00 USD',
+      total: '350.00 USD',
+      date: '04-05-2026',
+    },
+    {
+      code: '252',
+      gmStatus: 'Pending',
+      accStatus: 'Pending',
+      requestedBy: 'UY SARIN',
+      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
+      payFor: '1. Trucking and Local Transport',
+      amount: '890.50 USD',
+      total: '890.50 USD',
+      date: '04-05-2026',
+    },
+    {
+      code: '251',
+      gmStatus: 'Approved',
+      gmUser: 'CHUI TATMINGSUNNY',
+      gmDate: '2026-04-04 14:05:33',
+      accStatus: 'Approved',
+      accUser: 'Ry Likeang',
+      accDate: '2026-04-04 15:30:10',
+      requestedBy: 'UY SARIN',
+      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
+      payFor: '1. Customs Clearance Fee',
+      amount: '1,450.00 USD',
+      total: '1,450.00 USD',
+      date: '04-03-2026',
+    },
+    {
+      code: '250',
+      gmStatus: 'Approved',
+      gmUser: 'CHUI TATMINGSUNNY',
+      gmDate: '2026-04-02 11:22:15',
+      accStatus: 'Pending',
+      requestedBy: 'UY SARIN',
+      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
+      payFor: '1. Cargo Insurance',
+      amount: '225.00 USD',
+      total: '225.00 USD',
+      date: '04-01-2026',
+    },
+    {
+      code: '249',
+      gmStatus: 'Approved',
+      gmUser: 'CHUI TATMINGSUNNY',
+      gmDate: '2026-03-31 08:45:00',
+      accStatus: 'Approved',
+      accUser: 'Ry Likeang',
+      accDate: '2026-03-31 09:12:44',
+      requestedBy: 'UY SARIN',
+      avatar: 'https://ym.yaikh.com/storage/profiles/66a364656d77aaa47d0a92a6/hoRySkN00IOaLwBCochzKmK3NVefo85uTVdCCoNi.jpg',
+      payFor: '1. Ocean Freight Charges',
+      amount: '6,780.00 USD',
+      total: '6,780.00 USD',
+      date: '03-30-2026',
+    }
+  ];
+
+  const handleBack = () => {
+    if (onBack) onBack();
+    else navigate(-1);
+  };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f8fafc] overflow-hidden">
-      {/* Header bar */}
-      <div className="bg-white border-b px-4 py-3 flex items-center justify-between sticky top-0 z-20">
-        <div className="flex items-center gap-4">
-          <button 
-            onClick={onBack}
-            className="p-1 hover:bg-gray-100 rounded-lg transition-colors text-blue-600 font-bold text-xs"
-          >
-            BACK
-          </button>
-          <h1 className="text-blue-900 font-black text-lg tracking-tight border-b-2 border-blue-900 px-2 pb-0.5">
-            Shipping Request
-          </h1>
-        </div>
+    <div className="flex flex-col min-h-screen bg-[#f1f3f4] overflow-hidden w-full absolute inset-0 z-50">
+      
+      {/* Top Header - White */}
+      <div className="bg-white px-8 py-6 w-full shrink-0 flex items-center justify-between border-b shadow-sm z-30">
+        <h1 className="text-2xl font-black text-[#1e3a8a] ml-[100px] border-b-[3px] border-[#1e3a8a] pb-1">Shipping Request</h1>
         <div className="flex items-center gap-2">
             <button
                 onClick={() => setSelectedVideo(CE_VIDEO_PATH)}
-                className="p-2.5 hover:bg-slate-50 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"
+                className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
                 title="Video Training"
             >
-                <Video size={18} />
+                <Video size={20} className="text-blue-600" />
             </button>
             <button
                 onClick={() => setSelectedDocument(CE_REPORT_PATH)}
-                className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"
-                title="Executive Audit Report"
+                className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 mr-4"
+                title="Report Training"
             >
-                <FileText size={18} />
-            </button>
-            <button 
-                onClick={() => setShowAddModal(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 text-sm font-bold shadow-sm transition-all active:scale-95"
-            >
-                <Plus size={18} />
-                Add Request
+                <FileText size={20} className="text-blue-600" />
             </button>
         </div>
       </div>
 
-      {/* Table Container */}
-      <div className="flex-1 overflow-auto p-4 md:p-6">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-w-[1200px]">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-gray-100 border-b">
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider">Code</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider">Reject</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider">GM</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider">ACC</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider">Requested</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider">Pay</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider text-right">Amount</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider text-right">Total</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider">Date</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider text-center">File</th>
-                <th className="px-4 py-3 text-xs font-black text-gray-600 uppercase tracking-wider text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {requests.map((item, idx) => (
-                <tr key={item.code} className={`border-b hover:bg-gray-50/50 transition-colors ${idx % 2 === 1 ? 'bg-gray-50/30' : ''}`}>
-                  <td className="px-4 py-4 font-bold text-gray-800">{item.code}</td>
-                  <td className="px-4 py-4">
-                    <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-[10px] font-black uppercase transition-colors">
-                      Reject
-                    </button>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-col items-center">
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-black border-2 ${
-                            item.gmStatus === 'Approved' ? 'bg-green-50 border-green-600 text-green-700' : 'bg-orange-50 border-orange-600 text-orange-700'
-                        }`}>
-                            {item.gmStatus}
-                        </span>
-                        <span className="text-[9px] text-gray-500 mt-1 font-bold">{item.gmDate}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 text-center">
-                    <span className={`px-4 py-1 rounded-full text-[10px] font-black border-2 ${
-                        item.accStatus === 'Approved' ? 'bg-green-50 border-green-600 text-green-700' : 'bg-red-50 border-red-600 text-red-700'
-                    }`}>
-                        {item.accStatus}
-                    </span>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-col items-center gap-1">
-                        <img src={item.avatar} alt={item.requestedBy} className="w-8 h-8 rounded border border-gray-200 object-cover" />
-                        <span className="text-[10px] font-black uppercase text-gray-700">BY: {item.requestedBy}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-4 max-w-[200px]">
-                    <span className="text-xs font-bold text-gray-700">{item.payFor}</span>
-                  </td>
-                  <td className="px-4 py-4 text-right">
-                    <span className="text-xs font-black text-gray-800">{item.amount}</span>
-                  </td>
-                  <td className="px-4 py-4 text-right">
-                    <span className="text-xs font-black text-blue-700">{item.total}</span>
-                  </td>
-                  <td className="px-4 py-4 text-xs font-bold text-gray-600">
-                    {item.date}
-                  </td>
-                  <td className="px-4 py-4 text-center">
-                    <button className="text-red-500 hover:text-red-600 transition-colors">
-                        <FileText size={24} fill="currentColor" fillOpacity={0.1} />
-                        <div className="text-[8px] font-black">PDF</div>
-                    </button>
-                  </td>
-                  <td className="px-4 py-4">
-                    <div className="flex flex-col items-center gap-1">
-                        <button className="w-full bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-1 rounded text-[10px] font-black transition-all">
-                            Detail
-                        </button>
-                        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded text-[10px] font-black transition-all">
-                            View
-                        </button>
-                        <button className="w-full bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded text-[10px] font-black transition-all">
-                            PDF
-                        </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        
-        {/* Pagination bar matching Image 1 */}
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-            <div className="text-gray-500 font-bold">
-                Showing 1 to 10 of 228 results
+      <div className="w-full px-6 py-4 shrink-0">
+        <button
+          onClick={handleBack}
+          className="bg-white border border-slate-200 text-slate-700 px-5 py-2 rounded shadow-sm text-xs font-black uppercase hover:bg-slate-50 transition-colors"
+        >
+          BACK
+        </button>
+      </div>
+
+      <div className="flex-1 w-full overflow-auto px-6 pb-8">
+        <div className="bg-white rounded p-8 border border-slate-100 border-dashed min-h-[80vh] shadow-sm flex flex-col">
+          
+          <div className="flex justify-end mb-6 shrink-0">
+            <button 
+                onClick={() => setShowAddModal(true)}
+                className="bg-[#2563eb] text-white px-8 py-2.5 rounded-md font-bold text-sm tracking-wide shadow-sm hover:bg-blue-700 transition"
+            >
+                Add Request
+            </button>
+          </div>
+
+          <div className="w-full overflow-x-auto flex-1">
+            <table className="w-full text-center border-collapse text-xs whitespace-nowrap">
+                <thead className="bg-[#e5e7eb] border-b-2 border-white">
+                    <tr>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">CODE</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">REJECT</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">GM</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">ACC</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">REQUESTOR</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">NOT</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">AMOUNT</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">TOTAL</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">DATE</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">FILE</th>
+                    <th className="py-4 px-2 uppercase font-black text-slate-800">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {requests.map((row, index) => (
+                    <tr key={row.code} className={`border-b-4 border-white ${index % 2 === 0 ? 'bg-[#f3f4f6]' : 'bg-white'}`}>
+                        <td className="py-6 px-4 font-bold text-slate-700">{row.code}</td>
+                        <td className="py-6 px-4">
+                            <button className="bg-[#64748b] text-white px-5 py-2 rounded-md font-semibold text-[11px]">Reject</button>
+                        </td>
+                        <td className="py-6 px-4">
+                            <div className="flex flex-col items-center gap-1">
+                                {row.gmStatus === 'Approved' ? (
+                                    <>
+                                        <span className="bg-[#dcfce7] text-[#22c55e] px-4 py-1.5 rounded-full font-bold text-[11px]">
+                                            Approved
+                                        </span>
+                                        <span className="text-[9px] text-slate-400 font-medium uppercase mt-1 leading-tight text-center whitespace-nowrap">{row.gmUser}<br/>{row.gmDate}</span>
+                                    </>
+                                ) : (
+                                    <span className="bg-[#fee2e2] text-[#ef4444] px-5 py-2 rounded-full font-bold text-[11px]">
+                                        Pending
+                                    </span>
+                                )}
+                            </div>
+                        </td>
+                        <td className="py-6 px-4">
+                            <div className="flex flex-col items-center gap-1">
+                                {row.accStatus === 'Approved' ? (
+                                    <>
+                                        <span className="bg-[#dcfce7] text-[#22c55e] px-4 py-1.5 rounded-full font-bold text-[11px]">
+                                            Approved
+                                        </span>
+                                        <span className="text-[9px] text-slate-400 font-medium mt-1 leading-tight text-center whitespace-nowrap">{row.accUser}<br/>{row.accDate}</span>
+                                    </>
+                                ) : (
+                                    <span className="bg-[#fee2e2] text-[#ef4444] px-5 py-2 rounded-full font-bold text-[11px]">
+                                        Pending
+                                    </span>
+                                )}
+                            </div>
+                        </td>
+                        <td className="py-6 px-4">
+                            <div className="flex flex-col items-center gap-1.5">
+                                <img src={row.avatar} alt="Avatar" className="w-12 h-12 rounded bg-slate-200 object-cover" />
+                                <span className="font-bold text-[11px] text-slate-900">{row.requestedBy}</span>
+                            </div>
+                        </td>
+                        <td className="py-6 px-4 font-bold text-slate-600 text-left min-w-[200px]">
+                            {row.payFor}
+                        </td>
+                        <td className="py-6 px-4 font-bold text-slate-800">
+                            {row.amount}
+                        </td>
+                        <td className="py-6 px-4 font-bold text-slate-800">
+                            {row.total}
+                        </td>
+                        <td className="py-6 px-4 font-bold text-slate-800">
+                            {row.date}
+                        </td>
+                        <td className="py-6 px-4">
+                            <button className="bg-[#dc2626] text-white px-4 py-2 rounded-md font-bold text-[11px]">PDF</button>
+                        </td>
+                        <td className="py-6 px-4">
+                            <div className="flex flex-col gap-1.5 items-center justify-center">
+                                <button className="bg-[#22c55e] text-white px-5 py-1.5 rounded text-[11px] font-bold w-20 shadow-sm transition hover:scale-105">Detail</button>
+                                <button className="bg-[#3b82f6] text-white px-5 py-1.5 rounded text-[11px] font-bold w-20 shadow-sm transition hover:scale-105">View</button>
+                                <button className="bg-[#ef4444] text-white px-5 py-1.5 rounded text-[11px] font-bold w-20 shadow-sm transition hover:scale-105">PDF</button>
+                            </div>
+                        </td>
+                    </tr>
+                    ))}
+                </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 flex items-center justify-between border-t border-slate-200 pt-6 px-4 shrink-0 text-xs font-bold text-slate-500">
+            <div>
+              Showing 1 to 10 of 261 results
             </div>
             <div className="flex items-center gap-1">
-                <button className="p-1 border rounded hover:bg-gray-100"><ChevronLeft size={14}/></button>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 10, '...', 22, 23, 24].map((p, i) => (
-                    <button key={i} className={`px-2 py-1 border rounded font-black ${p === 1 ? 'bg-blue-600 text-white border-blue-600' : 'hover:bg-gray-100 text-gray-700'}`}>
-                        {p}
-                    </button>
-                ))}
-                <button className="p-1 border rounded hover:bg-gray-100"><Plus size={14}/></button>
-                <button className="p-1 border rounded hover:bg-gray-100"><ChevronRight size={14}/></button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors"><ChevronLeft size={16}/></button>
+              <button className="px-3 py-1.5 border border-blue-600 bg-blue-600 rounded text-white font-black shadow-sm">1</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">2</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">3</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">4</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">5</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">6</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">7</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">8</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">9</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">10</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">...</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">26</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors">27</button>
+              <button className="px-3 py-1.5 border border-slate-200 bg-white rounded text-slate-500 hover:bg-slate-50 transition-colors"><ChevronRight size={16}/></button>
             </div>
+          </div>
         </div>
       </div>
 

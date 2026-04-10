@@ -92,11 +92,11 @@ const PreProductionMeeting = ({ onBack }) => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSelectedVideo(PPM_VIDEO_PATH)}
-            className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
             title="Video Training"
-          >
+        >
             <Video size={20} className="text-blue-600" />
-          </button>
+        </button>
           <button
             onClick={() => setSelectedDocument(PPM_REPORT_PATH)}
             className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-200"

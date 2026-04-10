@@ -536,16 +536,12 @@ const YShop = ({ onBack }) => {
             {/* Right: Icons and Search Controls */}
             <div className="flex items-center gap-4">
               <button
-                onClick={() =>
-                  setSelectedVideo(
-                    "/assets/short-video-training/Y-shop-training.mp4",
-                  )
-                }
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                title="Video Training"
-              >
-                <Video size={20} className="text-blue-600" />
-              </button>
+            onClick={() => setSelectedVideo("/assets/short-video-training/new-updated-vd/y-shop.mp4",)}
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Video Training"
+        >
+            <Video size={20} className="text-blue-600" />
+        </button>
               <button
                 onClick={() =>
                   setSelectedDocument(

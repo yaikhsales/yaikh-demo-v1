@@ -140,12 +140,12 @@ const HumidityReportList = ({ onBack }) => {
                     {/* Right Section */}
                     <div className="flex items-center gap-4 shrink-0">
                         <button
-                            onClick={() => setSelectedVideo(HUMIDITY_VIDEO_PATH)}
-                            className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 border border-white/40 text-white shadow-lg transition-all"
-                            title="Video Training"
-                        >
-                            <Video size={18} />
-                        </button>
+            onClick={() => setSelectedVideo(HUMIDITY_VIDEO_PATH)}
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Video Training"
+        >
+            <Video size={20} className="text-blue-600" />
+        </button>
                         <button
                             onClick={() => setSelectedDocument(HUMIDITY_REPORT_PATH)}
                             className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 border border-white/40 text-white shadow-lg transition-all"

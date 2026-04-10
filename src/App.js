@@ -91,6 +91,7 @@ import QCFile from "./yqms/qc-file";
 import PreProductionMeeting from "./yqms/PPM/pre-production-meeting";
 import FinCheckDashboard from "./yqms/Fin-check/index";
 import ShippingRequest from "./shipping/ShippingRequest";
+import MoneyClaim from "./money-claim/money-claim";
 
 // FC Module Components
 import FabricReceiving from "./fc/FabricReceiving";
@@ -623,6 +624,7 @@ export default function App() {
             element={<ShippingRequest onBack={handleBack} />}
           />
 
+          <Route path="money-claim" element={<MoneyClaim onBack={handleBack} />} />
           <Route path=":moduleId" element={<TableView onBack={handleBack} />} />
         </Route>
       </Routes>

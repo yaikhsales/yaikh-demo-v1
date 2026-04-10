@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, FileText } from 'lucide-react';
 import ImageViewer from './ImageViewer';
+import DocumentViewer from './DocumentViewer';
 
 const AboutUs = ({ onClose }) => {
     const navigate = useNavigate();
     const [selectedCertificate, setSelectedCertificate] = useState(null);
+    const [selectedDocument, setSelectedDocument] = useState(null);
     
     const aboutUsContent = [
         {
@@ -258,7 +260,7 @@ const AboutUs = ({ onClose }) => {
 
     const certificates = [
         { name: 'MOC', image: '/assets/about-us/certificates/moc.png' },
-        { name: 'GK Smart', image: '/assets/about-us/certificates/gk-smart.png' },
+       { name: 'ICT Certificate', image: '/assets/about-us/certificates/ict-certificate.jpg' },
         
         { name: 'TAFTAC', image: '/assets/about-us/certificates/taftac.png' },
         { name: 'QIP CDC', image: '/assets/about-us/certificates/qip-cdc.png' }
@@ -351,16 +353,29 @@ const AboutUs = ({ onClose }) => {
                                     <div
                                         key={index}
                                         className="cursor-pointer hover:opacity-80 transition-opacity flex-shrink"
-                                        onClick={() => setSelectedCertificate(cert.image)}
+                                        onClick={() => {
+                                            if (cert.image.endsWith('.pdf')) {
+                                                setSelectedDocument(cert.image);
+                                            } else {
+                                                setSelectedCertificate(cert.image);
+                                            }
+                                        }}
                                     >
-                                        <img
-                                            src={cert.image}
-                                            alt={cert.name}
-                                            className="w-full h-auto max-h-[calc(25vh-50px)] object-contain rounded"
-                                            onError={(e) => {
-                                                e.target.style.display = 'none';
-                                            }}
-                                        />
+                                        {cert.image.endsWith('.pdf') ? (
+                                            <div className="w-full h-24 sm:h-32 bg-gray-100 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-500 hover:text-blue-600 hover:border-blue-400 transition-colors">
+                                                <FileText size={32} />
+                                                <span className="text-xs font-semibold mt-2">{cert.name}</span>
+                                            </div>
+                                        ) : (
+                                            <img
+                                                src={cert.image}
+                                                alt={cert.name}
+                                                className="w-full h-auto max-h-[calc(25vh-50px)] object-contain rounded"
+                                                onError={(e) => {
+                                                    e.target.style.display = 'none';
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -513,16 +528,29 @@ const AboutUs = ({ onClose }) => {
                                     <div
                                         key={index}
                                         className="cursor-pointer hover:opacity-80 transition-opacity"
-                                        onClick={() => setSelectedCertificate(cert.image)}
+                                        onClick={() => {
+                                            if (cert.image.endsWith('.pdf')) {
+                                                setSelectedDocument(cert.image);
+                                            } else {
+                                                setSelectedCertificate(cert.image);
+                                            }
+                                        }}
                                     >
-                                        <img
-                                            src={cert.image}
-                                            alt={cert.name}
-                                            className="w-full h-auto max-h-32 sm:max-h-40 object-contain rounded"
-                                            onError={(e) => {
-                                                e.target.style.display = 'none';
-                                            }}
-                                        />
+                                        {cert.image.endsWith('.pdf') ? (
+                                            <div className="w-full h-24 sm:h-32 bg-gray-100 border-2 border-dashed border-gray-300 rounded flex flex-col items-center justify-center text-gray-500 hover:text-blue-600 hover:border-blue-400 transition-colors">
+                                                <FileText size={32} />
+                                                <span className="text-xs font-semibold mt-2">{cert.name}</span>
+                                            </div>
+                                        ) : (
+                                            <img
+                                                src={cert.image}
+                                                alt={cert.name}
+                                                className="w-full h-auto max-h-32 sm:max-h-40 object-contain rounded"
+                                                onError={(e) => {
+                                                    e.target.style.display = 'none';
+                                                }}
+                                            />
+                                        )}
                                     </div>
                                 ))}
                             </div>
@@ -647,6 +675,13 @@ const AboutUs = ({ onClose }) => {
                 <ImageViewer
                     imagePath={selectedCertificate}
                     onClose={() => setSelectedCertificate(null)}
+                />
+            )}
+            {/* Certificate PDF Viewer Modal */}
+            {selectedDocument && (
+                <DocumentViewer
+                    documentPath={selectedDocument}
+                    onClose={() => setSelectedDocument(null)}
                 />
             )}
         </div>
