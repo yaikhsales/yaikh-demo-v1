@@ -239,7 +239,7 @@ const MyAttendance = ({ onBack }) => {
         <div className="flex items-center gap-4">
           <button
             onClick={() =>
-              setSelectedVideo("/assets/short-video-training/yhr-training.mp4")
+              setSelectedVideo("/assets/short-video-training/new-updated-vd/YHR.mp4")
             }
             className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 bg-white"
             title="Video Training"

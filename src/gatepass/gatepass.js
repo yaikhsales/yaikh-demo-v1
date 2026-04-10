@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, History, Users, Plus, X, Building, User, Hash, FileText, Clock, Rocket, ArrowLeft as ReturnIcon, Send, MapPin, MessageCircle } from 'lucide-react';
+import { ArrowLeft, History, Users, Plus, X, Building, User, Hash, FileText, Clock, Rocket, ArrowLeft as ReturnIcon, Send, MapPin, MessageCircle, Video } from 'lucide-react';
 import GeneralAIAgent from '../general-ag';
 import { useTranslation } from '../translate/TranslationContext';
+import VideoViewer from '../components/VideoViewer';
 
 const GatePass = ({ onBack }) => {
     const navigate = useNavigate();
     const { t, translateModuleTitle } = useTranslation();
     const [isBotOpen, setIsBotOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedVideo, setSelectedVideo] = useState(null);
     const [pendingRequests, setPendingRequests] = useState([
         {
             id: 1,
@@ -178,7 +180,22 @@ const GatePass = ({ onBack }) => {
                     </div>
                     <h1 className="text-xl md:text-2xl font-bold text-slate-800">{t('gatePass')}</h1>
                 </div>
-                <div className="w-32"></div> {/* Right spacer */}
+                <div className="w-32 flex justify-end gap-2 pr-4">
+                    <button
+                        onClick={() => setSelectedVideo("/assets/short-video-training/new-updated-vd/gatepass .mp4")}
+                        className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+                        title="Video Training"
+                    >
+                        <Video size={20} className="text-blue-600" />
+                    </button>
+                    <button
+                        onClick={() => console.log('File report action...')}
+                        className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+                        title="Report Training"
+                    >
+                        <FileText size={20} className="text-blue-600" />
+                    </button>
+                </div>
             </div>
 
             {/* Main Content */}
@@ -583,6 +600,14 @@ const GatePass = ({ onBack }) => {
                 <GeneralAIAgent 
                     onClose={() => setIsBotOpen(false)}
                     moduleContext="Gate Pass"
+                />
+            )}
+            
+            {/* Video Training Modal */}
+            {selectedVideo && (
+                <VideoViewer
+                    videoPath={selectedVideo}
+                    onClose={() => setSelectedVideo(null)}
                 />
             )}
         </div>

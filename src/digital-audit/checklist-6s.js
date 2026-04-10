@@ -399,16 +399,12 @@ const Checklist6S = ({ onBack }) => {
           {/* quick action */}
           <div className="flex items-center gap-2">
             <button
-              onClick={() =>
-                setSelectedVideo(
-                  "/assets/short-video-training/Checklist-6s.mp4",
-                )
-              }
-              className="p-2 hover:bg-slate-100 rounded-lg transition-colors flex items-center justify-center shrink-0"
-              title="Video Training"
-            >
-              <Video size={20} className="text-blue-600" />
-            </button>
+            onClick={() => setSelectedVideo("/assets/short-video-training/Checklist-6s.mp4",)}
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Video Training"
+        >
+            <Video size={20} className="text-blue-600" />
+        </button>
             <button
               onClick={() =>
                 setSelectedDocument(

@@ -107,12 +107,12 @@ const GarmentAnalysis = ({ onBack }) => {
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => setSelectedVideo(CE_VIDEO_PATH)}
-              className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"
-              title="Video Training"
-            >
-              <Video size={18} />
-            </button>
+            onClick={() => setSelectedVideo(CE_VIDEO_PATH)}
+            className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300"
+            title="Video Training"
+        >
+            <Video size={20} className="text-blue-600" />
+        </button>
             <button
               onClick={() => setSelectedDocument(CE_REPORT_PATH)}
               className="p-2.5 hover:bg-slate-100 rounded-xl transition-all text-blue-600 border border-slate-200 bg-white"

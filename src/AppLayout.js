@@ -1120,6 +1120,8 @@ const AppLayout = () => {
         navigate("/dashboard/call-out");
       } else if (module.id === "meeting" && module.title === "Meeting Room") {
         navigate("/dashboard/meeting-room");
+      } else if (module.title === "Money Claim" || module.id === "money-claim") {
+        navigate("/dashboard/money-claim");
       } else if (module.action) {
         navigate(module.action);
       }
@@ -1148,6 +1150,7 @@ const AppLayout = () => {
         !location.pathname.includes("salary-bill") &&
         !location.pathname.includes("water") &&
         !location.pathname.includes("shipping/request") &&
+        !location.pathname.includes("money-claim") &&
         !location.pathname.includes("ce") && <ThemeBackground />}
 
       <KhmerNewYearSplash />
@@ -1181,6 +1184,7 @@ const AppLayout = () => {
         !location.pathname.includes("salary-bill") &&
         !location.pathname.includes("water") &&
         !location.pathname.includes("shipping/request") &&
+        !location.pathname.includes("money-claim") &&
         !location.pathname.includes("ce") && <Header />}
 
       {/* Light Bulb - Center Top */}

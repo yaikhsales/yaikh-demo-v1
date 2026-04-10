@@ -23,6 +23,7 @@ const KhmerNewYearSplash = () => {
         setIsClosing(true);
         setTimeout(() => {
             setIsVisible(false);
+            setIsClosing(false);
             sessionStorage.setItem('hasSeenKhmerNewYearSplash_v2_2026', 'true');
         }, 800); // Wait for fade out animation
     };
@@ -62,7 +63,7 @@ const KhmerNewYearSplash = () => {
     };
 
     return (
-        <div className={`fixed inset-0 z-[99999] flex items-center justify-center transition-all duration-700 ${isClosing ? 'opacity-0 scale-105 blur-md' : 'opacity-100 scale-100 blur-0'}`}>
+        <div className={`fixed inset-0 z-[99999] flex items-center justify-center transition-all duration-700 ${isClosing ? 'opacity-0 scale-105 blur-md pointer-events-none' : 'opacity-100 scale-100 blur-0'}`}>
             {/* Immersive Deep Red/Gold Radial Backdrop */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(50,10,0,0.8)_0%,rgba(0,0,0,0.95)_100%)] backdrop-blur-xl" onClick={handleClose}></div>
             

@@ -437,7 +437,7 @@ const SupportTicketManagement = ({ onBack }) => {
               <button
                 onClick={() =>
                   setSelectedVideo(
-                    "/assets/short-video-training/support-ticket.mp4",
+                    "/assets/short-video-training/new-updated-vd/Support-Ticket.mp4",
                   )
                 }
                 className="p-2 hover:bg-slate-200 rounded-lg transition-colors flex items-center justify-center shrink-0 border border-slate-300 relative z-[202]"
