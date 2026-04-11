@@ -17,7 +17,10 @@ const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
     if (lowerPath.includes('support') || lowerPath.includes('ticket')) return '/assets/short-video-training/normal-video-training/Support-Ticket-Normall.mp4';
     if (lowerPath.includes('y-shop')) return '/assets/short-video-training/normal-video-training/Y-Shop-Normall.mp4';
     if (lowerPath.includes('yhr')) return '/assets/short-video-training/normal-video-training/Yhr-Video-Normall.mp4';
-    
+    if (/\/training-short\.mp4$/i.test(originalPath)) {
+      return '/assets/short-video-training/normal-video-training/Training-Normall.mp4';
+    }
+
     return null;
   };
 
@@ -28,6 +31,10 @@ const VideoViewer = ({ videoPath, onClose, onSwitch, switchLabel }) => {
     setHasError(false);
     setIsNormalVideo(false);
   }, [videoPath]);
+
+  useEffect(() => {
+    setHasError(false);
+  }, [currentPathToPlay]);
 
   const handleDownload = () => {
     const link = document.createElement("a");

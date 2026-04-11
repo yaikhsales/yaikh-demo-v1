@@ -70,14 +70,14 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
             h-28 w-full transition-all duration-300 cursor-pointer mb-3 overflow-hidden light-effect
             ${isDropdownOpen ? 'rounded-xl' : 'rounded-2xl apple-card'}
             ${isComingSoon
-          ? isDropdownOpen ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 backdrop-blur-md border-2 border-cyan-400" : theme === 'normal' ? "bg-gradient-to-br from-cyan-300/90 via-blue-300/90 to-indigo-300/90 backdrop-blur-md border-2 border-cyan-500/70" : "bg-gradient-to-br from-cyan-300/80 via-blue-300/80 to-indigo-300/80 backdrop-blur-md border-2 border-cyan-500/60"
+          ? isDropdownOpen ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 border-2 border-cyan-400" : theme === 'normal' ? "bg-gradient-to-br from-cyan-300/90 via-blue-300/90 to-indigo-300/90 border-2 border-cyan-500/70" : "bg-gradient-to-br from-cyan-300/80 via-blue-300/80 to-indigo-300/80 border-2 border-cyan-500/60"
           : isAdministration && !isDropdownOpen
-            ? "bg-blue-700 backdrop-blur-md border-2 border-blue-600 hover:border-blue-500 hover:bg-blue-600"
+            ? "bg-blue-700 border-2 border-blue-600 hover:border-blue-500 hover:bg-blue-600"
             : isOrangeGroup && !isDropdownOpen
-              ? "bg-gradient-to-br from-green-200 via-green-300 to-emerald-300 backdrop-blur-md border-2 border-green-400 hover:border-green-500 hover:from-green-300 hover:via-green-400 hover:to-emerald-400 shadow-lg"
+              ? "bg-gradient-to-br from-green-300 via-green-400 to-emerald-400 border-2 border-green-400 hover:border-green-500 hover:from-green-400 hover:via-green-500 hover:to-emerald-500 shadow-lg"
               : isWhiteGroup && !isDropdownOpen
-                ? "bg-gradient-to-br from-slate-200 via-slate-300 to-gray-400 backdrop-blur-md border-2 border-slate-400 hover:border-slate-500 hover:from-slate-300 hover:via-slate-400 hover:to-gray-500 shadow-lg"
-                : isDropdownOpen ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 backdrop-blur-md border-2 border-cyan-400 hover:from-cyan-400 hover:via-blue-400 hover:to-indigo-400" : theme === 'normal' ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 backdrop-blur-md border-2 border-cyan-500 hover:border-cyan-600 hover:from-cyan-400 hover:via-blue-400 hover:to-indigo-400 shadow-lg" : "bg-gradient-to-br from-cyan-300/90 via-blue-300/90 to-indigo-300/90 backdrop-blur-md border-2 border-cyan-500/70 hover:from-cyan-400/95 hover:via-blue-400/95 hover:to-indigo-400/95"
+                ? "bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 border-2 border-slate-400 hover:border-slate-500 hover:from-slate-300 hover:via-slate-400 hover:to-slate-500 shadow-lg"
+                : isDropdownOpen ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 border-2 border-cyan-400 hover:from-cyan-400 hover:via-blue-400 hover:to-indigo-400" : theme === 'normal' ? "bg-gradient-to-br from-cyan-300 via-blue-300 to-indigo-300 border-2 border-cyan-500 hover:border-cyan-600 hover:from-cyan-400 hover:via-blue-400 hover:to-indigo-400 shadow-lg" : "bg-gradient-to-br from-cyan-300/90 via-blue-300/90 to-indigo-300/90 border-2 border-cyan-500/70 hover:from-cyan-400/95 hover:via-blue-400/95 hover:to-indigo-400/95"
         }
             ${data.highlight
           ? isDropdownOpen
@@ -147,7 +147,7 @@ const ModuleCard = ({ data, onClick, botVersion = 'default', onBotClick, isDropd
 
       {/* Active Glow for highlight items */}
       {data.highlight && !isDropdownOpen && !isAdministration && !isOrangeGroup && !isWhiteGroup && (
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/20 via-blue-400/20 to-purple-400/20 animate-pulse pointer-events-none"></div>
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-400/20 via-blue-400/20 to-purple-400/20 pointer-events-none"></div>
       )}
       {/* Blue Glow for Administration modules */}
       {isAdministration && !isDropdownOpen && !isComingSoon && (

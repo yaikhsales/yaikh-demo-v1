@@ -1,7 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { ArrowLeft, BookOpen, FileText, Calendar } from "lucide-react";
 import { useTranslation } from "../translate/TranslationContext";
+import VideoViewer from "../components/VideoViewer";
+
+/** Short clips in `public/assets/short-video-training/new-updated-vd` — full versions mapped in VideoViewer */
+const TRAINING_LIBRARY_VIDEOS = [
+  {
+    shortPath:
+      "/assets/short-video-training/new-updated-vd/Training-Short.mp4",
+    title: "Training",
+    description: "Dashboard training overview.",
+  },
+  {
+    shortPath:
+      "/assets/short-video-training/new-updated-vd/money-claim.mp4",
+    title: "Money Claim",
+    description: "Money claim workflow and approvals.",
+  },
+  {
+    shortPath: "/assets/short-video-training/new-updated-vd/Purchase.mp4",
+    title: "Purchase",
+    description: "Purchase request and PR process.",
+  },
+  {
+    shortPath:
+      "/assets/short-video-training/new-updated-vd/Support-Ticket.mp4",
+    title: "Support Ticket",
+    description: "Support ticket creation and handling.",
+  },
+  {
+    shortPath: "/assets/short-video-training/new-updated-vd/gatepass .mp4",
+    title: "Gate Pass",
+    description: "Personal and material gate pass.",
+  },
+  {
+    shortPath: "/assets/short-video-training/new-updated-vd/y-shop.mp4",
+    title: "Y-Shop",
+    description: "Y-Shop module training.",
+  },
+  {
+    shortPath: "/assets/short-video-training/new-updated-vd/YHR.mp4",
+    title: "YHR",
+    description: "Human resources (YHR) training.",
+  },
+];
 
 const Training = ({ onBack }) => {
   const navigate = useNavigate();
@@ -14,354 +57,11 @@ const Training = ({ onBack }) => {
   const [activeView, setActiveView] = useState("main"); // 'main', 'course', 'lessons', 'activity'
   const [viewMode, setViewMode] = useState("list"); // 'list' or 'calendar' for activity view
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
-  // Debug log
-  console.log(
-    "Training component - department:",
-    department,
-    "departmentName:",
-    departmentName,
-  );
-
-  // Training videos from YouTube - search results for each department
-  const trainingVideos = {
-    YAI: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "YAI Department Training",
-        description: "YAI Department overview and training",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "YAI Workflow",
-        description: "Understanding YAI workflow processes",
-      },
-    ],
-    CSR: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "CSR Department Training",
-        description: "CSR Department overview and training",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "CSR Best Practices",
-        description: "CSR best practices and guidelines",
-      },
-    ],
-    IT: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "IT Department Training",
-        description: "IT Department overview and training",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "IT System Management",
-        description: "IT system management training",
-      },
-    ],
-    Shipping: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Shipping Department Training",
-        description: "Shipping Department overview and training",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Shipping Procedures",
-        description: "Shipping procedures and guidelines",
-      },
-    ],
-    PPC: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "PPC Department Training",
-        description: "PPC Department overview and training",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "PPC Planning",
-        description: "Production planning and control training",
-      },
-    ],
-    Merchandising: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Merchandising Training",
-        description: "Merchandising Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Merchandising Strategies",
-        description: "Merchandising strategies and techniques",
-      },
-    ],
-    Purchasing: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Purchasing Training",
-        description: "Purchasing Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Purchase Request Process",
-        description: "Purchase request process training",
-      },
-    ],
-    "General Affairs": [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "General Affairs Training",
-        description: "General Affairs Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "General Affairs Procedures",
-        description: "General Affairs procedures training",
-      },
-    ],
-    Admin: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Admin Training",
-        description: "Admin Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Admin Management",
-        description: "Administrative management training",
-      },
-    ],
-    HR: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "HR Training",
-        description: "HR Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "HR Management",
-        description: "Human resources management training",
-      },
-    ],
-    QA: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "QA Training",
-        description: "QA Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Quality Assurance",
-        description: "Quality assurance procedures",
-      },
-    ],
-    Financial: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Financial Training",
-        description: "Financial Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Financial Management",
-        description: "Financial management training",
-      },
-    ],
-    CBSA: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "CBSA Training",
-        description: "CBSA Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "CBSA Procedures",
-        description: "CBSA procedures training",
-      },
-    ],
-    Sample: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Sample Training",
-        description: "Sample Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Sample Management",
-        description: "Sample management training",
-      },
-    ],
-    Technical: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Technical Training",
-        description: "Technical Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Technical Procedures",
-        description: "Technical procedures training",
-      },
-    ],
-    "Raw Material Warehouse": [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Raw Material Warehouse Training",
-        description: "Raw Material Warehouse overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Warehouse Management",
-        description: "Warehouse management training",
-      },
-    ],
-    Cutting: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Cutting Department Training",
-        description: "Cutting Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Cutting Procedures",
-        description: "Cutting procedures training",
-      },
-    ],
-    SCC: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "SCC Training",
-        description: "SCC Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "SCC Management",
-        description: "SCC management training",
-      },
-    ],
-    Sewing: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Sewing Department Training",
-        description: "Sewing Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Sewing Procedures",
-        description: "Sewing procedures training",
-      },
-    ],
-    QC: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "QC Training",
-        description: "QC Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Quality Control",
-        description: "Quality control procedures",
-      },
-    ],
-    Ironing: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Ironing Department Training",
-        description: "Ironing Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Ironing Procedures",
-        description: "Ironing procedures training",
-      },
-    ],
-    Packing: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Packing Department Training",
-        description: "Packing Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Packing Procedures",
-        description: "Packing procedures training",
-      },
-    ],
-    Washing: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Washing Department Training",
-        description: "Washing Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Washing Procedures",
-        description: "Washing procedures training",
-      },
-    ],
-    TPM: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "TPM Training",
-        description: "TPM Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "TPM Management",
-        description: "TPM management training",
-      },
-    ],
-    Warehouse: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Warehouse Training",
-        description: "Warehouse Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Warehouse Operations",
-        description: "Warehouse operations training",
-      },
-    ],
-    IE: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "IE Training",
-        description: "IE Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "IE Management",
-        description: "IE management training",
-      },
-    ],
-    "QA (Fabric)": [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "QA Fabric Training",
-        description: "QA Fabric Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Fabric Quality Assurance",
-        description: "Fabric quality assurance training",
-      },
-    ],
-    Production: [
-      {
-        id: "dQw4w9WgXcQ",
-        title: "Production Training",
-        description: "Production Department overview",
-      },
-      {
-        id: "jNQXAC9IVRw",
-        title: "Production Management",
-        description: "Production management training",
-      },
-    ],
-  };
+  useEffect(() => {
+    if (activeView !== "course") setSelectedVideo(null);
+  }, [activeView]);
 
   // Training lessons data
   const trainingLessons = {
@@ -538,10 +238,8 @@ const Training = ({ onBack }) => {
     );
   }
 
-  // Course View - Video Grid
+  // Course View — local training video (short + full normal via VideoViewer)
   if (activeView === "course") {
-    const videos = trainingVideos[departmentName] || trainingVideos["YAI"];
-
     return (
       <div
         className="fixed inset-0 bg-gray-100 flex flex-col animate-in fade-in duration-500 z-[200]"
@@ -549,7 +247,7 @@ const Training = ({ onBack }) => {
       >
         {/* Header */}
         <div className="bg-white p-4 border-b flex items-center gap-4 flex-shrink-0 shadow-sm relative z-[201]">
-          <div className="w-32"></div> {/* Left spacer */}
+          <div className="w-32"></div>
           <div className="flex-1 flex flex-col items-center gap-2">
             <div className="flex items-center gap-3">
               <button
@@ -573,69 +271,87 @@ const Training = ({ onBack }) => {
             </div>
             <h1 className="text-3xl font-bold">{t("trainingCourse")}</h1>
           </div>
-          <div className="w-32"></div> {/* Right spacer */}
+          <div className="w-32" aria-hidden />
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto p-8">
-          <div className="w-full">
-            {/* Video Grid */}
-            <div className="bg-white rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">
+        <div className="flex-1 overflow-auto p-6 md:p-8">
+          <div className="w-full max-w-7xl mx-auto">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-slate-800">
                 {t("dashboardVideoTraining")}
               </h2>
-              <div className="grid grid-cols-3 gap-6">
-                {videos.map((video, index) => (
+              <p className="text-gray-600 text-sm mt-1">
+                {translateModuleTitle(departmentName)}
+              </p>
+              <p className="text-gray-500 text-sm mt-2">
+                Click a video to open the player. Use{" "}
+                <span className="font-semibold text-slate-700">
+                  Switch to Full Normal Video
+                </span>{" "}
+                in the player for the long version.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {TRAINING_LIBRARY_VIDEOS.map((item) => (
+                <div
+                  key={item.shortPath}
+                  className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+                >
                   <div
-                    key={index}
-                    className="border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                    className="relative aspect-video cursor-pointer group bg-black"
+                    onClick={() => setSelectedVideo(item.shortPath)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ")
+                        setSelectedVideo(item.shortPath);
+                    }}
                   >
-                    <div
-                      className="relative aspect-video bg-gray-200 cursor-pointer group"
-                      onClick={() =>
-                        window.open(
-                          `https://www.youtube.com/watch?v=${video.id}`,
-                          "_blank",
-                        )
-                      }
-                    >
-                      <img
-                        src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
-                        alt={video.title}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          e.target.src = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
-                        }}
-                      />
-                      <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                        <div className="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center group-hover:bg-red-700 transition-colors">
-                          <svg
-                            className="w-8 h-8 text-white ml-1"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-bold">
-                        Yai
+                    <video
+                      className="w-full h-full object-cover opacity-90"
+                      muted
+                      playsInline
+                      preload="metadata"
+                      src={item.shortPath}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/25 group-hover:bg-black/35 transition-colors">
+                      <div className="w-14 h-14 bg-red-600 rounded-full flex items-center justify-center group-hover:bg-red-700 transition-colors shadow-lg">
+                        <svg
+                          className="w-7 h-7 text-white ml-0.5"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                          aria-hidden
+                        >
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
                       </div>
                     </div>
-                    <div className="p-4">
-                      <h3 className="font-semibold text-lg mb-1">
-                        {video.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        {video.description}
-                      </p>
+                    <div className="absolute top-2 left-2 bg-orange-500 text-white px-2 py-1 rounded text-xs font-bold">
+                      Yai
                     </div>
                   </div>
-                ))}
-              </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-lg text-slate-800 mb-1">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm leading-snug">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+
+        {selectedVideo && (
+          <VideoViewer
+            videoPath={selectedVideo}
+            onClose={() => setSelectedVideo(null)}
+          />
+        )}
       </div>
     );
   }
