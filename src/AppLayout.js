@@ -31,8 +31,6 @@ const AppLayout = () => {
   const [yaiVersion, setYaiVersion] = useState("yai1"); // 'yai1' or 'yai2'
   const [botModuleContext, setBotModuleContext] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLightOn, setIsLightOn] = useState(false);
-  const [isPulling, setIsPulling] = useState(false);
   const [showDragon, setShowDragon] = useState(false);
   const [dragonMode, setDragonMode] = useState("initial");
   const yaiDataButtonRef = useRef(null);
@@ -1130,7 +1128,7 @@ const AppLayout = () => {
 
   return (
     <div
-      className={`flex flex-col min-h-screen font-sans overflow-x-hidden theme-normal ${isLightOn ? "light-on" : ""} bg-transparent`}
+      className="flex flex-col min-h-screen font-sans overflow-x-hidden theme-normal bg-transparent"
       style={{ position: "relative", zIndex: 1, scrollBehavior: "smooth" }}
     >
       {/* Theme Background - Show on home page and dashboard, but not on full-screen forms */}
@@ -1187,274 +1185,16 @@ const AppLayout = () => {
         !location.pathname.includes("money-claim") &&
         !location.pathname.includes("ce") && <Header />}
 
-      {/* Light Bulb - Center Top */}
-      {location.pathname === "/" && (
-        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[55] flex flex-col items-center">
-          <style>{`
-                        @keyframes lightGlow {
-                            0%, 100% { 
-                                box-shadow: 0 0 25px rgba(255, 255, 255, 0.7),
-                                           0 0 50px rgba(255, 255, 255, 0.5),
-                                           0 0 75px rgba(255, 255, 255, 0.3),
-                                           0 0 100px rgba(255, 255, 255, 0.2);
-                            }
-                            50% { 
-                                box-shadow: 0 0 35px rgba(255, 255, 255, 0.9),
-                                           0 0 70px rgba(255, 255, 255, 0.7),
-                                           0 0 100px rgba(255, 255, 255, 0.5),
-                                           0 0 130px rgba(255, 255, 255, 0.3);
-                            }
-                        }
-                        @keyframes float {
-                            0%, 100% { transform: translateY(0px); }
-                            50% { transform: translateY(-8px); }
-                        }
-                        @keyframes clickPulse {
-                            0% { transform: scale(1); }
-                            50% { transform: scale(0.9); }
-                            100% { transform: scale(1); }
-                        }
-                        .light-bulb-on {
-                            animation: lightGlow 2s ease-in-out infinite, float 3s ease-in-out infinite;
-                            filter: brightness(1.3);
-                        }
-                        .light-bulb-off {
-                            filter: brightness(0.4);
-                            opacity: 0.6;
-                        }
-                        .light-bulb-container {
-                            animation: float 3s ease-in-out infinite;
-                        }
-                        .click-animation {
-                            animation: clickPulse 0.3s ease-in-out;
-                        }
-                    `}</style>
-
-          {/* Light Bulb - Pointing Down */}
-          <button
-            onClick={() => {
-              setIsPulling(true);
-              setTimeout(() => {
-                setIsLightOn((prev) => !prev);
-                setIsPulling(false);
-              }, 300);
-            }}
-            className={`relative transition-all duration-500 cursor-pointer hover:scale-110 active:scale-95 ${isPulling ? "click-animation" : ""} ${isLightOn ? "light-bulb-on" : "light-bulb-off"} light-bulb-container`}
-            aria-label="Toggle Light"
-            title="Click to toggle light"
-          >
-            {/* Custom Light Bulb SVG - Pointing Down - Larger and More Visible */}
-            <svg
-              width="64"
-              height="64"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className={`transition-all duration-500 ${isLightOn ? "drop-shadow-[0_0_20px_rgba(255,255,255,0.9)]" : "drop-shadow-[0_0_5px_rgba(255,255,255,0.3)]"}`}
-              style={{ transform: "rotate(180deg)" }}
-            >
-              {/* Outer Glow Ring */}
-              {isLightOn && (
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="11"
-                  fill="none"
-                  stroke="rgba(255, 255, 255, 0.4)"
-                  strokeWidth="0.5"
-                  className="animate-pulse"
-                />
-              )}
-
-              {/* Bulb Glass - More visible */}
-              <path
-                d="M12 2C8.13 2 5 5.13 5 9C5 11.38 6.19 13.47 8 14.74V17C8 17.55 8.45 18 9 18H15C15.55 18 16 17.55 16 17V14.74C17.81 13.47 19 11.38 19 9C19 5.13 15.87 2 12 2Z"
-                className={`transition-all duration-500 ${isLightOn ? "fill-white stroke-white stroke-2" : "fill-gray-300 stroke-gray-400 stroke-2"}`}
-              />
-
-              {/* Inner Glow when on */}
-              {isLightOn && (
-                <path
-                  d="M12 4C9.24 4 7 6.24 7 9C7 10.65 7.93 12.1 9.25 12.97V15C9.25 15.28 9.47 15.5 9.75 15.5H14.25C14.53 15.5 14.75 15.28 14.75 15V12.97C16.07 12.1 17 10.65 17 9C17 6.24 14.76 4 12 4Z"
-                  fill="rgba(255, 255, 255, 0.3)"
-                />
-              )}
-
-              {/* Filament when on - More visible */}
-              {isLightOn && (
-                <>
-                  <circle
-                    cx="12"
-                    cy="10"
-                    r="2.5"
-                    fill="rgba(255, 255, 255, 0.95)"
-                    className="animate-pulse"
-                  />
-                  <path
-                    d="M10 10L14 10M12 8L12 12"
-                    stroke="rgba(255, 255, 255, 0.8)"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </>
-              )}
-
-              {/* Base/Socket - More detailed */}
-              <rect
-                x="9"
-                y="17"
-                width="6"
-                height="2.5"
-                rx="1"
-                className={`transition-all duration-500 ${isLightOn ? "fill-gray-200 stroke-gray-300 stroke-1" : "fill-gray-500 stroke-gray-600 stroke-1"}`}
-              />
-              <rect
-                x="8"
-                y="19.5"
-                width="8"
-                height="2"
-                rx="1"
-                className={`transition-all duration-500 ${isLightOn ? "fill-gray-100 stroke-gray-200 stroke-1" : "fill-gray-600 stroke-gray-700 stroke-1"}`}
-              />
-
-              {/* Screw threads on base */}
-              <line
-                x1="10"
-                y1="18.5"
-                x2="14"
-                y2="18.5"
-                className={`transition-all duration-500 ${isLightOn ? "stroke-gray-300" : "stroke-gray-600"}`}
-                strokeWidth="0.5"
-              />
-              <line
-                x1="10"
-                y1="20.5"
-                x2="14"
-                y2="20.5"
-                className={`transition-all duration-500 ${isLightOn ? "stroke-gray-200" : "stroke-gray-700"}`}
-                strokeWidth="0.5"
-              />
-            </svg>
-
-            {/* Light rays when on - Enhanced */}
-            {isLightOn && (
-              <>
-                <div className="absolute inset-0 -z-10">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-white/40 rounded-full blur-3xl animate-pulse"></div>
-                </div>
-                {/* Additional light rays */}
-                <div className="absolute inset-0 -z-10">
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/30 rounded-full blur-2xl"></div>
-                </div>
-              </>
-            )}
-          </button>
-
-          {/* Click hint */}
-          {/* {!isLightOn && (
-                        <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-white/80 text-xs font-semibold whitespace-nowrap animate-pulse drop-shadow-lg">
-                            Click to turn on
-                        </div>
-                    )} */}
-        </div>
-      )}
-
       {/* Chatbot Icon & Dropdown - Only show on home page - Prominent First View */}
       {location.pathname === "/" && (
         <div className="fixed top-20 left-6 z-[60] text-white animate-in fade-in slide-in-from-left duration-1000">
-          <style>{`
-                        @keyframes float {
-                            0%, 100% { transform: translateY(0px) rotate(0deg); }
-                            50% { transform: translateY(-10px) rotate(5deg); }
-                        }
-                        @keyframes pulse-glow {
-                            0%, 100% { 
-                                box-shadow: 0 0 20px rgba(59, 130, 246, 0.5),
-                                           0 0 40px rgba(139, 92, 246, 0.3),
-                                           0 0 60px rgba(59, 130, 246, 0.2);
-                            }
-                            50% { 
-                                box-shadow: 0 0 30px rgba(59, 130, 246, 0.8),
-                                           0 0 60px rgba(139, 92, 246, 0.5),
-                                           0 0 90px rgba(59, 130, 246, 0.3);
-                            }
-                        }
-                        @keyframes rotate-ring {
-                            from { transform: rotate(0deg); }
-                            to { transform: rotate(360deg); }
-                        }
-                        @keyframes sparkle {
-                            0%, 100% { opacity: 0; transform: scale(0); }
-                            50% { opacity: 1; transform: scale(1); }
-                        }
-                        .bot-icon-container {
-                            position: relative;
-                            animation: float 3s ease-in-out infinite;
-                        }
-                        .bot-icon-glow {
-                            animation: pulse-glow 2s ease-in-out infinite;
-                        }
-                        .rotating-ring {
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            width: 64px;
-                            height: 64px;
-                            border: 2px solid transparent;
-                            border-top-color: rgba(59, 130, 246, 0.6);
-                            border-right-color: rgba(139, 92, 246, 0.6);
-                            border-radius: 50%;
-                            animation: rotate-ring 3s linear infinite;
-                        }
-                        .rotating-ring-2 {
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                            width: 72px;
-                            height: 72px;
-                            border: 2px solid transparent;
-                            border-bottom-color: rgba(139, 92, 246, 0.4);
-                            border-left-color: rgba(59, 130, 246, 0.4);
-                            border-radius: 50%;
-                            animation: rotate-ring 4s linear infinite reverse;
-                        }
-                        .sparkle {
-                            position: absolute;
-                            width: 4px;
-                            height: 4px;
-                            background: white;
-                            border-radius: 50%;
-                            animation: sparkle 2s ease-in-out infinite;
-                        }
-                        .sparkle-1 { top: 10%; left: 20%; animation-delay: 0s; }
-                        .sparkle-2 { top: 20%; right: 15%; animation-delay: 0.5s; }
-                        .sparkle-3 { bottom: 15%; left: 25%; animation-delay: 1s; }
-                        .sparkle-4 { bottom: 10%; right: 20%; animation-delay: 1.5s; }
-                    `}</style>
+
           <div className="flex items-center gap-4">
-            <div
-              className={`relative ${isDropdownOpen ? "" : "bot-icon-container"}`}
-            >
-              {/* Rotating Rings - Only show when dropdown is closed */}
-              {!isDropdownOpen && (
-                <>
-                  <div className="rotating-ring"></div>
-                  <div className="rotating-ring-2"></div>
-
-                  {/* Sparkles - Only show when dropdown is closed */}
-                  <div className="sparkle sparkle-1"></div>
-                  <div className="sparkle sparkle-2"></div>
-                  <div className="sparkle sparkle-3"></div>
-                  <div className="sparkle sparkle-4"></div>
-                </>
-              )}
-
+            <div className="relative">
               <button
                 ref={yaiDataButtonRef}
                 onClick={() => setDropdownOpen((prev) => !prev)}
-                className={`relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 z-10 ${isDropdownOpen ? "" : "bot-icon-glow"}`}
+                className="relative rounded-full hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-slate-900 z-10 shadow-lg"
                 aria-label="Open AI Assistant"
               >
                 <img
@@ -1560,12 +1300,6 @@ const AppLayout = () => {
       >
         {/* === BACKGROUND LAYERS === */}
         {/* Background is now handled by ThemeBackground component in thems.js */}
-        {/* Light Beam Effect when light is on - only for normal theme */}
-        {isLightOn && (
-          <div className="fixed inset-0 z-[1] pointer-events-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-to-b from-white/25 via-white/15 to-transparent pointer-events-none"></div>
-          </div>
-        )}
 
         {/* Conditionally render dashboard content or other views */}
         {location.pathname === "/" ? (
@@ -1644,10 +1378,10 @@ const AppLayout = () => {
                 className={`w-full flex justify-end mb-4 ${isDropdownOpen ? "" : "apple-fade-in"}`}
               >
                 <div
-                  className={`flex items-center px-3 py-2 w-64 text-white transition-all duration-300 group light-effect ${isDropdownOpen ? "bg-white/10 backdrop-blur-md border border-white/20 rounded-lg" : "glass-effect-strong rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105"} ${isLightOn ? "brightness-110 shadow-white/20" : ""}`}
+                  className={`flex items-center px-3 py-2 w-64 text-white transition-all duration-300 group light-effect ${isDropdownOpen ? "bg-white/10 backdrop-blur-md border border-white/20 rounded-lg" : "glass-effect-strong rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105"}`}
                 >
                   <Search
-                    className={`w-4 h-4 mr-2 transition-colors ${isDropdownOpen ? "text-cyan-300" : "text-cyan-300 group-hover:text-cyan-200"} ${isLightOn ? "text-white brightness-150" : ""}`}
+                    className={`w-4 h-4 mr-2 transition-colors ${isDropdownOpen ? "text-cyan-300" : "text-cyan-300 group-hover:text-cyan-200"}`}
                   />
                   <input
                     type="text"
@@ -1664,7 +1398,7 @@ const AppLayout = () => {
                   onModuleClick={handleModuleClick}
                   onBotModuleClick={openBotForModule}
                   isDropdownOpen={isDropdownOpen}
-                  isLightOn={isLightOn}
+                  isLightOn={false}
                 />
                 <SectionContainer
                   section={DASHBOARD_DATA[1]}
@@ -1672,14 +1406,14 @@ const AppLayout = () => {
                   onGMChatClick={() => setGMChatOpen(true)}
                   onBotModuleClick={openBotForModule}
                   isDropdownOpen={isDropdownOpen}
-                  isLightOn={isLightOn}
+                  isLightOn={false}
                 />
                 <SectionContainer
                   section={DASHBOARD_DATA[2]}
                   onModuleClick={handleModuleClick}
                   onBotModuleClick={openBotForModule}
                   isDropdownOpen={isDropdownOpen}
-                  isLightOn={isLightOn}
+                  isLightOn={false}
                 />
               </div>
             </div>

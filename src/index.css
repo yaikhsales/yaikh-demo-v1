@@ -19,3 +19,14 @@
     letter-spacing: 0.02em;
   }
 }
+
+/* PERFORMANCE HOTFIX: 
+   Globally disable backdrop filters as they cause severe rendering lag 
+   on scrolling pages with many elements (like the module grids) 
+   and big background images.
+*/
+* {
+  backdrop-filter: none !important;
+  
+  -webkit-backdrop-filter: none !important;
+}

@@ -86,7 +86,7 @@ const KhmerAnimatedCanvas = () => {
 
     // ── ZONE 3: PETALS (falling) ───────────────────────────
     const petals = Array.from({ length: 55 }, () => {
-      const colors = [[234,179,8],[251,146,60],[220,38,38],[253,224,71],[255,180,180],[255,140,200]];
+      const colors = [[234, 179, 8], [251, 146, 60], [220, 38, 38], [253, 224, 71], [255, 180, 180], [255, 140, 200]];
       return {
         x: Math.random(),
         y: 0.3 + Math.random() * 0.7,  // lower 70%
@@ -192,7 +192,7 @@ const KhmerAnimatedCanvas = () => {
         const bodyGrad = ctx.createRadialGradient(lx, ly - r * 0.2, r * 0.1, lx, ly, r);
         bodyGrad.addColorStop(0, `rgba(255,250,200,1)`);
         bodyGrad.addColorStop(0.4, `rgba(${lr},${lg},${lb},0.95)`);
-        bodyGrad.addColorStop(1, `rgba(${Math.max(0,lr-50)},${Math.max(0,lg-60)},0,0.6)`);
+        bodyGrad.addColorStop(1, `rgba(${Math.max(0, lr - 50)},${Math.max(0, lg - 60)},0,0.6)`);
         ctx.fillStyle = bodyGrad;
         ctx.beginPath();
         ctx.ellipse(lx, ly, r * 0.65, r, 0, 0, Math.PI * 2);
@@ -214,7 +214,7 @@ const KhmerAnimatedCanvas = () => {
         // Drifting movement
         f.x += f.speedX;
         f.y += f.speedY;
-        
+
         // Bounce off invisible walls to keep them in mid zone
         if (f.x < 0 || f.x > 1) f.speedX *= -1;
         if (f.y < 0.2 || f.y > 0.8) f.speedY *= -1;
@@ -225,13 +225,13 @@ const KhmerAnimatedCanvas = () => {
 
         ctx.save();
         ctx.globalAlpha = currentAlpha;
-        
+
         // Glow gradient
         const fg = ctx.createRadialGradient(f.x * W(), f.y * H(), 0, f.x * W(), f.y * H(), radius * 4);
         fg.addColorStop(0, 'rgba(255,255,180,1)');
         fg.addColorStop(0.3, 'rgba(250,204,21,0.8)'); // gold glow
         fg.addColorStop(1, 'rgba(251,146,60,0)');     // fade to orange
-        
+
         ctx.fillStyle = fg;
         ctx.beginPath();
         ctx.arc(f.x * W(), f.y * H(), radius * 4, 0, Math.PI * 2);
@@ -265,7 +265,7 @@ const KhmerAnimatedCanvas = () => {
         const pg = ctx.createRadialGradient(0, -p.radius * 0.3, 0, 0, 0, p.radius * 1.5);
         pg.addColorStop(0, `rgba(255,245,200,0.95)`);
         pg.addColorStop(0.5, `rgba(${r},${g},${b},0.85)`);
-        pg.addColorStop(1, `rgba(${r},${Math.max(0,g-50)},0,0)`);
+        pg.addColorStop(1, `rgba(${r},${Math.max(0, g - 50)},0,0)`);
         ctx.fillStyle = pg;
         ctx.shadowColor = `rgba(${r},${g},${b},0.4)`;
         ctx.shadowBlur = 6;
@@ -353,8 +353,8 @@ export const ThemeBackground = () => {
           background: 'radial-gradient(ellipse 80% 40% at 50% 100%, rgba(180,60,0,0.20) 0%, transparent 70%)',
         }} />
 
-        {/* === LAYER 5: Zone-based animated canvas === */}
-        <KhmerAnimatedCanvas />
+        {/* === LAYER 5: Zone-based animated canvas (REMOVED FOR PERFORMANCE) === */}
+        {/* <KhmerAnimatedCanvas /> */}
 
         {/* === LAYER 6: Edge vignette === */}
         <div style={{
