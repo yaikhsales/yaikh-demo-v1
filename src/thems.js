@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 
 // Feature Toggle for Khmer New Year Elements
 export const KHMER_NEW_YEAR = {
-  isActive: true,
+  isActive: false,
   palette: {
     gold: '#EAB308',
     red: '#DC2626',
@@ -377,16 +377,28 @@ export const ThemeBackground = () => {
   return createPortal(
     <div
       id="background"
-      className="fixed inset-0 overflow-hidden pointer-events-none"
+      className="fixed inset-0 overflow-hidden pointer-events-none bg-slate-900"
       style={{ zIndex: -1, width: "100vw", height: "100vh" }}
     >
+      {/* Blurred background layer to fill empty widescreen margins beautifully */}
       <img
-        src="/assets/background/bg.jpg"
-        alt="Background"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ zIndex: -1, opacity: 0.7 }}
+        src="/assets/background/robot-bg-ai.png"
+        className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-40 scale-105"
+        style={{ zIndex: -2 }}
         onError={(e) => { e.target.style.display = "none"; }}
       />
+
+      {/* Main crisp visible image without cropping the robot's head */}
+      <img
+        src="/assets/background/robot-bg-ai.png"
+        alt="Robot AI Background"
+        className="absolute inset-0 w-full h-full object-contain"
+        style={{ zIndex: -1, opacity: 0.85 }}
+        onError={(e) => { e.target.style.display = "none"; }}
+      />
+      
+      {/* Soft gradient overlay to keep dashboard text perfectly readable */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-slate-900/30 to-slate-900/60" style={{ zIndex: 0 }}></div>
     </div>,
     document.body,
   );
