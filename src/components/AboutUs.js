@@ -273,7 +273,6 @@ const AboutUs = ({ onClose }) => {
         { name: 'Node.js', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/nodedotjs.svg' },
         { name: 'Express', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/express.svg' },
         
-          { name: 'ChatGPT', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/openai.svg?v=1' },
         { 
             name: 'Gemini', 
             logo: 'https://cdn.simpleicons.org/googlegemini?v=1' 
@@ -282,7 +281,10 @@ const AboutUs = ({ onClose }) => {
             name: 'DeepSeek',
             logo: 'assets/about-us/deepseek.png?v=1'
         },
-        { name: 'Microsoft Azure', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/microsoftazure.svg' },
+        { name: 'Claude', logo: 'https://cdn.simpleicons.org/claude' },
+        { name: 'Nvidia', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/nvidia.svg' },
+        { name: 'AMD', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/amd.svg' },
+        { name: 'GitHub', logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg' },
       
     ];
     return (
@@ -455,7 +457,7 @@ const AboutUs = ({ onClose }) => {
                                                     alt={tech.name}
                                                     className="w-full h-full object-contain"
                                                     style={{ 
-                                                        filter: tech.name === 'ChatGPT' || tech.name === 'Gemini' 
+                                                        filter: tech.name === 'Claude' || tech.name === 'Gemini' 
                                                             ? 'none' 
                                                             : 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(222deg) brightness(104%) contrast(97%)'
                                                     }}
@@ -627,7 +629,7 @@ const AboutUs = ({ onClose }) => {
                                                     alt={tech.name}
                                                     className="w-full h-full object-contain"
                                                     style={{ 
-                                                        filter: tech.name === 'ChatGPT' || tech.name === 'Gemini' 
+                                                        filter: tech.name === 'Claude' || tech.name === 'Gemini' 
                                                             ? 'none' 
                                                             : 'brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(222deg) brightness(104%) contrast(97%)'
                                                     }}

@@ -334,6 +334,12 @@ export const DASHBOARD_DATA = [
             image: "assets/modules-image/new-icons-modules/ypm.png?v=1", // Adding YPM
             status: "active",
           },
+          {
+            id: "pwip",
+            title: "PWIP",
+            image: "assets/modules-image/new-icons-modules/PWIP.png?v=1",
+            status: "active",
+          },
         ],
       },
       {
