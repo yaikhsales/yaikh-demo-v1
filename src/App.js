@@ -92,6 +92,7 @@ import PreProductionMeeting from "./yqms/PPM/pre-production-meeting";
 import FinCheckDashboard from "./yqms/Fin-check/index";
 import ShippingRequest from "./shipping/ShippingRequest";
 import MoneyClaim from "./money-claim/money-claim";
+import AutoPost from "./autopost/AutoPost";
 
 // FC Module Components
 import FabricReceiving from "./fc/FabricReceiving";
@@ -625,6 +626,7 @@ export default function App() {
           />
 
           <Route path="money-claim" element={<MoneyClaim onBack={handleBack} />} />
+          <Route path="autopost" element={<AutoPost onBack={handleBack} />} />
           <Route path=":moduleId" element={<TableView onBack={handleBack} />} />
         </Route>
       </Routes>
