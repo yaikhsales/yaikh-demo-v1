@@ -305,8 +305,8 @@ export const DASHBOARD_DATA = [
           },
           {
             id: "production-status",
-            title: "Production Status",
-            image: "assets/modules-image/new-icons-modules/production-status.png?v=1",
+            title: "YWIP",
+            image: "assets/modules-image/new-icons-modules/production-status.png?v=2",
             status: "active",
           },
           {
@@ -337,8 +337,10 @@ export const DASHBOARD_DATA = [
           {
             id: "4dp",
             title: "4DP",
-            image: "assets/modules-image/new-icons-modules/4DP.jpg?v=1",
+            image: "assets/modules-image/new-icons-modules/4DP.png?v=3",
             status: "active",
+            demoType: "IFRAME_VIEW",
+            url: "https://4dp.yaikh.com",
           },
         ],
       },
@@ -349,8 +351,10 @@ export const DASHBOARD_DATA = [
           {
             id: "ypi",
             title: "YPI",
-            image: "assets/modules-image/new-icons-modules/YPI.png?v=1",
+            image: "assets/modules-image/new-icons-modules/YPI.png?v=2",
             status: "active",
+            demoType: "EXTERNAL_URL",
+            url: "https://ypm.yaikh.com",
           },
         ],
       },
@@ -361,7 +365,7 @@ export const DASHBOARD_DATA = [
           {
             id: "mrp",
             title: "MRP",
-            image: "assets/modules-image/new-icons-modules/MRP.jpg?v=1",
+            image: "assets/modules-image/new-icons-modules/MRP.png",
             status: "active",
           },
         ],
