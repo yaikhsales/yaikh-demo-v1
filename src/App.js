@@ -17,6 +17,7 @@ import MeterDeviceListView from "./views/MeterDeviceListView";
 import SystemAnalysisView from "./views/SystemAnalysisView";
 import ShopGridView from "./views/ShopGridView";
 import ImageView from "./views/ImageView";
+import IframeView from "./views/IframeView";
 import VerifyPR from "./accountant/verify-pr";
 import ApprovalPR from "./accountant/approval-pr";
 import PayPR from "./accountant/pay-pr";
@@ -189,6 +190,7 @@ export default function App() {
           />
           <Route path="submenu/:moduleId" element={<SubMenuView />} />
           <Route path="image/*" element={<ImageView onBack={handleBack} />} />
+          <Route path="iframe" element={<IframeView onBack={handleBack} />} />
           <Route path="verify-pr" element={<VerifyPR onBack={handleBack} />} />
           <Route
             path="approval-pr"

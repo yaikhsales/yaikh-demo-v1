@@ -93,6 +93,10 @@ const AppLayout = () => {
         navigate("/dashboard/system-analysis");
       } else if (demoType === "IMAGE_VIEW")
         navigate(`/dashboard/image/${module.image}`);
+      else if (demoType === "IFRAME_VIEW")
+        navigate("/dashboard/iframe", { state: { url: module.url, title: module.title } });
+      else if (demoType === "EXTERNAL_URL")
+        window.open(module.url, "_blank", "noopener,noreferrer");
       else if (demoType === "VIEW_SYSTEM_ANALYSIS")
         navigate(`/dashboard/${id}`);
       else if (demoType === "SUBMENU_YHR") {

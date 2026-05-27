@@ -305,14 +305,8 @@ export const DASHBOARD_DATA = [
           },
           {
             id: "production-status",
-            title: "Production Status",
-            image: "assets/modules-image/new-icons-modules/Production-Status.png?v=1", // Adding Production Status
-            status: "active",
-          },
-          {
-            id: "ytm",
-            title: "YTM",
-            image: "assets/modules-image/new-icons-modules/ytm.png?v=1",
+            title: "YWIP",
+            image: "assets/modules-image/new-icons-modules/production-status.png?v=2",
             status: "active",
           },
           {
@@ -323,90 +317,56 @@ export const DASHBOARD_DATA = [
             demoType: "SUBMENU_CE",
           },
           {
+            id: "ytm",
+            title: "YTM",
+            image: "assets/modules-image/new-icons-modules/ytm.png?v=1",
+            status: "active",
+          },
+          {
             id: "ytm-shop",
             title: "YTM Shop",
             image: "assets/modules-image/new-icons-modules/ytm-shop.png?v=1",
             status: "active",
           },
+        ],
+      },
+      {
+        id: "4dp-col",
+        title: "4DP",
+        modules: [
           {
-            id: "ypm",
-            title: "YPM",
-            image: "assets/modules-image/new-icons-modules/ypm.png?v=1", // Adding YPM
+            id: "4dp",
+            title: "4DP",
+            image: "assets/modules-image/new-icons-modules/4DP.png?v=3",
             status: "active",
+            demoType: "IFRAME_VIEW",
+            url: "https://4dp.yaikh.com",
           },
+        ],
+      },
+      {
+        id: "ypi-col",
+        title: "YPI",
+        modules: [
           {
-            id: "pwip",
-            title: "PWIP",
-            image: "assets/modules-image/new-icons-modules/PWIP.png?v=1",
+            id: "ypi",
+            title: "YPI",
+            image: "assets/modules-image/new-icons-modules/YPI.png?v=2",
             status: "active",
+            demoType: "EXTERNAL_URL",
+            url: "https://ypm.yaikh.com",
           },
         ],
       },
       {
-        id: "dtsync-col",
-        title: "DT Sync",
+        id: "mrp-col",
+        title: "MRP",
         modules: [
           {
-            title: "DT Sync",
-            image: "assets/icons/dt-sync.png?v=1",
-            status: "coming-soon",
-          },
-          {
-            title: "Master Plan",
-            image: "assets/icons/master-plan.png?v=1",
-            status: "coming-soon",
-          },
-          {
-            title: "Line Plan",
-            image: "assets/icons/line-plan.png?v=1",
-            status: "coming-soon",
-          },
-          {
-            title: "TNA",
-            image: "assets/icons/tna.png?v=1", // Adding TNA
-            status: "coming-soon",
-          },
-        ],
-      },
-      {
-        id: "prepro-col",
-        title: "PRE PRO",
-        modules: [
-          {
-            title: "TEC PACK",
-            image: "assets/icons/tec-pack.png?v=1",
-            status: "coming-soon",
-          },
-          {
-            title: "PPS",
-            image: "assets/icons/pps.png?v=1",
-            status: "coming-soon",
-          },
-          {
-            title: "PPM",
-            image: "assets/icons/ppm.png?v=1",
-            status: "coming-soon",
-          },
-          {
-            title: "Sample",
-            image: "assets/icons/sample-garment.png?v=1",
-            status: "coming-soon",
-          },
-        ],
-      },
-      {
-        id: "prodmat-col",
-        title: "Production Materials",
-        modules: [
-          {
-            title: "Material Purchase",
-            image: "assets/icons/material-purchase.png?v=1",
-            status: "coming-soon",
-          },
-          {
-            title: "SC",
-            image: "assets/icons/sc.png?v=1", // Adding SC
-            status: "coming-soon",
+            id: "mrp",
+            title: "MRP",
+            image: "assets/modules-image/new-icons-modules/MRP.png",
+            status: "active",
           },
         ],
       },
